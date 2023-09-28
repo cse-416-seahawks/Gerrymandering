@@ -22,9 +22,19 @@ function StateMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[51.505, -0.09]}>
+      <Marker position={[37.4316, -78.6569]}>
         <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+          Virginia
+        </Popup>
+      </Marker>
+      <Marker position={[31.9686, -99.9018]}>
+        <Popup>
+          Texas
+        </Popup>
+      </Marker>
+      <Marker position={[38.8026, -116.4194]}>
+        <Popup>
+          Nevada
         </Popup>
       </Marker>
     </MapContainer>
