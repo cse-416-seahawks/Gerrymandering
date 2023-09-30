@@ -16,7 +16,6 @@ const state = {
 function StateMap() {
   return (
     <div>
-      <h1>Map</h1>
       <MapContainer id='mapid' center={[37.8, -96]} zoom={4} scrollWheelZoom={false}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
