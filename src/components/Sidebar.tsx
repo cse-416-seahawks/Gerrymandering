@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import * as AntIcons from "react-icons/ai";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from 'react-icons/ai'
 import { SideBarOptions } from "./SidebarOptions";
 import './css/SideBar.css'
 
 function Sidebar() {
+
+  const [sidebar, setSidebar] = useState(false);
+
+  const showSidebar = () => (setSidebar(!sidebar));
+
   return (
     <>
-      <div className="sidebar">
-        <h1>GerryCast</h1>
-        <nav className="nav-menu">
+        <div className="navbar">
+          <Link to='#' className="menu-bars">
+            <FaIcons.FaBars onClick={showSidebar}/>
+          </Link>
+        </div>
+        <nav className={sidebar? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items">
+            <li className="navbar-toggle nav-text" onClick={showSidebar}>
+              <Link to="#">
+                <AiIcons.AiOutlineClose/>
+              </Link>
+
+            </li>
             {SideBarOptions.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
@@ -23,7 +38,6 @@ function Sidebar() {
             })}
           </ul>
         </nav>
-      </div>
     </>
   );
 }
