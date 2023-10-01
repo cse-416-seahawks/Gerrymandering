@@ -79,7 +79,7 @@ function ClusterTable() {
       <>
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }}>
-                <TableHead sx={{height:"10px", fontSize:'10px'}}>
+                <TableHead sx={{}}>
                     <TableRow>
                         <TableCell>Cluster</TableCell>
                         <TableCell align="right"># District Plans</TableCell>

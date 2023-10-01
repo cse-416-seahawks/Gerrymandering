@@ -27,9 +27,9 @@ function App() {
           <div className="State-map">
             <StateMap selectedState={selectedState}/>
           </div>
-          <div className="State-map stack-top">
+          {/* <div className="State-map stack-top">
             <StateSelection onStateSelect={handleStateChange}/>
-          </div>
+          </div> */}
       </header>
       </div>
       <TableData/>
