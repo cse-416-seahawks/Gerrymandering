@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Navbar";
 import AppHeader from "./components/AppHeader"
 import {BrowserRouter as Router} from 'react-router-dom'
 import TableData from "./components/TableData";
