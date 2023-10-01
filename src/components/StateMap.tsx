@@ -177,7 +177,7 @@ export default function StateMap(props: { selectedState: string }) {
 
   return (
     <div className='StateMap'>
-        <div className="StateMap-Header-Text"><h1>Map</h1></div>
+        {/* <div className="StateMap-Header-Text"><h1>Map</h1></div> */}
           <MapComponent/>
       </div>
   )
