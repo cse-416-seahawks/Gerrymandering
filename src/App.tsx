@@ -3,7 +3,6 @@ import "./App.css";
 import StateMap from "./components/StateMap";
 import Sidebar from "./components/Sidebar";
 import AppHeader from "./components/AppHeader"
-import StateSelection from "./components/StateSelection"
 import {BrowserRouter as Router} from 'react-router-dom'
 import TableData from "./components/TableData";
 
