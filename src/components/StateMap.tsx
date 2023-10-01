@@ -152,7 +152,6 @@ export default function StateMap(props: { selectedState: string }) {
 
   React.useEffect(() => {
     setCenterCoordinates(stateData[props.selectedState]);
-    console.log("props:"+props.selectedState)
   }, [props.selectedState]);
 
 
@@ -164,10 +163,11 @@ export default function StateMap(props: { selectedState: string }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {<GeoJSON data={nevadaData.features}/>}
+
+        {/* {<GeoJSON data={nevadaData.features}/>} */}
         {/*<GeoJSON data={texasData.features}/>*/}
-        {<GeoJSON data={virginiaData.features}/>}
-      
+        {/* {<GeoJSON data={virginiaData.features}/>} */}
+  
       </MapContainer>
     )
   }
