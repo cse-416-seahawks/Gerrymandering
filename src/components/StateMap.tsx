@@ -90,7 +90,7 @@ export default function StateMap(props: { selectedState: string }) {
   return (
     <div className='StateMap' >
         <>
-          <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false}>
+          <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false} className='State-map'>
               
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -102,7 +102,7 @@ export default function StateMap(props: { selectedState: string }) {
             {<GeoJSON data={virginiaData.features}/>}
             <SetMapView/>
           </MapContainer>
-          <div >
+          <div className='State-map stack-top'>
             <FormControl 
               variant="filled" 
               sx={{ m: 1, minWidth: 120 }} 

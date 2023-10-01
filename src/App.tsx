@@ -23,9 +23,9 @@ function App() {
       <div className="StateMap-Content">
       <AppHeader/>
       <header className="StateMap-header">
-          <div className="State-map">
-            <StateMap selectedState={selectedState}/>
-          </div>
+          {/* <div className="State-map"> */}
+          <StateMap selectedState={selectedState}/>
+          {/* </div> */}
           {/* <div className="State-map stack-top">
             <StateSelection onStateSelect={handleStateChange}/>
           </div> */}
