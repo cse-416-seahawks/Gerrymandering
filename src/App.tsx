@@ -14,7 +14,7 @@ function App() {
       <Sidebar />
       <div className="StateMap-Content">
       <AppHeader/>
-      <header className="StateMapMap-header">
+      <header className="StateMap-header">
           <div className="State-map">
             <StateMap/>
           </div>
