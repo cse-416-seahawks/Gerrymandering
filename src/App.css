@@ -96,7 +96,14 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
-} */
+}
+
+.StateMap-content {
+  display : flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 
 
 .StateMap-header {
@@ -141,6 +148,9 @@
   flex-direction: row;
   flex : 0 0 100%;
   height: 100%;
+  flex-direction: row;
+  flex : 0 0 100%;
+  height: 100%;
 }
 
 .sidebar {
@@ -148,6 +158,7 @@
   text-align: center;
   flex-direction: column;
   justify-content: center;
+  width: 18%;
   width: 18%;
   height : 100%;
 }
@@ -161,9 +172,11 @@
   height: 100%;
   display: flex;
   justify-content: start;
+  justify-content: start;
 }
 
 .nav-menu-items{
+  justify-content: start;
   justify-content: start;
   width: 100%;
 }
@@ -200,6 +213,7 @@
 }
 .nav-text .icon {
   width: 60%;
+  width: 60%;
   transition: all 0.6s ease;
 }
 
@@ -210,6 +224,8 @@
 .nav-menu-items span{
   padding-left: 1rem;
 }
+
+
 
 
 
