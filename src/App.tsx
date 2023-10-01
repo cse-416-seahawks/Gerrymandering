@@ -6,7 +6,15 @@ import AppHeader from "./components/AppHeader"
 import StateSelection from "./components/StateSelection"
 import {BrowserRouter as Router} from 'react-router-dom'
 
+
 function App() {
+  const [selectedState, setSelectedState] = React.useState('Nevada');
+
+  const handleStateChange=(state:string)=>{
+    setSelectedState(state);
+  }
+
+
   return (
     <div className="App">
       <div className="App-content">
@@ -16,10 +24,10 @@ function App() {
       <AppHeader/>
       <header className="StateMap-header">
           <div className="State-map">
-            <StateMap/>
+            <StateMap selectedState={selectedState}/>
           </div>
           <div className="State-map stack-top">
-            <StateSelection/>
+            <StateSelection onStateSelect={handleStateChange}/>
           </div>
       </header>
       </div>
