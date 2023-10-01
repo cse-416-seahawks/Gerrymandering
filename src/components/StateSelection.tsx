@@ -3,14 +3,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { MapContainer, useMap} from 'react-leaflet';
 
+interface StateSelectionProps {
+  onStateSelect: (state: string) => void; 
+}
 
-export default function SelectVariants() {
+export default function StateSelection({ onStateSelect }: StateSelectionProps) {
   const [state, setState] = React.useState('Nevada');
 
   const handleChange = (event: SelectChangeEvent) => {
     setState(event.target.value);
+    onStateSelect(event.target.value);
   };
+
 
   return (
     <div>

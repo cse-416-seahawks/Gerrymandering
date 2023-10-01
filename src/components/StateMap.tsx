@@ -46,7 +46,7 @@ import React, {Component} from 'react'
 import './css/StateMap.css'
 import 'leaflet/dist/leaflet.css';
 //import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap} from 'react-leaflet';
 // import MarkerClusterGroup from "react-leaflet-cluster";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
 import {MongoClient, GridFSBucket} from 'mongodb';
@@ -109,6 +109,8 @@ convertGridFSToGeoJSON();
 */
 
 
+
+
 var texasData : GeoJSON //= require("./../GeoJson/cb_2022_48_bg_500k.json");
 var nevadaData = require("./../GeoJson/nv_2020_demcaucus.json");
 var virginiaData = require("./../GeoJson/va_2019.json");
@@ -133,40 +135,50 @@ axios.get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: 'blob' }).then(
   });
 
 
-function StateMap() {
+
+interface StateData {
+  [key: string]: [number, number]; 
+}
+const stateData: StateData = {
+  Nevada: [38.5, -116],
+  Texas: [32, -99.9],
+  Virginia: [37.9, -78]
+};
+
+
+
+export default function StateMap(props: { selectedState: string }) {
+  const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
+
+  React.useEffect(() => {
+    setCenterCoordinates(stateData[props.selectedState]);
+  }, [props.selectedState]);
+
+
+  function MapComponent(){
+    return(
+      <MapContainer id='mapid' center={[centerCoordinates[0],centerCoordinates[1]]} zoom={6} scrollWheelZoom={false}>
+          
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        {/* {<GeoJSON data={nevadaData.features}/>} */}
+        {/*<GeoJSON data={texasData.features}/>*/}
+        {/* {<GeoJSON data={virginiaData.features}/>} */}
+  
+      </MapContainer>
+    )
+  }
+
+
+
+
   return (
     <div className='StateMap'>
-      {/* <div className="StateMap-Header-Text"><h1>Map</h1></div> */}
-      
-      <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false}>
-      
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {<GeoJSON data={nevadaData.features}/>}
-      {/*<GeoJSON data={texasData.features}/>*/}
-      <GeoJSON data={virginiaData.features}/>
-      
-      
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          Virginia
-        </Popup>
-      </Marker>
-      <Marker position={[31.9686, -99.9018]}>
-        <Popup>
-          Texas
-        </Popup>
-      </Marker>
-      <Marker position={[38.8026, -116.4194]}>
-        <Popup>
-          Nevada
-        </Popup>
-      </Marker>
-    </MapContainer>
-    </div>
+        <div className="StateMap-Header-Text"><h1>Map</h1></div>
+          <MapComponent/>
+      </div>
   )
 }
-
-export default StateMap;
