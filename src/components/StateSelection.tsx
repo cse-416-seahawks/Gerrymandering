@@ -4,8 +4,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+
 export default function SelectVariants() {
-  const [state, setState] = React.useState('');
+  const [state, setState] = React.useState('Nevada');
 
   const handleChange = (event: SelectChangeEvent) => {
     setState(event.target.value);
@@ -26,6 +27,8 @@ export default function SelectVariants() {
           onChange={handleChange}
           style={{fontWeight:"bold", fontSize:"18px"}}
         >
+          
+
           <MenuItem value={"Nevada"}>Nevada</MenuItem>
           <MenuItem value={"Texas"}>Texas</MenuItem>
           <MenuItem value={"Virginia"}>Virginia</MenuItem>
