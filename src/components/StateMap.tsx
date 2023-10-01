@@ -43,7 +43,7 @@
 
 
 import React, {Component} from 'react'
-import './StateMap.css'
+import './css/StateMap.css'
 import 'leaflet/dist/leaflet.css';
 //import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON} from 'react-leaflet';
@@ -136,9 +136,9 @@ axios.get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: 'blob' }).then(
 function StateMap() {
   return (
     <div className='StateMap'>
-      <div className="StateMap-Header-Text"><h1>Map</h1></div>
+      {/* <div className="StateMap-Header-Text"><h1>Map</h1></div> */}
       
-      <MapContainer id='mapid' center={[37.8, -96]} zoom={4} scrollWheelZoom={false}>
+      <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false}>
       
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

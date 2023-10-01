@@ -1,0 +1,10 @@
+#mapid { 
+  height: 50em; 
+  width: 65em;
+}
+
+.StateMap {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}

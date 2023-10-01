@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as AntIcons from "react-icons/ai";
 import { SideBarOptions } from "./SidebarOptions";
+import './css/SideBar.css'
 
 function Sidebar() {
   return (
