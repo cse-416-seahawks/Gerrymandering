@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
 import Sidebar from "./components/Sidebar";
+import AppHeader from "./components/AppHeader"
 import StateSelection from "./components/StateSelection"
 import {BrowserRouter as Router} from 'react-router-dom'
 
@@ -11,7 +12,9 @@ function App() {
       <div className="App-content">
       <Router>
       <Sidebar />
-      <header className="StateMap-header">
+      <div className="StateMap-Content">
+      <AppHeader/>
+      <header className="StateMapMap-header">
           <div className="State-map">
             <StateMap/>
           </div>
@@ -19,6 +22,7 @@ function App() {
             <StateSelection/>
           </div>
       </header>
+      </div>
       </Router>
       </div>
     </div>
