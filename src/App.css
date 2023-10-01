@@ -87,7 +87,7 @@
 }
 
 
-/* .StateMap-header {
+.StateMap-header {
   background-color: #ffffff;
   min-height: 100vh;
   display: flex;
@@ -121,6 +121,13 @@
   left:-170px;
   position:relative;
 }
+
+.StateMap-content {
+  display : flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 
 .StateMap-content {
   display : flex;
