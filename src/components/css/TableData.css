@@ -19,3 +19,53 @@ svg.recharts-surface tspan {
 	color: black !important;
 	font-family:  Arial;
 }
+
+.cluster-name-input {
+    color: black;
+    font-size: 0.3rem;
+    background-color: transparent;
+    width: 80%;
+    box-sizing: border-box;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    border-bottom: var(--border-height) solid var(--border-before-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.6s ease;
+  }
+
+  .cluster-name-input-border {
+    position: absolute;
+    background: var(--border-after-color);
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  }
+
+  .cluster-name-input:focus {
+    outline: none;
+  }
+
+  .cluster-name-input:focus + .cluster-name-input-border {
+    width: 100%;
+  }
+
+  .form-control {
+    position: relative;
+    --width-of-cluster-name-input: 300px;
+  }
+
+  .cluster-name-input-alt {
+    font-size: 0.8rem;
+    padding-inline: 1em;
+    padding-block: 0.8em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.6s ease;
+  }
+
+
+  .cluster-name-input-alt:focus + .cluster-name-input-border-alt {
+    width: 100%;
+  }

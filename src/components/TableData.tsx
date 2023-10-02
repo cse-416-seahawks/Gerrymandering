@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, FC, useState } from 'react'
 import './css/TableData.css'
 import { Tabs, Tab } from '@mui/material'
 import TabPanel from '@mui/lab/TabPanel';
@@ -19,6 +19,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
+
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 
@@ -245,6 +246,52 @@ function StateDetails(){
     )
 }
 
+interface ClusterNameCellProps {
+    name: string;
+  }
+
+const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
+    const [editing, setEditing] = useState(false);
+    const [clusterName, setName] = useState(name);
+    const handleDoubleClick = () => {
+      setEditing(true);
+    };
+  
+    const handleBlur = () => {
+      setEditing(false);
+      // Save the changes or perform any required actions here
+    };
+  
+    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setEditing(false);
+      if(clusterName == "")
+          setName(name);
+    }
+  
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setName(event.target.value);
+    };
+    return (
+      <TableCell align="center" component="th" scope="row">
+        {editing ? (
+          <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
+          <input
+            type="text"
+            className="cluster-name-input cluster-name-input-alt"
+            value={clusterName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+  
+          />
+          </form>
+        ) : (
+          <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
+        )}
+      </TableCell>
+    );
+  };
+
 /**
  * 
  * Table Data for cluster analysis
@@ -254,13 +301,7 @@ function ClusterTable() {
         cluster: number;
         num_districts: number;
         average_dist: number;
-    }
-    const sampleData: cluster_summary_table[] = [
-        { cluster: 1, num_districts: 30, average_dist: 12.2 },
-        { cluster: 2, num_districts: 12, average_dist: 9.5 },
-        { cluster: 3, num_districts: 45, average_dist: 2.1 },
-        { cluster: 4, num_districts: 17, average_dist: 13.2 }
-    ]
+    };
 
     const data01 = [
         { x: 100, y: 60, z: 200 },
@@ -296,7 +337,42 @@ function ClusterTable() {
     const range = [100, 1000];
 
 
-
+    interface cluster_summary_table {
+        cluster: number;
+        name: string;
+        num_districts: number;
+        average_dist: number;
+      }
+    
+    const sampleData: cluster_summary_table[] = [
+        {
+            cluster: 1,
+            name: "cluster A",
+            num_districts: 30,
+            average_dist: 12.2,
+        },
+        {
+            cluster: 2,
+            name: "cluster B",
+            num_districts: 12,
+            average_dist: 9.5,
+        },
+        {
+            cluster: 3,
+            name: "cluster C",
+            num_districts: 45,
+            average_dist: 2.1,
+        },
+        {
+            cluster: 4,
+            name: "cluster D",
+            num_districts: 17,
+            average_dist: 13.2,
+        },
+    ];
+    
+    const [data, updateData] = useState(sampleData);
+    
     return (
         <>
             <ScatterChart width={700} height={400} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
@@ -313,6 +389,7 @@ function ClusterTable() {
                     <TableHead sx={{ height: "10px", fontSize: '10px' }}>
                         <TableRow>
                             <TableCell>Cluster</TableCell>
+                            <TableCell align="center">Name</TableCell>
                             <TableCell align="right"># District Plans</TableCell>
                             <TableCell align="right">Average Distances</TableCell>
                         </TableRow>
@@ -321,6 +398,7 @@ function ClusterTable() {
                         {sampleData.map((row) => (
                             <TableRow key={row.cluster}>
                                 <TableCell component="th" scope="row"> {row.cluster} </TableCell>
+                                <ClusterNameCell name={row.name} />
                                 <TableCell align="right">{row.num_districts}</TableCell>
                                 <TableCell align="right">{row.average_dist}</TableCell>
                             </TableRow>
