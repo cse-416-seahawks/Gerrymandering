@@ -33,8 +33,6 @@
 
 .stack-top{
   z-index: 0.9;
-  /* left: 10rem; */
-  position:absolute;
   top:0;
   right:0;
   position:absolute;

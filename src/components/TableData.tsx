@@ -1,4 +1,3 @@
-
 import React, { Component, useState } from 'react'
 import './css/TableData.css'
 import { Tabs, Tab } from '@mui/material'
@@ -14,13 +13,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { grey } from '@mui/material/colors';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
+
 
 function TableData() {
   const [currentTab, setCurrentTab] = useState('0');
@@ -42,7 +42,7 @@ function TableData() {
                             >
                                 <Tab value='0' label='State Details' sx={{ textTransform: "none" }} />
                                 <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
-                                <Tab value='2' label='Average Measures' sx={{ textTransform: "none" }} />
+                                <Tab value='2' label='Party Affiliations' sx={{ textTransform: "none" }} />
                                 <Tab value='3' label='Association of clusters' sx={{ textTransform: "none" }} />
                             </Tabs>
                         </Box>
@@ -262,8 +262,52 @@ function ClusterTable() {
         { cluster: 4, num_districts: 17, average_dist: 13.2 }
     ]
 
+    const data01 = [
+        { x: 100, y: 60, z: 200 },
+        { x: 120, y: 30, z: 260 },
+        { x: 170, y: 50, z: 400 },
+        { x: 140, y: 35, z: 280 },
+        { x: 150, y: 70, z: 500 },
+        { x: 110, y: 58, z: 200 },
+        { x: 140, y: 31, z: 280 },
+        { x: 20, y: 40, z: 500 },
+        { x: 16, y: 70, z: 200 },
+        { x: 90, y: 20, z: 200 },
+        { x: 45, y: 58, z: 200 },
+        { x: 45, y: 91, z: 280 },
+        { x: 20, y: 40, z: 500 },
+        { x: 97, y: 70, z: 200 },
+        { x: 94, y: 30, z: 200 },
+        { x: 87, y: 29, z: 200 },
+        { x: 89, y: 35, z: 200 },
+     ];
+
+    const parseDomain = () => [
+        300,
+        Math.max(
+            Math.max.apply(
+            null,
+            data01.map((entry) => entry.y)
+            )
+        ),
+    ];
+
+    const domain = parseDomain();
+    const range = [100, 1000];
+
+
+
     return (
         <>
+            <ScatterChart width={700} height={400} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
+                <CartesianGrid />
+                <XAxis type="number" dataKey="x" name="Average distance" />
+                <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                <ZAxis dataKey="y" domain={domain} range={range} />
+                <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
+                <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+            </ScatterChart>
+            
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }}>
                     <TableHead sx={{ height: "10px", fontSize: '10px' }}>
@@ -405,7 +449,7 @@ function AssociationClusters() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="Num" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip contentStyle={{ fontSize: 18 }}/>
                 <Legend />
                 <Area type="monotone" dataKey="ensemble1" stroke="#8884d8" fill="#8884d8" />
                 <Area type="monotone" dataKey="ensemble2" stroke="#82ca9d" fill="#82ca9d" />

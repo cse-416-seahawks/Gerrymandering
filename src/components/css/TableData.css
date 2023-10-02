@@ -11,3 +11,10 @@
     width: '100%';
     margin-left: 1rem;
 }
+
+/* Font size for the axis of the cluster bubble plot */
+svg.recharts-surface tspan {
+	font-size: 1.5rem !important;
+	color: black !important;
+	font-family:  Arial;
+}
