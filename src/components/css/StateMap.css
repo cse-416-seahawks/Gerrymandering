@@ -4,8 +4,7 @@
 }
 
 .StateMap {
-  display: flex;
-  flex-direction: row;
+  position:relative;
   justify-content: start;
 }
 
@@ -33,7 +32,8 @@
 
 .stack-top{
   z-index: 0.9;
-  left: 40rem;
+  top:0;
+  right:0;
   position:absolute;
 }
 
