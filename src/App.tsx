@@ -20,19 +20,18 @@ function App() {
       <div className="App-content">
       <Router>
       <Navbar />
-      <div className="StateMap-Content">
-      <AppHeader/>
-      <header className="StateMap-header">
-          {/* <div className="State-map"> */}
-          <StateMap selectedState={selectedState}/>
-          {/* </div> */}
-          {/* <div className="State-map stack-top">
-            <StateSelection onStateSelect={handleStateChange}/>
-          </div> */}
-          <TableData/>
-      </header>
+      <div className="StateMap-content">
+        <AppHeader/>
+        <header className="StateMap-header">
+            {/* <div className="State-map"> */}
+            <StateMap selectedState={selectedState}/>
+            {/* </div> */}
+            {/* <div className="State-map stack-top">
+              <StateSelection onStateSelect={handleStateChange}/>
+            </div> */}
+            <TableData/>
+        </header>
       </div>
-      
       </Router>
       </div>
     </div>

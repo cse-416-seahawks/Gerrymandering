@@ -17,7 +17,6 @@
 
 
 .StateMap-header {
-  background-color: #ffffff;
   padding: 0rem 2rem;
   display: flex;
   flex-direction: row;
@@ -32,7 +31,6 @@
 }
 
 .stack-top{
-  z-index: 0.9;
   top:0;
   right:0;
   position:absolute;
@@ -43,4 +41,5 @@
   flex-direction:row;
   height: 50vh;
   width: 90%;
+  background-color: #f6f8fa;
 }
