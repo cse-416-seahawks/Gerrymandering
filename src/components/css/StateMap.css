@@ -1,0 +1,46 @@
+#mapid { 
+  height: 50em; 
+  width: 65em;
+}
+
+.StateMap {
+  position:relative;
+  justify-content: start;
+}
+
+.StateMap-Header-Text {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  font-size: 1rem;
+}
+
+
+.StateMap-header {
+  background-color: #ffffff;
+  padding: 0rem 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(0, 0, 0);
+  padding-left: 150px;
+}
+
+.State-map{
+  z-index: 1;
+}
+
+.stack-top{
+  z-index: 0.9;
+  top:0;
+  right:0;
+  position:absolute;
+}
+
+.StateMap-content {
+  display : flex;
+  flex-direction:row;
+  height: 50vh;
+  width: 90%;
+}

@@ -1,12 +1,19 @@
 import React, {Component} from 'react'
-import './StateMap.css'
+import './css/StateMap.css'
 import 'leaflet/dist/leaflet.css';
 //import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON} from 'react-leaflet';
+
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap, useMapEvent} from 'react-leaflet';
+
 // import MarkerClusterGroup from "react-leaflet-cluster";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
 import {MongoClient, GridFSBucket} from 'mongodb';
 import axios from 'axios';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 interface GeoJSON {
   type: string;
@@ -49,30 +56,75 @@ axios.get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: 'blob' }).then(
   });
 
 
-function StateMap() {
+
+interface StateData {
+  [key: string]: [number, number]; 
+}
+const stateData: StateData = {
+  Nevada: [38.5, -116],
+  Texas: [32, -99.9],
+  Virginia: [37.9, -78]
+};
+
+export default function StateMap(props: { selectedState: string }) {
+  const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
+  const [currentState, setCurrentState] = React.useState('Nevada');
+
+
+  function SetMapView({ }) {
+    console.log("e", [centerCoordinates[0], centerCoordinates[1]])
+    const map = useMapEvent('mouseover', (e) => {
+      map.setView([centerCoordinates[0], centerCoordinates[1]], map.getZoom(), {
+      })
+    })
+  
+    return null
+  } 
+
+  const handleStateChange = (event: SelectChangeEvent) => {
+
+    setCenterCoordinates(stateData[event.target.value]);
+    setCurrentState(event.target.value);
+  };
+
   return (
-    <div className='StateMap'>
-      <div className="StateMap-Header-Text"><h1>Map</h1></div>
-      
-      <MapContainer id='mapid' center={[37.8, -96]} zoom={4} scrollWheelZoom={false}>
-      
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {<GeoJSON data={nevadaData.features}/>}
-      {/*<GeoJSON data={texasData.features}/>*/}
-      <GeoJSON data={virginiaData.features}/>
-      
-      
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
-    </MapContainer>
-    </div>
+    <div className='StateMap' >
+        <>
+          <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false} className='State-map'>
+              
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {<GeoJSON data={nevadaData.features}/>}
+            {/*<GeoJSON data={texasData.features}/>*/}
+            {<GeoJSON data={virginiaData.features}/>}
+            <SetMapView/>
+          </MapContainer>
+          <div className='State-map stack-top'>
+            <FormControl 
+              variant="filled" 
+              sx={{ m: 1, minWidth: 120 }} 
+              style={{backgroundColor:"white", width:"150px", boxShadow:"0 3px 10px rgb(0 0 0 / 0.3)" }}
+            >
+              <InputLabel id="demo-simple-select-filled-label">State</InputLabel>
+              <Select
+                labelId="demo-simple-select-filled-label"
+                id="demo-simple-select-filled"
+                value={currentState}
+                onChange={handleStateChange}
+                style={{fontWeight:"bold", fontSize:"18px"}}
+              >
+                
+
+                <MenuItem value={"Nevada"}>Nevada</MenuItem>
+                <MenuItem value={"Texas"}>Texas</MenuItem>
+                <MenuItem value={"Virginia"}>Virginia</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          </>
+      </div>
   )
 }
-
-export default StateMap;
