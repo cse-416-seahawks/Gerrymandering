@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
 import AppHeader from "./components/AppHeader"
-import StateSelection from "./components/StateSelection"
 import {BrowserRouter as Router} from 'react-router-dom'
 import TableData from "./components/TableData";
 
@@ -20,19 +19,20 @@ function App() {
     <div className="App">
       <div className="App-content">
       <Router>
-      <Sidebar />
+      <Navbar />
       <div className="StateMap-Content">
       <AppHeader/>
       <header className="StateMap-header">
-          <div className="State-map">
-            <StateMap selectedState={selectedState}/>
-          </div>
-          <div className="State-map stack-top">
+          {/* <div className="State-map"> */}
+          <StateMap selectedState={selectedState}/>
+          {/* </div> */}
+          {/* <div className="State-map stack-top">
             <StateSelection onStateSelect={handleStateChange}/>
-          </div>
+          </div> */}
+          <TableData/>
       </header>
       </div>
-      <TableData/>
+      
       </Router>
       </div>
     </div>

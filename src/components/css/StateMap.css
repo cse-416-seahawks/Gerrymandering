@@ -19,10 +19,9 @@
 
 .StateMap-header {
   background-color: #ffffff;
-  min-height: 100vh;
+  padding: 0rem 2rem;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
@@ -34,13 +33,13 @@
 
 .stack-top{
   z-index: 0.9;
-  top:-250px;
-  left:-170px;
-  position:relative;
+  left: 40rem;
+  position:absolute;
 }
 
 .StateMap-content {
   display : flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction:row;
+  height: 50vh;
+  width: 90%;
 }

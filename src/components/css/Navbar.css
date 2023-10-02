@@ -1,10 +1,16 @@
 
 .navbar{
-    height : 4rem;
+    height : 10vh;
+    width: 100vw;
     display : flex;
     text-align: center;
     justify-content: start;
     align-items: center;
+}
+
+.navbar h1{
+    padding-left: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .menu-bars {
