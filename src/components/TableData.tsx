@@ -26,7 +26,7 @@ function TableData() {
   return (
     <>
         <TabContext value={currentTab}>
-            <div style={{display: 'flex', flexDirection:'column', width:'100%' }}>
+            <div className='table-container'>
                 <div className='tab-container'>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
                     <Tabs
@@ -39,7 +39,7 @@ function TableData() {
                 </Box>
             
                 </div>
-                <div className='table-container'>
+                <div>
                     <TabPanel value='1'>
                         <ClusterTable/>
                     </TabPanel>
