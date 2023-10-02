@@ -24,15 +24,8 @@ interface GeoJSONFeature {
   properties: any; 
   geometry: any;   
 }
-const state = {
-  lat: 51.505,
-  lng: -0.09,
-  zoom: 13,
-};
 
-
-
-var texasData : GeoJSON //= require("./../GeoJson/cb_2022_48_bg_500k.json");
+var texasData = require("./../GeoJson/cb_2022_48_bg_500k.json");
 var nevadaData = require("./../GeoJson/nv_2020_demcaucus.json");
 var virginiaData = require("./../GeoJson/va_2019.json");
 
@@ -44,7 +37,7 @@ axios.get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: 'blob' }).then(
     if (typeof text === 'string') {
       try {
         const geoJSON = JSON.parse(text);
-        nevadaData = geoJSON
+        nevadaData = geoJSON;
       } catch (error) {
         console.error('Error parsing JSON:', error);
       }
@@ -60,12 +53,19 @@ axios.get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: 'blob' }).then(
 interface StateData {
   [key: string]: [number, number]; 
 }
+interface StateZoomData {
+  [key: string]: number; 
+}
 const stateData: StateData = {
   Nevada: [38.5, -116],
-  Texas: [32, -99.9],
-  Virginia: [37.9, -78]
+  Texas: [31.5, -99.9],
+  Virginia: [37.9, -79.5]
 };
-
+const stateZoomData: StateZoomData = {
+  Nevada: 6,
+  Texas: 6,
+  Virginia: 6.5,
+};
 export default function StateMap(props: { selectedState: string }) {
   const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
   const [currentState, setCurrentState] = React.useState('Nevada');
@@ -74,8 +74,8 @@ export default function StateMap(props: { selectedState: string }) {
   function SetMapView({ }) {
     console.log("e", [centerCoordinates[0], centerCoordinates[1]])
     const map = useMapEvent('mouseover', (e) => {
-      map.setView([centerCoordinates[0], centerCoordinates[1]], map.getZoom(), {
-      })
+      map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
+      // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
     })
   
     return null
@@ -98,7 +98,7 @@ export default function StateMap(props: { selectedState: string }) {
             />
 
             {<GeoJSON data={nevadaData.features}/>}
-            {/*<GeoJSON data={texasData.features}/>*/}
+            <GeoJSON data={texasData.features}/>
             {<GeoJSON data={virginiaData.features}/>}
             <SetMapView/>
           </MapContainer>
