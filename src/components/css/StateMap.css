@@ -36,6 +36,7 @@
 }
 
 .StateMap-content {
+  margin-top: 1rem;
   display : flex;
   flex-direction:row;
   height: 50vh;

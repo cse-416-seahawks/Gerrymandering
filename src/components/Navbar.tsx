@@ -4,6 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from 'react-icons/ai'
 import { SideBarOptions } from "./SidebarOptions";
 import './css/Navbar.css'
+import { padding } from "@mui/system";
 
 function Navbar() {
 
@@ -39,6 +40,7 @@ function Navbar() {
             })}
           </ul>
         </nav>
+        <hr/>
     </>
   );
 }
