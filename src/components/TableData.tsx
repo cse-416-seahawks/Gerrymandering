@@ -19,69 +19,61 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import Button from '@mui/material/Button';
+import StepContent from '@mui/material/StepContent';    
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 
 function TableData() {
-  const [currentTab, setCurrentTab] = useState('0');
+    const [currentTab, setCurrentTab] = useState(0);
+    const [completed, setCompleted] = useState<{
+        [k: number]: boolean;
+      }>({});
 
-    function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-        console.log(newValue);
-        setCurrentTab(String(newValue));
+    const steps = ['Select an Ensemble', 'Select a Cluster', 'Select a District Plan'];
+
+    function handleStepChange(step: number) {
+        setCurrentTab(step);
     }
 
     return (
         <>
-            <TabContext value={currentTab}>
-                <div className='table-container'>
-                    <div className='tab-container'>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
-                            <Tabs
-                                value={currentTab}
-                                onChange={handleTabChange}
-                            >
-                                <Tab value='0' label='State Details' sx={{ textTransform: "none" }} />
-                                <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
-                                <Tab value='2' label='Party Affiliations' sx={{ textTransform: "none" }} />
-                                <Tab value='3' label='Association of clusters' sx={{ textTransform: "none" }} />
-                            </Tabs>
-                        </Box>
-
-                    </div>
-                    <div>
-                        <TabPanel value='0'>
-                        <StateDetails/>
-                    </TabPanel>
-                    <TabPanel value='1'>
-                            <ClusterTable />
-                        </TabPanel>
-                        <TabPanel value='2'>
-                            <AverageMeasuresTable />
-                        </TabPanel>
-                        <TabPanel value='3'>
-                            <AssociationClusters />
-                        </TabPanel>
-                    </div>
-
+            <div className='table-container'>
+                <div className='tab-container'>
+                    <Stepper nonLinear activeStep={currentTab}>
+                        {steps.map((label, index) => (
+                            <Step key={label} completed={completed[index]}>
+                                <StepButton color="inherit" onClick={() => handleStepChange(index)}>
+                                    {label}
+                                </StepButton>
+                            </Step>
+                        ))}
+                    </Stepper>
                 </div>
-            </TabContext>
+                {/* State Details */}
+                { currentTab == 0 && <StateDetails/> } 
+                {/* Summary of Cluster */}
+                { currentTab == 1 && <ClusterTable/> }
+                {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
+                { currentTab == 2 && <AssociationClusters/> }
+            </div>
         </>
 
     )
 }
 
-
-
 export default TableData;
-
 
 
 /**
  * 
  * Table Data for state details
  */
-const raceData= [
+const raceData = [
     { race: 'White', percentage: '72.1%'},
     { race: 'Black or African American', percentage: '10.8%'},
     { race: 'American Indian or Alaska Native', percentage: '1.7%'},
@@ -125,7 +117,7 @@ function StateDetails(){
             aria-controls="panel1a-content"
             id="panel1a-header"
             >
-            <Typography><b>Population</b></Typography>
+            <Typography><b>Ensemble 1</b></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
@@ -138,7 +130,7 @@ function StateDetails(){
             aria-controls="panel1a-content"
             id="panel1a-header"
             >
-            <Typography><b>Race</b></Typography>
+            <Typography><b>Ensemble 2</b></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
@@ -160,7 +152,7 @@ function StateDetails(){
             aria-controls="panel2a-content"
             id="panel2a-header"
             >
-            <Typography><b>Sex</b></Typography>
+            <Typography><b>Ensemble 3</b></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
@@ -170,72 +162,6 @@ function StateDetails(){
                         <TableRow key={row.sex}>
                             <TableCell component="th" scope="row"> {row.sex} </TableCell>
                             <TableCell align="right">{row.percentage}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Wealth</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {wealthData.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.income}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Age</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ageData.map((row) => (
-                        <TableRow key={row.age}>
-                            <TableCell component="th" scope="row"> {row.age} </TableCell>
-                            <TableCell align="right">{row.percent}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Party Affiliation</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {partyData.map((row) => (
-                        <TableRow key={row.party}>
-                            <TableCell component="th" scope="row"> {row.party} </TableCell>
-                            <TableCell align="right">{row.percent}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
