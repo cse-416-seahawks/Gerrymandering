@@ -68,20 +68,11 @@ const stateZoomData: StateZoomData = {
 };
 
 export default function StateMap(props: { selectedState: string, districtCoordinates: Array<number>, selectedDistrict: number }) {
-  const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
+  const [centerCoordinates, setCenterCoordinates] = React.useState(props.districtCoordinates);
   const [currentState, setCurrentState] = React.useState('Nevada');
 
-//   const useMyHook = function( props: { districtCoordinates: unknown; }, districtCoordinates: any ){
-//     useEffect( function(){
-//       const map = useMapEvent('mouseover', (e) => {
-//         map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
-//         // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-//       })
-//     }, [ props.districtCoordinates ]);
-// };
-
   function SetMapView() {
-    console.log("e", [centerCoordinates[0], centerCoordinates[1]])
+    console.log("setting map view", [centerCoordinates[0], centerCoordinates[1]])
     const map = useMapEvent('mouseover', (e) => {
       map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
       // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
@@ -90,13 +81,16 @@ export default function StateMap(props: { selectedState: string, districtCoordin
     return null
   } 
 
+  useEffect(() => {
+    setCenterCoordinates(props.districtCoordinates);
+  },[props.districtCoordinates])
 
   const handleStateChange = (event: SelectChangeEvent) => {
-
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
   };
 
+  {console.log("current state coords", centerCoordinates)}
   return (
     <div className='StateMap' >
         <>

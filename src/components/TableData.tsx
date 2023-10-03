@@ -27,6 +27,7 @@ import StepContent from '@mui/material/StepContent';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap, useMapEvent} from 'react-leaflet';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 import StateMap from './StateMap';
@@ -47,7 +48,7 @@ function TableData({onDistrictSelection}: DistrictSelectionProps) {
     }
 
     function handleDistrictChange(district_num: number, coords: Array<number>) {
-        console.log("again", district_num)
+        console.log("again", coords)
         onDistrictSelection(district_num, coords);
     }
 
@@ -596,7 +597,7 @@ function TableData({onDistrictSelection}: DistrictSelectionProps) {
 
     function BackButton(){
         if(currentTab>0){
-            console.log("slay")
+            // console.log("slay")
             return(
                 <Stack direction="row" alignItems="center" spacing={1}>
                     <IconButton aria-label="delete" size="large" onClick={() => handleStepChange(currentTab-1)}>
@@ -605,7 +606,7 @@ function TableData({onDistrictSelection}: DistrictSelectionProps) {
                 </Stack>
                 )
         };
-        console.log("not slay")
+        // console.log("not slay")
         return (null)
     }
 
@@ -770,11 +771,27 @@ function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
         plans_needed: number;
     }
 
+    const [districtSelection, setDistrictSelection] = useState(0);
+    const [coordinates, setCoordinates] = useState<Array<number>>([]);
+
     function handleDistrictChange(district_num: number, coords: Array<number>) {
-        console.log("tabledata", district_num)
+        console.log("tabledata", coords)
         onDistrictSelection(district_num, coords);
+        setCoordinates(coords);
+        setDistrictSelection(district_num);
+       
     }
 
+    function SetMapView() {
+        console.log("e", [coordinates[0], coordinates[1]])
+        const map = useMapEvent('mouseover', (e) => {
+            map.setView([coordinates[0], coordinates[1]], 8, {});
+            // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
+        })
+        
+        return null
+    } 
+    
     const sampleData: cluster_summary_table[] = [
         { ensemble: 1, num_clusters: 3, plans_needed: 309 },
         { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },

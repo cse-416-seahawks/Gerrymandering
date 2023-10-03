@@ -10,7 +10,7 @@ import TableData from "./components/TableData";
 function App() {
   const [selectedState, setSelectedState] = useState('Nevada');
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
-  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([]);
+  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([38.5, -116]);
   
   const handleStateChange = (state:string) => {
     setSelectedState(state);
