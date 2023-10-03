@@ -1,4 +1,4 @@
-import React, {useRef,Component} from 'react'
+import React, {useRef,Component, useEffect, useCallback} from 'react'
 import './css/StateMap.css'
 import 'leaflet/dist/leaflet.css';
 //import L from 'leaflet';
@@ -67,14 +67,20 @@ const stateZoomData: StateZoomData = {
   Virginia: 6.5,
 };
 
-
-
-export default function StateMap(props: { selectedState: string }) {
+export default function StateMap(props: { selectedState: string, districtCoordinates: Array<number>, selectedDistrict: number }) {
   const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
   const [currentState, setCurrentState] = React.useState('Nevada');
-  
 
-  function SetMapView({ }) {
+//   const useMyHook = function( props: { districtCoordinates: unknown; }, districtCoordinates: any ){
+//     useEffect( function(){
+//       const map = useMapEvent('mouseover', (e) => {
+//         map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
+//         // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
+//       })
+//     }, [ props.districtCoordinates ]);
+// };
+
+  function SetMapView() {
     console.log("e", [centerCoordinates[0], centerCoordinates[1]])
     const map = useMapEvent('mouseover', (e) => {
       map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});

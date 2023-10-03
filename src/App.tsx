@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
 import Navbar from "./components/Navbar";
@@ -8,13 +8,18 @@ import TableData from "./components/TableData";
 
 
 function App() {
-  const [selectedState, setSelectedState] = React.useState('Nevada');
-  const [districtCoord, setDistrictCoord] = React.useState([]);
-  const handleStateChange=(state:string)=>{
+  const [selectedState, setSelectedState] = useState('Nevada');
+  const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
+  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([]);
+  
+  const handleStateChange = (state:string) => {
     setSelectedState(state);
   }
-  const handleCoordChange=(coord:[])=>{
-    setDistrictCoord(coord);
+  
+  const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
+    console.log("now in app", district_num)
+    setSelectedDistrict(district_num);
+    setDistrictCoordinates(coordinates);
   }
 
 
@@ -27,12 +32,12 @@ function App() {
         <AppHeader/>
         <header className="StateMap-header">
             {/* <div className="State-map"> */}
-            <StateMap selectedState={selectedState}/>
+            <StateMap selectedState={selectedState} districtCoordinates={districtCoordinates} selectedDistrict={selectedDistrict}/>
             {/* </div> */}
             {/* <div className="State-map stack-top">
               <StateSelection onStateSelect={handleStateChange}/>
             </div> */}
-            <TableData /*onDistrictSelection={districtCoord}*//>
+            <TableData onDistrictSelection={handleDistrictSelection}/>
         </header>
       </div>
       </Router>
