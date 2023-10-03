@@ -882,6 +882,9 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
                         ))}
                 
                     </TableBody>
+                    <a href='https://www.nvsos.gov/sos/home/showpublisheddocument/12423/638318433762190000' target='_blank'>
+                        <p style={{fontSize:"12px"}}>Data Referenced</p>
+                    </a>
                     
                 </Table>
             </TableContainer>
