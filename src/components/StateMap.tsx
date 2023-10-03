@@ -98,25 +98,30 @@ const stateZoomData: StateZoomData = {
   Texas: 6,
   Virginia: 6.5,
 };
-export default function StateMap(props: { selectedState: string }) {
-  const [centerCoordinates, setCenterCoordinates] = React.useState(
-    stateData["Nevada"]
-  );
-  const [currentState, setCurrentState] = React.useState("Nevada");
 
-  function SetMapView({}) {
-    console.log("e", [centerCoordinates[0], centerCoordinates[1]]);
-    const map = useMapEvent("mouseover", (e) => {
-      map.setView(
-        [centerCoordinates[0], centerCoordinates[1]],
-        stateZoomData[currentState],
-        {}
-      );
+export default function StateMap(props: { selectedState: string, districtCoordinates: Array<number>, selectedDistrict: number }) {
+  const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
+  const [currentState, setCurrentState] = React.useState('Nevada');
+
+//   const useMyHook = function( props: { districtCoordinates: unknown; }, districtCoordinates: any ){
+//     useEffect( function(){
+//       const map = useMapEvent('mouseover', (e) => {
+//         map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
+//         // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
+//       })
+//     }, [ props.districtCoordinates ]);
+// };
+
+  function SetMapView() {
+    console.log("e", [centerCoordinates[0], centerCoordinates[1]])
+    const map = useMapEvent('mouseover', (e) => {
+      map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
       // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
     });
 
     return null;
   }
+
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);

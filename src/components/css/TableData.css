@@ -1,3 +1,11 @@
+.stepper-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 3rem;
+    justify-content: start;
+}
+
 .tab-container {
     display: flex;
     flex-direction: column;
@@ -13,6 +21,21 @@
     padding: 1rem;
     box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(0.1rem);
+}
+
+.sub-table-container {
+    display: table;
+    border-radius: 1rem;
+}
+
+.graph-container {
+    display: flex;
+    justify-content: center;
+}
+
+.recharts-cartesian-axis-tick {    
+    font-size: 1.4rem;
+    font-family: Roboto, sans-serif;
 }
 
 /* Font size for the axis of the cluster bubble plot */
