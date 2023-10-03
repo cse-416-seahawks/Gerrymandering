@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import "./css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 
@@ -50,13 +50,14 @@ const stateZoomData: StateZoomData = {
 };
 
 export default function StateMap(props: { selectedState: string, districtCoordinates: Array<number>, selectedDistrict: number }) {
-  const [centerCoordinates, setCenterCoordinates] = React.useState(props.districtCoordinates);
-  const [currentState, setCurrentState] = React.useState('Nevada');
+  const [centerCoordinates, setCenterCoordinates] = useState(props.districtCoordinates);
+  const [currentState, setCurrentState] = useState('Nevada');
+  const [centerZoom, setCenterZoom] = useState(6);
 
   function SetMapView() {
     console.log("setting map view", [centerCoordinates[0], centerCoordinates[1]])
     const map = useMapEvent('mouseover', (e) => {
-      map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
+      map.setView([centerCoordinates[0], centerCoordinates[1]], centerZoom, {});
       // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
     });
 
@@ -64,12 +65,14 @@ export default function StateMap(props: { selectedState: string, districtCoordin
   }
 
   useEffect(() => {
-    setCenterCoordinates(props.districtCoordinates);
+    // setCenterCoordinates(props.districtCoordinates);
+    // setCenterZoom(8);
   },[props.districtCoordinates])
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
+    setCenterZoom(stateZoomData[currentState]);
   };
 
   {console.log("current state coords", centerCoordinates)}
