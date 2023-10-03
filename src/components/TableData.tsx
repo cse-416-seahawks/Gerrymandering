@@ -23,16 +23,17 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
-import StepContent from '@mui/material/StepContent';    
+import StepContent from '@mui/material/StepContent';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
+import StateMap from './StateMap';
 
 
 function TableData() {
     const [currentTab, setCurrentTab] = useState(0);
     const [completed, setCompleted] = useState<{
         [k: number]: boolean;
-      }>({});
+    }>({});
 
     const steps = ['Select an Ensemble', 'Select a Cluster', 'Select a District Plan'];
 
@@ -55,11 +56,11 @@ function TableData() {
                     </Stepper>
                 </div>
                 {/* State Details */}
-                { currentTab == 0 && <StateDetails/> } 
+                {currentTab == 0 && <StateDetails />}
                 {/* Summary of Cluster */}
-                { currentTab == 1 && <ClusterTable/> }
+                {currentTab == 1 && <ClusterTable />}
                 {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
-                { currentTab == 2 && <AssociationClusters/> }
+                {currentTab == 2 && <AssociationClusters /*onDistrictSelection={[]}*//>}
             </div>
         </>
 
@@ -74,149 +75,149 @@ export default TableData;
  * Table Data for state details
  */
 const raceData = [
-    { race: 'White', percentage: '72.1%'},
-    { race: 'Black or African American', percentage: '10.8%'},
-    { race: 'American Indian or Alaska Native', percentage: '1.7%'},
-    { race: 'Asian', percentage: '9.4% '},
-    { race: 'Native Hawaiian and Other Pacific Islander', percentage: '0.9%'},
-    { race: 'Two or more races', percentage: '5.1%'}
+    { race: 'White', percentage: '72.1%' },
+    { race: 'Black or African American', percentage: '10.8%' },
+    { race: 'American Indian or Alaska Native', percentage: '1.7%' },
+    { race: 'Asian', percentage: '9.4% ' },
+    { race: 'Native Hawaiian and Other Pacific Islander', percentage: '0.9%' },
+    { race: 'Two or more races', percentage: '5.1%' }
 ];
 
-const sexData= [
-    { sex: 'Male', percentage: '50.5%'},
-    { sex: 'Female', percentage: '49.5%'}
+const sexData = [
+    { sex: 'Male', percentage: '50.5%' },
+    { sex: 'Female', percentage: '49.5%' }
 ];
 
-const wealthData= [
-    { label: 'Median Household Income', income: '$65,686'},
-    { label: 'Average Household Income', income: '$89,562'},
-    { label: 'Per Capita Income', income: '$34,621'}
+const wealthData = [
+    { label: 'Median Household Income', income: '$65,686' },
+    { label: 'Average Household Income', income: '$89,562' },
+    { label: 'Per Capita Income', income: '$34,621' }
 ];
 
-const ageData= [
-    { age: '0-17', percent: '21.91%'},
-    { age: '18-64', percent: '60.49%'},
-    { age: '65+', percent: '17.21%'}
+const ageData = [
+    { age: '0-17', percent: '21.91%' },
+    { age: '18-64', percent: '60.49%' },
+    { age: '65+', percent: '17.21%' }
 ];
 
-const partyData= [
-    { party: 'Democratic', percent: '18.85%'},
-    { party: 'Republican', percent: '44%'},
-    { party: 'Independant American Party', percent: '4.99%'},
-    { party: 'Libertarian', percent: '1.14%'},
-    { party: 'Non-Partisan', percent: '29.58%'},
-    { party: 'Other', percent: '1.44%'}
+const partyData = [
+    { party: 'Democratic', percent: '18.85%' },
+    { party: 'Republican', percent: '44%' },
+    { party: 'Independant American Party', percent: '4.99%' },
+    { party: 'Libertarian', percent: '1.14%' },
+    { party: 'Non-Partisan', percent: '29.58%' },
+    { party: 'Other', percent: '1.44%' }
 ];
 
-function StateDetails(){
-    return(
-    <div>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            >
-            <Typography><b>Ensemble 1</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                3,198,164
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            >
-            <Typography><b>Ensemble 2</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {raceData.map((row) => (
-                        <TableRow key={row.race}>
-                            <TableCell component="th" scope="row"> {row.race} </TableCell>
-                            <TableCell align="right">{row.percentage}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Ensemble 3</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {sexData.map((row) => (
-                        <TableRow key={row.sex}>
-                            <TableCell component="th" scope="row"> {row.sex} </TableCell>
-                            <TableCell align="right">{row.percentage}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-    </div>
+function StateDetails() {
+    return (
+        <div>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography><b>Ensemble 1</b></Typography>
+                </AccordionSummary>
+                <Divider />
+                <AccordionDetails>
+                    3,198,164
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography><b>Ensemble 2</b></Typography>
+                </AccordionSummary>
+                <Divider />
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                            {raceData.map((row) => (
+                                <TableRow key={row.race}>
+                                    <TableCell component="th" scope="row"> {row.race} </TableCell>
+                                    <TableCell align="right">{row.percentage}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2a-content"
+                    id="panel2a-header"
+                >
+                    <Typography><b>Ensemble 3</b></Typography>
+                </AccordionSummary>
+                <Divider />
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                            {sexData.map((row) => (
+                                <TableRow key={row.sex}>
+                                    <TableCell component="th" scope="row"> {row.sex} </TableCell>
+                                    <TableCell align="right">{row.percentage}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+        </div>
     )
 }
 
 interface ClusterNameCellProps {
     name: string;
-  }
+}
 
 const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
     const [editing, setEditing] = useState(false);
     const [clusterName, setName] = useState(name);
     const handleDoubleClick = () => {
-      setEditing(true);
+        setEditing(true);
     };
-  
+
     const handleBlur = () => {
-      setEditing(false);
-      // Save the changes or perform any required actions here
+        setEditing(false);
+        // Save the changes or perform any required actions here
     };
-  
-    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      setEditing(false);
-      if(clusterName == "")
-          setName(name);
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setEditing(false);
+        if (clusterName == "")
+            setName(name);
     }
-  
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setName(event.target.value);
+        setName(event.target.value);
     };
     return (
-      <TableCell align="center" component="th" scope="row">
-        {editing ? (
-          <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
-          <input
-            type="text"
-            className="cluster-name-input cluster-name-input-alt"
-            value={clusterName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-  
-          />
-          </form>
-        ) : (
-          <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
-        )}
-      </TableCell>
+        <TableCell align="center" component="th" scope="row">
+            {editing ? (
+                <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
+                    <input
+                        type="text"
+                        className="cluster-name-input cluster-name-input-alt"
+                        value={clusterName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+
+                    />
+                </form>
+            ) : (
+                <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
+            )}
+        </TableCell>
     );
-  };
+};
 
 /**
  * 
@@ -247,14 +248,14 @@ function ClusterTable() {
         { x: 94, y: 30, z: 200 },
         { x: 87, y: 29, z: 200 },
         { x: 89, y: 35, z: 200 },
-     ];
+    ];
 
     const parseDomain = () => [
         300,
         Math.max(
             Math.max.apply(
-            null,
-            data01.map((entry) => entry.y)
+                null,
+                data01.map((entry) => entry.y)
             )
         ),
     ];
@@ -268,8 +269,8 @@ function ClusterTable() {
         name: string;
         num_districts: number;
         average_dist: number;
-      }
-    
+    }
+
     const sampleData: cluster_summary_table[] = [
         {
             cluster: 1,
@@ -296,20 +297,20 @@ function ClusterTable() {
             average_dist: 13.2,
         },
     ];
-    
+
     const [data, updateData] = useState(sampleData);
-    
+
     return (
         <>
             <ScatterChart width={700} height={400} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
                 <CartesianGrid />
                 <XAxis type="number" dataKey="x" name="Average distance" />
-                <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff' />
                 <ZAxis dataKey="y" domain={domain} range={range} />
-                <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
-                <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+                <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }} />
+                <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4} />
             </ScatterChart>
-            
+
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }}>
                     <TableHead sx={{ height: "10px", fontSize: '10px' }}>
@@ -414,8 +415,10 @@ function AverageMeasuresTable() {
         </>
     )
 }
-
-function AssociationClusters() {
+interface coordProps{
+    onDistrictSelection:(coord: []) => void
+}
+function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
     interface cluster_summary_table {
         ensemble: number;
         num_clusters: number;
@@ -425,65 +428,190 @@ function AssociationClusters() {
         { ensemble: 1, num_clusters: 3, plans_needed: 309 },
         { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },
         { ensemble: 3, num_clusters: 4.6, plans_needed: 321 },
-        { ensemble: 4, num_clusters: 5.3, plans_needed: 251 }, 
+        { ensemble: 4, num_clusters: 5.3, plans_needed: 251 },
         { ensemble: 5, num_clusters: 6.3, plans_needed: 268 }
     ]
     const data = [
 
     ]
-    let a = Math.random()*1.2
-    let b = Math.random()*1.3
-    let c = Math.random()*1.5
-    let d = Math.random()*1.6 
-    for(let i = 1; i < 500; i++){
-        data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i)/Math.log(9)+a, ensemble3: Math.log(i)/Math.log(8)+b, ensemble4: Math.log(i)/Math.log(7)+c, ensemble5: Math.log(i)/ Math.log(6)+d});
+    let a = Math.random() * 1.2
+    let b = Math.random() * 1.3
+    let c = Math.random() * 1.5
+    let d = Math.random() * 1.6
+    for (let i = 1; i < 500; i++) {
+        data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i) / Math.log(9) + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7) + c, ensemble5: Math.log(i) / Math.log(6) + d });
     }
     const areas = {
 
     }
     let color
-    function randomColor(){
-        color = '#' + Math.floor(Math.random()*16777215).toString(16)
+    function randomColor() {
+        color = '#' + Math.floor(Math.random() * 16777215).toString(16)
         return color
     }
-    
+    interface district_summary_table {
+        district: number;
+        predicted_winner: string;
+        democrate: number;
+        republican: number;
+    }
+    const districts: district_summary_table[] = [
+        {
+            district: 1,
+            predicted_winner: "republican",
+            democrate: 30,
+            republican: 70,
+        },
+        {
+            district: 2,
+            predicted_winner: "democrate",
+            democrate: 60,
+            republican: 40,
+        },
+        {
+            district: 3,
+            predicted_winner: "democrate",
+            democrate: 70,
+            republican: 30,
+        },
+        {
+            district: 4,
+            predicted_winner: "democrate",
+            democrate: 55,
+            republican: 45,
+        },
+        {
+            district: 5,
+            predicted_winner: "republican",
+            democrate: 34,
+            republican: 66,
+        },
+    ];
+    /**
+     * Don't ask me how it's gonna work, I can't tell you, not because it's a secret, but because I don't know
+     * @param coord 
+     * @returns 
+     */
+    function goTo(coord:string){
+        console.log(coord)
+        return coord
+    }
+    const buttonStyle = {
+        padding: '10px 20px',
+        fontSize: '16px',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
+        transition: 'background-color 0.3s ease',
+      };
+
     return (
         <>
-            <AreaChart width={600} height={400} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="Num" />
-                <YAxis />
-                <Tooltip contentStyle={{ fontSize: 18 }}/>
-                <Legend />
-                <Area type="monotone" dataKey="ensemble1" stroke="#8884d8" fill="#8884d8" />
-                <Area type="monotone" dataKey="ensemble2" stroke="#82ca9d" fill="#82ca9d" />
-                <Area type="monotone" dataKey="ensemble3" stroke={randomColor()} fill={color} />
-                <Area type="monotone" dataKey="ensemble4" stroke={randomColor()} fill={color} />
-                <Area type="monotone" dataKey="ensemble5" stroke={randomColor()} fill={color}/>
-                {
-                    
-                }
-            </AreaChart>
-            <TableContainer component={Paper}>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Districts</b></Typography>
+
+                </AccordionSummary>
+                <AccordionDetails>
+                <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }}>
                     <TableHead sx={{ height: "10px", fontSize: '10px' }}>
                         <TableRow>
-                            <TableCell>Ensemble</TableCell>
-                            <TableCell align="right"># of clusters at 500</TableCell>
-                            <TableCell align="right">Plans needed to reach max clusters</TableCell>
+                            <TableCell>District</TableCell>
+                            <TableCell align="center">Predicted winner</TableCell>
+                            <TableCell align="right">%democrate</TableCell>
+                            <TableCell align="right">%republican</TableCell>
                         </TableRow>
                     </TableHead>
+                    
                     <TableBody>
-                        {sampleData.map((row) => (
-                            <TableRow key={row.ensemble}>
-                                <TableCell component="th" scope="row"> {row.ensemble} </TableCell>
-                                <TableCell align="right">{row.num_clusters}</TableCell>
-                                <TableCell align="right">{row.plans_needed}</TableCell>
+                        {districts.map((row) => (
+                            
+                            <TableRow key={row.district}>
+                                
+                                <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => goTo(row.district.toString())}>{row.district}</button>} </TableCell>
+                                <TableCell style={{ color: row.predicted_winner === 'democrate' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
+                                <TableCell align="right">{row.democrate}%</TableCell>
+                                <TableCell align="right">{row.republican}%</TableCell>
+                                
                             </TableRow>
+                            
                         ))}
+                
                     </TableBody>
+                    
                 </Table>
             </TableContainer>
+            </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Association of clusters with ensemble size</b></Typography>
+
+                </AccordionSummary>
+
+                <AreaChart width={600} height={400} data={data}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="Num" />
+                    <YAxis />
+                    <Tooltip contentStyle={{ fontSize: 18 }} />
+                    <Legend />
+                    <Area type="monotone" dataKey="ensemble1" stroke="#8884d8" fill="#8884d8" />
+                    <Area type="monotone" dataKey="ensemble2" stroke="#82ca9d" fill="#82ca9d" />
+                    <Area type="monotone" dataKey="ensemble3" stroke={randomColor()} fill={color} />
+                    <Area type="monotone" dataKey="ensemble4" stroke={randomColor()} fill={color} />
+                    <Area type="monotone" dataKey="ensemble5" stroke={randomColor()} fill={color} /> 
+                    {
+                        /*
+                        Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
+                        data, so this is will still need fixes before this is ready.
+                        */
+                    }
+                </AreaChart>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Details about the ensembles</b></Typography>
+
+                </AccordionSummary>
+                <AccordionDetails>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }}>
+
+                            <TableHead sx={{ height: "10px", fontSize: '10px' }}>
+
+                                <TableRow>
+                                    <TableCell>Ensemble</TableCell>
+                                    <TableCell align="right"># of clusters at 500</TableCell>
+                                    <TableCell align="right">Plans needed to reach max clusters</TableCell>
+                                </TableRow>
+
+
+                            </TableHead>
+
+                            <TableBody>
+                                {sampleData.map((row) => (
+                                    <TableRow key={row.ensemble}>
+                                        <TableCell component="th" scope="row"> {row.ensemble} </TableCell>
+                                        <TableCell align="right">{row.num_clusters}</TableCell>
+                                        <TableCell align="right">{row.plans_needed}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </AccordionDetails>
+            </Accordion>
         </>
     )
 }

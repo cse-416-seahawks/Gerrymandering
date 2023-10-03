@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useRef,Component} from 'react'
 import './css/StateMap.css'
 import 'leaflet/dist/leaflet.css';
 //import L from 'leaflet';
@@ -66,10 +66,13 @@ const stateZoomData: StateZoomData = {
   Texas: 6,
   Virginia: 6.5,
 };
+
+
+
 export default function StateMap(props: { selectedState: string }) {
   const [centerCoordinates, setCenterCoordinates] = React.useState(stateData['Nevada']);
   const [currentState, setCurrentState] = React.useState('Nevada');
-
+  
 
   function SetMapView({ }) {
     console.log("e", [centerCoordinates[0], centerCoordinates[1]])
@@ -81,6 +84,7 @@ export default function StateMap(props: { selectedState: string }) {
     return null
   } 
 
+
   const handleStateChange = (event: SelectChangeEvent) => {
 
     setCenterCoordinates(stateData[event.target.value]);
@@ -90,7 +94,7 @@ export default function StateMap(props: { selectedState: string }) {
   return (
     <div className='StateMap' >
         <>
-          <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false} className='State-map'>
+          <MapContainer id='mapid' center={[38.5, -116]} zoom={6} scrollWheelZoom={false} className='State-map' >
               
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
