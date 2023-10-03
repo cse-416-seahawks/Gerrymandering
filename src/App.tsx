@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
 import Navbar from "./components/Navbar";
-import AppHeader from "./components/AppHeader"
 import {BrowserRouter as Router} from 'react-router-dom'
 import TableData from "./components/TableData";
+import DistrictInfoCard from "./components/DistrictInfoCard";
 
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
     setDistrictCoordinates(coordinates);
   }
 
+  
 
   return (
     <div className="App">
@@ -29,7 +30,6 @@ function App() {
       <Router>
       <Navbar />
       <div className="StateMap-content">
-        <AppHeader/>
         <header className="StateMap-header">
             {/* <div className="State-map"> */}
             <StateMap selectedState={selectedState} districtCoordinates={districtCoordinates} selectedDistrict={selectedDistrict}/>
@@ -39,6 +39,7 @@ function App() {
             </div> */}
             <TableData onDistrictSelection={handleDistrictSelection}/>
         </header>
+          
       </div>
       </Router>
       </div>
