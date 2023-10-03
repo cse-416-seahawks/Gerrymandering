@@ -41,7 +41,7 @@ function TableData() {
                                 value={currentTab}
                                 onChange={handleTabChange}
                             >
-                                <Tab value='0' label='State Details' sx={{ textTransform: "none" }} />
+                                <Tab value='0' label='Ensembles' sx={{ textTransform: "none" }} />
                                 <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
                                 <Tab value='2' label='Party Affiliations' sx={{ textTransform: "none" }} />
                                 <Tab value='3' label='Association of clusters' sx={{ textTransform: "none" }} />
@@ -50,8 +50,8 @@ function TableData() {
 
                     </div>
                     <div>
-                        <TabPanel value='0'>
-                        <StateDetails/>
+                    <TabPanel value='0'>
+                        <Ensembles/>
                     </TabPanel>
                     <TabPanel value='1'>
                             <ClusterTable />
@@ -81,42 +81,14 @@ export default TableData;
  * 
  * Table Data for state details
  */
-const raceData= [
-    { race: 'White', percentage: '72.1%'},
-    { race: 'Black or African American', percentage: '10.8%'},
-    { race: 'American Indian or Alaska Native', percentage: '1.7%'},
-    { race: 'Asian', percentage: '9.4% '},
-    { race: 'Native Hawaiian and Other Pacific Islander', percentage: '0.9%'},
-    { race: 'Two or more races', percentage: '5.1%'}
+
+const ensemble= [
+    { label: 'Numbers of clusters', detail: '7'},
+    { label: 'Average distance between clusters', detail: '12'},
+    { label: 'Number of district plans', detail: '200'}
 ];
 
-const sexData= [
-    { sex: 'Male', percentage: '50.5%'},
-    { sex: 'Female', percentage: '49.5%'}
-];
-
-const wealthData= [
-    { label: 'Median Household Income', income: '$65,686'},
-    { label: 'Average Household Income', income: '$89,562'},
-    { label: 'Per Capita Income', income: '$34,621'}
-];
-
-const ageData= [
-    { age: '0-17', percent: '21.91%'},
-    { age: '18-64', percent: '60.49%'},
-    { age: '65+', percent: '17.21%'}
-];
-
-const partyData= [
-    { party: 'Democratic', percent: '18.85%'},
-    { party: 'Republican', percent: '44%'},
-    { party: 'Independant American Party', percent: '4.99%'},
-    { party: 'Libertarian', percent: '1.14%'},
-    { party: 'Non-Partisan', percent: '29.58%'},
-    { party: 'Other', percent: '1.44%'}
-];
-
-function StateDetails(){
+function Ensembles(){
     return(
     <div>
         <Accordion>
@@ -125,11 +97,20 @@ function StateDetails(){
             aria-controls="panel1a-content"
             id="panel1a-header"
             >
-            <Typography><b>Population</b></Typography>
+            <Typography><a href="www.google.com"><b>Ensemble 1</b></a></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
-                3,198,164
+                <Table sx={{ minWidth: 650 }}>
+                    <TableBody>
+                    {ensemble.map((row) => (
+                        <TableRow key={row.label}>
+                            <TableCell component="th" scope="row"> {row.label} </TableCell>
+                            <TableCell align="right">{row.detail}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
             </AccordionDetails>
         </Accordion>
         <Accordion>
@@ -138,60 +119,16 @@ function StateDetails(){
             aria-controls="panel1a-content"
             id="panel1a-header"
             >
-            <Typography><b>Race</b></Typography>
+            <Typography><a href="www.google.com"><b>Ensemble 2</b></a></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                     <TableBody>
-                    {raceData.map((row) => (
-                        <TableRow key={row.race}>
-                            <TableCell component="th" scope="row"> {row.race} </TableCell>
-                            <TableCell align="right">{row.percentage}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Sex</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {sexData.map((row) => (
-                        <TableRow key={row.sex}>
-                            <TableCell component="th" scope="row"> {row.sex} </TableCell>
-                            <TableCell align="right">{row.percentage}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><b>Wealth</b></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {wealthData.map((row) => (
+                    {ensemble.map((row) => (
                         <TableRow key={row.label}>
                             <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.income}</TableCell>
+                            <TableCell align="right">{row.detail}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
@@ -204,16 +141,16 @@ function StateDetails(){
             aria-controls="panel2a-content"
             id="panel2a-header"
             >
-            <Typography><b>Age</b></Typography>
+            <Typography><a href="www.google.com"><b>Ensemble 3</b></a></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                     <TableBody>
-                    {ageData.map((row) => (
-                        <TableRow key={row.age}>
-                            <TableCell component="th" scope="row"> {row.age} </TableCell>
-                            <TableCell align="right">{row.percent}</TableCell>
+                    {ensemble.map((row) => (
+                        <TableRow key={row.label}>
+                            <TableCell component="th" scope="row"> {row.label} </TableCell>
+                            <TableCell align="right">{row.detail}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
@@ -226,16 +163,38 @@ function StateDetails(){
             aria-controls="panel2a-content"
             id="panel2a-header"
             >
-            <Typography><b>Party Affiliation</b></Typography>
+            <Typography><a href="www.google.com"><b>Ensemble 4</b></a></Typography>
             </AccordionSummary>
             <Divider/>
             <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                     <TableBody>
-                    {partyData.map((row) => (
-                        <TableRow key={row.party}>
-                            <TableCell component="th" scope="row"> {row.party} </TableCell>
-                            <TableCell align="right">{row.percent}</TableCell>
+                    {ensemble.map((row) => (
+                        <TableRow key={row.label}>
+                            <TableCell component="th" scope="row"> {row.label} </TableCell>
+                            <TableCell align="right">{row.detail}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2a-content"
+            id="panel2a-header"
+            >
+            <Typography><a href="www.google.com"><b>Ensemble 5</b></a></Typography>
+            </AccordionSummary>
+            <Divider/>
+            <AccordionDetails>
+            <Table sx={{ minWidth: 650 }}>
+                    <TableBody>
+                    {ensemble.map((row) => (
+                        <TableRow key={row.label}>
+                            <TableCell component="th" scope="row"> {row.label} </TableCell>
+                            <TableCell align="right">{row.detail}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
@@ -245,6 +204,8 @@ function StateDetails(){
     </div>
     )
 }
+
+
 
 interface ClusterNameCellProps {
     name: string;
