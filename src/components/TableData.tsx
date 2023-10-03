@@ -316,23 +316,6 @@ function ClusterTable() {
     const range = [100, 1000];
 
     
-    const sampleData = [
-        {
-            cluster: 1,
-            name: "Number of districts",
-            value: "48",
-        },
-        {
-            cluster: 2,
-            name: "Political party ratio",
-            value: "68% Democratic / 32% Republican",
-        },
-        {
-            cluster: 3,
-            name: "Demographic data",
-            value: "insert data"
-        },
-    ];
     
     const clusterTempData = [
         {
@@ -347,10 +330,20 @@ function ClusterTable() {
                     name: "Political Party Ratio",
                     value: "68% Democratic / 32% Republican",
                 },
+            ],
+            distanceMeasures: [
                 {
-                    name: "Demographic Data",
-                    value: "insert data"
+                    name: "Optimal transport",
+                    value: "32.1",
                 },
+                {
+                    name: "Hamming distance",
+                    value: "21.2",
+                },
+                {
+                    name: "Total Variation Distance",
+                    value: "19.2",
+                }
             ],
         },
         {
@@ -365,10 +358,20 @@ function ClusterTable() {
                     name: "Political Party Ratio",
                     value: "32% Democratic / 68% Republican",
                 },
+            ],
+            distanceMeasures: [
                 {
-                    name: "Demographic Data",
-                    value: "insert data"
+                    name: "Optimal transport",
+                    value: "45.9",
                 },
+                {
+                    name: "Hamming distance",
+                    value: "17.4",
+                },
+                {
+                    name: "Total Variation Distance",
+                    value: "11",
+                }
             ],
         },
         {
@@ -383,13 +386,24 @@ function ClusterTable() {
                     name: "Political Party Ratio",
                     value: "56% Democratic / 44% Republican",
                 },
+            ],
+            distanceMeasures: [
                 {
-                    name: "Demographic Data",
-                    value: "insert data"
+                    name: "Optimal transport",
+                    value: "8.8",
                 },
+                {
+                    name: "Hamming distance",
+                    value: "16.8",
+                },
+                {
+                    name: "Total Variation Distance",
+                    value: "15.1",
+                }
             ],
         },
     ]
+
     
     return (
         <>
@@ -424,6 +438,25 @@ function ClusterTable() {
                                 </TableHead>
                                 <TableBody>
                                     {cluster.data.map((row) => (
+                                        <TableRow key={row.name}>
+                                            <TableCell> {row.name} </TableCell>
+                                            <TableCell align='right'> {row.value} </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <br/>
+                        <TableContainer component={Paper}>         
+                        <Table sx={{ minWidth: 650 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Distance Measure Effectiveness</TableCell>
+                                        <TableCell/>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {cluster.distanceMeasures.map((row) => (
                                         <TableRow key={row.name}>
                                             <TableCell> {row.name} </TableCell>
                                             <TableCell align='right'> {row.value} </TableCell>
