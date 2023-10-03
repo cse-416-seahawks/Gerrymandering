@@ -40,162 +40,188 @@ function TableData() {
         setCurrentTab(step);
     }
 
-    return (
-        <>
-            <div className='table-container'>
-                <div className='tab-container'>
-                    <Stepper nonLinear activeStep={currentTab}>
-                        {steps.map((label, index) => (
-                            <Step key={label} completed={completed[index]}>
-                                <StepButton color="inherit" onClick={() => handleStepChange(index)}>
-                                    {label}
-                                </StepButton>
-                            </Step>
+    const ensemble= [
+        { label: 'Numbers of clusters', detail: '7'},
+        { label: 'Average distance between clusters', detail: '12'},
+        { label: 'Number of district plans', detail: '200'}
+    ];
+
+    function Ensembles(){
+        return(
+        <div>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 1
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
                         ))}
-                    </Stepper>
-                </div>
-                {/* State Details */}
-                { currentTab == 0 && <Ensembles/> } 
-                {/* Summary of Cluster */}
-                { currentTab == 1 && <ClusterTable/> }
-                {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
-                { currentTab == 2 && <AssociationClusters/> }
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 2
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 3
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 4
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 5
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+        </div>
+        )
+    }
+
+
+
+    return (
+        <div className='table-container'>
+            <div className='tab-container'>
+                <Stepper nonLinear activeStep={currentTab}>
+                    {steps.map((label, index) => (
+                        <Step key={label} completed={completed[index]}>
+                            <StepButton color="inherit" onClick={() => handleStepChange(index)}>
+                                {label}
+                            </StepButton>
+                        </Step>
+                    ))}
+                </Stepper>
             </div>
-        </>
+            {/* State Details */}
+            { currentTab == 0 && <Ensembles/> } 
+            {/* Summary of Cluster */}
+            { currentTab == 1 && <ClusterTable/> }
+            {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
+            { currentTab == 2 && <AssociationClusters/> }
+        </div>
 
     )
+
 }
 
 export default TableData;
 
-
-/**
- * 
- * Table Data for state details
- */
-
-const ensemble= [
-    { label: 'Numbers of clusters', detail: '7'},
-    { label: 'Average distance between clusters', detail: '12'},
-    { label: 'Number of district plans', detail: '200'}
-];
-
-function Ensembles(){
-    return(
-    <div>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            >
-            <Typography><a href="www.google.com"><b>Ensemble 1</b></a></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ensemble.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.detail}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            >
-            <Typography><a href="www.google.com"><b>Ensemble 2</b></a></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ensemble.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.detail}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><a href="www.google.com"><b>Ensemble 3</b></a></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ensemble.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.detail}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><a href="www.google.com"><b>Ensemble 4</b></a></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ensemble.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.detail}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-            >
-            <Typography><a href="www.google.com"><b>Ensemble 5</b></a></Typography>
-            </AccordionSummary>
-            <Divider/>
-            <AccordionDetails>
-            <Table sx={{ minWidth: 650 }}>
-                    <TableBody>
-                    {ensemble.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell component="th" scope="row"> {row.label} </TableCell>
-                            <TableCell align="right">{row.detail}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </AccordionDetails>
-        </Accordion>
-    </div>
-    )
-}
 
 
 
