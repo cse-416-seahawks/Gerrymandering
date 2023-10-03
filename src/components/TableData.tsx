@@ -24,6 +24,9 @@ import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import StepContent from '@mui/material/StepContent';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 import StateMap from './StateMap';
@@ -584,7 +587,20 @@ function TableData() {
         )
     }
 
-
+    function BackButton(){
+        if(currentTab>0){
+            console.log("slay")
+            return(
+                <Stack direction="row" alignItems="center" spacing={1}>
+                    <IconButton aria-label="delete" size="large" onClick={() => handleStepChange(currentTab-1)}>
+                        <ArrowBackIcon fontSize="inherit" />
+                    </IconButton>
+                </Stack>
+                )
+        };
+        console.log("not slay")
+        return (null)
+    }
 
     return (
         <div className='table-container'>
@@ -599,6 +615,7 @@ function TableData() {
                     ))}
                 </Stepper>
             </div>
+            <BackButton/>
             {/* State Details */}
             { currentTab == 0 && <Ensembles/> } 
             {/* Summary of Cluster */}
