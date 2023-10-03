@@ -32,56 +32,6 @@ interface GeoJSONFeature {
   geometry: any;
 }
 
-// var texasData = require("./../GeoJson/cb_2022_48_bg_500k.json");
-// var nevadaData = require("./../GeoJson/nv_2020_demcaucus.json");
-// var virginiaData = require("./../GeoJson/va_2019.json");
-
-// axios
-//   .get(`/Texas/${"cb_2022_48_bg_500k.json"}`, { responseType: "blob" })
-//   .then((response) => {
-//     const blob = new Blob([response.data]);
-//     const reader = new FileReader();
-//     reader.onload = () => {
-//       const text = reader.result;
-//       if (typeof text === "string") {
-//         try {
-//           const geoJSON = JSON.parse(text);
-//           nevadaData = geoJSON;
-//         } catch (error) {
-//           console.error("Error parsing JSON:", error);
-//         }
-//       }
-//     };
-//     reader.readAsText(blob);
-//   })
-//   .catch((error) => {
-//     console.error("Error downloading file:", error);
-//   });
-
-// {/* {statesData.features.map((state) => {
-//   let coordinates : LatLngTuple[] | LatLngTuple[][] = [];
-//   console.log(typeof state.geometry.coordinates)
-//   if (!Array.isArray(state.geometry.coordinates[0][0][0])) {
-//       coordinates = state.geometry.coordinates[0].map((items) => {
-//       const tuple : LatLngTuple = [items[1], items[0]];
-//       return tuple;
-//     });
-//     return (
-//       <Polygon
-//         pathOptions={{
-//           fillColor: "#FD8D3C",
-//           fillOpacity: 0.7,
-//           weight: 2,
-//           opacity: 1,
-//           dashArray: [3],
-//           color: "white",
-//         }}
-//         positions={state.geometry.coordinates[0][0]}
-//       />
-//     );
-//   }
-
-// })} */}
 interface StateData {
   [key: string]: [number, number];
 }
@@ -138,10 +88,10 @@ export default function StateMap(props: { selectedState: string, districtCoordin
           scrollWheelZoom={false}
           className="State-map"
         >
-          {/* <TileLayer
+          <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          /> */}
+          />
           <TexasDistricts />
           <NevadaDistricts/>
           <VirginiaDistricts/>
