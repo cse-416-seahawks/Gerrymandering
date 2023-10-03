@@ -315,76 +315,126 @@ function ClusterTable() {
     const domain = parseDomain();
     const range = [100, 1000];
 
-
-    interface cluster_summary_table {
-        cluster: number;
-        name: string;
-        num_districts: number;
-        average_dist: number;
-      }
     
-    const sampleData: cluster_summary_table[] = [
+    const sampleData = [
         {
             cluster: 1,
-            name: "cluster A",
-            num_districts: 30,
-            average_dist: 12.2,
+            name: "Number of districts",
+            value: "48",
         },
         {
             cluster: 2,
-            name: "cluster B",
-            num_districts: 12,
-            average_dist: 9.5,
+            name: "Political party ratio",
+            value: "68% Democratic / 32% Republican",
         },
         {
             cluster: 3,
-            name: "cluster C",
-            num_districts: 45,
-            average_dist: 2.1,
-        },
-        {
-            cluster: 4,
-            name: "cluster D",
-            num_districts: 17,
-            average_dist: 13.2,
+            name: "Demographic data",
+            value: "insert data"
         },
     ];
     
-    const [data, updateData] = useState(sampleData);
+    const clusterTempData = [
+        {
+            cluster: 1,
+            name: 'cluster A',
+            data: [
+                {
+                    name: "Number of districts",
+                    value: "48",
+                },
+                {
+                    name: "Political Party Ratio",
+                    value: "68% Democratic / 32% Republican",
+                },
+                {
+                    name: "Demographic Data",
+                    value: "insert data"
+                },
+            ],
+        },
+        {
+            cluster: 2,
+            name: 'cluster B',
+            data: [
+                {
+                    name: "Number of districts",
+                    value: "23",
+                },
+                {
+                    name: "Political Party Ratio",
+                    value: "32% Democratic / 68% Republican",
+                },
+                {
+                    name: "Demographic Data",
+                    value: "insert data"
+                },
+            ],
+        },
+        {
+            cluster: 3,
+            name: 'cluster C',
+            data: [
+                {
+                    name: "Number of districts",
+                    value: "31",
+                },
+                {
+                    name: "Political Party Ratio",
+                    value: "56% Democratic / 44% Republican",
+                },
+                {
+                    name: "Demographic Data",
+                    value: "insert data"
+                },
+            ],
+        },
+    ]
     
     return (
         <>
-            <ScatterChart width={700} height={400} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
-                <CartesianGrid />
-                <XAxis type="number" dataKey="x" name="Average distance" />
-                <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
-                <ZAxis dataKey="y" domain={domain} range={range} />
-                <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
-                <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
-            </ScatterChart>
-            
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
-                        <TableRow>
-                            <TableCell>Cluster</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="right"># District Plans</TableCell>
-                            <TableCell align="right">Average Distances</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {sampleData.map((row) => (
-                            <TableRow key={row.cluster}>
-                                <TableCell component="th" scope="row"> {row.cluster} </TableCell>
-                                <ClusterNameCell name={row.name} />
-                                <TableCell align="right">{row.num_districts}</TableCell>
-                                <TableCell align="right">{row.average_dist}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <div className='graph-container'>
+                <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
+                    <CartesianGrid />
+                    <XAxis type="number" dataKey="x" name="Average distance" />
+                    <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                    <ZAxis dataKey="y" domain={domain} range={range} />
+                    <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
+                    <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+                </ScatterChart>
+            </div>
+            {clusterTempData.map((cluster) => (
+                <Accordion>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    >
+                        <Typography><b>Cluster {cluster.cluster}</b></Typography>
+                    </AccordionSummary>
+                    <Divider/>
+                    <AccordionDetails>
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Name</TableCell>
+                                        <ClusterNameCell name={cluster.name} />
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {cluster.data.map((row) => (
+                                        <TableRow key={row.name}>
+                                            <TableCell> {row.name} </TableCell>
+                                            <TableCell align='right'> {row.value} </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </AccordionDetails>
+                </Accordion>
+            ))} 
         </>
     )
 }
