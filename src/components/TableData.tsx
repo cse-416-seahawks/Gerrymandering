@@ -809,6 +809,44 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
             republican: 66,
         },
     ];
+    interface distance_summary_table {
+        district: number;
+        optimal_transport: number;
+        hamming_distance: number;
+        total_variation_distance: number;
+    }
+    const distance: distance_summary_table[] = [
+        {
+            district: 1,
+            optimal_transport: 12,
+            hamming_distance: 3.0,
+            total_variation_distance: 7.0,
+        },
+        {
+            district: 2,
+            optimal_transport: 5.5,
+            hamming_distance: 2.9,
+            total_variation_distance: 4.0,
+        },
+        {
+            district: 3,
+            optimal_transport: 3.2,
+            hamming_distance: 7.0,
+            total_variation_distance: 3.0,
+        },
+        {
+            district: 4,
+            optimal_transport: 2.9,
+            hamming_distance: 5.5,
+            total_variation_distance: 4.5,
+        },
+        {
+            district: 5,
+            optimal_transport: 1.5,
+            hamming_distance: 3.4,
+            total_variation_distance: 6.6,
+        },
+    ];
     /**
      * Don't ask me how it's gonna work, I can't tell you, not because it's a secret, but because I don't know
      * @param coord 
@@ -859,6 +897,46 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
                                 <TableCell style={{ color: row.predicted_winner === 'democrate' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
                                 <TableCell align="right">{row.democrate}%</TableCell>
                                 <TableCell align="right">{row.republican}%</TableCell>
+                                
+                            </TableRow>
+                            
+                        ))}
+                
+                    </TableBody>
+                    
+                </Table>
+            </TableContainer>
+            </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Distance Measure</b></Typography>
+
+                </AccordionSummary>
+                <AccordionDetails>
+                <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }}>
+                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
+                        <TableRow>
+                            <TableCell>District</TableCell>
+                            <TableCell align="right">Hamming distance</TableCell>
+                            <TableCell align="right">Optimal transport</TableCell>
+                            <TableCell align="right">Total variation distance</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    
+                    <TableBody>
+                        {distance.map((row) => (
+                            
+                            <TableRow key={row.district}>
+                                
+                                <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => goTo(row.district.toString())}>{row.district}</button>} </TableCell>
+                                <TableCell align="center">{row.hamming_distance}</TableCell>
+                                <TableCell align="right">{row.optimal_transport}</TableCell>
+                                <TableCell align="right">{row.total_variation_distance}</TableCell>
                                 
                             </TableRow>
                             
