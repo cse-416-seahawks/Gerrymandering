@@ -197,7 +197,7 @@ function TableData() {
 
     return (
         <div className='table-container'>
-            <div className='tab-container'>
+            <div className='stepper-container'>
                 <Stepper nonLinear activeStep={currentTab}>
                     {steps.map((label, index) => (
                         <Step key={label} completed={completed[index]}>
@@ -276,6 +276,13 @@ const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
  * Table Data for cluster analysis
  */
 function ClusterTable() {
+    const [currentTab, setCurrentTab] = useState('1');
+
+    function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+        console.log(newValue);
+        setCurrentTab(String(newValue));
+      }
+      
     interface cluster_summary_table {
         cluster: number;
         num_districts: number;
@@ -483,6 +490,10 @@ function ClusterTable() {
         },
     ]
 
+    const summary_of_cluster = 
+        <>
+            
+        </>
     
     return (
         <>
@@ -498,74 +509,102 @@ function ClusterTable() {
                 </ScatterChart>
             </div>
             {clusterTempData.map((cluster) => (
-                <Accordion>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                        <Typography><b>Cluster {cluster.cluster}</b></Typography>
-                    </AccordionSummary>
-                    <Divider/>
-                    <AccordionDetails>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <ClusterNameCell name={cluster.name} />
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {cluster.data.map((row) => (
-                                        <TableRow key={row.name}>
-                                            <TableCell> {row.name} </TableCell>
-                                            <TableCell align='right'> {row.value} </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <br/>
-                        <TableContainer component={Paper}>         
-                            <Table sx={{ minWidth: 650 }}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>District Average By Demographics</TableCell>
-                                        <TableCell/>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {cluster.demographicGroups.map((row) => (
-                                        <TableRow key={row.name}>
-                                            <TableCell> {row.name} </TableCell>
-                                            <TableCell align='right'> {row.value} </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <br/>
-                        <TableContainer component={Paper}>         
-                        <Table sx={{ minWidth: 650 }}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Distance Measure Effectiveness</TableCell>
-                                        <TableCell/>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {cluster.distanceMeasures.map((row) => (
-                                        <TableRow key={row.name}>
-                                            <TableCell> {row.name} </TableCell>
-                                            <TableCell align='right'> {row.value} </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </AccordionDetails>
-                </Accordion>
+                <>
+                    <Accordion>
+                        <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        >
+                            <Typography><b>Cluster {cluster.cluster}</b></Typography>
+                        </AccordionSummary>
+                        <Divider/>
+                        <AccordionDetails>
+                            <TabContext value={currentTab}>
+                            <div style={{display: 'flex', flexDirection:'column', width:'100%' }}>
+                                <div className='tab-container'>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
+                                    <Tabs
+                                        value={currentTab}
+                                        onChange={handleTabChange}
+                                    >
+                                        <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
+                                        <Tab value='2' label='Demographic Data' sx={{ textTransform: "none" }} />
+                                        <Tab value='3' label='Distance Measures' sx={{ textTransform: "none" }} />
+                                    </Tabs>
+                                </Box>
+                            
+                                </div>
+                                <div className='sub-table-container'>
+                                    <TabPanel value='1'>
+                                        {/* TABLE 1 */}
+                                        <TableContainer component={Paper}>
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Name</TableCell>
+                                                        <ClusterNameCell name={cluster.name} />
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.data.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='2'>
+                                        {/* TABLE 2 */}
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>District Average By Demographics</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.demographicGroups.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='3'>
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Distance Measure Effectiveness</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.distanceMeasures.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                </div>
+                            
+                            </div>
+                        </TabContext>
+                        </AccordionDetails>
+                    </Accordion>
+                </>
             ))} 
         </>
     )
@@ -673,9 +712,7 @@ function AssociationClusters() {
     for(let i = 1; i < 500; i++){
         data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i)/Math.log(9)+a, ensemble3: Math.log(i)/Math.log(8)+b, ensemble4: Math.log(i)/Math.log(7)+c, ensemble5: Math.log(i)/ Math.log(6)+d});
     }
-    const areas = {
-
-    }
+    
     let color
     function randomColor(){
         color = '#' + Math.floor(Math.random()*16777215).toString(16)
