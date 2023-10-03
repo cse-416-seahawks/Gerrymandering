@@ -6,6 +6,8 @@
 .StateMap {
   position:relative;
   justify-content: start;
+  box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(0.1rem);
 }
 
 .StateMap-Header-Text {
@@ -19,6 +21,7 @@
 .StateMap-header {
   padding: 0rem 2rem;
   display: flex;
+  border-radius: 1rem;
   flex-direction: row;
   justify-content: center;
   font-size: calc(10px + 2vmin);

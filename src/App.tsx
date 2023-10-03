@@ -2,9 +2,9 @@ import React from "react";
 import "./App.css";
 import StateMap from "./components/StateMap";
 import Navbar from "./components/Navbar";
-import AppHeader from "./components/AppHeader"
 import {BrowserRouter as Router} from 'react-router-dom'
 import TableData from "./components/TableData";
+import DistrictInfoCard from "./components/DistrictInfoCard";
 
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
     setSelectedState(state);
   }
 
+  
 
   return (
     <div className="App">
@@ -21,16 +22,17 @@ function App() {
       <Router>
       <Navbar />
       <div className="StateMap-content">
-        <AppHeader/>
         <header className="StateMap-header">
-            {/* <div className="State-map"> */}
+            <div className="State-map">
             <StateMap selectedState={selectedState}/>
-            {/* </div> */}
+            {/* <DistrictInfoCard/> */}
+            </div>
             {/* <div className="State-map stack-top">
               <StateSelection onStateSelect={handleStateChange}/>
             </div> */}
             <TableData/>
         </header>
+          
       </div>
       </Router>
       </div>
