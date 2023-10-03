@@ -895,6 +895,19 @@ function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
         transition: 'background-color 0.3s ease',
       };
 
+    const sampleData1 = [
+        { party: 'Republican', men: '59%', women: '41%' },
+        { party: 'Democrat', men: '44%', women: '56%' },
+    ];
+
+    const sampleData2 = [
+        { district: 1, white: '72%', black: '1%', asian: '1%', latino: '18%', other: '7%' },
+        { district: 2, white: '35%', black: '37%', asian: '10%', latino: '12%', other: '6%' },
+        { district: 3, white: '1%', black: '2%', asian: '3%', latino: '75%', other: '6%' },
+        { district: 4, white: '44%', black: '14%', asian: '3%', latino: '29%', other: '10%' },
+        { district: 5, white: '12%', black: '53%', asian: '25%', latino: '7%', other: '3%' },
+    ]
+
     return (
         <>
             <Accordion defaultExpanded={true}>
@@ -961,7 +974,55 @@ function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
                         ))}
                 
                     </TableBody>
+                    {/* <a href='https://www.nvsos.gov/sos/home/showpublisheddocument/12423/638318433762190000' target='_blank'>
+                        <p style={{fontSize:"12px"}}>Data Referenced</p>
+                    </a> */}
+                </Table>
+            </TableContainer>
+            </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Demographics</b></Typography>
+
+                </AccordionSummary>
+                <AccordionDetails>
+                <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }}>
+                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
+                        <TableRow>
+                            <TableCell>District</TableCell>
+                            <TableCell align="right">White</TableCell>
+                            <TableCell align="right">Black</TableCell>
+                            <TableCell align="right">Asian</TableCell>
+                            <TableCell align="right">Latino</TableCell>
+                            <TableCell align="right">Other</TableCell>
+                        </TableRow>
+                    </TableHead>
                     
+                    <TableBody>
+                        {sampleData2.map((row) => (
+                            
+                            <TableRow key={row.district}>
+                                
+                                <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => handleDistrictChange(row.district, [34.5, -115])}>{row.district}</button>} </TableCell>
+                                <TableCell align="right">{row.white}</TableCell>
+                                <TableCell align="right">{row.black}</TableCell>
+                                <TableCell align="right">{row.asian}</TableCell>
+                                <TableCell align="right">{row.latino}</TableCell>
+                                <TableCell align="right">{row.other}</TableCell>
+                                
+                            </TableRow>
+                            
+                        ))}
+                
+                    </TableBody>
+                    {/* <a href='https://www.nvsos.gov/sos/home/showpublisheddocument/12423/638318433762190000' target='_blank'>
+                        <p style={{fontSize:"12px"}}>Data Referenced</p>
+                    </a> */}
                 </Table>
             </TableContainer>
             </AccordionDetails>
