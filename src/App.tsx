@@ -9,9 +9,12 @@ import TableData from "./components/TableData";
 
 function App() {
   const [selectedState, setSelectedState] = React.useState('Nevada');
-
+  const [districtCoord, setDistrictCoord] = React.useState([]);
   const handleStateChange=(state:string)=>{
     setSelectedState(state);
+  }
+  const handleCoordChange=(coord:[])=>{
+    setDistrictCoord(coord);
   }
 
 
@@ -29,7 +32,7 @@ function App() {
             {/* <div className="State-map stack-top">
               <StateSelection onStateSelect={handleStateChange}/>
             </div> */}
-            <TableData/>
+            <TableData /*onDistrictSelection={districtCoord}*//>
         </header>
       </div>
       </Router>
