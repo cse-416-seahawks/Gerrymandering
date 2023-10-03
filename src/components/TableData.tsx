@@ -1,4 +1,4 @@
-import React, { Component, FC, useState } from 'react'
+import React, { Component, FC, useState, useContext, Context } from 'react'
 import './css/TableData.css'
 import { Tabs, Tab } from '@mui/material'
 import TabPanel from '@mui/lab/TabPanel';
@@ -28,22 +28,44 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, useMap, useMapEvent} from 'react-leaflet';
-
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 import StateMap from './StateMap';
+import NevadaDistricts from './districts/NevadaDistricts';
+import { NevadaDistrictContext } from '../NevadaContext';
 
 interface DistrictSelectionProps {
     onDistrictSelection: (district_num: number, coordinates: Array<number>) => void
 };
 function TableData({onDistrictSelection}: DistrictSelectionProps) {
     const [currentTab, setCurrentTab] = useState(0);
+
     const [completed, setCompleted] = useState<{
         [k: number]: boolean;
     }>({});
 
+
+    const { state, dispatch } = useContext(NevadaDistrictContext);
+
     const steps = ['Select an Ensemble', 'Select a Cluster', 'Select a District Plan'];
 
     function handleStepChange(step: number) {
+        if(step === 2){
+            dispatch({
+                type : 'DISTRICT_MAP',
+                payload : {
+                    dismap : true
+                }
+            });
+        }
+        else{
+            dispatch({
+                type : 'STATE_MAP',
+                payload : {
+                    dismap : false
+                }
+            });
+        }
+        console.log("district map? " + state[0]);
         setCurrentTab(step);
     }
 
@@ -765,6 +787,8 @@ export default TableData;
 //     )
 // }
 function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
+
+
     interface cluster_summary_table {
         ensemble: number;
         num_clusters: number;

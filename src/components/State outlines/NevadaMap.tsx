@@ -1,8 +1,8 @@
 import React from "react";
-import "./css/StateMap.css";
+import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { virginiaData, nevadaData, texasData } from "../StateData";
+import { virginiaData, nevadaData, texasData } from "../../StateData";
 
 import { Polygon } from "react-leaflet";
 
@@ -15,7 +15,7 @@ export default () => (
       opacity: 1,
       color: "white",
     }}
-    positions={texasData.features[0].geometry.coordinates[0].map((items) => {
+    positions={nevadaData.features[0].geometry.coordinates[0].map((items) => {
       const coordinates: LatLngTuple = [items[1], items[0]];
       return coordinates;
     })}

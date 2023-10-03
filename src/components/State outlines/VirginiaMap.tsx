@@ -1,8 +1,8 @@
 import React from "react";
-import "./css/StateMap.css";
+import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { virginiaData, nevadaData, texasData } from "../StateData";
+import { virginiaData, nevadaData, texasData } from "../../StateData";
 
 import { Polygon } from "react-leaflet";
 

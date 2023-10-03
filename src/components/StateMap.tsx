@@ -1,6 +1,13 @@
-import React, { Component, useEffect } from "react";
+import React, {
+  Component,
+  Context,
+  useEffect,
+  useContext,
+  createContext,
+} from "react";
 import "./css/StateMap.css";
 import "leaflet/dist/leaflet.css";
+import DistrictInfoCard from "./DistrictInfoCard";
 
 import { MapContainer, TileLayer, Polygon, useMapEvent } from "react-leaflet";
 
@@ -8,10 +15,9 @@ import { MapContainer, TileLayer, Polygon, useMapEvent } from "react-leaflet";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
 import { MongoClient, GridFSBucket } from "mongodb";
 import axios from "axios";
-
-import VirginiaMap from "./VirginiaMap";
-import TexasMap from "./TexasMap";
-import NevadaMap from "./NevadaMap";
+import VirginiaMap from "./State outlines/VirginiaMap";
+import TexasMap from "./State outlines/TexasMap";
+import NevadaMap from "./State outlines/NevadaMap";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -19,8 +25,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "./districts/TexasDistricts";
 import NevadaDistricts from "./districts/NevadaDistricts";
 import VirginiaDistricts from "./districts/VirginiaDistricts";
-
-
+import { NevadaDistrictContext } from "../NevadaContext";
 
 interface GeoJSON {
   type: string;
@@ -49,14 +54,29 @@ const stateZoomData: StateZoomData = {
   Virginia: 6.5,
 };
 
-export default function StateMap(props: { selectedState: string, districtCoordinates: Array<number>, selectedDistrict: number }) {
-  const [centerCoordinates, setCenterCoordinates] = React.useState(props.districtCoordinates);
-  const [currentState, setCurrentState] = React.useState('Nevada');
+export default function StateMap(props: {
+  selectedState: string;
+  districtCoordinates: Array<number>;
+  selectedDistrict: number;
+}) {
+  const [centerCoordinates, setCenterCoordinates] = React.useState(
+    props.districtCoordinates
+  );
+  const [currentState, setCurrentState] = React.useState("Nevada");
+
+  const { state, dispatch } = useContext(NevadaDistrictContext);
 
   function SetMapView() {
-    console.log("setting map view", [centerCoordinates[0], centerCoordinates[1]])
-    const map = useMapEvent('mouseover', (e) => {
-      map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState], {});
+    console.log("setting map view", [
+      centerCoordinates[0],
+      centerCoordinates[1],
+    ]);
+    const map = useMapEvent("mouseover", (e) => {
+      map.setView(
+        [centerCoordinates[0], centerCoordinates[1]],
+        stateZoomData[currentState],
+        {}
+      );
       // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
     });
 
@@ -65,14 +85,31 @@ export default function StateMap(props: { selectedState: string, districtCoordin
 
   useEffect(() => {
     setCenterCoordinates(props.districtCoordinates);
-  },[props.districtCoordinates])
+  }, [props.districtCoordinates]);
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
   };
 
-  {console.log("current state coords", centerCoordinates)}
+  {
+    console.log("current state coords", centerCoordinates);
+  }
+
+  const getMapNevada = () =>  {
+    console.log(state);
+    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
+  }
+
+  const getMapTexas = () =>  {
+    console.log(state);
+    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
+  }
+
+  const getMapVirginia = () =>  {
+    console.log(state);
+    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
+  }
   return (
     <div className="StateMap">
       <>
@@ -87,9 +124,17 @@ export default function StateMap(props: { selectedState: string, districtCoordin
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <TexasDistricts />
-          <NevadaDistricts/>
-          <VirginiaDistricts/>
+          {
+            getMapTexas()
+          }
+
+          {
+            getMapNevada()
+          }
+
+          {
+            getMapVirginia()
+          }
 
           <SetMapView />
         </MapContainer>
@@ -118,6 +163,7 @@ export default function StateMap(props: { selectedState: string, districtCoordin
           </FormControl>
         </div>
       </>
+      <DistrictInfoCard currentState={currentState}/>
     </div>
   );
 }
