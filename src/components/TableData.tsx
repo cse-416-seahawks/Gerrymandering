@@ -25,7 +25,7 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import StepContent from '@mui/material/StepContent';    
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 
 
 function TableData() {
@@ -323,13 +323,21 @@ function ClusterTable() {
             name: 'cluster A',
             data: [
                 {
-                    name: "Number of districts",
+                    name: "Number of Districts",
                     value: "48",
                 },
                 {
                     name: "Political Party Ratio",
                     value: "68% Democratic / 32% Republican",
                 },
+                {
+                    name: "Average Republican Voters",
+                    value: '47%',
+                },
+                {
+                    name: "Average Democratic Voters",
+                    value: '53%',
+                }, 
             ],
             distanceMeasures: [
                 {
@@ -345,19 +353,45 @@ function ClusterTable() {
                     value: "19.2",
                 }
             ],
+            demographicGroups: [ // district average by racial group
+                {
+                    name: "White",
+                    value: "31%",
+                },
+                {
+                    name: "Black",
+                    value: "32%",
+                },
+                {
+                    name: "Asian",
+                    value: "23%",
+                },
+                {
+                    name: "Other",
+                    value: "24%",
+                },
+            ]
         },
         {
             cluster: 2,
             name: 'cluster B',
             data: [
                 {
-                    name: "Number of districts",
+                    name: "Number of Districts",
                     value: "23",
                 },
                 {
                     name: "Political Party Ratio",
                     value: "32% Democratic / 68% Republican",
                 },
+                {
+                    name: "Average Republican Voters",
+                    value: '78%',
+                },
+                {
+                    name: "Average Democratic Voters",
+                    value: '22%',
+                }, 
             ],
             distanceMeasures: [
                 {
@@ -373,18 +407,63 @@ function ClusterTable() {
                     value: "11",
                 }
             ],
+            demographicGroups: [ // district average by racial group
+                {
+                    name: "White",
+                    value: "31%",
+                },
+                {
+                    name: "Black",
+                    value: "32%",
+                },
+                {
+                    name: "Asian",
+                    value: "23%",
+                },
+                {
+                    name: "Other",
+                    value: "24%",
+                },
+            ]
         },
         {
             cluster: 3,
             name: 'cluster C',
             data: [
                 {
-                    name: "Number of districts",
+                    name: "Number of Districts",
                     value: "31",
                 },
                 {
                     name: "Political Party Ratio",
                     value: "56% Democratic / 44% Republican",
+                },
+
+                {
+                    name: "Average Republican Voters",
+                    value: '58%',
+                },
+                {
+                    name: "Average Democratic Voters",
+                    value: '42%',
+                }, 
+            ],
+            demographicGroups: [ // district average by racial group
+                {
+                    name: "White",
+                    value: "31%",
+                },
+                {
+                    name: "Black",
+                    value: "32%",
+                },
+                {
+                    name: "Asian",
+                    value: "23%",
+                },
+                {
+                    name: "Other",
+                    value: "24%",
                 },
             ],
             distanceMeasures: [
@@ -410,7 +489,8 @@ function ClusterTable() {
             <div className='graph-container'>
                 <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
                     <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="Average distance" />
+                    <XAxis type="number" dataKey="x" name="Average distance" >
+                    </XAxis>
                     <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
                     <ZAxis dataKey="y" domain={domain} range={range} />
                     <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
@@ -438,6 +518,25 @@ function ClusterTable() {
                                 </TableHead>
                                 <TableBody>
                                     {cluster.data.map((row) => (
+                                        <TableRow key={row.name}>
+                                            <TableCell> {row.name} </TableCell>
+                                            <TableCell align='right'> {row.value} </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <br/>
+                        <TableContainer component={Paper}>         
+                            <Table sx={{ minWidth: 650 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>District Average By Demographics</TableCell>
+                                        <TableCell/>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {cluster.demographicGroups.map((row) => (
                                         <TableRow key={row.name}>
                                             <TableCell> {row.name} </TableCell>
                                             <TableCell align='right'> {row.value} </TableCell>
