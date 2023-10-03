@@ -25,7 +25,7 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import StepContent from '@mui/material/StepContent';    
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 
 
 function TableData() {
@@ -248,12 +248,19 @@ function TableData() {
       };
     
     function ClusterTable() {
+        const [currentTab, setCurrentTab] = useState('1');
+
+        function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+            console.log(newValue);
+            setCurrentTab(String(newValue));
+        }
+        
         interface cluster_summary_table {
             cluster: number;
             num_districts: number;
             average_dist: number;
         };
-    
+
         const data01 = [
             { x: 100, y: 60, z: 200 },
             { x: 120, y: 30, z: 260 },
@@ -272,8 +279,8 @@ function TableData() {
             { x: 94, y: 30, z: 200 },
             { x: 87, y: 29, z: 200 },
             { x: 89, y: 35, z: 200 },
-         ];
-    
+        ];
+
         const parseDomain = () => [
             300,
             Math.max(
@@ -283,28 +290,11 @@ function TableData() {
                 )
             ),
         ];
-    
+
         const domain = parseDomain();
         const range = [100, 1000];
-    
+
         
-        const sampleData = [
-            {
-                cluster: 1,
-                name: "Number of districts",
-                value: "48",
-            },
-            {
-                cluster: 2,
-                name: "Political party ratio",
-                value: "68% Democratic / 32% Republican",
-            },
-            {
-                cluster: 3,
-                name: "Demographic data",
-                value: "insert data"
-            },
-        ];
         
         const clusterTempData = [
             {
@@ -312,7 +302,7 @@ function TableData() {
                 name: 'cluster A',
                 data: [
                     {
-                        name: "Number of districts",
+                        name: "Number of Districts",
                         value: "48",
                     },
                     {
@@ -320,17 +310,53 @@ function TableData() {
                         value: "68% Democratic / 32% Republican",
                     },
                     {
-                        name: "Demographic Data",
-                        value: "insert data"
+                        name: "Average Republican Voters",
+                        value: '47%',
                     },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '53%',
+                    }, 
                 ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "32.1",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "21.2",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "19.2",
+                    }
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ]
             },
             {
                 cluster: 2,
                 name: 'cluster B',
                 data: [
                     {
-                        name: "Number of districts",
+                        name: "Number of Districts",
                         value: "23",
                     },
                     {
@@ -338,49 +364,124 @@ function TableData() {
                         value: "32% Democratic / 68% Republican",
                     },
                     {
-                        name: "Demographic Data",
-                        value: "insert data"
+                        name: "Average Republican Voters",
+                        value: '78%',
                     },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '22%',
+                    }, 
                 ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "45.9",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "17.4",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "11",
+                    }
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ]
             },
             {
                 cluster: 3,
                 name: 'cluster C',
                 data: [
                     {
-                        name: "Number of districts",
+                        name: "Number of Districts",
                         value: "31",
                     },
                     {
                         name: "Political Party Ratio",
                         value: "56% Democratic / 44% Republican",
                     },
+
                     {
-                        name: "Demographic Data",
-                        value: "insert data"
+                        name: "Average Republican Voters",
+                        value: '58%',
                     },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '42%',
+                    }, 
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "8.8",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "16.8",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "15.1",
+                    }
                 ],
             },
         ]
         
         return (
             <>
-                <div className='graph-container'>
-                    <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
-                        <CartesianGrid />
-                        <XAxis type="number" dataKey="x" name="Average distance" />
-                        <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
-                        <ZAxis dataKey="y" domain={domain} range={range} />
-                        <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
-                        <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
-                    </ScatterChart>
-                </div>
-                {clusterTempData.map((cluster) => (
+            <div className='graph-container'>
+                <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
+                    <CartesianGrid />
+                    <XAxis type="number" dataKey="x" name="Average distance" >
+                    </XAxis>
+                    <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                    <ZAxis dataKey="y" domain={domain} range={range} />
+                    <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
+                    <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+                </ScatterChart>
+            </div>
+            {clusterTempData.map((cluster) => (
+                <>
                     <Accordion>
                         <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
                         >
                             <Button 
                                 variant="text" 
@@ -392,28 +493,93 @@ function TableData() {
                         </AccordionSummary>
                         <Divider/>
                         <AccordionDetails>
-                            <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 650 }}>
-                                    {/* <TableHead>
-                                        <TableRow>
-                                            <TableCell>Name</TableCell>
-                                            <ClusterNameCell name={cluster.name} />
-                                        </TableRow>
-                                    </TableHead> */}
-                                    <TableBody>
-                                        {cluster.data.map((row) => (
-                                            <TableRow key={row.name}>
-                                                <TableCell> {row.name} </TableCell>
-                                                <TableCell align='right'> {row.value} </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            <TabContext value={currentTab}>
+                            <div style={{display: 'flex', flexDirection:'column', width:'100%' }}>
+                                <div className='tab-container'>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
+                                    <Tabs
+                                        value={currentTab}
+                                        onChange={handleTabChange}
+                                    >
+                                        <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
+                                        <Tab value='2' label='Demographic Data' sx={{ textTransform: "none" }} />
+                                        <Tab value='3' label='Distance Measures' sx={{ textTransform: "none" }} />
+                                    </Tabs>
+                                </Box>
+                            
+                                </div>
+                                <div className='sub-table-container'>
+                                    <TabPanel value='1'>
+                                        {/* TABLE 1 */}
+                                        <TableContainer component={Paper}>
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Name</TableCell>
+                                                        <ClusterNameCell name={cluster.name} />
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.data.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='2'>
+                                        {/* TABLE 2 */}
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>District Average By Demographics</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.demographicGroups.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='3'>
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Distance Measure Effectiveness</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.distanceMeasures.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                </div>
+                            
+                            </div>
+                        </TabContext>
                         </AccordionDetails>
                     </Accordion>
-                ))} 
-            </>
+                </>
+            ))} 
+        </>
         )
     }
 
@@ -421,8 +587,8 @@ function TableData() {
 
     return (
         <div className='table-container'>
-            <div className='tab-container'>
-                <Stepper nonLinear activeStep={currentTab}>
+            <div className='stepper-container'>
+                <Stepper activeStep={currentTab}>
                     {steps.map((label, index) => (
                         <Step key={label} completed={completed[index]}>
                             <StepButton color="inherit" onClick={() => handleStepChange(index)}>
@@ -449,6 +615,51 @@ export default TableData;
 
 
 
+interface ClusterNameCellProps {
+    name: string;
+  }
+
+const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
+    const [editing, setEditing] = useState(false);
+    const [clusterName, setName] = useState(name);
+    const handleDoubleClick = () => {
+      setEditing(true);
+    };
+  
+    const handleBlur = () => {
+      setEditing(false);
+      // Save the changes or perform any required actions here
+    };
+  
+    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setEditing(false);
+      if(clusterName == "")
+          setName(name);
+    }
+  
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setName(event.target.value);
+    };
+    return (
+      <TableCell align="center" component="th" scope="row">
+        {editing ? (
+          <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
+          <input
+            type="text"
+            className="cluster-name-input cluster-name-input-alt"
+            value={clusterName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+  
+          />
+          </form>
+        ) : (
+          <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
+        )}
+      </TableCell>
+    );
+  };
 
 /**
  * 
@@ -551,9 +762,7 @@ function AssociationClusters() {
     for(let i = 1; i < 500; i++){
         data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i)/Math.log(9)+a, ensemble3: Math.log(i)/Math.log(8)+b, ensemble4: Math.log(i)/Math.log(7)+c, ensemble5: Math.log(i)/ Math.log(6)+d});
     }
-    const areas = {
-
-    }
+    
     let color
     function randomColor(){
         color = '#' + Math.floor(Math.random()*16777215).toString(16)
