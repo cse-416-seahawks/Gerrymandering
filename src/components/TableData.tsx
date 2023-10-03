@@ -786,19 +786,19 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
         },
         {
             district: 2,
-            predicted_winner: "democrate",
+            predicted_winner: "democrat",
             democrate: 60,
             republican: 40,
         },
         {
             district: 3,
-            predicted_winner: "democrate",
+            predicted_winner: "democrat",
             democrate: 70,
             republican: 30,
         },
         {
             district: 4,
-            predicted_winner: "democrate",
+            predicted_winner: "democrat",
             democrate: 55,
             republican: 45,
         },
@@ -883,7 +883,7 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
                         <TableRow>
                             <TableCell>District</TableCell>
                             <TableCell align="center">Predicted winner</TableCell>
-                            <TableCell align="right">%democrate</TableCell>
+                            <TableCell align="right">%democrat</TableCell>
                             <TableCell align="right">%republican</TableCell>
                         </TableRow>
                     </TableHead>
@@ -894,7 +894,7 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
                             <TableRow key={row.district}>
                                 
                                 <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => goTo(row.district.toString())}>{row.district}</button>} </TableCell>
-                                <TableCell style={{ color: row.predicted_winner === 'democrate' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
+                                <TableCell style={{ color: row.predicted_winner === 'democrat' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
                                 <TableCell align="right">{row.democrate}%</TableCell>
                                 <TableCell align="right">{row.republican}%</TableCell>
                                 
