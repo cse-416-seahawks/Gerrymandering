@@ -25,7 +25,7 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import StepContent from '@mui/material/StepContent';
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, Label } from 'recharts';
 import StateMap from './StateMap';
 
 
@@ -41,194 +41,226 @@ function TableData() {
         setCurrentTab(step);
     }
 
-    return (
-        <>
-            <div className='table-container'>
-                <div className='tab-container'>
-                    <Stepper nonLinear activeStep={currentTab}>
-                        {steps.map((label, index) => (
-                            <Step key={label} completed={completed[index]}>
-                                <StepButton color="inherit" onClick={() => handleStepChange(index)}>
-                                    {label}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </div>
-                {/* State Details */}
-                {currentTab == 0 && <StateDetails />}
-                {/* Summary of Cluster */}
-                {currentTab == 1 && <ClusterTable />}
-                {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
-                {currentTab == 2 && <AssociationClusters /*onDistrictSelection={[]}*//>}
-            </div>
-        </>
+    /**
+     * 
+     * Table Data for ensembles
+     */
+    const ensemble= [
+        { label: 'Numbers of clusters', detail: '7'},
+        { label: 'Average distance between clusters', detail: '12'},
+        { label: 'Number of district plans', detail: '200'}
+    ];
 
-    )
-}
-
-export default TableData;
-
-
-/**
- * 
- * Table Data for state details
- */
-const raceData = [
-    { race: 'White', percentage: '72.1%' },
-    { race: 'Black or African American', percentage: '10.8%' },
-    { race: 'American Indian or Alaska Native', percentage: '1.7%' },
-    { race: 'Asian', percentage: '9.4% ' },
-    { race: 'Native Hawaiian and Other Pacific Islander', percentage: '0.9%' },
-    { race: 'Two or more races', percentage: '5.1%' }
-];
-
-const sexData = [
-    { sex: 'Male', percentage: '50.5%' },
-    { sex: 'Female', percentage: '49.5%' }
-];
-
-const wealthData = [
-    { label: 'Median Household Income', income: '$65,686' },
-    { label: 'Average Household Income', income: '$89,562' },
-    { label: 'Per Capita Income', income: '$34,621' }
-];
-
-const ageData = [
-    { age: '0-17', percent: '21.91%' },
-    { age: '18-64', percent: '60.49%' },
-    { age: '65+', percent: '17.21%' }
-];
-
-const partyData = [
-    { party: 'Democratic', percent: '18.85%' },
-    { party: 'Republican', percent: '44%' },
-    { party: 'Independant American Party', percent: '4.99%' },
-    { party: 'Libertarian', percent: '1.14%' },
-    { party: 'Non-Partisan', percent: '29.58%' },
-    { party: 'Other', percent: '1.44%' }
-];
-
-function StateDetails() {
-    return (
+    function Ensembles(){
+        return(
         <div>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
                 >
-                    <Typography><b>Ensemble 1</b></Typography>
-                </AccordionSummary>
-                <Divider />
-                <AccordionDetails>
-                    3,198,164
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
                 >
-                    <Typography><b>Ensemble 2</b></Typography>
+                    Ensemble 1
+                </Button>
                 </AccordionSummary>
-                <Divider />
+                <Divider/>
                 <AccordionDetails>
                     <Table sx={{ minWidth: 650 }}>
                         <TableBody>
-                            {raceData.map((row) => (
-                                <TableRow key={row.race}>
-                                    <TableCell component="th" scope="row"> {row.race} </TableCell>
-                                    <TableCell align="right">{row.percentage}</TableCell>
-                                </TableRow>
-                            ))}
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
                         </TableBody>
                     </Table>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
                 >
-                    <Typography><b>Ensemble 3</b></Typography>
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 2
+                </Button>
                 </AccordionSummary>
-                <Divider />
+                <Divider/>
                 <AccordionDetails>
                     <Table sx={{ minWidth: 650 }}>
                         <TableBody>
-                            {sexData.map((row) => (
-                                <TableRow key={row.sex}>
-                                    <TableCell component="th" scope="row"> {row.sex} </TableCell>
-                                    <TableCell align="right">{row.percentage}</TableCell>
-                                </TableRow>
-                            ))}
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 3
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 4
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                >
+                <Button 
+                    variant="text" 
+                    size="large"
+                    onClick={() => handleStepChange(1)}
+                >
+                    Ensemble 5
+                </Button>
+                </AccordionSummary>
+                <Divider/>
+                <AccordionDetails>
+                <Table sx={{ minWidth: 650 }}>
+                        <TableBody>
+                        {ensemble.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell component="th" scope="row"> {row.label} </TableCell>
+                                <TableCell align="right">{row.detail}</TableCell>
+                            </TableRow>
+                        ))}
                         </TableBody>
                     </Table>
                 </AccordionDetails>
             </Accordion>
         </div>
-    )
-}
-
-interface ClusterNameCellProps {
-    name: string;
-}
-
-const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
-    const [editing, setEditing] = useState(false);
-    const [clusterName, setName] = useState(name);
-    const handleDoubleClick = () => {
-        setEditing(true);
-    };
-
-    const handleBlur = () => {
-        setEditing(false);
-        // Save the changes or perform any required actions here
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setEditing(false);
-        if (clusterName == "")
-            setName(name);
+        )
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value);
+    /**
+     * 
+     * Table Data for clusters
+     */
+    interface ClusterNameCellProps {
+        name: string;
+    }
+    
+    const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
+        const [editing, setEditing] = useState(false);
+        const [clusterName, setName] = useState(name);
+        const handleDoubleClick = () => {
+            setEditing(true);
+        };
+    
+        const handleBlur = () => {
+            setEditing(false);
+            // Save the changes or perform any required actions here
+        };
+    
+        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            setEditing(false);
+            if (clusterName == "")
+                setName(name);
+        }
+    
+        const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setName(event.target.value);
+        };
+        return (
+            <TableCell align="center" component="th" scope="row">
+                {editing ? (
+                    <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
+                        <input
+                            type="text"
+                            className="cluster-name-input cluster-name-input-alt"
+                            value={clusterName}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+    
+                        />
+                    </form>
+                ) : (
+                    <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
+                )}
+            </TableCell>
+        );
     };
-    return (
-        <TableCell align="center" component="th" scope="row">
-            {editing ? (
-                <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
-                    <input
-                        type="text"
-                        className="cluster-name-input cluster-name-input-alt"
-                        value={clusterName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+    
+    function ClusterTable() {
+        const [currentTab, setCurrentTab] = useState('1');
 
-                    />
-                </form>
-            ) : (
-                <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
-            )}
-        </TableCell>
-    );
-};
-
-/**
- * 
- * Table Data for cluster analysis
- */
-function ClusterTable() {
-    interface cluster_summary_table {
-        cluster: number;
-        num_districts: number;
-        average_dist: number;
-    };
+        function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+            console.log(newValue);
+            setCurrentTab(String(newValue));
+        }
+        
+        interface cluster_summary_table {
+            cluster: number;
+            num_districts: number;
+            average_dist: number;
+        };
 
     const data01 = [
         { x: 100, y: 60, z: 200 },
@@ -260,83 +292,375 @@ function ClusterTable() {
         ),
     ];
 
-    const domain = parseDomain();
-    const range = [100, 1000];
+        const domain = parseDomain();
+        const range = [100, 1000];
 
+        
+        
+        const clusterTempData = [
+            {
+                cluster: 1,
+                name: 'cluster A',
+                data: [
+                    {
+                        name: "Number of Districts",
+                        value: "48",
+                    },
+                    {
+                        name: "Political Party Ratio",
+                        value: "68% Democratic / 32% Republican",
+                    },
+                    {
+                        name: "Average Republican Voters",
+                        value: '47%',
+                    },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '53%',
+                    }, 
+                ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "32.1",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "21.2",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "19.2",
+                    }
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ]
+            },
+            {
+                cluster: 2,
+                name: 'cluster B',
+                data: [
+                    {
+                        name: "Number of Districts",
+                        value: "23",
+                    },
+                    {
+                        name: "Political Party Ratio",
+                        value: "32% Democratic / 68% Republican",
+                    },
+                    {
+                        name: "Average Republican Voters",
+                        value: '78%',
+                    },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '22%',
+                    }, 
+                ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "45.9",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "17.4",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "11",
+                    }
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ]
+            },
+            {
+                cluster: 3,
+                name: 'cluster C',
+                data: [
+                    {
+                        name: "Number of Districts",
+                        value: "31",
+                    },
+                    {
+                        name: "Political Party Ratio",
+                        value: "56% Democratic / 44% Republican",
+                    },
 
-    interface cluster_summary_table {
-        cluster: number;
-        name: string;
-        num_districts: number;
-        average_dist: number;
+                    {
+                        name: "Average Republican Voters",
+                        value: '58%',
+                    },
+                    {
+                        name: "Average Democratic Voters",
+                        value: '42%',
+                    }, 
+                ],
+                demographicGroups: [ // district average by racial group
+                    {
+                        name: "White",
+                        value: "31%",
+                    },
+                    {
+                        name: "Black",
+                        value: "32%",
+                    },
+                    {
+                        name: "Asian",
+                        value: "23%",
+                    },
+                    {
+                        name: "Other",
+                        value: "24%",
+                    },
+                ],
+                distanceMeasures: [
+                    {
+                        name: "Optimal transport",
+                        value: "8.8",
+                    },
+                    {
+                        name: "Hamming distance",
+                        value: "16.8",
+                    },
+                    {
+                        name: "Total Variation Distance",
+                        value: "15.1",
+                    }
+                ],
+            },
+        ]
+        
+        return (
+            <>
+            <div className='graph-container'>
+                <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
+                    <CartesianGrid />
+                    <XAxis type="number" dataKey="x" name="Average distance" >
+                    </XAxis>
+                    <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                    <ZAxis dataKey="y" domain={domain} range={range} />
+                    <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
+                    <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+                </ScatterChart>
+            </div>
+            {clusterTempData.map((cluster) => (
+                <>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Button 
+                                variant="text" 
+                                size="medium"
+                                onClick={() => handleStepChange(2)}
+                            >
+                                Cluster {cluster.cluster}
+                            </Button>
+                        </AccordionSummary>
+                        <Divider/>
+                        <AccordionDetails>
+                            <TabContext value={currentTab}>
+                            <div style={{display: 'flex', flexDirection:'column', width:'100%' }}>
+                                <div className='tab-container'>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
+                                    <Tabs
+                                        value={currentTab}
+                                        onChange={handleTabChange}
+                                    >
+                                        <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
+                                        <Tab value='2' label='Demographic Data' sx={{ textTransform: "none" }} />
+                                        <Tab value='3' label='Distance Measures' sx={{ textTransform: "none" }} />
+                                    </Tabs>
+                                </Box>
+                            
+                                </div>
+                                <div className='sub-table-container'>
+                                    <TabPanel value='1'>
+                                        {/* TABLE 1 */}
+                                        <TableContainer component={Paper}>
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Name</TableCell>
+                                                        <ClusterNameCell name={cluster.name} />
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.data.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='2'>
+                                        {/* TABLE 2 */}
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>District Average By Demographics</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.demographicGroups.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel value='3'>
+                                        <TableContainer component={Paper}>         
+                                            <Table sx={{ minWidth: 650 }}>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Distance Measure Effectiveness</TableCell>
+                                                        <TableCell/>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {cluster.distanceMeasures.map((row) => (
+                                                        <TableRow key={row.name}>
+                                                            <TableCell> {row.name} </TableCell>
+                                                            <TableCell align='right'> {row.value} </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                </div>
+                            
+                            </div>
+                        </TabContext>
+                        </AccordionDetails>
+                    </Accordion>
+                </>
+            ))} 
+        </>
+        )
     }
 
-    const sampleData: cluster_summary_table[] = [
-        {
-            cluster: 1,
-            name: "cluster A",
-            num_districts: 30,
-            average_dist: 12.2,
-        },
-        {
-            cluster: 2,
-            name: "cluster B",
-            num_districts: 12,
-            average_dist: 9.5,
-        },
-        {
-            cluster: 3,
-            name: "cluster C",
-            num_districts: 45,
-            average_dist: 2.1,
-        },
-        {
-            cluster: 4,
-            name: "cluster D",
-            num_districts: 17,
-            average_dist: 13.2,
-        },
-    ];
 
-    const [data, updateData] = useState(sampleData);
 
     return (
-        <>
-            <ScatterChart width={700} height={400} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
-                <CartesianGrid />
-                <XAxis type="number" dataKey="x" name="Average distance" />
-                <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff' />
-                <ZAxis dataKey="y" domain={domain} range={range} />
-                <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }} />
-                <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4} />
-            </ScatterChart>
+        <div className='table-container'>
+            <div className='stepper-container'>
+                <Stepper activeStep={currentTab}>
+                    {steps.map((label, index) => (
+                        <Step key={label} completed={completed[index]}>
+                            <StepButton color="inherit" onClick={() => handleStepChange(index)}>
+                                {label}
+                            </StepButton>
+                        </Step>
+                    ))}
+                </Stepper>
+            </div>
+            {/* State Details */}
+            { currentTab == 0 && <Ensembles/> } 
+            {/* Summary of Cluster */}
+            { currentTab == 1 && <ClusterTable/> }
+            {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
+            { currentTab == 2 && <AssociationClusters/> }
+        </div>
 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
-                        <TableRow>
-                            <TableCell>Cluster</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="right"># District Plans</TableCell>
-                            <TableCell align="right">Average Distances</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {sampleData.map((row) => (
-                            <TableRow key={row.cluster}>
-                                <TableCell component="th" scope="row"> {row.cluster} </TableCell>
-                                <ClusterNameCell name={row.name} />
-                                <TableCell align="right">{row.num_districts}</TableCell>
-                                <TableCell align="right">{row.average_dist}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </>
     )
+
 }
 
+export default TableData;
+
+
+
+
+interface ClusterNameCellProps {
+    name: string;
+  }
+
+const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
+    const [editing, setEditing] = useState(false);
+    const [clusterName, setName] = useState(name);
+    const handleDoubleClick = () => {
+      setEditing(true);
+    };
+  
+    const handleBlur = () => {
+      setEditing(false);
+      // Save the changes or perform any required actions here
+    };
+  
+    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setEditing(false);
+      if(clusterName == "")
+          setName(name);
+    }
+  
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setName(event.target.value);
+    };
+    return (
+      <TableCell align="center" component="th" scope="row">
+        {editing ? (
+          <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
+          <input
+            type="text"
+            className="cluster-name-input cluster-name-input-alt"
+            value={clusterName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+  
+          />
+          </form>
+        ) : (
+          <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
+        )}
+      </TableCell>
+    );
+  };
 
 /**
  * 
@@ -441,9 +765,7 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
     for (let i = 1; i < 500; i++) {
         data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i) / Math.log(9) + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7) + c, ensemble5: Math.log(i) / Math.log(6) + d });
     }
-    const areas = {
-
-    }
+    
     let color
     function randomColor() {
         color = '#' + Math.floor(Math.random() * 16777215).toString(16)
