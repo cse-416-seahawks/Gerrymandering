@@ -54,7 +54,7 @@ function TableData() {
     function Ensembles(){
         return(
         <div>
-            <Accordion>
+            <Accordion defaultExpanded={true}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -774,38 +774,38 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
     interface district_summary_table {
         district: number;
         predicted_winner: string;
-        democrate: number;
+        democrat: number;
         republican: number;
     }
     const districts: district_summary_table[] = [
         {
             district: 1,
-            predicted_winner: "republican",
-            democrate: 30,
+            predicted_winner: "Republican",
+            democrat: 30,
             republican: 70,
         },
         {
             district: 2,
-            predicted_winner: "democrate",
-            democrate: 60,
+            predicted_winner: "Democrat",
+            democrat: 60,
             republican: 40,
         },
         {
             district: 3,
-            predicted_winner: "democrate",
-            democrate: 70,
+            predicted_winner: "Democrat",
+            democrat: 70,
             republican: 30,
         },
         {
             district: 4,
-            predicted_winner: "democrate",
-            democrate: 55,
+            predicted_winner: "Democrat",
+            democrat: 55,
             republican: 45,
         },
         {
             district: 5,
-            predicted_winner: "republican",
-            democrate: 34,
+            predicted_winner: "Republican",
+            democrat: 34,
             republican: 66,
         },
     ];
@@ -830,51 +830,12 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
 
     return (
         <>
-            <Accordion>
+            <Accordion defaultExpanded={true}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                > <Typography><b>Districts</b></Typography>
-
-                </AccordionSummary>
-                <AccordionDetails>
-                <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
-                        <TableRow>
-                            <TableCell>District</TableCell>
-                            <TableCell align="center">Predicted winner</TableCell>
-                            <TableCell align="right">%democrate</TableCell>
-                            <TableCell align="right">%republican</TableCell>
-                        </TableRow>
-                    </TableHead>
                     
-                    <TableBody>
-                        {districts.map((row) => (
-                            
-                            <TableRow key={row.district}>
-                                
-                                <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => goTo(row.district.toString())}>{row.district}</button>} </TableCell>
-                                <TableCell style={{ color: row.predicted_winner === 'democrate' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
-                                <TableCell align="right">{row.democrate}%</TableCell>
-                                <TableCell align="right">{row.republican}%</TableCell>
-                                
-                            </TableRow>
-                            
-                        ))}
-                
-                    </TableBody>
-                    
-                </Table>
-            </TableContainer>
-            </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
                 > <Typography><b>Association of clusters with ensemble size</b></Typography>
 
                 </AccordionSummary>
@@ -897,6 +858,46 @@ function AssociationClusters(/*{onDistrictSelection}:coordProps*/) {
                         */
                     }
                 </AreaChart>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                > <Typography><b>Districts</b></Typography>
+
+                </AccordionSummary>
+                <AccordionDetails>
+                <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }}>
+                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
+                        <TableRow>
+                            <TableCell>District</TableCell>
+                            <TableCell align="center">Predicted Winner</TableCell>
+                            <TableCell align="right">% of Democratic Voters</TableCell>
+                            <TableCell align="right">% of Republican Voters</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    
+                    <TableBody>
+                        {districts.map((row) => (
+                            
+                            <TableRow key={row.district}>
+                                
+                                <TableCell component="th" scope="row"> {<button style={buttonStyle} onClick={() => goTo(row.district.toString())}>{row.district}</button>} </TableCell>
+                                <TableCell style={{ color: row.predicted_winner === 'Democrat' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
+                                <TableCell align="right">{row.democrat}%</TableCell>
+                                <TableCell align="right">{row.republican}%</TableCell>
+                                
+                            </TableRow>
+                            
+                        ))}
+                
+                    </TableBody>
+                    
+                </Table>
+            </TableContainer>
+            </AccordionDetails>
             </Accordion>
             <Accordion>
                 <AccordionSummary
