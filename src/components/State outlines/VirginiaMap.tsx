@@ -23,5 +23,24 @@ export default () => (
         })
       );
     })}
+    eventHandlers={{
+      mouseover : (e) => {
+          const layer = e.target;
+          layer.setStyle({
+              fillOpacity : 0.7,
+              weight : 2,
+              color : "white"
+          })
+      },
+      mouseout : (e) => {
+          const layer = e.target;
+          layer.setStyle({
+              fillOpacity : 0.5,
+              weight : 2,
+              color : "white"
+          })
+
+      }
+    }}
   />
 );

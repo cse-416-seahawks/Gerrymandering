@@ -19,5 +19,24 @@ export default () => (
       const coordinates: LatLngTuple = [items[1], items[0]];
       return coordinates;
     })}
+    eventHandlers={{
+      mouseover : (e) => {
+          const layer = e.target;
+          layer.setStyle({
+              fillOpacity : 0.7,
+              weight : 2,
+              color : "white"
+          })
+      },
+      mouseout : (e) => {
+          const layer = e.target;
+          layer.setStyle({
+              fillOpacity : 0.5,
+              weight : 2,
+              color : "white"
+          })
+
+      }
+    }}
   />
 );
