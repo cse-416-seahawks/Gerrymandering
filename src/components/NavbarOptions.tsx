@@ -2,6 +2,7 @@ import React from 'react';
 import * as TbIcons from 'react-icons/tb'
 import * as AiIcons from 'react-icons/ai'
 import * as VscIcons from 'react-icons/vsc'
+import * as FcIcons from 'react-icons/fc'
 
 export const NavbarOptions = [
     {
@@ -16,6 +17,7 @@ export const NavbarOptions = [
         icon: <VscIcons.VscMap/>,
         cName : 'nav-text'
     },
+
 
 ]
 
