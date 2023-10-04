@@ -6,6 +6,10 @@ import { virginiaData, nevadaData, texasData } from "../../StateData";
 
 import { Polygon } from "react-leaflet";
 
+const getColor = () => {
+  return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+}
+
 export default () => (
   <Polygon
     pathOptions={{
@@ -15,7 +19,7 @@ export default () => (
       opacity: 1,
       color: "white",
     }}
-    positions={texasData.features[0].geometry.coordinates[0].map((items) => {
+    positions={nevadaData.features[0].geometry.coordinates[0].map((items) => {
       const coordinates: LatLngTuple = [items[1], items[0]];
       return coordinates;
     })}
@@ -36,7 +40,7 @@ export default () => (
               color : "white"
           })
 
-      }
+      },
     }}
   />
 );

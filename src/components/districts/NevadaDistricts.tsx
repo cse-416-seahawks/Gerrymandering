@@ -45,6 +45,14 @@ export default () => {
                   color: "white",
                 });
               },
+              click: (e) => {
+                const layer = e.target;
+                layer.setStyle({
+                  fillOpacity: 0.5,
+                  weight: 2,
+                  fillColor: generateColor(),
+                });
+              },
             }}
           />
         );

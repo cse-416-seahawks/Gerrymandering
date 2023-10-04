@@ -6,44 +6,42 @@ import { virginiaHouse } from "../../GeoJson/Virginia_House";
 
 import { Polygon } from "react-leaflet";
 
-export default () => (
-  <>
-    {virginiaHouse.features.map((district) => {
-      return (
-        <Polygon
-          pathOptions={{
-            fillColor: "#FD8D3C",
-            fillOpacity: 0.5,
-            weight: 2,
-            opacity: 1,
-            color: "white",
-          }}
-          positions={
-            district.geometry.coordinates[0].map(
-            (items) => 
-                   [items[1],items[0]] as LatLngTuple[]
-          )}
-          eventHandlers={{
-            mouseover : (e) => {
+export default () => {
+  return (
+    <>
+      {virginiaHouse.features.map((district) => {
+        return (
+          <Polygon
+            pathOptions={{
+              fillColor: "#FD8D3C",
+              fillOpacity: 0.5,
+              weight: 2,
+              opacity: 1,
+              color: "white",
+            }}
+            positions={district.geometry.coordinates[0].map(
+              (items) => [items[1], items[0]] as LatLngTuple[]
+            )}
+            eventHandlers={{
+              mouseover: (e) => {
                 const layer = e.target;
                 layer.setStyle({
-                    fillOpacity : 0.7,
-                    weight : 2,
-                    color : "white"
-                })
-            },
-            mouseout : (e) => {
+                  fillOpacity: 0.7,
+                  weight: 2,
+                  color: "white",
+                });
+              },
+              mouseout: (e) => {
                 const layer = e.target;
                 layer.setStyle({
-                    fillOpacity : 0.5,
-                    weight : 2,
-                    color : "white"
-                })
-
-            }
-          }}
-        />
-      );
-    })}
-  </>
-);
+                  fillOpacity: 0.5,
+                  weight: 2,
+                  color: "white",
+                });
+              },
+            }}
+          />
+        );
+      })}
+    </>)
+};

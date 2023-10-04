@@ -16,9 +16,9 @@ import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-lea
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
 import { MongoClient, GridFSBucket } from "mongodb";
 import axios from "axios";
-import VirginiaMap from "./State outlines/VirginiaMap";
-import TexasMap from "./State outlines/TexasMap";
-import NevadaMap from "./State outlines/NevadaMap";
+import VirginiaMap from "./statemap/VirginiaMap";
+import TexasMap from "./statemap/TexasMap";
+import NevadaMap from "./statemap/NevadaMap";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
