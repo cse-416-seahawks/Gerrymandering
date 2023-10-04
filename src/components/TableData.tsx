@@ -568,12 +568,12 @@ function TableData(props: {
         ]
 
         const data = []
-        let a = Math.random() * 1.2
-        let b = Math.random() * 1.3
-        let c = Math.random() * 1.5
-        let d = Math.random() * 1.6
-        for (let i = 1; i < 500; i++) {
-            data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i) / Math.log(9) + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7) + c, ensemble5: Math.log(i) / Math.log(6) + d });
+        let a = Math.random() * 10
+        let b = Math.random() * 10
+        let c = Math.random() * 10
+        let d = Math.random() * 10
+        for (let i = 1; i <= 500; i++) {
+            data.push({ Num: i, ensemble1: Math.log(i)*10, ensemble2: Math.log(i) / Math.log(9)*10 + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7)*10 + c, ensemble5: Math.log(i)*10 / Math.log(6) + d });
         }
         
         let color
