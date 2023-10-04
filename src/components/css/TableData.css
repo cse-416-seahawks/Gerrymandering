@@ -15,10 +15,11 @@
 
 .table-container {
     display: table;
-    margin-left: 5rem;
+    margin-left: 2rem;
     background-color: white;
     border-radius: 1rem;
     padding: 1rem;
+    width: 100%;
     box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(0.1rem);
 }

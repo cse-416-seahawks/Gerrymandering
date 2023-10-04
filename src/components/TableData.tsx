@@ -209,8 +209,6 @@ function TableData(props: {
             <Accordion>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
                 >
                 <Button 
                     variant="text" 
@@ -335,7 +333,73 @@ function TableData(props: {
         const domain = parseDomain();
         const range = [100, 1000];
 
-        
+    const clusterData = [
+        {
+            cluster: 1,
+            name: 'clusterA',
+            num_dist_plans: 312,
+            avg_distance: 12.2,
+            avg_rep: '47%',
+            avg_dem: '53%',
+            avg_white: '72%',
+            avg_black: '1%',
+            avg_asian: '1%',
+            avg_latino: '18%',
+            other: '7%',
+        },
+        {
+            cluster: 2,
+            name: 'clusterB',
+            num_dist_plans: 126,
+            avg_distance: 32.8,
+            avg_rep: '31%',
+            avg_dem: '69%',
+            avg_white: '2%',
+            avg_black: '18%',
+            avg_asian: '15%',
+            avg_latino: '18%',
+            other: '47%',
+        },
+        {
+            cluster: 3,
+            name: 'clusterC',
+            num_dist_plans: 229,
+            avg_distance: 12.2,
+            avg_rep: '47%',
+            avg_dem: '53%',
+            avg_white: '72%',
+            avg_black: '1%',
+            avg_asian: '1%',
+            avg_latino: '18%',
+            other: '7%',
+        },
+        {
+            cluster: 4,
+            name: 'clusterD',
+            num_dist_plans: 581,
+            avg_distance: 12.2,
+            avg_rep: '47%',
+            avg_dem: '53%',
+            avg_white: '72%',
+            avg_black: '1%',
+            avg_asian: '1%',
+            avg_latino: '18%',
+            other: '7%',
+        },
+        {
+            cluster: 5,
+            name: 'clusterE',
+            num_dist_plans: 414,
+            avg_distance: 12.2,
+            avg_rep: '47%',
+            avg_dem: '53%',
+            avg_white: '72%',
+            avg_black: '1%',
+            avg_asian: '1%',
+            avg_latino: '18%',
+            other: '7%',
+        },
+    ]
         
         const clusterTempData = [
             {
@@ -448,7 +512,7 @@ function TableData(props: {
             },
             {
                 cluster: 3,
-                name: 'cluster C',
+                name: 'clusterC',
                 data: [
                     {
                         name: "Number of Districts",
@@ -502,124 +566,129 @@ function TableData(props: {
                 ],
             },
         ]
+
+        const data = []
+        let a = Math.random() * 1.2
+        let b = Math.random() * 1.3
+        let c = Math.random() * 1.5
+        let d = Math.random() * 1.6
+        for (let i = 1; i < 500; i++) {
+            data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i) / Math.log(9) + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7) + c, ensemble5: Math.log(i) / Math.log(6) + d });
+        }
+        
+        let color
+        function randomColor() {
+            color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+            return color
+        }
         
         return (
             <>
-            <div className='graph-container'>
-                <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="Average distance" >
-                    </XAxis>
-                    <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
-                    <ZAxis dataKey="y" domain={domain} range={range} />
-                    <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
-                    <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
-                </ScatterChart>
-            </div>
-            {clusterTempData.map((cluster) => (
-                <>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Button 
-                                variant="text" 
-                                size="medium"
-                                onClick={() => handleStepChange(2)}
-                            >
-                                Cluster {cluster.cluster}
-                            </Button>
-                        </AccordionSummary>
-                        <Divider/>
-                        <AccordionDetails>
-                            <TabContext value={currentTab}>
-                            <div style={{display: 'flex', flexDirection:'column', width:'100%' }}>
-                                <div className='tab-container'>
-                                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
-                                    <Tabs
-                                        value={currentTab}
-                                        onChange={handleTabChange}
-                                    >
-                                        <Tab value='1' label='Summary of Cluster' sx={{ textTransform: "none" }} />
-                                        <Tab value='2' label='Demographic Data' sx={{ textTransform: "none" }} />
-                                        <Tab value='3' label='Distance Measures' sx={{ textTransform: "none" }} />
-                                    </Tabs>
-                                </Box>
-                            
-                                </div>
-                                <div className='sub-table-container'>
-                                    <TabPanel value='1'>
-                                        {/* TABLE 1 */}
-                                        <TableContainer component={Paper}>
-                                            <Table sx={{ minWidth: 650 }}>
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell>Name</TableCell>
-                                                        <ClusterNameCell name={cluster.name} />
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {cluster.data.map((row) => (
-                                                        <TableRow key={row.name}>
-                                                            <TableCell> {row.name} </TableCell>
-                                                            <TableCell align='right'> {row.value} </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </TabPanel>
-                                    <TabPanel value='2'>
-                                        {/* TABLE 2 */}
-                                        <TableContainer component={Paper}>         
-                                            <Table sx={{ minWidth: 650 }}>
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell>District Average By Demographics</TableCell>
-                                                        <TableCell/>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {cluster.demographicGroups.map((row) => (
-                                                        <TableRow key={row.name}>
-                                                            <TableCell> {row.name} </TableCell>
-                                                            <TableCell align='right'> {row.value} </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </TabPanel>
-                                    <TabPanel value='3'>
-                                        <TableContainer component={Paper}>         
-                                            <Table sx={{ minWidth: 650 }}>
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell>Distance Measure Effectiveness</TableCell>
-                                                        <TableCell/>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {cluster.distanceMeasures.map((row) => (
-                                                        <TableRow key={row.name}>
-                                                            <TableCell> {row.name} </TableCell>
-                                                            <TableCell align='right'> {row.value} </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </TabPanel>
-                                </div>
-                            
-                            </div>
-                        </TabContext>
-                        </AccordionDetails>
-                    </Accordion>
-                </>
-            ))} 
+            <TabContext value={currentTab}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '95%' }}>
+                    <Tabs
+                        value={currentTab}
+                        onChange={handleTabChange}
+                    >
+                        <Tab value='1' label='Cluster Analysis' sx={{ textTransform: "none" }} />
+                        <Tab value='2' label='Graph Data' sx={{ textTransform: "none" }} />
+                    </Tabs>
+                </Box>
+                <TabPanel value='1'>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align='center'>Cluster</TableCell>
+                                    <TableCell align='center'>Name</TableCell>
+                                    <TableCell align='center'># District Plans</TableCell>
+                                    <TableCell align='center'>Avg Distance Between Plans</TableCell>
+                                    <TableCell align='center'>Avg Republican Voters</TableCell>
+                                    <TableCell align='center'>Avg Democratic Voters</TableCell>
+                                    <TableCell align='center'>Avg White Pop.</TableCell>
+                                    <TableCell align='center'>Avg Black Pop.</TableCell>
+                                    <TableCell align='center'>Avg Asian Pop.</TableCell>
+                                    <TableCell align='center'>Avg Latino Pop.</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {clusterData.map((row) => (
+                                    <TableRow key={row.cluster}>
+                                        <TableCell align='center'>
+                                            <Button 
+                                                variant="text" 
+                                                size="medium"
+                                                onClick={() => handleStepChange(2)}
+                                            >
+                                                {row.cluster}
+                                            </Button>
+                                        </TableCell>
+                                        <ClusterNameCell name={row.name} />
+                                        <TableCell align='center'> {row.num_dist_plans}</TableCell>
+                                        <TableCell align='center'> {row.avg_distance} </TableCell>
+                                        <TableCell align='center'> {row.avg_rep} </TableCell>
+                                        <TableCell align='center'> {row.avg_dem} </TableCell>
+                                        <TableCell align='center'> {row.avg_white} </TableCell>
+                                        <TableCell align='center'> {row.avg_black} </TableCell>
+                                        <TableCell align='center'> {row.avg_asian} </TableCell>
+                                        <TableCell align='center'> {row.avg_latino} </TableCell>
+                                    </TableRow>
+                                    
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </TabPanel>
+                <TabPanel value='2'>
+                    <Accordion defaultExpanded={false}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        
+                    > <Typography><b>Association of clusters with ensemble size</b></Typography>
+                    </AccordionSummary>
+                    <div className='graph-container'>
+                        <AreaChart width={600} height={400} data={data}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="Num" />
+                            <YAxis />
+                            <Tooltip contentStyle={{ fontSize: 18 }} />
+                            <Legend />
+                            <Area type="monotone" dataKey="ensemble1" stroke="#8884d8" fill="#8884d8" />
+                            <Area type="monotone" dataKey="ensemble2" stroke="#82ca9d" fill="#82ca9d" />
+                            <Area type="monotone" dataKey="ensemble3" stroke={randomColor()} fill={color} />
+                            <Area type="monotone" dataKey="ensemble4" stroke={randomColor()} fill={color} />
+                            <Area type="monotone" dataKey="ensemble5" stroke={randomColor()} fill={color} /> 
+                            {
+                                /*
+                                Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
+                                data, so this is will still need fixes before this is ready.
+                                */
+                            }
+                        </AreaChart>
+                    </div>
+                </Accordion>
+                <Accordion defaultExpanded={true}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        
+                    > <Typography><b>Cluster Graph</b></Typography>
+                    </AccordionSummary>
+                    <div className='graph-container'>
+                    <ScatterChart width={500} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }} >
+                        <CartesianGrid />
+                        <XAxis type="number" dataKey="x" name="Average distance" >
+                        </XAxis>
+                        <YAxis yAxisId="left" type="number" dataKey="y" name='District plans in cluster' opacity='1' stroke='#7aa9ff'/>
+                        <ZAxis dataKey="y" domain={domain} range={range} />
+                        <Tooltip cursor={{ strokeDasharray: "3 3" }} wrapperStyle={{ outline: "none" }} contentStyle={{ fontSize: 18 }}/>
+                        <Scatter yAxisId="left" data={data01} fill="#bfd6ff" stroke="#037cff" opacity={4}/> 
+                    </ScatterChart> 
+                    </div>
+                </Accordion>
+                </TabPanel>
+            </TabContext>
+
+{/* OLD VERSION OF OUR GUI */}
         </>
         )
     }
@@ -831,20 +900,6 @@ function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
         { ensemble: 5, num_clusters: 6.3, plans_needed: 268 }
     ]
     
-    const data = []
-    let a = Math.random() * 1.2
-    let b = Math.random() * 1.3
-    let c = Math.random() * 1.5
-    let d = Math.random() * 1.6
-    for (let i = 1; i < 500; i++) {
-        data.push({ Num: i, ensemble1: Math.log(i), ensemble2: Math.log(i) / Math.log(9) + a, ensemble3: Math.log(i) / Math.log(8) + b, ensemble4: Math.log(i) / Math.log(7) + c, ensemble5: Math.log(i) / Math.log(6) + d });
-    }
-    
-    let color
-    function randomColor() {
-        color = '#' + Math.floor(Math.random() * 16777215).toString(16)
-        return color
-    }
     interface district_summary_table {
         district: number;
         predicted_winner: string;
@@ -915,37 +970,68 @@ function AssociationClusters({onDistrictSelection}: DistrictSelectionProps) {
         { district: 5, white: '12%', black: '53%', asian: '25%', latino: '7%', other: '3%' },
     ]
 
+    const data01 = [
+        { x: 100, y: 60, z: 200 },
+        { x: 120, y: 30, z: 260 },
+        { x: 170, y: 50, z: 400 },
+        { x: 140, y: 35, z: 280 },
+        { x: 150, y: 70, z: 500 },
+        { x: 110, y: 58, z: 200 },
+        { x: 140, y: 31, z: 280 },
+        { x: 20, y: 40, z: 500 },
+        { x: 16, y: 70, z: 200 },
+        { x: 90, y: 20, z: 200 },
+        { x: 45, y: 58, z: 200 },
+        { x: 45, y: 91, z: 280 },
+        { x: 20, y: 40, z: 500 },
+        { x: 97, y: 70, z: 200 },
+        { x: 94, y: 30, z: 200 },
+        { x: 87, y: 29, z: 200 },
+        { x: 89, y: 35, z: 200 },
+    ];
+    const data02 = [
+        { x: 133, y: 60, z: 200 },
+        { x: 122, y: 30, z: 260 },
+        { x: 111, y: 50, z: 400 },
+        { x: 138, y: 35, z: 280 },
+        { x: 177, y: 70, z: 500 },
+        { x: 173, y: 58, z: 200 },
+        { x: 179, y: 31, z: 280 },
+        { x: 35, y: 40, z: 500 },
+        { x: 11, y: 70, z: 200 },
+        { x: 88, y: 20, z: 200 },
+        { x: 45, y: 58, z: 200 },
+        { x: 90, y: 91, z: 280 },
+        { x: 20, y: 40, z: 500 },
+        { x: 97, y: 70, z: 200 },
+        { x: 94, y: 30, z: 200 },
+        { x: 87, y: 29, z: 200 },
+        { x: 89, y: 35, z: 200 },
+    ];
+
     return (
         <>
-            <Accordion defaultExpanded={true}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    
-                > <Typography><b>Association of clusters with ensemble size</b></Typography>
-
-                </AccordionSummary>
-
-                <AreaChart width={600} height={400} data={data}>
+            <div className='graph-container'>
+                <ScatterChart
+                    width={730}
+                    height={250}
+                    margin={{
+                        top: 20,
+                        right: 20,
+                        bottom: 10,
+                        left: 10,
+                    }}
+                    >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="Num" />
-                    <YAxis />
-                    <Tooltip contentStyle={{ fontSize: 18 }} />
+                    <XAxis dataKey="x" type="number" name="% African American Population" />
+                    <YAxis dataKey="y" type="number" name="placeholder"  />
+                    {/* <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" /> */}
+                    <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ fontSize: 18 }}/>
                     <Legend />
-                    <Area type="monotone" dataKey="ensemble1" stroke="#8884d8" fill="#8884d8" />
-                    <Area type="monotone" dataKey="ensemble2" stroke="#82ca9d" fill="#82ca9d" />
-                    <Area type="monotone" dataKey="ensemble3" stroke={randomColor()} fill={color} />
-                    <Area type="monotone" dataKey="ensemble4" stroke={randomColor()} fill={color} />
-                    <Area type="monotone" dataKey="ensemble5" stroke={randomColor()} fill={color} /> 
-                    {
-                        /*
-                        Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
-                        data, so this is will still need fixes before this is ready.
-                        */
-                    }
-                </AreaChart>
-            </Accordion>
+                    <Scatter name="Available Data" data={data01} fill="#8884d8" />
+                    <Scatter name="Unavailable Data" data={data02} fill="#82ca9d" />
+                </ScatterChart>
+            </div>
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
