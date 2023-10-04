@@ -3,13 +3,14 @@ import React, {
   Context,
   useEffect,
   useContext,
+  useState,
   createContext,
 } from "react";
 import "./css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import DistrictInfoCard from "./DistrictInfoCard";
 
-import { MapContainer, TileLayer, Polygon, useMapEvent } from "react-leaflet";
+import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
 
 // import MarkerClusterGroup from "react-leaflet-cluster";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
@@ -44,14 +45,14 @@ interface StateZoomData {
   [key: string]: number;
 }
 const stateData: StateData = {
-  Nevada: [38.5, -116],
+  Nevada: [38.5, -116.5],
   Texas: [31.5, -99.9],
   Virginia: [37.9, -79.5],
 };
 const stateZoomData: StateZoomData = {
   Nevada: 6,
   Texas: 6,
-  Virginia: 6.5,
+  Virginia: 6,
 };
 
 export default function StateMap(props: {
@@ -60,29 +61,33 @@ export default function StateMap(props: {
   districtCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
-  const [centerCoordinates, setCenterCoordinates] = React.useState(
+  const [centerCoordinates, setCenterCoordinates] = useState(
     props.districtCoordinates
   );
-  const [currentState, setCurrentState] = React.useState("Nevada");
+  const [currentState, setCurrentState] = useState("Nevada");
 
   const { state, dispatch } = useContext(NevadaDistrictContext);
 
-  function SetMapView() {
-    console.log("setting map view", [
-      centerCoordinates[0],
-      centerCoordinates[1],
-    ]);
-    const map = useMapEvent("mouseover", (e) => {
-      map.setView(
-        [centerCoordinates[0], centerCoordinates[1]],
-        stateZoomData[currentState],
-        {}
-      );
-      // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-    });
+  // function SetMapView() {
+  //   console.log("setting map view", [
+  //     centerCoordinates[0],
+  //     centerCoordinates[1],
+  //   ]);
+  //   // const map = useMapEvent("mouseover", (e) => {
+  //     map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState]);
+  //     // map.fitBounds(data.coordinates.getBounds());
+  //     // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
+  //   // });
 
-    return null;
-  }
+  //   return null;
+  // }
+  const SetMapView = () => {
+    const map = useMap();
+     useEffect(() => {
+       map.setView([centerCoordinates[0], centerCoordinates[1]]);
+     }, [centerCoordinates[0], centerCoordinates[1]]);
+     return null;
+   }
 
   useEffect(() => {
     setCenterCoordinates(props.districtCoordinates);
@@ -117,15 +122,15 @@ export default function StateMap(props: {
       <>
         <MapContainer
           id="mapid"
-          center={[38.5, -116]}
+          center={[centerCoordinates[0], centerCoordinates[1]]}
           zoom={6}
           scrollWheelZoom={false}
           className="State-map"
         >
-          <TileLayer
+          {/* <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          /> */}
           {
             getMapTexas()
           }

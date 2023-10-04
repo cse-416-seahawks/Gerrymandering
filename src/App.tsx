@@ -12,7 +12,7 @@ import { NevadaDistrictProvider } from "./NevadaContext";
 function App() {
   const [selectedState, setSelectedState] = useState('Nevada');
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
-  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([38.5, -116]);
+  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([38.5, -116.5]);
   const [disMap, setDismap] = useState(false);
   
   const handleStateChange = (state:string) => {
