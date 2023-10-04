@@ -56,6 +56,7 @@ const stateZoomData: StateZoomData = {
 
 export default function StateMap(props: {
   selectedState: string;
+  onStateSelection: (state: string) => void;
   districtCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
@@ -90,6 +91,7 @@ export default function StateMap(props: {
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
+    props.onStateSelection(event.target.value)
   };
 
   {

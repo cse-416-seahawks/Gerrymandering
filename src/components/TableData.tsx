@@ -1,4 +1,4 @@
-import React, { Component, FC, useState, useContext, Context } from 'react'
+import React, { Component, FC, useState, useContext, Context, useEffect } from 'react'
 import './css/TableData.css'
 import { Tabs, Tab } from '@mui/material'
 import TabPanel from '@mui/lab/TabPanel';
@@ -34,9 +34,12 @@ import NevadaDistricts from './districts/NevadaDistricts';
 import { NevadaDistrictContext } from '../NevadaContext';
 
 interface DistrictSelectionProps {
-    onDistrictSelection: (district_num: number, coordinates: Array<number>) => void
+    onDistrictSelection: (district_num: number, coordinates: Array<number>) => void;
 };
-function TableData({onDistrictSelection}: DistrictSelectionProps) {
+function TableData(props: {
+    selectedState: string;
+    onDistrictSelection: (district_num: number, coordinates: Array<number>) => void;
+}) {
     const [currentTab, setCurrentTab] = useState(0);
 
     const [completed, setCompleted] = useState<{
@@ -45,8 +48,12 @@ function TableData({onDistrictSelection}: DistrictSelectionProps) {
 
 
     const { state, dispatch } = useContext(NevadaDistrictContext);
-
     const steps = ['Select an Ensemble', 'Select a Cluster', 'Select a District Plan'];
+
+    // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble' 
+    useEffect(() => {
+        handleStepChange(0)
+    }, [props.selectedState])
 
     function handleStepChange(step: number) {
         if(step === 2){
@@ -71,7 +78,7 @@ function TableData({onDistrictSelection}: DistrictSelectionProps) {
 
     function handleDistrictChange(district_num: number, coords: Array<number>) {
         console.log("again", coords)
-        onDistrictSelection(district_num, coords);
+        props.onDistrictSelection(district_num, coords);
     }
 
     /**

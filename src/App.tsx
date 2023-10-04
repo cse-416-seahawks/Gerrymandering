@@ -36,12 +36,9 @@ function App() {
       <div className="StateMap-content">
         <header className="StateMap-header">
             <div className="State-map"> 
-            <StateMap selectedState={selectedState} districtCoordinates={districtCoordinates} selectedDistrict={selectedDistrict}/>
+            <StateMap selectedState={selectedState} onStateSelection={handleStateChange} districtCoordinates={districtCoordinates} selectedDistrict={selectedDistrict}/>
             </div>
-            {/* <div className="State-map stack-top">
-              <StateSelection onStateSelect={handleStateChange}/>
-            </div> */}
-            <TableData onDistrictSelection={handleDistrictSelection}/>
+            <TableData selectedState={selectedState} onDistrictSelection={handleDistrictSelection}/>
         </header>
       </div>
       </NevadaDistrictProvider>
