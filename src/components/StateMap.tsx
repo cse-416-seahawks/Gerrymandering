@@ -52,7 +52,7 @@ const stateData: StateData = {
 const stateZoomData: StateZoomData = {
   Nevada: 6,
   Texas: 6,
-  Virginia: 6,
+  Virginia: 7,
 };
 
 export default function StateMap(props: {
@@ -64,8 +64,9 @@ export default function StateMap(props: {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.districtCoordinates
   );
+  const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
   const [currentState, setCurrentState] = useState("Nevada");
-
+  
   const { state, dispatch } = useContext(NevadaDistrictContext);
 
   // function SetMapView() {
@@ -84,19 +85,22 @@ export default function StateMap(props: {
   const SetMapView = () => {
     const map = useMap();
      useEffect(() => {
-       map.setView([centerCoordinates[0], centerCoordinates[1]]);
+       map.setView([centerCoordinates[0], centerCoordinates[1]], zoom);
      }, [centerCoordinates[0], centerCoordinates[1]]);
      return null;
    }
 
   useEffect(() => {
     setCenterCoordinates(props.districtCoordinates);
+
+    if (props.selectedDistrict !== -1) setZoom(8);
   }, [props.districtCoordinates]);
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
-    props.onStateSelection(event.target.value)
+    setZoom(stateZoomData[event.target.value]);
+    props.onStateSelection(event.target.value);
   };
 
   {
@@ -117,6 +121,7 @@ export default function StateMap(props: {
     console.log(state);
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
+
   return (
     <div className="StateMap">
       <>
