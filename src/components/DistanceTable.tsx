@@ -130,23 +130,22 @@ function DistanceTable() {
 
   function BackButton() {
     if (currentTab > 0) {
-        // console.log("slay")
-        return (
-            <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton
-                    aria-label="delete"
-                    size="large"
-                    onClick={() => handleStepChange(currentTab - 1)}
-                >
-                    <ArrowBackIcon fontSize="inherit" />
-                </IconButton>
-            </Stack>
-        );
+      // console.log("slay")
+      return (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <IconButton
+            aria-label="delete"
+            size="large"
+            onClick={() => handleStepChange(currentTab - 1)}
+          >
+            <ArrowBackIcon fontSize="inherit" />
+          </IconButton>
+        </Stack>
+      );
     }
     // console.log("not slay")
     return null;
-}
-
+  }
 
   function Ensembles() {
     const { state, dispatch } = useContext(NevadaDistrictContext);
@@ -184,7 +183,16 @@ function DistanceTable() {
       { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
     ];
 
-    const data = [];
+    interface ensembleData {
+      Num: number;
+      ensemble1: number;
+      ensemble2: number;
+      ensemble3: number;
+      ensemble4: number;
+      ensemble5: number;
+    }
+
+    let data : ensembleData[] = [];
     let a = Math.random() * 10;
     let b = Math.random() * 10;
     let c = Math.random() * 10;
@@ -266,7 +274,7 @@ function DistanceTable() {
       {/* State Details */}
       {currentTab == 0 && <Ensembles />}
       {/* Summary of Cluster */}
-      {currentTab == 1 && <DistanceGraph/>}
+      {currentTab == 1 && <DistanceGraph />}
     </div>
   );
 }

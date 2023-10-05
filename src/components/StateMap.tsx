@@ -108,17 +108,14 @@ export default function StateMap(props: {
   }
 
   const getMapNevada = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
   }
 
   const getMapTexas = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
   }
 
   const getMapVirginia = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
 
