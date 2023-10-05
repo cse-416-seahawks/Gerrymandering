@@ -883,8 +883,8 @@ function TableData(props: {
                 </Stepper>
             </div>
             <BackButton />
-            {currentTab == 1 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Ensemble {ensembleNumber}: {state[state.length - 1].distanceMeasure}</div>}
-            {currentTab == 2 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Cluster {clusterNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            {/* {currentTab == 1 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Ensemble {ensembleNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            {currentTab == 2 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Cluster {clusterNumber}: {state[state.length - 1].distanceMeasure}</div>} */}
             
             {/* State Details */}
             {currentTab == 0 && <Ensembles />}
