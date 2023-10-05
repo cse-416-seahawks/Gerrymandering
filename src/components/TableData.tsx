@@ -56,11 +56,11 @@ function TableData(props: {
     ) => void;
 }) {
     const [currentTab, setCurrentTab] = useState(0);
-
     const [completed, setCompleted] = useState<{
         [k: number]: boolean;
     }>({});
-
+    const [ensembleNumber, setEnsembleNumber] = useState(0);
+    const [clusterNumber, setClusterNumber] = useState(0);
     const { state, dispatch } = useContext(NevadaDistrictContext);
     const steps = [
         "Select an Ensemble",
@@ -73,7 +73,7 @@ function TableData(props: {
         handleStepChange(0);
     }, [props.selectedState]);
 
-    function handleStepChange(step: number) {
+    function handleStepChange(step: number, ensemble_number?: number, cluster_number?: number) {
         if (step === 2) {
             dispatch({
                 type: "DISTRICT_MAP",
@@ -91,6 +91,8 @@ function TableData(props: {
         }
         console.log("district map? " + state[0]);
         setCurrentTab(step);
+        if (ensemble_number && ensemble_number !== undefined) setEnsembleNumber(ensemble_number);
+        if (cluster_number && cluster_number !== undefined) setClusterNumber(cluster_number);
     }
 
     function handleDistrictChange(district_num: number, coords: Array<number>) {
@@ -215,9 +217,9 @@ function TableData(props: {
             <div>
                 <div className='toggleButton-container'>
                     <ToggleButtonGroup exclusive value={state[state.length - 1].distanceMeasure} onChange={handleAlignment}>
-                        <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
-                        <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
-                        <ToggleButton value={"total"}>
+                        <ToggleButton value={"Hamming Distance"}> Hamming Distance </ToggleButton>
+                        <ToggleButton value={"Optimal Transport"}> Optimal Transport </ToggleButton>
+                        <ToggleButton value={"Total Variation Distnace"}>
                             Total Variation Distance
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -246,7 +248,7 @@ function TableData(props: {
                                     <Button
                                         variant="text"
                                         size="large"
-                                        onClick={() => handleStepChange(1)}
+                                        onClick={() => handleStepChange(1, row.ensemble)}
                                     >
                                         Ensemble {row.ensemble}
                                     </Button>
@@ -761,7 +763,7 @@ function TableData(props: {
                                                 <Button
                                                     variant="text"
                                                     size="medium"
-                                                    onClick={() => handleStepChange(2)}
+                                                    onClick={() => handleStepChange(2, undefined, row.cluster)}
                                                 >
                                                     {row.cluster}
                                                 </Button>
@@ -788,15 +790,14 @@ function TableData(props: {
                         <Accordion defaultExpanded={true}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Typography>
-                                    <b>Cluster Graph</b>
+                                    <b>African-American Population In Clusters</b>
                                 </Typography>
                             </AccordionSummary>
                             <div className="graph-container-row">
                                 <div className="graph-container">
-
                                 <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
-                                    <div style={{fontWeight:'700', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
-                                        African American Population In Districts (%)
+                                    <div style={{fontWeight:'700', textAlign:'center', fontSize: '1rem', height: '100px', width: '120px'}}>
+                                        {'# of Districts where African-American Population > 60%'}
                                     </div>
                                 </div>
                                 <ScatterChart
@@ -808,13 +809,13 @@ function TableData(props: {
                                     <XAxis
                                         type="number"
                                         dataKey="x"
-                                        name="Average African-American Population (%)"
+                                        name="Average African-American Population Per District (%)"
                                     ></XAxis>
                                     <YAxis
                                         yAxisId="left"
                                         type="number"
                                         dataKey="y"
-                                        name="African American Population In Districts (%)"
+                                        name="# of Districts where African-American Population > 60%"
                                         opacity="1"
                                         stroke="#7aa9ff"
                                     />
@@ -835,7 +836,7 @@ function TableData(props: {
                                 </ScatterChart>
 
                                 </div>
-                                <div style={{display:'flex',fontSize: '1rem', width:'75%', marginBottom:'1rem', fontWeight:'700', justifyContent:'end'}}>Average African-American Population (%)</div>
+                                <div style={{display:'flex',fontSize: '1rem', width:'85%', marginBottom:'1rem', fontWeight:'700', justifyContent:'end'}}>Average African-American Population Per District (%)</div>
                             </div>
                         </Accordion>
                     </TabPanel>
@@ -882,6 +883,9 @@ function TableData(props: {
                 </Stepper>
             </div>
             <BackButton />
+            {currentTab == 1 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Ensemble {ensembleNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            {currentTab == 2 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Cluster {clusterNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            
             {/* State Details */}
             {currentTab == 0 && <Ensembles />}
             {/* Summary of Cluster */}
@@ -1071,43 +1075,56 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
 
     return (
         <>
-            <div className="graph-container-row">
-                <div className="graph-container">
-                <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
-                    <div style={{fontWeight:'700', textAlign:'center', fontSize: '1.2rem', height: '100px', width: '100px'}}>
-                        Average Household Size
-                    </div>
-                </div>
-                <ScatterChart
-                    width={800}
-                    height={350}
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 10,
-                        left: 10,
-                    }}
+            <Accordion  defaultExpanded={false}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                        dataKey="x"
-                        type="number"
-                        name="African American Population (%)"
-                    />
-                    <YAxis dataKey="y" type="number" name="Average Household Size" />
-                    {/* <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" /> */}
-                    <Tooltip
-                        cursor={{ strokeDasharray: "3 3" }}
-                        contentStyle={{ fontSize: 18 }}
-                    />
-                    <Legend />
-                    <Scatter name="Available Data" data={data01} fill="#8884d8" />
-                    <Scatter name="Unavailable Data" data={data02} fill="#82ca9d" />
-                </ScatterChart>
+                    <Typography>
+                        <b>District Graph</b>
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <div className="graph-container-row">
+                    <div style={{ display: 'flex', flexDirection: 'column', fontSize: '1.2rem', fontWeight: 700, width: '110%', justifyContent:'end'}}>African-American Population In District Plans</div>
+                    <div className="graph-container">
+                    {/* African American Population Per District */}
+                    <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
+                        <div style={{fontWeight:'600', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
+                            Average Household Size
+                        </div>
+                    </div>
+                    <ScatterChart
+                        width={800}
+                        height={350}
+                        margin={{
+                            top: 20,
+                            right: 20,
+                            bottom: 10,
+                            left: 10,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                            dataKey="x"
+                            type="number"
+                            name="African American Population (%)"
+                        />
+                        <YAxis dataKey="y" type="number" name="Average Household Size" />
+                        {/* <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" /> */}
+                        <Tooltip
+                            cursor={{ strokeDasharray: "3 3" }}
+                            contentStyle={{ fontSize: 18 }}
+                        />
+                        <Legend />
+                        <Scatter name="Available Data" data={data01} fill="#8884d8" />
+                        <Scatter name="Unavailable Data" data={data02} fill="#82ca9d" />
+                    </ScatterChart>
+                    </div>
+                    <div style={{display:'flex', fontSize: '1rem', width:'65%', margin:'2rem', fontWeight:'500', justifyContent:'end'}}>African American Population (%)</div>
                 </div>
-                <div style={{display:'flex', fontSize: '1.2rem', width:'65%', margin:'2rem', fontWeight:'700', justifyContent:'end'}}>African American Population (%)</div>
-            </div>
-            <Accordion>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion defaultExpanded={true}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
