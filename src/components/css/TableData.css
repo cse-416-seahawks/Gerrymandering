@@ -51,6 +51,13 @@
 .graph-container {
   display: flex;
   justify-content: center;
+  flex-direction: row;
+}
+
+.graph-container-row {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .recharts-cartesian-axis-tick {
