@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const cors = require('cors');
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
@@ -28,10 +28,13 @@ app.get('Texas/filename', (req, res) => {
     });
   });
 */
+app.use(cors());
 app.use(express.json())
 
 const TexasRouter = require('./routes/Texas')
 app.use('/Texas', TexasRouter)
+const VirginiaRouter = require('./routes/Virginia')
+app.use('/Virginia', VirginiaRouter)
 
 app.listen(4000, () => console.log('Server listening'))
 

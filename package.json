@@ -2,6 +2,7 @@
   "name": "gerrymandering",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -18,6 +19,7 @@
     "autoprefixer": "^10.4.16",
     "axios": "^1.5.1",
     "browserify-zlib": "^0.2.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.1",
