@@ -173,6 +173,7 @@ function TableData(props: {
 
 
     function Ensembles() {
+        
         const { state, dispatch } = useContext(NevadaDistrictContext);
         const handleAlignment = (
             event: React.MouseEvent<HTMLElement>,
@@ -187,69 +188,199 @@ function TableData(props: {
             });
         };
 
-        //   function handleDistanceMeasure(distanceMethod: string) {
-        //     console.log(state[state.length - 1].distanceMeasure)
-        //     setMethod(distanceMethod);
-        //     dispatch({
-        //         type: "DISTANCE_MEASURE",
-        //         payload: {
-        //           distanceMethod: distanceMethod,
-        //         },
-        //       });
-        //     // randomizeEnsembleData
-        //     ensembleData.map((ensemble) => {
-        //         ensemble.data.map((data) => {
-        //             if (data.label == "Numbers of clusters") {
-        //                 data.detail = getRandomNumber(7,20);
-        //             } else if (data.label == "Average distance between clusters") {
-        //                 data.detail = getRandomNumber(12.1,62.1);
-        //             } else if (data.label == "Number of district plans") {
-        //                 data.detail = getRandomNumber(500,1000);
-        //             }
-        //         })
-        //     })
-        // }
+        const [currentTab, setCurrentTab] = useState("1");
+
+        function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+            console.log(newValue);
+            setCurrentTab(String(newValue));
+        }
+
+        interface ensemble_summary_table {
+            ensemble: number;
+            num_clusters: number;
+            plans_needed: number;
+        }
+        
+        const sampleData: ensemble_summary_table[] = [
+            { ensemble: 1, num_clusters: 3, plans_needed: 309 },
+            { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },
+            { ensemble: 3, num_clusters: 4.6, plans_needed: 321 },
+            { ensemble: 4, num_clusters: 5.3, plans_needed: 251 },
+            { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
+        ];
+
+
+        const data = [];
+        let a = Math.random() * 10;
+        let b = Math.random() * 10;
+        let c = Math.random() * 10;
+        let d = Math.random() * 10;
+        for (let i = 1; i <= 500; i++) {
+            data.push({
+                Num: i,
+                ensemble1: Math.log(i) * 10,
+                ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
+                ensemble3: Math.log(i) / Math.log(8) + b,
+                ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
+                ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
+            });
+        }
+
+        let color;
+        function randomColor() {
+            color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+            return color;
+        }
+
         return (
             <div>
-                <ToggleButtonGroup exclusive value={state[state.length - 1].distanceMeasure} onChange={handleAlignment}>
-                    <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
-                    <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
-                    <ToggleButton value={"total"}>
-                        Total Variation Distance
-                    </ToggleButton>
-                </ToggleButtonGroup>
-                {ensembleData.map((row) => (
-                    <Accordion defaultExpanded={row.expanded}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                        >
-                            <Button
-                                variant="text"
-                                size="large"
-                                onClick={() => handleStepChange(1)}
-                            >
-                                Ensemble {row.ensemble}
-                            </Button>
-                        </AccordionSummary>
-                        <Divider />
-                        <AccordionDetails>
-                            <Table sx={{ minWidth: 650 }}>
-                                <TableBody>
-                                    {row.data.map((tablerow) => (
-                                        <TableRow key={tablerow.label}>
-                                            <TableCell component="th" scope="row">
-                                                {" "}
-                                                {tablerow.label}{" "}
-                                            </TableCell>
-                                            <TableCell align="right">{tablerow.detail}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
+                <div className='toggleButton-container'>
+                    <ToggleButtonGroup exclusive value={state[state.length - 1].distanceMeasure} onChange={handleAlignment}>
+                        <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
+                        <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
+                        <ToggleButton value={"total"}>
+                            Total Variation Distance
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <TabContext value={currentTab}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
+                        <Tabs value={currentTab} onChange={handleTabChange}>
+                            <Tab
+                                value="1"
+                                label="Ensemble Selection"
+                                sx={{ textTransform: "none" }}
+                            />
+                            <Tab
+                                value="2"
+                                label="Graph Data"
+                                sx={{ textTransform: "none" }}
+                            />
+                        </Tabs>
+                    </Box>
+                    <TabPanel value="1">
+                        {ensembleData.map((row) => (
+                            <Accordion defaultExpanded={row.expanded}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                >
+                                    <Button
+                                        variant="text"
+                                        size="large"
+                                        onClick={() => handleStepChange(1)}
+                                    >
+                                        Ensemble {row.ensemble}
+                                    </Button>
+                                </AccordionSummary>
+                                <Divider />
+                                <AccordionDetails>
+                                    <Table sx={{ minWidth: 650 }}>
+                                        <TableBody>
+                                            {row.data.map((tablerow) => (
+                                                <TableRow key={tablerow.label}>
+                                                    <TableCell component="th" scope="row">
+                                                        {" "}
+                                                        {tablerow.label}{" "}
+                                                    </TableCell>
+                                                    <TableCell align="right">{tablerow.detail}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </AccordionDetails>
+                            </Accordion>
+                        ))}
+                        <br/>
+                    </TabPanel>
+                    <TabPanel value="2">
+                    <Accordion defaultExpanded={false}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                {" "}
+                                <Typography>
+                                    <b>Association of clusters with ensemble size</b>
+                                </Typography>
+                            </AccordionSummary>
+                            <div className="graph-container">
+                                <AreaChart width={600} height={400} data={data}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="Num" />
+                                    <YAxis />
+                                    <Tooltip contentStyle={{ fontSize: 18 }} />
+                                    <Legend />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="ensemble1"
+                                        stroke="#8884d8"
+                                        fill="#8884d8"
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="ensemble2"
+                                        stroke="#82ca9d"
+                                        fill="#82ca9d"
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="ensemble3"
+                                        stroke={randomColor()}
+                                        fill={color}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="ensemble4"
+                                        stroke={randomColor()}
+                                        fill={color}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="ensemble5"
+                                        stroke={randomColor()}
+                                        fill={color}
+                                    />
+                                    {/*
+                                Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
+                                data, so this is will still need fixes before this is ready.
+                                */}
+                                </AreaChart>
+                            </div>
+                        </Accordion>
+                        <Accordion defaultExpanded={true}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>
+                                    <b>Details about the ensembles</b>
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }}>
+                                        <TableHead sx={{ height: "10px", fontSize: "10px" }}>
+                                            <TableRow>
+                                                <TableCell>Ensemble</TableCell>
+                                                <TableCell align="right"># of clusters at 500</TableCell>
+                                                <TableCell align="right">
+                                                    Plans needed to reach max clusters
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
 
+                                        <TableBody>
+                                            {sampleData.map((row) => (
+                                                <TableRow key={row.ensemble}>
+                                                    <TableCell component="th" scope="row">
+                                                        {" "}
+                                                        {row.ensemble}{" "}
+                                                    </TableCell>
+                                                    <TableCell align="right">{row.num_clusters}</TableCell>
+                                                    <TableCell align="right">{row.plans_needed}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </AccordionDetails>
+                        </Accordion>
+                    </TabPanel>
+                </TabContext>   
             </div>
         );
     }
@@ -314,12 +445,6 @@ function TableData(props: {
         function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
             console.log(newValue);
             setCurrentTab(String(newValue));
-        }
-
-        interface cluster_summary_table {
-            cluster: number;
-            num_districts: number;
-            average_dist: number;
         }
 
         const data01 = [
@@ -592,27 +717,27 @@ function TableData(props: {
             },
         ];
 
-        const data = [];
-        let a = Math.random() * 10;
-        let b = Math.random() * 10;
-        let c = Math.random() * 10;
-        let d = Math.random() * 10;
-        for (let i = 1; i <= 500; i++) {
-            data.push({
-                Num: i,
-                ensemble1: Math.log(i) * 10,
-                ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
-                ensemble3: Math.log(i) / Math.log(8) + b,
-                ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
-                ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
-            });
-        }
+        // const data = [];
+        // let a = Math.random() * 10;
+        // let b = Math.random() * 10;
+        // let c = Math.random() * 10;
+        // let d = Math.random() * 10;
+        // for (let i = 1; i <= 500; i++) {
+        //     data.push({
+        //         Num: i,
+        //         ensemble1: Math.log(i) * 10,
+        //         ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
+        //         ensemble3: Math.log(i) / Math.log(8) + b,
+        //         ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
+        //         ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
+        //     });
+        // }
 
-        let color;
-        function randomColor() {
-            color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-            return color;
-        }
+        // let color;
+        // function randomColor() {
+        //     color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+        //     return color;
+        // }
 
         return (
             <>
@@ -681,57 +806,6 @@ function TableData(props: {
                         </TableContainer>
                     </TabPanel>
                     <TabPanel value="2">
-                        <Accordion defaultExpanded={false}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                {" "}
-                                <Typography>
-                                    <b>Association of clusters with ensemble size</b>
-                                </Typography>
-                            </AccordionSummary>
-                            <div className="graph-container">
-                                <AreaChart width={600} height={400} data={data}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="Num" />
-                                    <YAxis />
-                                    <Tooltip contentStyle={{ fontSize: 18 }} />
-                                    <Legend />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="ensemble1"
-                                        stroke="#8884d8"
-                                        fill="#8884d8"
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="ensemble2"
-                                        stroke="#82ca9d"
-                                        fill="#82ca9d"
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="ensemble3"
-                                        stroke={randomColor()}
-                                        fill={color}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="ensemble4"
-                                        stroke={randomColor()}
-                                        fill={color}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="ensemble5"
-                                        stroke={randomColor()}
-                                        fill={color}
-                                    />
-                                    {/*
-                                  Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
-                                  data, so this is will still need fixes before this is ready.
-                                  */}
-                                </AreaChart>
-                            </div>
-                        </Accordion>
                         <Accordion defaultExpanded={true}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 {" "}
@@ -956,11 +1030,6 @@ export default TableData;
 //     )
 // }
 function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
-    interface cluster_summary_table {
-        ensemble: number;
-        num_clusters: number;
-        plans_needed: number;
-    }
 
     const [districtSelection, setDistrictSelection] = useState(0);
     const [coordinates, setCoordinates] = useState<Array<number>>([]);
@@ -982,13 +1051,6 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
         return null;
     }
 
-    const sampleData: cluster_summary_table[] = [
-        { ensemble: 1, num_clusters: 3, plans_needed: 309 },
-        { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },
-        { ensemble: 3, num_clusters: 4.6, plans_needed: 321 },
-        { ensemble: 4, num_clusters: 5.3, plans_needed: 251 },
-        { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
-    ];
 
     interface district_summary_table {
         district: number;
@@ -1282,46 +1344,6 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                             {/* <a href='https://www.nvsos.gov/sos/home/showpublisheddocument/12423/638318433762190000' target='_blank'>
                           <p style={{fontSize:"12px"}}>Data Referenced</p>
                       </a> */}
-                        </Table>
-                    </TableContainer>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    {" "}
-                    <Typography>
-                        <b>Details about the ensembles</b>
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }}>
-                            <TableHead sx={{ height: "10px", fontSize: "10px" }}>
-                                <TableRow>
-                                    <TableCell>Ensemble</TableCell>
-                                    <TableCell align="right"># of clusters at 500</TableCell>
-                                    <TableCell align="right">
-                                        Plans needed to reach max clusters
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-
-                            <TableBody>
-                                {sampleData.map((row) => (
-                                    <TableRow key={row.ensemble}>
-                                        <TableCell component="th" scope="row">
-                                            {" "}
-                                            {row.ensemble}{" "}
-                                        </TableCell>
-                                        <TableCell align="right">{row.num_clusters}</TableCell>
-                                        <TableCell align="right">{row.plans_needed}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
                         </Table>
                     </TableContainer>
                 </AccordionDetails>
