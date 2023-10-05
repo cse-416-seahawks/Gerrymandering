@@ -63,6 +63,7 @@ import NevadaDistricts from "./districts/NevadaDistricts";
 import { NevadaDistrictContext } from "../NevadaContext";
 import * as AiIcons from "react-icons/ai";
 
+
 interface DistrictSelectionProps {
   onDistrictSelection: (
     district_num: number,
@@ -114,7 +115,7 @@ function TableData(props: {
     setCurrentTab(step);
   }
 
-  function handleDistrictChange(district_num: number, coords: Array<number>) {
+  function  handleDistrictChange(district_num: number, coords: Array<number>) {
     console.log("again", coords);
     props.onDistrictSelection(district_num, coords);
   }
@@ -663,6 +664,8 @@ function TableData(props: {
       return color;
     }
 
+  
+
     return (
       <>
         <TabContext value={currentTab}>
@@ -814,14 +817,15 @@ function TableData(props: {
                     wrapperStyle={{ outline: "none" }}
                     contentStyle={{ fontSize: 18 }}
                   />
-                  <Scatter
-                    yAxisId="left"
-                    data={data01}
-                    fill="#bfd6ff"
-                    stroke="#037cff"
-                    opacity={4}
-                  />
-                </ScatterChart>
+                    <Scatter
+                      yAxisId="left"
+                      data={data01}
+                      fill="#bfd6ff"
+                      stroke="#037cff"
+                      opacity={4}
+                      onClick={()=>handleStepChange(2)}
+                    />
+                  </ScatterChart>
               </div>
             </Accordion>
           </TabPanel>
