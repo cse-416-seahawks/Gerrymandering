@@ -2,7 +2,7 @@ html {
   background-color: #f6f8fa;
 }
 
-.App {
+.Home {
   display: flex;
   flex-direction: row;
   text-align: center;
@@ -10,17 +10,17 @@ html {
   height:100%;
 }
 
-.App-logo {
+.Home-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
-.App-header {
+.Home-header {
   height : 25%;
   width: 100%;
 }
 
-.App-content {
+.Home-content {
   display: flex;
   flex-direction: column;
   flex : 0 0 100%;
@@ -28,8 +28,8 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  .Home-logo {
+    animation: Home-logo-spin infinite 20s linear;
   }
 }
 .search {
@@ -87,11 +87,11 @@ html {
 }
 
 
-.App-link {
+.Home-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@keyframes Home-logo-spin {
   from {
     transform: rotate(0deg);
   }
