@@ -60,6 +60,7 @@ function TableData(props: {
         [k: number]: boolean;
     }>({});
     const [ensembleNumber, setEnsembleNumber] = useState(0);
+    const [clusterNumber, setClusterNumber] = useState(0);
     const { state, dispatch } = useContext(NevadaDistrictContext);
     const steps = [
         "Select an Ensemble",
@@ -72,7 +73,7 @@ function TableData(props: {
         handleStepChange(0);
     }, [props.selectedState]);
 
-    function handleStepChange(step: number, ensemble_number?: number) {
+    function handleStepChange(step: number, ensemble_number?: number, cluster_number?: number) {
         if (step === 2) {
             dispatch({
                 type: "DISTRICT_MAP",
@@ -90,7 +91,8 @@ function TableData(props: {
         }
         console.log("district map? " + state[0]);
         setCurrentTab(step);
-        if (ensemble_number) setEnsembleNumber(ensemble_number);
+        if (ensemble_number && ensemble_number !== undefined) setEnsembleNumber(ensemble_number);
+        if (cluster_number && cluster_number !== undefined) setClusterNumber(cluster_number);
     }
 
     function handleDistrictChange(district_num: number, coords: Array<number>) {
@@ -761,7 +763,7 @@ function TableData(props: {
                                                 <Button
                                                     variant="text"
                                                     size="medium"
-                                                    onClick={() => handleStepChange(2)}
+                                                    onClick={() => handleStepChange(2, undefined, row.cluster)}
                                                 >
                                                     {row.cluster}
                                                 </Button>
@@ -817,7 +819,7 @@ function TableData(props: {
                                         opacity="1"
                                         stroke="#7aa9ff"
                                     />
-                                    <ZAxis dataKey="" domain={domain} range={range} />
+                                    <ZAxis dataKey="y" domain={domain} range={range} />
                                     <Tooltip
                                         cursor={{ strokeDasharray: "3 3" }}
                                         wrapperStyle={{ outline: "none" }}
@@ -881,7 +883,9 @@ function TableData(props: {
                 </Stepper>
             </div>
             <BackButton />
-            {currentTab == 1 && <div style={{fontSize:'1.2rem', fontWeight:500}}>Ensemble {ensembleNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            {currentTab == 1 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Ensemble {ensembleNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            {currentTab == 2 && <div style={{fontSize:'1.2rem', fontWeight:500, paddingBottom:'1rem'}}>Cluster {clusterNumber}: {state[state.length - 1].distanceMeasure}</div>}
+            
             {/* State Details */}
             {currentTab == 0 && <Ensembles />}
             {/* Summary of Cluster */}
@@ -1085,7 +1089,7 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                     <div className="graph-container">
                     {/* African American Population Per District */}
                     <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
-                        <div style={{fontWeight:'500', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
+                        <div style={{fontWeight:'600', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
                             Average Household Size
                         </div>
                     </div>
