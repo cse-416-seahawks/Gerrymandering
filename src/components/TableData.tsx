@@ -253,7 +253,7 @@ function TableData(props: {
                             />
                             <Tab
                                 value="2"
-                                label="Graph Data"
+                                label="Ensemble Data"
                                 sx={{ textTransform: "none" }}
                             />
                         </Tabs>
@@ -293,7 +293,7 @@ function TableData(props: {
                         <br/>
                     </TabPanel>
                     <TabPanel value="2">
-                    <Accordion defaultExpanded={false}>
+                    <Accordion defaultExpanded={true}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 {" "}
                                 <Typography>
@@ -344,7 +344,7 @@ function TableData(props: {
                                 </AreaChart>
                             </div>
                         </Accordion>
-                        <Accordion defaultExpanded={true}>
+                        <Accordion defaultExpanded={false}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Typography>
                                     <b>Details about the ensembles</b>
@@ -751,7 +751,7 @@ function TableData(props: {
                             />
                             <Tab
                                 value="2"
-                                label="Graph Data"
+                                label="Cluster Data"
                                 sx={{ textTransform: "none" }}
                             />
                         </Tabs>

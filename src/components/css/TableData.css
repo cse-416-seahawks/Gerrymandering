@@ -40,6 +40,10 @@
   border-radius: 1rem;
 }
 
+.toggleButton-container {
+  margin: 1rem;
+}
+
 .graph-container {
   display: flex;
   justify-content: center;
