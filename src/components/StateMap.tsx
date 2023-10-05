@@ -10,7 +10,7 @@ import "./css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import DistrictInfoCard from "./DistrictInfoCard";
 
-import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Polygon, useMapEvent, useMap, Marker} from "react-leaflet";
 
 // import MarkerClusterGroup from "react-leaflet-cluster";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
@@ -27,6 +27,7 @@ import TexasDistricts from "./districts/TexasDistricts";
 import NevadaDistricts from "./districts/NevadaDistricts";
 import VirginiaDistricts from "./districts/VirginiaDistricts";
 import { NevadaDistrictContext } from "../NevadaContext";
+import { NONAME } from "dns";
 
 interface GeoJSON {
   type: string;
@@ -90,10 +91,32 @@ export default function StateMap(props: {
      return null;
    }
 
+  // function showMarker {
+  //   if (props.selectedDistrict!=-1){
+  //     return(
+  //       <Marker position={[centerCoordinates[0], centerCoordinates[1]]}/>
+  //     )
+  //   }
+  //   return(null)
+  // }
+  const showMarker = () => {
+    if(props.selectedDistrict!=-1){
+      console.log("SELECTED DISTRICT")
+      return(
+        <Marker position={[centerCoordinates[0], centerCoordinates[1]]}/>
+      )
+    }
+    else{
+      return null
+    }
+  }
+
   useEffect(() => {
     setCenterCoordinates(props.districtCoordinates);
 
     if (props.selectedDistrict !== -1) setZoom(8);
+
+    
   }, [props.districtCoordinates]);
 
   const handleStateChange = (event: SelectChangeEvent) => {
@@ -122,6 +145,7 @@ export default function StateMap(props: {
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
 
+
   return (
     <div className="StateMap">
       <>
@@ -132,10 +156,10 @@ export default function StateMap(props: {
           scrollWheelZoom={false}
           className="State-map"
         >
-          <TileLayer
+          {/* <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          /> */}  
           {
             getMapTexas()
           }
@@ -147,8 +171,11 @@ export default function StateMap(props: {
           {
             getMapVirginia()
           }
-
-          <SetMapView />
+          <SetMapView/>
+          {
+            showMarker()
+          }
+          
         </MapContainer>
         <div className="State-map stack-top">
           <FormControl
