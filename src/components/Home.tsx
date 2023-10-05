@@ -20,7 +20,7 @@ function Home() {
   }
   
   const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
-    console.log("now in app", district_num)
+    console.log("now inhome", district_num)
     setSelectedDistrict(district_num);
     setDistrictCoordinates(coordinates);
   }

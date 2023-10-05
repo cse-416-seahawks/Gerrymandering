@@ -10,7 +10,7 @@ import { Polygon } from "react-leaflet";
 export default () => (
   <Polygon
     pathOptions={{
-      fillColor: "#FD8D3C",
+      fillColor: "#4287f5",
       fillOpacity: 0.5,
       weight: 2,
       opacity: 1,

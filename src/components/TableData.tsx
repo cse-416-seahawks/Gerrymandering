@@ -1,9 +1,4 @@
-import React, {
-  FC,
-  useState,
-  useContext,
-  useEffect,
-} from "react";
+import React, { FC, useState, useContext, useEffect } from "react";
 import "./css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
@@ -32,9 +27,7 @@ import StepContent from "@mui/material/StepContent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import {
-  useMapEvent,
-} from "react-leaflet";
+import { useMapEvent } from "react-leaflet";
 import {
   AreaChart,
   Area,
@@ -48,7 +41,6 @@ import {
   ZAxis,
 } from "recharts";
 import { NevadaDistrictContext } from "../NevadaContext";
-
 
 interface DistrictSelectionProps {
   onDistrictSelection: (
@@ -101,7 +93,7 @@ function TableData(props: {
     setCurrentTab(step);
   }
 
-  function  handleDistrictChange(district_num: number, coords: Array<number>) {
+  function handleDistrictChange(district_num: number, coords: Array<number>) {
     console.log("again", coords);
     props.onDistrictSelection(district_num, coords);
   }
@@ -117,7 +109,7 @@ function TableData(props: {
   ];
 
   function Ensembles() {
-    const [method, setMethod] = React.useState<string | null>('hamming');
+    const [method, setMethod] = React.useState<string | null>("hamming");
     const handleAlignment = (
       event: React.MouseEvent<HTMLElement>,
       newMethod: string | null
@@ -126,15 +118,6 @@ function TableData(props: {
     };
     return (
       <div>
-        <ToggleButtonGroup className="distance-options-group" exclusive value={method} onChange={handleAlignment}>
-          <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
-          <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
-          <ToggleButton value={"total"}>
-            {" "}
-            Total Variation Distance{" "}
-          </ToggleButton>
-        </ToggleButtonGroup>
-
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -166,6 +149,8 @@ function TableData(props: {
             </Table>
           </AccordionDetails>
         </Accordion>
+
+        {/* Ensemble 2 */}
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -197,6 +182,8 @@ function TableData(props: {
             </Table>
           </AccordionDetails>
         </Accordion>
+
+        {/* Ensemble 3 */}
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -228,6 +215,8 @@ function TableData(props: {
             </Table>
           </AccordionDetails>
         </Accordion>
+
+        {/* Ensemble 4 */}
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -259,6 +248,8 @@ function TableData(props: {
             </Table>
           </AccordionDetails>
         </Accordion>
+
+        {/* Ensemble 5 */}
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Button
@@ -267,6 +258,93 @@ function TableData(props: {
               onClick={() => handleStepChange(1)}
             >
               Ensemble 5
+            </Button>
+          </AccordionSummary>
+          <Divider />
+          <AccordionDetails>
+            <Table sx={{ minWidth: 650 }}>
+              <TableBody>
+                {ensemble.map((row) => (
+                  <TableRow key={row.label}>
+                    <TableCell component="th" scope="row">
+                      {" "}
+                      {row.label}{" "}
+                    </TableCell>
+                    <TableCell align="right">{row.detail}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Ensemble 6 */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Button
+              variant="text"
+              size="large"
+              onClick={() => handleStepChange(1)}
+            >
+              Ensemble 6
+            </Button>
+          </AccordionSummary>
+          <Divider />
+          <AccordionDetails>
+            <Table sx={{ minWidth: 650 }}>
+              <TableBody>
+                {ensemble.map((row) => (
+                  <TableRow key={row.label}>
+                    <TableCell component="th" scope="row">
+                      {" "}
+                      {row.label}{" "}
+                    </TableCell>
+                    <TableCell align="right">{row.detail}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Ensemble 7 */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Button
+              variant="text"
+              size="large"
+              onClick={() => handleStepChange(1)}
+            >
+              Ensemble 7
+            </Button>
+          </AccordionSummary>
+          <Divider />
+          <AccordionDetails>
+            <Table sx={{ minWidth: 650 }}>
+              <TableBody>
+                {ensemble.map((row) => (
+                  <TableRow key={row.label}>
+                    <TableCell component="th" scope="row">
+                      {" "}
+                      {row.label}{" "}
+                    </TableCell>
+                    <TableCell align="right">{row.detail}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Ensemble 8 */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Button
+              variant="text"
+              size="large"
+              onClick={() => handleStepChange(1)}
+            >
+              Ensemble 8
             </Button>
           </AccordionSummary>
           <Divider />
@@ -633,6 +711,7 @@ function TableData(props: {
     let b = Math.random() * 10;
     let c = Math.random() * 10;
     let d = Math.random() * 10;
+
     for (let i = 1; i <= 500; i++) {
       data.push({
         Num: i,
@@ -641,6 +720,11 @@ function TableData(props: {
         ensemble3: Math.log(i) / Math.log(8) + b,
         ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
         ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
+        ensemble6: (Math.log(i) * 10) / Math.log(5), // Using a similar equation for ensemble6
+        ensemble7: (Math.log(i) / Math.log(4)) * 10, // Using a similar equation for ensemble7
+        ensemble8: Math.log(i) * 10 + a + b, // Using a similar equation for ensemble8
+        ensemble9: (Math.log(i) / Math.log(3)) * 10, // Using a similar equation for ensemble9
+        ensemble10: (Math.log(i) * 10) / Math.log(2) + c + d, // Using a similar equation for ensemble10
       });
     }
 
@@ -649,8 +733,6 @@ function TableData(props: {
       color = "#" + Math.floor(Math.random() * 16777215).toString(16);
       return color;
     }
-
-  
 
     return (
       <>
@@ -803,15 +885,15 @@ function TableData(props: {
                     wrapperStyle={{ outline: "none" }}
                     contentStyle={{ fontSize: 18 }}
                   />
-                    <Scatter
-                      yAxisId="left"
-                      data={data01}
-                      fill="#bfd6ff"
-                      stroke="#037cff"
-                      opacity={4}
-                      onClick={()=>handleStepChange(2)}
-                    />
-                  </ScatterChart>
+                  <Scatter
+                    yAxisId="left"
+                    data={data01}
+                    fill="#bfd6ff"
+                    stroke="#037cff"
+                    opacity={4}
+                    onClick={() => handleStepChange(2)}
+                  />
+                </ScatterChart>
               </div>
             </Accordion>
           </TabPanel>
@@ -871,7 +953,6 @@ function TableData(props: {
 }
 
 export default TableData;
-
 
 function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
   interface cluster_summary_table {

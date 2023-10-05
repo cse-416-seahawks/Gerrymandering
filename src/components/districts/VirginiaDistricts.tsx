@@ -7,13 +7,18 @@ import { virginiaHouse } from "../../GeoJson/Virginia_House";
 import { Polygon } from "react-leaflet";
 
 export default () => {
+  const generateColor = () => {
+    return (
+      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
+    );
+  };
   return (
     <>
       {virginiaHouse.features.map((district) => {
         return (
           <Polygon
             pathOptions={{
-              fillColor: "#FD8D3C",
+              fillColor: "#4287f5",
               fillOpacity: 0.5,
               weight: 2,
               opacity: 1,
@@ -37,6 +42,14 @@ export default () => {
                   fillOpacity: 0.5,
                   weight: 2,
                   color: "white",
+                });
+              },
+              click: (e) => {
+                const layer = e.target;
+                layer.setStyle({
+                  fillOpacity: 0.5,
+                  weight: 2,
+                  fillColor: generateColor(),
                 });
               },
             }}

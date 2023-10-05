@@ -1,0 +1,19 @@
+.Distance {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height:100%;
+  }
+  
+
+.distance-table-container {
+    display: table;
+    margin-left: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 100%;
+    height: 86vh;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(0.1rem);
+  }
