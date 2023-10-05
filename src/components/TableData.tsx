@@ -792,7 +792,7 @@ function TableData(props: {
                                 </Typography>
                             </AccordionSummary>
                             <div className="graph-container-row">
-                                <div  className="graph-container">
+                                <div className="graph-container">
 
                                 <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
                                     <div style={{fontWeight:'700', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
@@ -1071,9 +1071,15 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
 
     return (
         <>
-            <div className="graph-container">
+            <div className="graph-container-row">
+                <div className="graph-container">
+                <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
+                    <div style={{fontWeight:'700', textAlign:'center', fontSize: '1.2rem', height: '100px', width: '100px'}}>
+                        Average Household Size
+                    </div>
+                </div>
                 <ScatterChart
-                    width={830}
+                    width={800}
                     height={350}
                     margin={{
                         top: 20,
@@ -1098,7 +1104,8 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                     <Scatter name="Available Data" data={data01} fill="#8884d8" />
                     <Scatter name="Unavailable Data" data={data02} fill="#82ca9d" />
                 </ScatterChart>
-                hi
+                </div>
+                <div style={{display:'flex', fontSize: '1.2rem', width:'65%', margin:'2rem', fontWeight:'700', justifyContent:'end'}}>African American Population (%)</div>
             </div>
             <Accordion>
                 <AccordionSummary
