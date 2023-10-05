@@ -20,8 +20,6 @@ import DistanceGraph from "./DistanceGraph";
 import { NevadaDistrictContext } from "../NevadaContext";
 import { Stack, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { data } from "./boxplot/data";
-import { Boxplot } from "./boxplot/Boxplot";
 
 function DistanceTable() {
   const steps = ["Select an Ensemble", "Compare Distance Measures"];
@@ -263,12 +261,12 @@ function DistanceTable() {
             </Step>
           ))}
         </Stepper>
-        <BackButton />
-        {/* State Details */}
-        {currentTab == 0 && <Ensembles />}
-        {/* Summary of Cluster */}
-        {currentTab == 1 && <DistanceGraph/>}
       </div>
+      <BackButton />
+      {/* State Details */}
+      {currentTab == 0 && <Ensembles />}
+      {/* Summary of Cluster */}
+      {currentTab == 1 && <DistanceGraph/>}
     </div>
   );
 }
