@@ -787,28 +787,34 @@ function TableData(props: {
                     <TabPanel value="2">
                         <Accordion defaultExpanded={true}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                {" "}
                                 <Typography>
                                     <b>Cluster Graph</b>
                                 </Typography>
                             </AccordionSummary>
-                            <div className="graph-container">
+                            <div className="graph-container-row">
+                                <div  className="graph-container">
+
+                                <div style={{ display: 'flex', alignItems: 'center',  justifyContent: 'center', height: '350px'}}>
+                                    <div style={{fontWeight:'700', textAlign:'center', fontSize: '1rem', height: '100px', width: '100px'}}>
+                                        African American Population In Districts (%)
+                                    </div>
+                                </div>
                                 <ScatterChart
-                                    width={500}
-                                    height={300}
+                                    width={750}
+                                    height={350}
                                     margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                                 >
                                     <CartesianGrid />
                                     <XAxis
                                         type="number"
                                         dataKey="x"
-                                        name="Average distance"
+                                        name="Average African-American Population (%)"
                                     ></XAxis>
                                     <YAxis
                                         yAxisId="left"
                                         type="number"
                                         dataKey="y"
-                                        name="District plans in cluster"
+                                        name="African American Population In Districts (%)"
                                         opacity="1"
                                         stroke="#7aa9ff"
                                     />
@@ -827,6 +833,9 @@ function TableData(props: {
                                         onClick={()=>handleStepChange(2)}
                                     />
                                 </ScatterChart>
+
+                                </div>
+                                <div style={{display:'flex',fontSize: '1rem', width:'75%', marginBottom:'1rem', fontWeight:'700', justifyContent:'end'}}>Average African-American Population (%)</div>
                             </div>
                         </Accordion>
                     </TabPanel>
@@ -1064,8 +1073,8 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
         <>
             <div className="graph-container">
                 <ScatterChart
-                    width={730}
-                    height={250}
+                    width={830}
+                    height={350}
                     margin={{
                         top: 20,
                         right: 20,
@@ -1089,6 +1098,7 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                     <Scatter name="Available Data" data={data01} fill="#8884d8" />
                     <Scatter name="Unavailable Data" data={data02} fill="#82ca9d" />
                 </ScatterChart>
+                hi
             </div>
             <Accordion>
                 <AccordionSummary
