@@ -1044,6 +1044,7 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
     predicted_winner: string;
     democrat: number;
     republican: number;
+    map_value: Array<number>;
   }
   const districts: district_summary_table[] = [
     {
@@ -1051,30 +1052,35 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
       predicted_winner: "Republican",
       democrat: 30,
       republican: 70,
+      map_value: [35.5, -115],
     },
     {
       district: 2,
       predicted_winner: "Democrat",
       democrat: 60,
       republican: 40,
+      map_value: [40.5, -115],
     },
     {
       district: 3,
       predicted_winner: "Democrat",
       democrat: 70,
       republican: 30,
+      map_value: [38.5, -118], // -112 goes right and -115 goes left
     },
     {
       district: 4,
       predicted_winner: "Democrat",
       democrat: 55,
       republican: 45,
+      map_value: [40.5, -118],
     },
     {
       district: 5,
       predicted_winner: "Republican",
       democrat: 34,
       republican: 66,
+      map_value: [39.5, -120],
     },
   ];
   /**
@@ -1245,7 +1251,7 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                         <button
                           style={buttonStyle}
                           onClick={() =>
-                            handleDistrictChange(row.district, [34.5, -115])
+                            handleDistrictChange(row.district, row.map_value)
                           }
                         >
                           {row.district}
