@@ -1092,9 +1092,9 @@ function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
                     <XAxis
                         dataKey="x"
                         type="number"
-                        name="% African American Population"
+                        name="African American Population (%)"
                     />
-                    <YAxis dataKey="y" type="number" name="placeholder" />
+                    <YAxis dataKey="y" type="number" name="Average Household Size" />
                     {/* <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" /> */}
                     <Tooltip
                         cursor={{ strokeDasharray: "3 3" }}
