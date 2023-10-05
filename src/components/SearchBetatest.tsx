@@ -118,7 +118,7 @@ export default function SearchBetatest(props: {
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
   var virginiaData = require("./../GeoJson/Extract GeoJSON entry/VirginiaFeatures.json");
-  virginiaData = virginiaData[0]
+  virginiaData = virginiaData
 
   async function fetchData(party:string) {
     try {
