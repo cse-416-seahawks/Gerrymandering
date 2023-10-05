@@ -84,7 +84,7 @@ type InitialStateType = {
 const intialState: NevadaState[] = [
   {
     dismap: false,
-    distanceMeasure: "hamming"
+    distanceMeasure: "Hamming Distance"
   },
 ];
 
