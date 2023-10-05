@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NevadaDistrictContext } from "../NevadaContext";
 import "./css/Distance.css";
+import "./css/StateMap.css"
 import StateMap from "../components/StateMap";
 import Navbar from "../components/Navbar";
 import { NevadaDistrictProvider } from "../NevadaContext";
