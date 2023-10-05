@@ -172,9 +172,9 @@ export default function StateMap(props: {
             getMapVirginia()
           }
           <SetMapView/>
-          {
+          {/* {
             showMarker()
-          }
+          } */}
           
         </MapContainer>
         <div className="State-map stack-top">
