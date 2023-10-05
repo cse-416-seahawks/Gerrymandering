@@ -29,7 +29,7 @@ export default () => {
         },
         {
           x: "Additional Measure",
-          y: [39, 46, 55, 65, 71],
+          y: [29, 31, 35, 39, 44],
         },
       ],
     },
@@ -37,7 +37,7 @@ export default () => {
   const options: ApexOptions = {
     chart: {
       type: "boxPlot",
-      height: 400,
+      height: 300,
     },
     yaxis : {
         min : 25
