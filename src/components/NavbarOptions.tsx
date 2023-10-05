@@ -13,7 +13,7 @@ export const NavbarOptions = [
     },
     {
         title : 'Distance Measures',
-        path : '/',
+        path : '/distances',
         icon: <VscIcons.VscMap/>,
         cName : 'nav-text'
     },
