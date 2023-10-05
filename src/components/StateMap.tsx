@@ -127,10 +127,10 @@ export default function StateMap(props: {
           scrollWheelZoom={false}
           className="State-map"
         >
-          {/* <TileLayer
+          <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          /> */}
+          />
           {
             getMapTexas()
           }

@@ -6,6 +6,10 @@
   justify-content: start;
 }
 
+.distance-options-group {
+  margin-bottom: 1rem;
+}
+
 .tab-container {
   display: flex;
   flex-direction: column;

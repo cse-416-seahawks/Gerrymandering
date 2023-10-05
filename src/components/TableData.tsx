@@ -1,9 +1,7 @@
 import React, {
-  Component,
   FC,
   useState,
   useContext,
-  Context,
   useEffect,
 } from "react";
 import "./css/TableData.css";
@@ -11,7 +9,6 @@ import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
-import { flexbox } from "@mui/system";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,7 +18,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { grey } from "@mui/material/colors";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -37,12 +33,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  GeoJSON,
-  useMap,
   useMapEvent,
 } from "react-leaflet";
 import {
@@ -56,12 +46,8 @@ import {
   ScatterChart,
   Scatter,
   ZAxis,
-  Label,
 } from "recharts";
-import StateMap from "./StateMap";
-import NevadaDistricts from "./districts/NevadaDistricts";
 import { NevadaDistrictContext } from "../NevadaContext";
-import * as AiIcons from "react-icons/ai";
 
 interface DistrictSelectionProps {
   onDistrictSelection: (
@@ -139,7 +125,7 @@ function TableData(props: {
     };
     return (
       <div>
-        <ToggleButtonGroup exclusive value={method} onChange={handleAlignment}>
+        <ToggleButtonGroup className="distance-options-group" exclusive value={method} onChange={handleAlignment}>
           <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
           <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
           <ToggleButton value={"total"}>
@@ -882,128 +868,7 @@ function TableData(props: {
 
 export default TableData;
 
-// interface ClusterNameCellProps {
-//     name: string;
-//   }
 
-// const ClusterNameCell: FC<ClusterNameCellProps> = ({ name }): JSX.Element => {
-//     const [editing, setEditing] = useState(false);
-//     const [clusterName, setName] = useState(name);
-//     const handleDoubleClick = () => {
-//       setEditing(true);
-//     };
-
-//     const handleBlur = () => {
-//       setEditing(false);
-//       // Save the changes or perform any required actions here
-//     };
-
-//     const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-//       event.preventDefault();
-//       setEditing(false);
-//       if(clusterName == "")
-//           setName(name);
-//     }
-
-//     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//       setName(event.target.value);
-//     };
-//     return (
-//       <TableCell align="center" component="th" scope="row">
-//         {editing ? (
-//           <form className="form-control" onSubmit={(event) => handleSubmit(event)}>
-//           <input
-//             type="text"
-//             className="cluster-name-input cluster-name-input-alt"
-//             value={clusterName}
-//             onChange={handleChange}
-//             onBlur={handleBlur}
-
-//           />
-//           </form>
-//         ) : (
-//           <span onDoubleClick={handleDoubleClick}>{clusterName}</span>
-//         )}
-//       </TableCell>
-//     );
-//   };
-
-/**
- *
- * Table Data for cluster analysis
- */
-// function AverageMeasuresTable() {
-
-//     const sampleData1 = [
-//         { party: 'Republican', men: '59%', women: '41%' },
-//         { party: 'Democrat', men: '44%', women: '56%' },
-//     ];
-
-//     const sampleData2 = [
-//         { party: 'Republican', white: '72%', black: '1%', asian: '1%', latino: '18%', other: '7%' },
-//         { party: 'Democrat', white: '44%', black: '14%', asian: '3%', latino: '29%', other: '10%' },
-//     ]
-
-//     return (
-//         <>
-//             {/*
-
-//                 TABLE 1
-
-//         */}
-//             <TableContainer component={Paper}>
-//                 <Table sx={{ minWidth: 650 }}>
-//                     <TableHead>
-//                         <TableRow>
-//                             <TableCell>Party affiliation</TableCell>
-//                             <TableCell align="right">Men</TableCell>
-//                             <TableCell align="right">Women</TableCell>
-//                         </TableRow>
-//                     </TableHead>
-//                     <TableBody>
-//                         {sampleData1.map((row) => (
-//                             <TableRow key={row.party}>
-//                                 <TableCell component="th" scope="row"> {row.party} </TableCell>
-//                                 <TableCell align="right">{row.men}</TableCell>
-//                                 <TableCell align="right">{row.women}</TableCell>
-//                             </TableRow>
-//                         ))}
-//                     </TableBody>
-//                 </Table>
-//             </TableContainer>
-//             <br />
-//             {/*
-
-//                 TABLE 2
-
-//         */}
-//             <TableContainer component={Paper}>
-//                 <Table sx={{ minWidth: 650 }}>
-//                     <TableHead>
-//                         <TableRow>
-//                             <TableCell>Party affiliation</TableCell>
-//                             <TableCell align="right">White</TableCell>
-//                             <TableCell align="right">Black</TableCell>
-//                             <TableCell align="right">Asian</TableCell>
-//                             <TableCell align="right">Mixed</TableCell>
-//                         </TableRow>
-//                     </TableHead>
-//                     <TableBody>
-//                         {sampleData2.map((row) => (
-//                             <TableRow key={row.party}>
-//                                 <TableCell component="th" scope="row"> {row.party} </TableCell>
-//                                 <TableCell align="right">{row.white}</TableCell>
-//                                 <TableCell align="right">{row.black}</TableCell>
-//                                 <TableCell align="right">{row.asian}</TableCell>
-//                                 <TableCell align="right">{row.other}</TableCell>
-//                             </TableRow>
-//                         ))}
-//                     </TableBody>
-//                 </Table>
-//             </TableContainer>
-//         </>
-//     )
-// }
 function AssociationClusters({ onDistrictSelection }: DistrictSelectionProps) {
   interface cluster_summary_table {
     ensemble: number;
