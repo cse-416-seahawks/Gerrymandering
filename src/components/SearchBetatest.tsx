@@ -11,6 +11,12 @@ import "leaflet/dist/leaflet.css";
 import DistrictInfoCard from "./DistrictInfoCard";
 
 import { MapContainer,GeoJSON, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 // import MarkerClusterGroup from "react-leaflet-cluster";
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
@@ -120,52 +126,56 @@ export default function SearchBetatest(props: {
   var virginiaData = require("./../GeoJson/Extract GeoJSON entry/VirginiaFeatures.json");
   virginiaData = virginiaData
 
-  async function fetchData(party:string) {
+  async function fetchData() {
     try {
-      const response = await axios.get(`http://localhost:4000/Virginia/find?party=${party}`);
-      const data = response.data;
-      console.log('Result:', JSON.stringify(data, null, 2));
-      virginiaData = data
+      const response = await axios.get(`http://localhost:4000/District`);
+      for (const r of response.data){
+        const newDistrict: district_summary_table = {
+          district: r.districtId,
+          predicted_winner: r.party,
+          lastName: r.lastName,
+        };
+        setdistricts([...districts,newDistrict])
+        setIsVisible(true)
+      }
+      
       
     } catch (error) {
       console.error('Error fetching data:'); 
     }
   }
-  const [searchTerm, setSearchTerm] = useState('');
+  interface district_summary_table {
+    district: number; 
+    predicted_winner: string;
+    lastName: string;
+  } 
   const [searchDist, setSearchDist] = useState('');
-
-  const handleSearch = async () => {
-    try {
-      console.log(searchTerm)
-      console.log(await axios.get(`http://localhost:4000/Virginia/findName?name=${searchTerm}`))
-    } catch (error) {
-      console.log('Error fetching data:');
-    }
-  };
-
+  const [data, setData] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [districts, setdistricts] = useState<district_summary_table[]>([]);
   const handleSearchDist = async () => {
     try {
-      console.log(searchDist)
-      console.log(await axios.get(`http://localhost:4000/Virginia/findDistrict?district=${searchDist}`))
+      let response = await axios.get(`http://localhost:4000/District/${searchDist}`)
+      console.log(response)
+      const newDistrict: district_summary_table = {
+        district: response.data.districtId,
+        predicted_winner: response.data.party,
+        lastName: response.data.lastName,
+      };
+      setdistricts([...districts,newDistrict])
+      setIsVisible(true)
     } catch (error) {
       console.log('Error fetching data:');
     }
   };
+  function handleClear(){
+    setdistricts([])
+  }
 
   return (
     <div className="StateMap">
       <>
-      <button onClick={() => fetchData("D")}>Democrat</button>
-      <button onClick={() => fetchData("R")}>Republican</button>
-      <div>
-        Name
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
-      </div>
+      <button onClick={() => fetchData()}>First 3 district</button>
 
       <div>
         District
@@ -175,60 +185,20 @@ export default function SearchBetatest(props: {
         onChange={(e) => setSearchDist(e.target.value)}
       />
       <button onClick={handleSearchDist}>Search</button>
+      <div></div>
+      <button onClick={handleClear}>clear</button>
+      {isVisible && districts && (<TableBody>
+                        {districts.map((row) => (
+                            <TableRow key={row.district}>
+                                <TableCell align="right">{row.district}</TableCell>
+                                <TableCell style={{ color: row.predicted_winner === 'D' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
+                                <TableCell align="right">{row.lastName}</TableCell>
+                                
+                            </TableRow>
+                        ))}
+                    </TableBody>)}
       </div>
-      
-        <MapContainer
-          id="mapid"
-          center={[centerCoordinates[0], centerCoordinates[1]]}
-          zoom={6}
-          scrollWheelZoom={false}
-          className="State-map"
-        >
-          {<GeoJSON data={virginiaData}/>}
-          {/* <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          /> */}
-          {
-            getMapTexas()
-          }
-
-          {
-            getMapNevada()
-          }
-
-          {
-            //getMapVirginia()
-          }
-
-          <SetMapView />
-        </MapContainer>
-        <div className="State-map stack-top">
-          <FormControl
-            variant="filled"
-            sx={{ m: 1, minWidth: 120 }}
-            style={{
-              backgroundColor: "white",
-              width: "150px",
-              boxShadow: "0 3px 10px rgb(0 0 0 / 0.3)",
-            }}
-          >
-            <InputLabel id="demo-simple-select-filled-label">State</InputLabel>
-            <Select
-              labelId="demo-simple-select-filled-label"
-              id="demo-simple-select-filled"
-              value={currentState}
-              onChange={handleStateChange}
-              style={{ fontWeight: "bold", fontSize: "18px" }}
-            >
-              <MenuItem value={"Nevada"}>Nevada</MenuItem>
-              <MenuItem value={"Texas"}>Texas</MenuItem>
-              <MenuItem value={"Virginia"}>Virginia</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
       </>
-      <DistrictInfoCard currentState={currentState}/>
     </div>
   );
 }
