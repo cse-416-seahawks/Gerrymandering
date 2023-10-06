@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NevadaDistrictContext } from "../NevadaContext";
-import "./css/Distance.css";
-import "./css/StateMap.css"
-import StateMap from "../components/StateMap";
-import Navbar from "../components/Navbar";
-import { NevadaDistrictProvider } from "../NevadaContext";
+import { GlobalContext } from "../../globalContext";
+import "../css/Distance.css";
+import "../css/StateMap.css"
+import StateMap from "../statemap/StateMap";
+import Navbar from "../base/Navbar";
+import { GlobalProvider } from "../../globalContext";
 import DistanceTable from "./DistanceTable";
 
 function Distance() {
@@ -14,16 +14,8 @@ function Distance() {
     [38.5, -116.5]
   );
 
-  const { state, dispatch } = useContext(NevadaDistrictContext);
+  const { state, dispatch } = useContext(GlobalContext);
 
-  useEffect(() => {
-    dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
-  },[]);
 
   const handleStateChange = (state: string) => {
     setSelectedState(state);
@@ -37,7 +29,7 @@ function Distance() {
     setDistrictCoordinates(coordinates);
   };
   return (
-    <NevadaDistrictProvider>
+    <GlobalProvider>
     <div className="Distance">
       <Navbar />
         <div className="StateMap-content">
@@ -55,7 +47,7 @@ function Distance() {
         </div>
       
     </div>
-    </NevadaDistrictProvider>
+    </GlobalProvider>
   );
 }
 

@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
-import { NevadaDistrictContext } from "../NevadaContext";
+import { GlobalContext, GlobalProvider } from "../globalContext";
 import "../App.css";
-import StateMap from "../components/StateMap";
-import Navbar from "../components/Navbar";
+import StateMap from "./statemap/StateMap";
+import Navbar from "./base/Navbar";
 import {BrowserRouter as Router} from 'react-router-dom'
-import TableData from "../components/TableData";
-import DistrictInfoCard from "../components/DistrictInfoCard";
-import { NevadaDistrictProvider } from "../NevadaContext";
+import TableData from "./tables/TableData";
+import DistrictInfoCard from "./base/DistrictInfoCard";
 
 
 function Home() {
@@ -31,7 +30,7 @@ function Home() {
     <div className="Home">
       <div className="Home-content">
       <Navbar />
-      <NevadaDistrictProvider>
+      <GlobalProvider>
       <div className="StateMap-content">
         <header className="StateMap-header">
             <div className="State-map"> 
@@ -40,7 +39,7 @@ function Home() {
             <TableData selectedState={selectedState} onDistrictSelection={handleDistrictSelection}/>
         </header>
       </div>
-      </NevadaDistrictProvider>
+      </GlobalProvider>
       </div>
     </div>
   );
