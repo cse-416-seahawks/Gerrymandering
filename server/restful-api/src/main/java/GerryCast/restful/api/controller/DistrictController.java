@@ -50,6 +50,7 @@ public class DistrictController{
         for(int i = 0; i < rand2.nextInt(5)+3; i++){
             lastName += (char)(rand2.nextInt(26)+97);
         }
+        lastName = lastName.substring(0, 1).toUpperCase()+lastName.substring(1);
         return new District(UUID.randomUUID().toString(), id, party, lastName);
     }
 

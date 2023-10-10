@@ -141,7 +141,7 @@ export default function SearchBetatest(props: {
       
       
     } catch (error) {
-      console.error('Error fetching data:'); 
+      console.error('Error fetching data'); 
     }
   }
   interface district_summary_table {
@@ -149,6 +149,7 @@ export default function SearchBetatest(props: {
     predicted_winner: string;
     lastName: string;
   } 
+  const count = 0
   const [searchDist, setSearchDist] = useState('');
   const [data, setData] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -157,15 +158,17 @@ export default function SearchBetatest(props: {
     try {
       let response = await axios.get(`http://localhost:4000/District/${searchDist}`)
       console.log(response)
-      const newDistrict: district_summary_table = {
-        district: response.data.districtId,
-        predicted_winner: response.data.party,
-        lastName: response.data.lastName,
-      };
-      setdistricts([...districts,newDistrict])
-      setIsVisible(true)
+      if(response.status === 200){
+        const newDistrict: district_summary_table = {
+          district: response.data.districtId,
+          predicted_winner: response.data.party,
+          lastName: response.data.lastName,
+        };
+        setdistricts([...districts,newDistrict])
+        setIsVisible(true)
+      }
     } catch (error) {
-      console.log('Error fetching data:');
+      console.log('Error fetching data');
     }
   };
   function handleClear(){
@@ -175,7 +178,7 @@ export default function SearchBetatest(props: {
   return (
     <div className="StateMap">
       <>
-      <button onClick={() => fetchData()}>First 3 district</button>
+      {/*<button onClick={() => fetchData()}>Create a district</button>*/}
 
       <div>
         District
@@ -187,16 +190,28 @@ export default function SearchBetatest(props: {
       <button onClick={handleSearchDist}>Search</button>
       <div></div>
       <button onClick={handleClear}>clear</button>
-      {isVisible && districts && (<TableBody>
+      {isVisible && districts && (
+                    <Table sx={{ minWidth: 650 }}>
+                    <TableHead sx={{ height: "10px", fontSize: '10px' }}>
+                        <TableRow>
+                            <TableCell align="left">District</TableCell>
+                            <TableCell align="center">Predicted Winner</TableCell>
+                            <TableCell align="right">Last Name</TableCell>
+                        </TableRow>
+                    </TableHead>
+                      <TableBody>
                         {districts.map((row) => (
+                            
                             <TableRow key={row.district}>
-                                <TableCell align="right">{row.district}</TableCell>
+                                <TableCell align="left">{row.district}</TableCell>
                                 <TableCell style={{ color: row.predicted_winner === 'D' ? 'blue' : 'red' }} align="center">{row.predicted_winner}</TableCell>
                                 <TableCell align="right">{row.lastName}</TableCell>
                                 
                             </TableRow>
                         ))}
-                    </TableBody>)}
+                    </TableBody>
+                    </Table>
+                    )}
       </div>
       </>
     </div>
