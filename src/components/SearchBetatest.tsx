@@ -173,6 +173,7 @@ export default function SearchBetatest(props: {
   };
   function handleClear(){
     setdistricts([])
+    setIsVisible(false)
   }
 
   return (
