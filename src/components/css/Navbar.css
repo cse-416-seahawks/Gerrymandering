@@ -7,7 +7,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: -0.5rem;
-  background-color: rgb(205, 235, 245);
+  background-color: rgb(205, 224, 245);
+}
+
+#space-between {
+  width: 40rem;
 }
 
 .navbar-title {
@@ -28,6 +32,7 @@
 .navbar-options {
   display: flex;
   flex-direction: row;
+  justify-content: right;
 }
 
 .menu-bars {
@@ -56,7 +61,7 @@
 }
 .nav-text {
   display: flex;
-  width: 18rem;
+  width: 14rem;
   align-self: center;
   justify-content: center;
   list-style: none;
@@ -87,6 +92,7 @@ nav-text a:hover {
   color: black;
   transition: all 0.6s ease;
   background-color: white;
+  box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.22);
 }
 
 .nav-text .icon {
@@ -102,9 +108,10 @@ nav-text a:hover {
 }
 
 .nav-text .icon:active {
-    color: rgb(61, 106, 255);
-    transform: scale(0.97);
-  }
+  color: rgb(176, 193, 251);
+  transform: scale(0.98);
+  transition: 300ms;
+}
 
 hr {
   border: 0;
@@ -121,4 +128,19 @@ img {
   padding-left: 0.5rem;
   width: 5rem;
   height: 4rem;
+}
+
+#seahawks-logo {
+    transition: all 0.5s ease;
+}
+
+#seahawks-logo:hover {
+  cursor: pointer;
+  color: rgb(52, 86, 255);
+  transform: scale(1.06);
+}
+
+#seahawks-logo:active {
+  color: rgb(176, 193, 251);
+  transform: scale(0.98);
 }

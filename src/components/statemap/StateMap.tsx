@@ -6,9 +6,9 @@ import React, {
   useState,
   createContext,
 } from "react";
-import "./css/StateMap.css";
+import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import DistrictInfoCard from "./DistrictInfoCard";
+import DistrictInfoCard from "../base/DistrictInfoCard";
 
 import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
 
@@ -16,17 +16,17 @@ import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-lea
 // import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
 import { MongoClient, GridFSBucket } from "mongodb";
 import axios from "axios";
-import VirginiaMap from "./statemap/VirginiaMap";
-import TexasMap from "./statemap/TexasMap";
-import NevadaMap from "./statemap/NevadaMap";
+import VirginiaMap from "./VirginiaMap";
+import TexasMap from "./TexasMap";
+import NevadaMap from "./NevadaMap";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TexasDistricts from "./districts/TexasDistricts";
-import NevadaDistricts from "./districts/NevadaDistricts";
-import VirginiaDistricts from "./districts/VirginiaDistricts";
-import { NevadaDistrictContext } from "../NevadaContext";
+import TexasDistricts from "../districts/TexasDistricts";
+import NevadaDistricts from "../districts/NevadaDistricts";
+import VirginiaDistricts from "../districts/VirginiaDistricts";
+import { GlobalContext } from "../../globalContext";
 
 interface GeoJSON {
   type: string;
@@ -52,7 +52,7 @@ const stateData: StateData = {
 const stateZoomData: StateZoomData = {
   Nevada: 6,
   Texas: 6,
-  Virginia: 6,
+  Virginia: 7,
 };
 
 export default function StateMap(props: {
@@ -64,9 +64,10 @@ export default function StateMap(props: {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.districtCoordinates
   );
+  const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
   const [currentState, setCurrentState] = useState("Nevada");
-
-  const { state, dispatch } = useContext(NevadaDistrictContext);
+  
+  const { state, dispatch } = useContext(GlobalContext);
 
   // function SetMapView() {
   //   console.log("setting map view", [
@@ -84,19 +85,22 @@ export default function StateMap(props: {
   const SetMapView = () => {
     const map = useMap();
      useEffect(() => {
-       map.setView([centerCoordinates[0], centerCoordinates[1]]);
+       map.setView([centerCoordinates[0], centerCoordinates[1]], zoom);
      }, [centerCoordinates[0], centerCoordinates[1]]);
      return null;
    }
 
   useEffect(() => {
     setCenterCoordinates(props.districtCoordinates);
+
+    if (props.selectedDistrict !== -1) setZoom(8);
   }, [props.districtCoordinates]);
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setCenterCoordinates(stateData[event.target.value]);
     setCurrentState(event.target.value);
-    props.onStateSelection(event.target.value)
+    setZoom(stateZoomData[event.target.value]);
+    props.onStateSelection(event.target.value);
   };
 
   {
@@ -104,19 +108,17 @@ export default function StateMap(props: {
   }
 
   const getMapNevada = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
   }
 
   const getMapTexas = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
   }
 
   const getMapVirginia = () =>  {
-    console.log(state);
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
+
   return (
     <div className="StateMap">
       <>
@@ -127,10 +129,10 @@ export default function StateMap(props: {
           scrollWheelZoom={false}
           className="State-map"
         >
-          {/* <TileLayer
+          <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          /> */}
+          />
           {
             getMapTexas()
           }

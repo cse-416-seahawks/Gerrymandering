@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { NavbarOptions } from "./NavbarOptions";
-import "./css/Navbar.css";
+import "../css/Navbar.css";
 import { padding } from "@mui/system";
-import seahawks from "./images/Seattle-Seahawks-Logo.png";
+import seahawks from "../images/Seattle-Seahawks-Logo.png";
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
@@ -17,12 +17,12 @@ function Navbar() {
       <div className="navbar">
         <div className="navbar-title">
           <h1>GerryCast</h1>
-          <img src={seahawks} alt="Logo" />
+          <img id="seahawks-logo" src={seahawks} alt="Logo" />
         </div>
         {/* <Link to='#' className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar}/>
           </Link> */}
-        <div className="space-between" />
+        <div id="space-between" />
         <ul className="navbar-options">
           {NavbarOptions.map((item, index) => {
             return (

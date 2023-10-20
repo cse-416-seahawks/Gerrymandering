@@ -11,12 +11,10 @@ const getColor = () => {
   return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 }
 
-
-
 export default () => (
   <Polygon
     pathOptions={{
-        fillColor : "#FD8D3C",
+        fillColor : "#4287f5",
         fillOpacity : 0.5,
         weight : 2,
         opacity : 1,
@@ -48,14 +46,6 @@ export default () => (
           })
 
       },
-      click : (e) => {
-        const layer = e.target;
-        layer.setStyle({
-          fillOpacity : 0.5,
-          weight : 2,
-          color : getColor()
-      })
-      }
     }}
   />
 );

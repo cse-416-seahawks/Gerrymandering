@@ -6,9 +6,9 @@
 .StateMap {
   position:relative;
   justify-content: start;
-  height : 125%;
-  box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.22);
+  height : 110%;
   backdrop-filter: blur(0.1rem);
+  border-width: 1px;
 }
 
 .StateMap-Header-Text {

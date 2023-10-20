@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
-import "./css/InfoCard.css";
-import { NevadaDistrictContext } from "../NevadaContext";
+import "../css/InfoCard.css";
+import { GlobalContext } from "../../globalContext";
 
 
 interface DistrictInfoCardProps  {
@@ -8,7 +8,7 @@ interface DistrictInfoCardProps  {
 }
 const DistrictInfoCard =  ({currentState} : DistrictInfoCardProps) => {
 
-  const { state } = useContext(NevadaDistrictContext);
+  const { state } = useContext(GlobalContext);
 
   let stateInfo : string = "";
   if(currentState === "Nevada"){
