@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import "./css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import DistrictInfoCard from "./DistrictInfoCard";
 
 import { MapContainer,GeoJSON, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
 import Table from '@mui/material/Table';
@@ -32,7 +31,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "./districts/TexasDistricts";
 import NevadaDistricts from "./districts/NevadaDistricts";
 import VirginiaDistricts from "./districts/VirginiaDistricts";
-import { NevadaDistrictContext } from "../NevadaContext";
+
 
 interface GeoJSON {
   type: string;
@@ -72,7 +71,6 @@ export default function SearchBetatest(props: {
   );
   const [currentState, setCurrentState] = useState("Nevada");
 
-  const { state, dispatch } = useContext(NevadaDistrictContext);
 
   // function SetMapView() {
   //   console.log("setting map view", [
@@ -87,42 +85,7 @@ export default function SearchBetatest(props: {
 
   //   return null;
   // }
-  const SetMapView = () => {
-    const map = useMap();
-     useEffect(() => {
-       map.setView([centerCoordinates[0], centerCoordinates[1]]);
-     }, [centerCoordinates[0], centerCoordinates[1]]);
-     return null;
-   }
 
-  useEffect(() => {
-    setCenterCoordinates(props.districtCoordinates);
-  }, [props.districtCoordinates]);
-
-  const handleStateChange = (event: SelectChangeEvent) => {
-    setCenterCoordinates(stateData[event.target.value]);
-    setCurrentState(event.target.value);
-    props.onStateSelection(event.target.value)
-  };
-
-  {
-    console.log("current state coords", centerCoordinates);
-  }
-
-  const getMapNevada = () =>  {
-    console.log(state);
-    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
-  }
-
-  const getMapTexas = () =>  {
-    console.log(state);
-    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
-  }
-
-  const getMapVirginia = () =>  {
-    console.log(state);
-    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
-  }
   var virginiaData = require("./../GeoJson/Extract GeoJSON entry/VirginiaFeatures.json");
   virginiaData = virginiaData
 
