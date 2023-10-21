@@ -27,7 +27,7 @@ function Navbar() {
           {NavbarOptions.map((item, index) => {
             return (
               <li key={index} className={item.cName}>
-                <Link to={"#"} className="icon">
+                <Link to={item.path} className="icon">
                   {item.icon}
                   <span>{item.title}</span>
                 </Link>
