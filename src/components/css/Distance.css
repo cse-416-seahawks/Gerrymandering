@@ -10,14 +10,14 @@
     flex-direction: column;
     width: 100%;
     height: 3rem;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   .tab-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
 .distance-table-container {

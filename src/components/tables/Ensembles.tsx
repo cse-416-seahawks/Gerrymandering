@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import "../css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
@@ -69,7 +69,8 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
   return (
     <div>
       <div className="toggleButton-container">
-        <ToggleButtonGroup
+        {
+          showToggle ? <ToggleButtonGroup
           exclusive
           value={state[state.length - 1].distanceMeasure}
           onChange={handleAlignment}
@@ -77,10 +78,11 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
           <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
           <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
           <ToggleButton value={"total"}>
-            {" "}
-            Total Variation Distance{" "}
+            Total Variation Distance
           </ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> : <div/>
+        }
+        
       </div>
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
@@ -116,7 +118,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
                     {row.data.map((tablerow) => (
                       <TableRow key={tablerow.label}>
                         <TableCell component="th" scope="row">
-                          {" "}
                           {tablerow.label}{" "}
                         </TableCell>
                         <TableCell align="right">{tablerow.detail}</TableCell>
@@ -132,7 +133,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
         <TabPanel value="2">
           <Accordion defaultExpanded={true}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {" "}
               <Typography>
                 <b>Association of clusters with ensemble size</b>
               </Typography>
