@@ -26,7 +26,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, States } from "../../globalContext";
+import StateChangeRadio from "./StateChange";
 
 interface GeoJSON {
   type: string;
@@ -57,7 +58,7 @@ const stateZoomData: StateZoomData = {
 
 export default function StateMap(props: {
   selectedState: string;
-  onStateSelection: (state: string) => void;
+  onStateSelection: (state: States) => void;
   districtCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
@@ -65,23 +66,11 @@ export default function StateMap(props: {
     props.districtCoordinates
   );
   const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
-  const [currentState, setCurrentState] = useState("Nevada");
   
   const { state, dispatch } = useContext(GlobalContext);
 
-  // function SetMapView() {
-  //   console.log("setting map view", [
-  //     centerCoordinates[0],
-  //     centerCoordinates[1],
-  //   ]);
-  //   // const map = useMapEvent("mouseover", (e) => {
-  //     map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState]);
-  //     // map.fitBounds(data.coordinates.getBounds());
-  //     // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-  //   // });
+  let currentState = state[state.length - 1].currentState;
 
-  //   return null;
-  // }
   const SetMapView = () => {
     const map = useMap();
      useEffect(() => {
@@ -96,11 +85,22 @@ export default function StateMap(props: {
     if (props.selectedDistrict !== -1) setZoom(8);
   }, [props.districtCoordinates]);
 
-  const handleStateChange = (event: SelectChangeEvent) => {
-    setCenterCoordinates(stateData[event.target.value]);
-    setCurrentState(event.target.value);
-    setZoom(stateZoomData[event.target.value]);
-    props.onStateSelection(event.target.value);
+  const handleStateChangeCoordinates = (newState : string) => {
+    let newCurrentState : States;
+    if(newState === States.Nevada)
+      newCurrentState = States.Nevada;
+    else if(newState === States.Texas)
+      newCurrentState = States.Texas;
+    else
+      newCurrentState = States.Virginia;
+    dispatch({
+      type : "CHANGE_OF_STATE",
+      payload : {
+        currentState : newCurrentState
+      }
+    })
+    setCenterCoordinates(stateData[newState]);
+    setZoom(stateZoomData[newState]);
   };
 
   {
@@ -121,6 +121,7 @@ export default function StateMap(props: {
 
   return (
     <div className="StateMap">
+      <DistrictInfoCard currentState={currentState}/>
       <>
         <MapContainer
           id="mapid"
@@ -147,32 +148,8 @@ export default function StateMap(props: {
 
           <SetMapView />
         </MapContainer>
-        <div className="State-map stack-top">
-          <FormControl
-            variant="filled"
-            sx={{ m: 1, minWidth: 120 }}
-            style={{
-              backgroundColor: "white",
-              width: "150px",
-              boxShadow: "0 3px 10px rgb(0 0 0 / 0.3)",
-            }}
-          >
-            <InputLabel id="demo-simple-select-filled-label">State</InputLabel>
-            <Select
-              labelId="demo-simple-select-filled-label"
-              id="demo-simple-select-filled"
-              value={currentState}
-              onChange={handleStateChange}
-              style={{ fontWeight: "bold", fontSize: "18px" }}
-            >
-              <MenuItem value={"Nevada"}>Nevada</MenuItem>
-              <MenuItem value={"Texas"}>Texas</MenuItem>
-              <MenuItem value={"Virginia"}>Virginia</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
       </>
-      <DistrictInfoCard currentState={currentState}/>
+      <StateChangeRadio onStateChangeMap={handleStateChangeCoordinates}/>
     </div>
   );
 }

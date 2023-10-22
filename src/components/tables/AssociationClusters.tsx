@@ -89,12 +89,12 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                 style={{
                   fontWeight: "700",
                   textAlign: "center",
-                  fontSize: "1.2rem",
+                  fontSize: "1.0rem",
                   height: "100px",
-                  width: "100px",
+                  width: "60px",
                 }}
               >
-                Average Household Size
+                Avgerage Household Size
               </div>
             </div>
             <ScatterChart
@@ -127,7 +127,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <div
             style={{
               display: "flex",
-              fontSize: "1.2rem",
+              fontSize: "1.0rem",
               width: "65%",
               margin: "2rem",
               fontWeight: "700",

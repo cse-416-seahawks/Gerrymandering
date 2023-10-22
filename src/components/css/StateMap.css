@@ -41,10 +41,15 @@
 }
 
 .StateMap-content {
+  padding-bottom: 2rem;
   margin-top: 1rem;
   display : flex;
   flex-direction:row;
   height: 50vh;
   width: 100%;
-  /* background-color: #f6f8fa; */
+  background-color: #fefefe;
+}
+
+.StateMap-Change-Radio{
+  margin-top: 2rem;
 }
