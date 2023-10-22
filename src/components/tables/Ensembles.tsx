@@ -115,14 +115,26 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
               <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                   <TableBody>
+                  <TableRow>
                     {row.data.map((tablerow) => (
-                      <TableRow key={tablerow.label}>
-                        <TableCell component="th" scope="row">
-                          {tablerow.label}{" "}
-                        </TableCell>
-                        <TableCell align="right">{tablerow.detail}</TableCell>
-                      </TableRow>
+                        <TableCell align="center"><b>{tablerow.label}</b></TableCell>
+                        // <TableCell component="th" scope="row">
+                        //   {tablerow.label}
+                        // </TableCell>
+                        // <TableCell align="right">{tablerow.detail}</TableCell>
+                      
                     ))}
+                    </TableRow>
+                    <TableRow>
+                    {row.data.map((tablerow) => (
+                        <TableCell align="center">{tablerow.detail}</TableCell>
+                        // <TableCell component="th" scope="row">
+                        //   {tablerow.label}
+                        // </TableCell>
+                        // <TableCell align="right">{tablerow.detail}</TableCell>
+                      
+                    ))}
+                    </TableRow>
                   </TableBody>
                 </Table>
               </AccordionDetails>
