@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import { NavbarOptions } from "./NavbarOptions";
+import * as VscIcons from "react-icons/vsc";
 import "../css/Navbar.css";
-import { padding } from "@mui/system";
+import { GlobalContext } from "../../globalContext";
 import seahawks from "../images/Seattle-Seahawks-Logo.png";
 
 function Navbar() {
-  const [sidebar, setSidebar] = useState(false);
-
-  const showSidebar = () => setSidebar(!sidebar);
+  const { state, dispatch } = useContext(GlobalContext);
+  let clusterAnalysis = state[state.length - 1].clusterAnalysis;
+  const NavbarOptions = [
+    {
+      title: "Cluster Analysis",
+      path: "/",
+      icon: <VscIcons.VscGraphScatter />,
+      cName: "nav-text",
+      selected: clusterAnalysis,
+      onClick: () =>
+        dispatch({ type: "PAGE_CHANGE", payload: !clusterAnalysis }),
+    },
+    {
+      title: "Distance Measures",
+      path: "/distances",
+      icon: <VscIcons.VscMap />,
+      cName: "nav-text",
+      selected: !clusterAnalysis,
+      onClick: () =>
+        dispatch({ type: "PAGE_CHANGE", payload: !clusterAnalysis }),
+    },
+  ];
 
   return (
     <>
@@ -26,7 +43,7 @@ function Navbar() {
         <ul className="navbar-options">
           {NavbarOptions.map((item, index) => {
             return (
-              <li key={index} className={item.cName}>
+              <li key={index} onClick={item.onClick} className={item.cName}>
                 <Link to={item.path} className="icon">
                   {item.icon}
                   <span>{item.title}</span>
@@ -37,26 +54,6 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* <nav className={sidebar? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items">
-            <li className="navbar-toggle nav-text" onClick={showSidebar}>
-              <Link to="#">
-                <AiIcons.AiOutlineClose/>
-              </Link>
-
-            </li>
-            {SideBarOptions.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path} className="icon">
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav> */}
       <hr />
     </>
   );

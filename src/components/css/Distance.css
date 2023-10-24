@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
+  background: white;
 }
 
 .stepper-container {
@@ -13,7 +14,7 @@
     justify-content: flex-start;
   }
 
-  .tab-container {
+.tab-container {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -27,6 +28,4 @@
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
-  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(0.1rem);
 }
