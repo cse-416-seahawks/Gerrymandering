@@ -14,6 +14,16 @@
     justify-content: flex-start;
   }
 
+  .State-map{
+    z-index: 1;
+  }
+  
+  .stack-top{
+    top:0;
+    right:0;
+    position:absolute;
+  }
+
 .tab-container {
     display: flex;
     flex-direction: column;

@@ -99,8 +99,8 @@ function ClusterTable() {
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }}>
+          <TableContainer className="cluster-table-container" component={Paper}>
+            <Table sx={{ minWidth: 630, minHeight : 600, marginRight : 2 }}>
               <TableHead>
                 <TableRow>
                   <TableCell align="center">Cluster</TableCell>
@@ -158,24 +158,25 @@ function ClusterTable() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: "350px",
+                    height: "460px",
                   }}
                 >
                   <div
                     style={{
+                      marginLeft : "1rem",
                       fontWeight: "700",
                       textAlign: "center",
                       fontSize: "1rem",
-                      height: "100px",
-                      width: "100px",
+                      height: "120px",
+                      width: "75px",
                     }}
                   >
                     African American Population In Districts (%)
                   </div>
                 </div>
                 <ScatterChart
-                  width={750}
-                  height={350}
+                  width={740}
+                  height={460}
                   margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                 >
                   <CartesianGrid />

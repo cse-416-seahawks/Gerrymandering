@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext  } from "react";
 import { GlobalContext } from "../../globalContext";
 import "../css/Distance.css";
 import "../css/StateMap.css"
+import "../../App.css";
 import StateMap from "../statemap/StateMap";
 import Navbar from "../base/Navbar";
 import { GlobalProvider } from "../../globalContext";
@@ -15,11 +16,6 @@ function Distance() {
   );
 
   const { state, dispatch } = useContext(GlobalContext);
-
-
-  const handleStateChange = (state: string) => {
-    setSelectedState(state);
-  };
 
   const handleDistrictSelection = (
     district_num: number,
@@ -37,7 +33,6 @@ function Distance() {
             <div className="State-map">
               <StateMap
                 selectedState={selectedState}
-                onStateSelection={handleStateChange}
                 districtCoordinates={districtCoordinates}
                 selectedDistrict={selectedDistrict}
               />

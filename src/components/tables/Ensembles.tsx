@@ -34,7 +34,7 @@ import { GlobalContext } from "../../globalContext";
 
 interface EnsembleProps {
   showToggle : boolean,
-  handleStep : (step : number) => void
+  handleStep : (step : number, ensemble : number) => void
 }
 
 const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
@@ -106,7 +106,7 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
                 <Button
                   variant="text"
                   size="large"
-                  onClick={() => handleStep(1)}
+                  onClick={() => handleStep(1,row.ensemble)}
                 >
                   Ensemble {row.ensemble}
                 </Button>

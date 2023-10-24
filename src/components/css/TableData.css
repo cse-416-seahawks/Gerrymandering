@@ -17,8 +17,24 @@
   justify-content: flex-start;
 }
 
+.table-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ensemble-number {
+  font-size: 1.4rem;
+
+  margin-top : 1rem;
+  margin-right : 21rem;
+}
 .cluster-name {
   transition: all 0.6s ease;
+}
+
+.cluster-table-container {
+  margin-left: -1rem;
 }
 
 .cluster-name:hover {
