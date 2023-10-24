@@ -53,5 +53,9 @@ public class DistrictController{
         lastName = lastName.substring(0, 1).toUpperCase()+lastName.substring(1);
         return new District(UUID.randomUUID().toString(), id, party, lastName);
     }
+    @GetMapping("/getInformation/{state}/{ensemble}/{cluster}")
+    public String getInformation(@PathVariable final String state, @PathVariable final int ensemble,@PathVariable final int cluster){
+        return "State: "+ state + "\n"+ "Ensemble: "+ ensemble + "\n"+"Cluster: "+ cluster;
+    }
 
 }
