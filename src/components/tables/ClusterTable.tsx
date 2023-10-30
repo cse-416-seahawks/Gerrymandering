@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
+import { ClusterSelectionProps } from "./TableTypes";
 
 import {
   XAxis,
@@ -30,7 +31,7 @@ import {
   ZAxis,
 } from "recharts";
 
-function ClusterTable() {
+function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
 
   const { state, dispatch } = useContext(GlobalContext);
@@ -40,9 +41,11 @@ function ClusterTable() {
     setCurrentTab(String(newValue));
   }
 
-  function handleStepChange(step: number) {
+  function handleStepChange(step: number, clusterNumber?: number) {
     
     if (step === 2) {
+      if (clusterNumber) onClusterSelection(clusterNumber);
+      
       console.log("CHANGING TO DISTRICT MAP");
       dispatch({
         type: "DISTRICT_MAP",
@@ -124,7 +127,7 @@ function ClusterTable() {
                       <Button
                         variant="text"
                         size="medium"
-                        onClick={() => handleStepChange(2)}
+                        onClick={() => handleStepChange(2, row.cluster)}
                       >
                         {row.cluster}
                       </Button>

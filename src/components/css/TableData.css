@@ -24,11 +24,19 @@
 }
 
 .ensemble-number {
+  background-color: rgba(238, 238, 238, 0.58);
   font-size: 1.4rem;
-
   margin-top : 1rem;
-  margin-right : 21rem;
+  margin-right : 24rem;
+  font-weight: 500;
+  padding: 1rem;
+  border-radius: 1rem;
 }
+
+.cluster-number {
+  margin-right : 20rem;
+}
+
 .cluster-name {
   transition: all 0.6s ease;
 }

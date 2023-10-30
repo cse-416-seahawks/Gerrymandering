@@ -6,6 +6,12 @@ export type DistrictSelectionProps = {
     ) => void;
   }
 
+  export type ClusterSelectionProps = {
+    onClusterSelection: (
+      clusterNum: number,
+    ) => void;
+  }
+
 
 export type ensembleData = {
   Num: number;

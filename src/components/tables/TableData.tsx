@@ -23,6 +23,7 @@ function TableData(props: {
   let currentStep = state[state.length - 1].step;
 
   const [ensemble, setEnsemble] = useState(0);
+  const [cluster, setCluster] = useState(0);
 
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
@@ -72,6 +73,10 @@ function TableData(props: {
     props.onDistrictSelection(district_num, coords);
   }
 
+  function handleClusterSelection(clusterNumber: number) {
+    setCluster(clusterNumber);
+  }
+
   function getRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -118,7 +123,8 @@ function TableData(props: {
       </div>
       <div className="table-info">
         <BackButton />
-        {currentStep == 1 ? <div className="ensemble-number">Viewing Ensemble {ensemble}</div> : <div />}
+        {currentStep == 1 && <div className="ensemble-number">Viewing Ensemble {ensemble}</div>}
+        {currentStep == 2 && <div className="ensemble-number cluster-number">Viewing Ensemble {ensemble}, Cluster {cluster}</div>}
       </div>
 
       {/* State Details */}
@@ -126,7 +132,7 @@ function TableData(props: {
         <Ensembles showToggle={true} handleStep={handleStepChange} />
       )}
       {/* Summary of Cluster */}
-      {currentStep == 1 && <ClusterTable />}
+      {currentStep == 1 && <ClusterTable onClusterSelection={handleClusterSelection}/>}
       {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
       {currentStep == 2 && (
         <AssociationClusters onDistrictSelection={handleDistrictChange} />
