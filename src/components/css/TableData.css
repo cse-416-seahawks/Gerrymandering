@@ -143,3 +143,7 @@ svg.recharts-surface tspan {
 .cluster-name-input-alt:focus + .cluster-name-input-border-alt {
   width: 100%;
 }
+
+.recharts-legend-item { 
+  font-size: 1.3rem; 
+}

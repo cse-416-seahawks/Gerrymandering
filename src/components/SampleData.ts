@@ -273,40 +273,40 @@ export const Data3: ensemble_summary_table[] = [
   { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
 ];
 
-export const districts: district_summary_table[] = [
+export const district_plan_data: district_summary_table[] = [
   {
-    district: 1,
-    predicted_winner: "Republican",
-    democrat: 30,
-    republican: 70,
+    district_plan: 1,
+    opportunity_districts: 5,
+    democrat: '30%',
+    republican: '70%',
     map_value: [35.5, -115],
   },
   {
-    district: 2,
-    predicted_winner: "Democrat",
-    democrat: 60,
-    republican: 40,
+    district_plan: 2,
+    opportunity_districts: 20,
+    democrat: '60%',
+    republican: '40%',
     map_value: [40.5, -115],
   },
   {
-    district: 3,
-    predicted_winner: "Democrat",
-    democrat: 70,
-    republican: 30,
+    district_plan: 3,
+    opportunity_districts: 13,
+    democrat: '70%',
+    republican: '30%',
     map_value: [38.5, -118], // -112 goes right and -115 goes left
   },
   {
-    district: 4,
-    predicted_winner: "Democrat",
-    democrat: 55,
-    republican: 45,
+    district_plan: 4,
+    opportunity_districts: 9,
+    democrat: '55%',
+    republican: '45%',
     map_value: [40.5, -118],
   },
   {
-    district: 5,
-    predicted_winner: "Republican",
-    democrat: 34,
-    republican: 66,
+    district_plan: 5,
+    opportunity_districts: 17,
+    democrat: '34%',
+    republican: '66%',
     map_value: [39.5, -120],
   },
 ];
@@ -316,48 +316,6 @@ export const Data1 = [
   { party: "Democrat", men: "44%", women: "56%" },
 ];
 
-export const Data2 = [
-  {
-    district: 1,
-    white: "72%",
-    black: "1%",
-    asian: "1%",
-    latino: "18%",
-    other: "7%",
-  },
-  {
-    district: 2,
-    white: "35%",
-    black: "37%",
-    asian: "10%",
-    latino: "12%",
-    other: "6%",
-  },
-  {
-    district: 3,
-    white: "1%",
-    black: "2%",
-    asian: "3%",
-    latino: "75%",
-    other: "6%",
-  },
-  {
-    district: 4,
-    white: "44%",
-    black: "14%",
-    asian: "3%",
-    latino: "29%",
-    other: "10%",
-  },
-  {
-    district: 5,
-    white: "12%",
-    black: "53%",
-    asian: "25%",
-    latino: "7%",
-    other: "3%",
-  },
-];
 export const data02 = [
   { x: 133, y: 60, z: 200 },
   { x: 122, y: 30, z: 260 },
