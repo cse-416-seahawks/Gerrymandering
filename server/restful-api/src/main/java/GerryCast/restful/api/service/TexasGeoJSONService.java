@@ -7,7 +7,7 @@ import GerryCast.restful.api.repository.GeoJSONRepository;
 import GerryCast.restful.api.model.TexasDistrict;
 import org.springframework.stereotype.Service;
 @Service
-public class TexasGeoJSONService implements GeoJSONService {
+public class TexasGeoJSONService {
     private final GeoJSONRepository geoJSONRepository;
 
     @Autowired
@@ -15,7 +15,6 @@ public class TexasGeoJSONService implements GeoJSONService {
         this.geoJSONRepository = geoJSONRepository;
     }
 
-    @Override
     public List<TexasDistrict> getAllGeoJSONEntities() {
         return geoJSONRepository.findAll();
     }

@@ -2,6 +2,7 @@ package GerryCast.restful.api.controller;
 
 import GerryCast.restful.api.model.District;
 import GerryCast.restful.api.model.TexasDistrict;
+import GerryCast.restful.api.repository.GeoJSONRepository;
 import GerryCast.restful.api.service.GeoJSONService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class DistrictController{
+
+    private final MongoDatabase db;
 
     @GetMapping("/")
     public String welcome(){
@@ -63,14 +73,30 @@ public class DistrictController{
 
 
 
-    private final GeoJSONService geoJSONService;
+    // private final GeoJSONService geoJSONService;
     @Autowired
-    public DistrictController(GeoJSONService geoJSONService) {
-        this.geoJSONService = geoJSONService;
+    public DistrictController(MongoDatabase db) {
+        this.db = db;
     }
     @GetMapping("/geojson")
-    public List<TexasDistrict> getAllGeoJSONEntities() {
-        return geoJSONService.getAllGeoJSONEntities();
+    public ResponseEntity<String> getAllGeoJSONEntities() {
+        MongoCollection<Document> geojsons = db.getCollection("TexasDistrict");
+
+        FindIterable<Document> documents = geojsons.find();
+
+        List<Document> dList = new ArrayList<>();
+
+        for (Document d: documents) {
+            dList.add(d);
+        }
+        if (dList.isEmpty()) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
+        
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(dList);
+        return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
 }

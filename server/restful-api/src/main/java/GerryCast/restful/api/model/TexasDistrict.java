@@ -2,15 +2,13 @@ package GerryCast.restful.api.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Map;
+
 @Document(collection = "TexasDistrict")
 public class TexasDistrict {
     @Id
     private String id;
-
     private String type;
-
     private Map<String, Object> properties;
-
     private Geometry geometry;
 
 
