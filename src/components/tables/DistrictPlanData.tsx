@@ -31,12 +31,13 @@ import {
   ZAxis,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { DistrictSelectionProps } from "./TableTypes";
+import { DistrictSelectionProps, district_summary_table} from "./TableTypes";
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [districtSelection, setDistrictSelection] = useState(0);
     const [coordinates, setCoordinates] = useState<Array<number>>([]);
     const [currentTab, setCurrentTab] = useState("1");
+    const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
 
     function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
       console.log(newValue);
@@ -80,9 +81,22 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
       transition: "background-color 0.3s ease",
     };
+
+    function handleDistrictSelection(point: any) {
+      console.log("district displayed", point.z)
+      const plan = {
+        district_plan: point.z,
+        opportunity_districts: 5,
+        democrat: '30%',
+        republican: '70%',
+        map_value: [35.5, -115],
+      };
+      const arr = displayedDistrictPlans.map((item) => {return item; });
+      arr.push(plan);
+      setDisplayedDistrictPlans(arr);
+    }
   
-  
-  
+    console.log("DISPLAYED", displayedDistrictPlans)
     return (
       <>
         <TabContext value={currentTab}>
@@ -103,63 +117,57 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <TabPanel value="1">
             <div className="graph-container-row">
               <div className="graph-container">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "350px",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontWeight: "700",
-                      textAlign: "center",
-                      fontSize: "1.0rem",
-                      height: "100px",
-                      width: "60px",
-                    }}
-                  >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "350px", }}>
+                  <div style={{ fontWeight: "700", textAlign: "center", fontSize: "1.0rem", height: "100px", width: "60px", }}>
                     Average Household Size
                   </div>
                 </div>
-                <ScatterChart
-                  width={800}
-                  height={350}
-                  margin={{ top: 20, right: 20, bottom: 10, left: 10, }}
-                >
+                <ScatterChart width={800}  height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10, }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="x"
-                    type="number"
-                    name="African American Population (%)"
-                  />
+                  <ZAxis dataKey="z" type="number" name="District Plan" />
+                  <XAxis dataKey="x" type="number" name="African American Population (%)"/>
                   <YAxis dataKey="y" type="number" name="Average Household Size" />
-                  {/* <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" /> */}
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
                     contentStyle={{ fontSize: 18 }}
                   />
                   <Legend/>
-                  <Scatter name="Available Data" data={sampleData.data01} fill="#8884d8" />
+                  <Scatter name="Available Data" data={sampleData.data01} fill="#8884d8" onClick={handleDistrictSelection}/>
                   <Scatter name="Unavailable Data" data={sampleData.data02} fill="#82ca9d" />
                 </ScatterChart>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  fontSize: "1.0rem",
-                  width: "65%",
-                  margin: "2rem",
-                  fontWeight: "700",
-                  justifyContent: "end",
-                }}
-              >
+              <div style={{ display: "flex", fontSize: "1.0rem", width: "65%", margin: "2rem", fontWeight: "700", justifyContent: "end", }}>
                 African American Population (%)
               </div>
             </div>
+            <TableContainer className="plan-table-container" component={Paper}>
+            <div style={{ maxHeight: 300, overflow: 'auto' }}>
+              <Table sx={{ minWidth: 630, marginRight : 2 }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">District Plan</TableCell>
+                    <TableCell align="center"># Opportunity Districts</TableCell>
+                    <TableCell align="center">Avg Republican %</TableCell>
+                    <TableCell align="center">Avg Democratic %</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {displayedDistrictPlans.map((row) => (
+                      <TableRow key={row.district_plan}>
+                        <TableCell component="th" scope="row">{row.district_plan}</TableCell>
+                        <TableCell align="center">{row.opportunity_districts}</TableCell>
+                        <TableCell align="center">{row.democrat}</TableCell>
+                        <TableCell align="center">{row.republican}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
+            </TableContainer>
           </TabPanel>
-
+          {/* 
+                TABLE VIEW 
+          */}
           <TabPanel value="2">
             <TableContainer className="plan-table-container" component={Paper}>
               <Table sx={{ minWidth: 630, minHeight : 200, marginRight : 2 }}>
