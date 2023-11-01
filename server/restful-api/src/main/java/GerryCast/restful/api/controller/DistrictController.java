@@ -1,7 +1,10 @@
 package GerryCast.restful.api.controller;
 
 import GerryCast.restful.api.model.District;
+import GerryCast.restful.api.model.TexasDistrict;
+import GerryCast.restful.api.service.GeoJSONService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +59,18 @@ public class DistrictController{
     @GetMapping("/getInformation/{state}/{ensemble}/{cluster}")
     public String getInformation(@PathVariable final String state, @PathVariable final int ensemble,@PathVariable final int cluster){
         return "State: "+ state + "\n"+ "Ensemble: "+ ensemble + "\n"+"Cluster: "+ cluster;
+    }
+
+
+
+    private final GeoJSONService geoJSONService;
+    @Autowired
+    public DistrictController(GeoJSONService geoJSONService) {
+        this.geoJSONService = geoJSONService;
+    }
+    @GetMapping("/geojson")
+    public List<TexasDistrict> getAllGeoJSONEntities() {
+        return geoJSONService.getAllGeoJSONEntities();
     }
 
 }
