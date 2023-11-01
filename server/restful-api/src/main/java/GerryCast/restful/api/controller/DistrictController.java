@@ -1,7 +1,11 @@
 package GerryCast.restful.api.controller;
 
 import GerryCast.restful.api.model.District;
+import GerryCast.restful.api.model.TexasDistrict;
+import GerryCast.restful.api.repository.GeoJSONRepository;
+import GerryCast.restful.api.service.GeoJSONService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class DistrictController{
+
+    private final MongoDatabase db;
 
     @GetMapping("/")
     public String welcome(){
@@ -52,6 +65,38 @@ public class DistrictController{
         }
         lastName = lastName.substring(0, 1).toUpperCase()+lastName.substring(1);
         return new District(UUID.randomUUID().toString(), id, party, lastName);
+    }
+    @GetMapping("/getInformation/{state}/{ensemble}/{cluster}")
+    public String getInformation(@PathVariable final String state, @PathVariable final int ensemble,@PathVariable final int cluster){
+        return "State: "+ state + "\n"+ "Ensemble: "+ ensemble + "\n"+"Cluster: "+ cluster;
+    }
+
+
+
+    // private final GeoJSONService geoJSONService;
+    @Autowired
+    public DistrictController(MongoDatabase db) {
+        this.db = db;
+    }
+    @GetMapping("/geojson")
+    public ResponseEntity<String> getAllGeoJSONEntities() {
+        MongoCollection<Document> geojsons = db.getCollection("TexasDistrict");
+
+        FindIterable<Document> documents = geojsons.find();
+
+        List<Document> dList = new ArrayList<>();
+
+        for (Document d: documents) {
+            dList.add(d);
+        }
+        if (dList.isEmpty()) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
+        
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(dList);
+        return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
 }
