@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { GlobalContext } from "../../globalContext";
 import Ensembles from "./Ensembles";
 import ClusterTable from "./ClusterTable";
-import AssociationClusters from "./AssociationClusters";
+import DistrictPlanData from "./DistrictPlanData";
 
 function TableData(props: {
   selectedState: string;
@@ -135,7 +135,7 @@ function TableData(props: {
       {currentStep == 1 && <ClusterTable onClusterSelection={handleClusterSelection}/>}
       {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
       {currentStep == 2 && (
-        <AssociationClusters onDistrictSelection={handleDistrictChange} />
+        <DistrictPlanData onDistrictSelection={handleDistrictChange} />
       )}
     </div>
   );

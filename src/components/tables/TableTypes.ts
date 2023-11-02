@@ -29,10 +29,10 @@ export type ensemble_summary_table = {
 }
 
 export type district_summary_table = {
-    district: number;
-    predicted_winner: string;
-    democrat: number;
-    republican: number;
+    district_plan: number;
+    opportunity_districts: number;
+    democrat: String;
+    republican: String;
     map_value: Array<number>;
   }
 
