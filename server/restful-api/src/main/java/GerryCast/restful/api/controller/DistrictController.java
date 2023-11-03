@@ -89,14 +89,14 @@ public class DistrictController{
         MongoCollection<Document> geojsons = null;
 
 
-        if(state.equals("TX")){
+        if(state.equals("TEXAS")){
             geojsons = db.getCollection("Texas");
         }
-        if(state.equals("VA")){
+        if(state.equals("VIRGINIA")){
             geojsons = db.getCollection("Virginia");
         }
         
-        if(state.equals("NV")){
+        if(state.equals("NEVADA")){
             geojsons = db.getCollection("Nevada");
         }
 
@@ -128,14 +128,14 @@ public class DistrictController{
         MongoCollection<Document> geojsons = null;
 
 
-        if(state.equals("TX")){
+        if(state.equals("TEXAS")){
             geojsons = db.getCollection("TexasDistrict");
         }
-        if(state.equals("VA")){
+        if(state.equals("VIRGINA")){
             geojsons = db.getCollection("VirginiaDistrict");
         }
         
-        if(state.equals("NV")){
+        if(state.equals("NEVADA")){
             geojsons = db.getCollection("NevadaDistrict");
         }
 

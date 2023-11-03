@@ -3,8 +3,9 @@ import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 import { TexasDistricts } from "../../GeoJson/Texas_US_House_Districts";
-import { fetchTexasDistrict } from "../apiClient";
+import {  fetchDistricts } from "../apiClient";
 import { Polygon } from "react-leaflet";
+import { AvailableStates } from "../../globalContext";
 
 export default () => {
 
@@ -22,20 +23,20 @@ export default () => {
   useEffect(() => {
     async function fetchDistrictsAsync() {
       try {
-        const result = await fetchTexasDistrict();
+        const result = await fetchDistricts(AvailableStates.Texas);
         setTexasDistrict(result);
         console.log(result);
       } catch (error) {
-        // Handle any errors here
       }
     }
 
     fetchDistrictsAsync();
   }, []);
+
   return (
     <>
       {
-      TexasDistricts.map((district: { geometry: { coordinates: number[][][][]; }; }) => {
+      TexasDistricts.features.map((district: { geometry: { coordinates: number[][][][]; }; }) => {
         return (
           <Polygon
             pathOptions={{

@@ -17,6 +17,12 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
+export enum AvailableStates {
+  Nevada = "NEVADA",
+  Texas = "TEXAS",
+  Virginia = "VIRGINIA"
+}
+
 export enum GlobalTypes {
   DistrictMap = "DISTRICT_MAP",
   StateMap = "STATE_MAP",
