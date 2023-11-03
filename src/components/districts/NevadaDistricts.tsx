@@ -7,6 +7,7 @@ import { nevadaSA } from "../../GeoJson/Nevada_State_Assembly";
 import { Polygon } from "react-leaflet";
 
 export default () => {
+  
   const generateColor = () => {
     return (
       "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
