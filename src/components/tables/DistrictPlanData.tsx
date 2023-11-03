@@ -119,39 +119,54 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
               <div className="graph-container">
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "350px", }}>
                   <div style={{ fontWeight: "700", textAlign: "center", fontSize: "1.0rem", height: "100px", width: "60px", }}>
-                    Average Household Size
+                    {"# Districts w/ African American Population > 5,000,000"}
                   </div>
                 </div>
                 <ScatterChart width={800}  height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10, }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <ZAxis dataKey="z" type="number" name="District Plan" />
-                  <XAxis dataKey="x" type="number" name="African American Population (%)"/>
-                  <YAxis dataKey="y" type="number" name="Average Household Size" />
+                  <XAxis dataKey="x" type="number" name="Average African-American Population (%)"/>
+                  <YAxis dataKey="y" type="number" name="# Districts w/ African American Population > 5,000,000" />
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
                     contentStyle={{ fontSize: 18 }}
                   />
                   <Legend/>
-                  <Scatter name="Available Data" data={sampleData.data01} fill="#8884d8" onClick={handleDistrictSelection}/>
-                  <Scatter name="Unavailable Data" data={sampleData.data02} fill="#82ca9d" />
+                  <Scatter name="Available Data" data={sampleData.data01} fill="#82ca9d" onClick={handleDistrictSelection}/>
+                  <Scatter name="Unavailable Data" data={sampleData.data02} fill="#ca8287" />
                 </ScatterChart>
               </div>
               <div style={{ display: "flex", fontSize: "1.0rem", width: "65%", margin: "2rem", fontWeight: "700", justifyContent: "end", }}>
-                African American Population (%)
+                {"Average African-American Population (%)"}
               </div>
             </div>
+            {/* 
+              SELECTED 
+              DISTRICT 
+              PLANS
+            */}
             <TableContainer className="plan-table-container" component={Paper}>
-            <div style={{ maxHeight: 300, overflow: 'auto' }}>
-              <Table sx={{ minWidth: 630, marginRight : 2 }}>
+            <div style={{  width:'100%', maxHeight: 300, overflow: 'auto' }}>
+              <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left">District Plan</TableCell>
+                    <TableCell align="center">District Plan</TableCell>
                     <TableCell align="center"># Opportunity Districts</TableCell>
                     <TableCell align="center">Avg Republican %</TableCell>
                     <TableCell align="center">Avg Democratic %</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                {displayedDistrictPlans.length == 0 ? 
+                <>
+                  <TableCell component="th" scope="row" width='100rem'></TableCell>
+                  <TableCell component="th" scope="row" width='100rem' ></TableCell>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 500, color: 'grey', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px'}}>
+                    No selected district plans
+                  </div>
+                </>
+                :
+                <>
+                  <TableBody>
                   {displayedDistrictPlans.map((row) => (
                       <TableRow key={row.district_plan}>
                         <TableCell component="th" scope="row">{row.district_plan}</TableCell>
@@ -160,7 +175,9 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                         <TableCell align="center">{row.republican}</TableCell>
                       </TableRow>
                     ))}
-                </TableBody>
+                  </TableBody>
+                </>
+                }
               </Table>
             </div>
             </TableContainer>

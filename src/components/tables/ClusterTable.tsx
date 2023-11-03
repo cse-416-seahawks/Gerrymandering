@@ -174,7 +174,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                       width: "75px",
                     }}
                   >
-                    African American Population In Districts (%)
+                    {"# Districts w/ African American Population > 5,000,000"}
                   </div>
                 </div>
                 <ScatterChart
@@ -192,7 +192,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                     yAxisId="left"
                     type="number"
                     dataKey="y"
-                    name="African American Population In Districts (%)"
+                    name="# Districts w/ African American Population > 5,000,000"
                     opacity="1"
                     stroke="#7aa9ff"
                   />
@@ -222,7 +222,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                   justifyContent: "end",
                 }}
               >
-                Average African-American Population (%)
+                {"Average African-American Population (%)"}
               </div>
             </div>
           </Accordion>
