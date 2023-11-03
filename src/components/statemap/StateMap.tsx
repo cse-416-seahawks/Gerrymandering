@@ -55,13 +55,11 @@ const stateZoomData: StateZoomData = {
 
 export default function StateMap(props: {
   selectedState: string;
-  districtCoordinates: Array<number>;
+  centerCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
-  const [centerCoordinates, setCenterCoordinates] = useState(
-    props.districtCoordinates
-  );
-  const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
+  const [centerCoordinates, setCenterCoordinates] = useState(props.centerCoordinates);
+  const [zoom, setZoom] = useState(stateZoomData[props.selectedState]);
   
   const { state, dispatch } = useContext(GlobalContext);
 
@@ -76,10 +74,10 @@ export default function StateMap(props: {
    }
 
   useEffect(() => {
-    setCenterCoordinates(props.districtCoordinates);
+    setCenterCoordinates(props.centerCoordinates);
 
     if (props.selectedDistrict !== -1) setZoom(8);
-  }, [props.districtCoordinates]);
+  }, [props.centerCoordinates]);
 
   const handleStateChangeCoordinates = (event : SelectChangeEvent) => {
     const newState = event.target.value;
@@ -118,6 +116,8 @@ export default function StateMap(props: {
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
 
+  console.log("selectedState", props.selectedState)
+  console.log("selectedState", centerCoordinates)
   return (
     <div className="StateMap">
       <DistrictInfoCard currentState={currentState}/>

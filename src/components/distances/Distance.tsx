@@ -11,7 +11,7 @@ import DistanceTable from "./DistanceTable";
 function Distance() {
   const [selectedState, setSelectedState] = useState("Nevada");
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
-  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>(
+  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>(
     [38.5, -116.5]
   );
 
@@ -22,7 +22,7 @@ function Distance() {
     coordinates: Array<number>
   ) => {
     setSelectedDistrict(district_num);
-    setDistrictCoordinates(coordinates);
+    setCenterCoordinates(coordinates);
   };
   return (
     <GlobalProvider>
@@ -33,7 +33,7 @@ function Distance() {
             <div className="State-map">
               <StateMap
                 selectedState={selectedState}
-                districtCoordinates={districtCoordinates}
+                centerCoordinates={centerCoordinates}
                 selectedDistrict={selectedDistrict}
               />
             </div>

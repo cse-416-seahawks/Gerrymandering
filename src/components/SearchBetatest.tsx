@@ -63,11 +63,11 @@ const stateZoomData: StateZoomData = {
 export default function SearchBetatest(props: {
   selectedState: string;
   onStateSelection: (state: string) => void;
-  districtCoordinates: Array<number>;
+  centerCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
   const [centerCoordinates, setCenterCoordinates] = useState(
-    props.districtCoordinates
+    props.centerCoordinates
   );
   const [currentState, setCurrentState] = useState("Nevada");
 
