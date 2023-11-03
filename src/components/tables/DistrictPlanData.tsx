@@ -83,7 +83,6 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     };
 
     function handleDistrictSelection(point: any) {
-      console.log("district displayed", point.z)
       const plan = {
         district_plan: point.z,
         opportunity_districts: 5,
@@ -91,12 +90,16 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
         republican: '70%',
         map_value: [35.5, -115],
       };
-      const arr = displayedDistrictPlans.map((item) => {return item; });
-      arr.push(plan);
-      setDisplayedDistrictPlans(arr);
+      if (!displayedDistrictPlans.some((item) => item.district_plan === plan.district_plan)) {
+        setDisplayedDistrictPlans([...displayedDistrictPlans, plan]);
+      }
     }
-  
-    console.log("DISPLAYED", displayedDistrictPlans)
+    
+    function removeSelectedDistrictPlan(districtPlanNum: number) {
+      const selected = displayedDistrictPlans.map(item => { return item; });
+      const newSelected = selected.filter((item) => item.district_plan !== districtPlanNum);
+      setDisplayedDistrictPlans(newSelected);
+    }
     return (
       <>
         <TabContext value={currentTab}>
@@ -168,8 +171,8 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                 <>
                   <TableBody>
                   {displayedDistrictPlans.map((row) => (
-                      <TableRow key={row.district_plan}>
-                        <TableCell component="th" scope="row">{row.district_plan}</TableCell>
+                      <TableRow key={row.district_plan} onDoubleClick={() => removeSelectedDistrictPlan(row.district_plan)}>
+                        <TableCell align="center">{row.district_plan}</TableCell>
                         <TableCell align="center">{row.opportunity_districts}</TableCell>
                         <TableCell align="center">{row.democrat}</TableCell>
                         <TableCell align="center">{row.republican}</TableCell>
