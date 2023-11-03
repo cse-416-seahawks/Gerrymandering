@@ -131,7 +131,7 @@ public class DistrictController{
         if(state.equals("TEXAS")){
             geojsons = db.getCollection("TexasDistrict");
         }
-        if(state.equals("VIRGINA")){
+        if(state.equals("VIRGINIA")){
             geojsons = db.getCollection("VirginiaDistrict");
         }
         
