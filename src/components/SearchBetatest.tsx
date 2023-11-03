@@ -72,20 +72,6 @@ export default function SearchBetatest(props: {
   const [currentState, setCurrentState] = useState("Nevada");
 
 
-  // function SetMapView() {
-  //   console.log("setting map view", [
-  //     centerCoordinates[0],
-  //     centerCoordinates[1],
-  //   ]);
-  //   // const map = useMapEvent("mouseover", (e) => {
-  //     map.setView([centerCoordinates[0], centerCoordinates[1]], stateZoomData[currentState]);
-  //     // map.fitBounds(data.coordinates.getBounds());
-  //     // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-  //   // });
-
-  //   return null;
-  // }
-
   var virginiaData = require("./../GeoJson/Extract GeoJSON entry/VirginiaFeatures.json");
   virginiaData = virginiaData
 

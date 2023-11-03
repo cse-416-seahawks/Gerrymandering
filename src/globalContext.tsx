@@ -17,18 +17,27 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
+export enum States {
+  Nevada = "Nevada",
+  Texas = "Texas",
+  Virginia = "Virginia",
+}
+
 export enum GlobalTypes {
   DistrictMap = "DISTRICT_MAP",
   StateMap = "STATE_MAP",
+  ChangeState = "CHANGE_STATE",
   DistanceMeasure = "DISTANCE_MEASURE",
-  StepChange = "STEP_CHANGE"
-  
+  StepChange = "STEP_CHANGE",
+  PageChange = "PageChange",
 }
 
 export type GlobalState = {
   dismap: boolean;
   distanceMeasure: string;
-  step : number;
+  currentState: States;
+  step: number;
+  clusterAnalysis: boolean;
 };
 
 type GlobalStatePayload = {
@@ -38,27 +47,37 @@ type GlobalStatePayload = {
   [GlobalTypes.StateMap]: {
     dismap: boolean;
   };
+  [GlobalTypes.ChangeState]: {
+    currentState: States;
+  };
   [GlobalTypes.DistanceMeasure]: {
-    distanceMeasure: string,
+    distanceMeasure: string;
   };
   [GlobalTypes.StepChange]: {
-    step : number,
-  }
-  
+    step: number;
+  };
+  [GlobalTypes.PageChange]: {
+    clusterAnalysis: boolean;
+  };
 };
 
 export type GlobalStateActions =
   ActionMap<GlobalStatePayload>[keyof ActionMap<GlobalStatePayload>];
 
-const dismapReducer = (state: GlobalState[], action: GlobalStateActions): GlobalState[] => {
+const dismapReducer = (
+  state: GlobalState[],
+  action: GlobalStateActions
+): GlobalState[] => {
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
         ...state,
         {
           dismap: false,
-          distanceMeasure : state[state.length - 1].distanceMeasure,
-          step : state[state.length - 1].step
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
         },
       ];
     case GlobalTypes.DistrictMap:
@@ -66,39 +85,68 @@ const dismapReducer = (state: GlobalState[], action: GlobalStateActions): Global
         ...state,
         {
           dismap: true,
-          distanceMeasure : state[state.length - 1].distanceMeasure,
-          step : state[state.length - 1].step
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
         },
       ];
     case GlobalTypes.StepChange:
       return [
         ...state,
         {
-          dismap : state[state.length - 1].dismap,
+          dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
-          step : action.payload.step
-        }
+          step: action.payload.step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+        },
+      ];
+    case GlobalTypes.ChangeState:
+      return [
+        ...state,
+        {
+          dismap: state[state.length - 1].dismap,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: action.payload.currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+        },
       ];
     case GlobalTypes.DistanceMeasure:
       return [
         ...state,
         {
-          dismap : state[state.length - 1].dismap,
+          dismap: state[state.length - 1].dismap,
           distanceMeasure: action.payload.distanceMeasure,
-          step : state[state.length - 1].step
-        }
-      ]
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+        },
+      ];
+    case GlobalTypes.PageChange:
+      return [
+        ...state,
+        {
+          dismap: state[state.length - 1].dismap,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: action.payload.clusterAnalysis,
+        },
+      ];
     default:
       return state;
   }
 };
 
-
 const intialState: GlobalState[] = [
   {
     dismap: false,
     distanceMeasure: "hamming",
-    step : 0
+    step: 0,
+    currentState: States.Nevada,
+    clusterAnalysis : true
   },
 ];
 
@@ -124,4 +172,3 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
 };
 
 export { GlobalContext, GlobalProvider };
- 

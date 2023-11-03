@@ -9,8 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { GlobalContext } from "../../globalContext";
 import Ensembles from "./Ensembles";
 import ClusterTable from "./ClusterTable";
-import AssociationClusters from "./AssociationClusters";
-
+import DistrictPlanData from "./DistrictPlanData";
 
 function TableData(props: {
   selectedState: string;
@@ -19,30 +18,29 @@ function TableData(props: {
     coordinates: Array<number>
   ) => void;
 }) {
-
   const { state, dispatch } = useContext(GlobalContext);
 
   let currentStep = state[state.length - 1].step;
+
+  const [ensemble, setEnsemble] = useState(0);
+  const [cluster, setCluster] = useState(0);
 
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
 
-  
   const steps = [
     "Select an Ensemble",
     "Select a Cluster",
     "Select a District Plan",
   ];
 
-
   // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble'
   useEffect(() => {
-    handleStepChange(0);
+    handleStepChange(0, 0);
   }, [props.selectedState]);
 
-  function handleStepChange(step: number) {
-    
+  function handleStepChange(step: number, ensemble: number) {
     if (step === 2) {
       console.log("CHANGING TO DISTRICT MAP");
       dispatch({
@@ -51,6 +49,8 @@ function TableData(props: {
           dismap: true,
         },
       });
+    } else if (step == 1) {
+      setEnsemble(ensemble);
     } else {
       dispatch({
         type: "STATE_MAP",
@@ -60,17 +60,21 @@ function TableData(props: {
       });
     }
     dispatch({
-      type : "STEP_CHANGE",
-      payload : {
-        step : step
-      }
-    })
+      type: "STEP_CHANGE",
+      payload: {
+        step: step,
+      },
+    });
 
     console.log("step changed ", step);
   }
 
   function handleDistrictChange(district_num: number, coords: Array<number>) {
     props.onDistrictSelection(district_num, coords);
+  }
+
+  function handleClusterSelection(clusterNumber: number) {
+    setCluster(clusterNumber);
   }
 
   function getRandomNumber(min: number, max: number) {
@@ -81,8 +85,7 @@ function TableData(props: {
    *
    * Table Data for ensembles
    */
-  
-  
+
   function BackButton() {
     if (currentStep > 0) {
       // console.log("slay")
@@ -91,7 +94,7 @@ function TableData(props: {
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() => handleStepChange(currentStep - 1)}
+            onClick={() => handleStepChange(currentStep - 1, ensemble)}
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>
@@ -110,7 +113,7 @@ function TableData(props: {
             <Step key={label} completed={completed[index]}>
               <StepButton
                 color="inherit"
-                onClick={() => handleStepChange(index)}
+                onClick={() => handleStepChange(index, ensemble)}
               >
                 {label}
               </StepButton>
@@ -118,18 +121,24 @@ function TableData(props: {
           ))}
         </Stepper>
       </div>
-      <BackButton />
+      <div className="table-info">
+        <BackButton />
+        {currentStep == 1 && <div className="ensemble-number">Viewing Ensemble {ensemble}</div>}
+        {currentStep == 2 && <div className="ensemble-number cluster-number">Viewing Ensemble {ensemble}, Cluster {cluster}</div>}
+      </div>
+
       {/* State Details */}
-      {currentStep == 0 && <Ensembles showToggle={true} handleStep={handleStepChange} />}
+      {currentStep == 0 && (
+        <Ensembles showToggle={true} handleStep={handleStepChange} />
+      )}
       {/* Summary of Cluster */}
-      {currentStep == 1 && <ClusterTable />}
+      {currentStep == 1 && <ClusterTable onClusterSelection={handleClusterSelection}/>}
       {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
       {currentStep == 2 && (
-        <AssociationClusters onDistrictSelection={handleDistrictChange} />
+        <DistrictPlanData onDistrictSelection={handleDistrictChange} />
       )}
     </div>
   );
 }
 
 export default TableData;
-

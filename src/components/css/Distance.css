@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
+  background: white;
 }
 
 .stepper-container {
@@ -10,14 +11,24 @@
     flex-direction: column;
     width: 100%;
     height: 3rem;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
-  .tab-container {
+  .State-map{
+    z-index: 1;
+  }
+  
+  .stack-top{
+    top:0;
+    right:0;
+    position:absolute;
+  }
+
+.tab-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
 .distance-table-container {
@@ -27,6 +38,4 @@
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
-  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(0.1rem);
 }

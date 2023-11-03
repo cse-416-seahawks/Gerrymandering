@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
+import { ClusterSelectionProps } from "./TableTypes";
 
 import {
   XAxis,
@@ -30,7 +31,7 @@ import {
   ZAxis,
 } from "recharts";
 
-function ClusterTable() {
+function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
 
   const { state, dispatch } = useContext(GlobalContext);
@@ -40,9 +41,11 @@ function ClusterTable() {
     setCurrentTab(String(newValue));
   }
 
-  function handleStepChange(step: number) {
+  function handleStepChange(step: number, clusterNumber?: number) {
     
     if (step === 2) {
+      if (clusterNumber) onClusterSelection(clusterNumber);
+      
       console.log("CHANGING TO DISTRICT MAP");
       dispatch({
         type: "DISTRICT_MAP",
@@ -99,8 +102,8 @@ function ClusterTable() {
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }}>
+          <TableContainer className="cluster-table-container" component={Paper}>
+            <Table sx={{ minWidth: 630, minHeight : 600, marginRight : 2 }}>
               <TableHead>
                 <TableRow>
                   <TableCell align="center">Cluster</TableCell>
@@ -124,7 +127,7 @@ function ClusterTable() {
                       <Button
                         variant="text"
                         size="medium"
-                        onClick={() => handleStepChange(2)}
+                        onClick={() => handleStepChange(2, row.cluster)}
                       >
                         {row.cluster}
                       </Button>
@@ -158,24 +161,25 @@ function ClusterTable() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: "350px",
+                    height: "460px",
                   }}
                 >
                   <div
                     style={{
+                      marginLeft : "1rem",
                       fontWeight: "700",
                       textAlign: "center",
                       fontSize: "1rem",
-                      height: "100px",
-                      width: "100px",
+                      height: "120px",
+                      width: "75px",
                     }}
                   >
                     African American Population In Districts (%)
                   </div>
                 </div>
                 <ScatterChart
-                  width={750}
-                  height={350}
+                  width={740}
+                  height={460}
                   margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                 >
                   <CartesianGrid />

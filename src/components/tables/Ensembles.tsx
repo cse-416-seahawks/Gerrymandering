@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import "../css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
@@ -34,7 +34,7 @@ import { GlobalContext } from "../../globalContext";
 
 interface EnsembleProps {
   showToggle : boolean,
-  handleStep : (step : number) => void
+  handleStep : (step : number, ensemble : number) => void
 }
 
 const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
@@ -69,7 +69,8 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
   return (
     <div>
       <div className="toggleButton-container">
-        <ToggleButtonGroup
+        {
+          showToggle ? <ToggleButtonGroup
           exclusive
           value={state[state.length - 1].distanceMeasure}
           onChange={handleAlignment}
@@ -77,10 +78,11 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
           <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
           <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
           <ToggleButton value={"total"}>
-            {" "}
-            Total Variation Distance{" "}
+            Total Variation Distance
           </ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> : <div/>
+        }
+        
       </div>
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
@@ -104,7 +106,7 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
                 <Button
                   variant="text"
                   size="large"
-                  onClick={() => handleStep(1)}
+                  onClick={() => handleStep(1,row.ensemble)}
                 >
                   Ensemble {row.ensemble}
                 </Button>
@@ -113,15 +115,26 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
               <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                   <TableBody>
+                  <TableRow>
                     {row.data.map((tablerow) => (
-                      <TableRow key={tablerow.label}>
-                        <TableCell component="th" scope="row">
-                          {" "}
-                          {tablerow.label}{" "}
-                        </TableCell>
-                        <TableCell align="right">{tablerow.detail}</TableCell>
-                      </TableRow>
+                        <TableCell align="center"><b>{tablerow.label}</b></TableCell>
+                        // <TableCell component="th" scope="row">
+                        //   {tablerow.label}
+                        // </TableCell>
+                        // <TableCell align="right">{tablerow.detail}</TableCell>
+                      
                     ))}
+                    </TableRow>
+                    <TableRow>
+                    {row.data.map((tablerow) => (
+                        <TableCell align="center">{tablerow.detail}</TableCell>
+                        // <TableCell component="th" scope="row">
+                        //   {tablerow.label}
+                        // </TableCell>
+                        // <TableCell align="right">{tablerow.detail}</TableCell>
+                      
+                    ))}
+                    </TableRow>
                   </TableBody>
                 </Table>
               </AccordionDetails>
@@ -132,7 +145,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
         <TabPanel value="2">
           <Accordion defaultExpanded={true}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {" "}
               <Typography>
                 <b>Association of clusters with ensemble size</b>
               </Typography>

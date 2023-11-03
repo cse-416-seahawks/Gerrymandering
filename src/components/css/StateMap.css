@@ -5,7 +5,7 @@
 
 .StateMap {
   position:relative;
-  justify-content: start;
+  justify-content: flex-start;
   height : 110%;
   backdrop-filter: blur(0.1rem);
   border-width: 1px;
@@ -13,7 +13,7 @@
 
 .StateMap-Header-Text {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   width: 100%;
   font-size: 1rem;
 }
@@ -28,6 +28,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
+  background-color: white;
 }
 
 .State-map{
@@ -37,14 +38,20 @@
 .stack-top{
   top:0;
   right:0;
+  margin-top: 6rem;
   position:absolute;
 }
 
 .StateMap-content {
+  padding-bottom: 2rem;
   margin-top: 1rem;
   display : flex;
   flex-direction:row;
   height: 50vh;
   width: 100%;
-  /* background-color: #f6f8fa; */
+  background-color: #ffffff;
+}
+
+.StateMap-Change-Radio{
+  margin-top: 2rem;
 }
