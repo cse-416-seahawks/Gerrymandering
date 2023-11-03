@@ -78,9 +78,31 @@ public class DistrictController{
     public DistrictController(MongoDatabase db) {
         this.db = db;
     }
-    @GetMapping("/geojson")
-    public ResponseEntity<String> getAllGeoJSONEntities() {
-        MongoCollection<Document> geojsons = db.getCollection("TexasDistrict");
+    @GetMapping("/checkDatabase")
+    public String checkDatabase() {
+        String connectedDatabase = db.getName();
+        return "Connected to database: " + connectedDatabase;
+    }
+
+    @GetMapping("/getOutline/{state}")
+    public ResponseEntity<String> getOutline(@PathVariable final String state){
+        MongoCollection<Document> geojsons = null;
+
+
+        if(state.equals("TX")){
+            geojsons = db.getCollection("Texas");
+        }
+        if(state.equals("VA")){
+            geojsons = db.getCollection("Virginia");
+        }
+        
+        if(state.equals("NV")){
+            geojsons = db.getCollection("Nevada");
+        }
+
+        if(geojsons == null){
+            return new ResponseEntity<>("Input a valid state, put in the correct two letter capitalized abbreviation of the state.", HttpStatus.BAD_REQUEST);
+        }
 
         FindIterable<Document> documents = geojsons.find();
 
@@ -94,6 +116,60 @@ public class DistrictController{
         }
         
         
+        Gson gson = new Gson();
+        String json = gson.toJson(dList);
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+    
+
+    
+    @GetMapping("/getInformation/{state}")
+    public ResponseEntity<String> getAllGeoJSONEntities(@PathVariable final String state) {
+        MongoCollection<Document> geojsons = null;
+
+
+        if(state.equals("TX")){
+            geojsons = db.getCollection("TexasDistrict");
+        }
+        if(state.equals("VA")){
+            geojsons = db.getCollection("VirginiaDistrict");
+        }
+        
+        if(state.equals("NV")){
+            geojsons = db.getCollection("NevadaDistrict");
+        }
+
+        if(geojsons == null){
+            return new ResponseEntity<>("Input a valid state, put in the correct two letter capitalized abbreviation of the state.", HttpStatus.BAD_REQUEST);
+        }
+
+        FindIterable<Document> documents = geojsons.find();
+
+        List<Document> dList = new ArrayList<>();
+
+        for (Document d: documents) {
+            dList.add(d);
+        }
+        if (dList.isEmpty()) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
+        
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(dList);
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+    @GetMapping("/getSampleData")
+    public ResponseEntity<String> getSampleData() {
+        MongoCollection<Document> geojsons = db.getCollection("SampleData");
+        FindIterable<Document> documents = geojsons.find();
+        List<Document> dList = new ArrayList<>();
+        for (Document d: documents) {
+            dList.add(d);
+        }
+        if (dList.isEmpty()) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
         Gson gson = new Gson();
         String json = gson.toJson(dList);
         return new ResponseEntity<>(json, HttpStatus.OK);

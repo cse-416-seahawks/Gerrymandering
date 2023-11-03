@@ -29,6 +29,6 @@ public class MongoDBConfig {
     @Bean
     public MongoDatabase mongoDatabase() {
         MongoClient mongoClient = mongoClient();
-        return mongoClient.getDatabase("StateMap");
+        return mongoClient.getDatabase("Seahawks");
     }
 }

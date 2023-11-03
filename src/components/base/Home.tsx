@@ -8,7 +8,7 @@ import TableData from "../tables/TableData";
 
 function Home() {
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
-  const [districtCoordinates, setDistrictCoordinates] = useState<Array<number>>([38.5, -116.5]);
+  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([38.5, -116.5]);
 
   const {state, dispatch} = useContext(GlobalContext);
   
@@ -16,7 +16,7 @@ function Home() {
   const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
     console.log("now inhome", district_num)
     setSelectedDistrict(district_num);
-    setDistrictCoordinates(coordinates);
+    setCenterCoordinates(coordinates);
   }
   
 
@@ -28,7 +28,7 @@ function Home() {
       <div className="StateMap-content">
         <header className="StateMap-header">
             <div className="State-map"> 
-            <StateMap selectedState={state[state.length-1].currentState} districtCoordinates={districtCoordinates} selectedDistrict={selectedDistrict}/>
+            <StateMap selectedState={state[state.length-1].currentState} centerCoordinates={centerCoordinates} selectedDistrict={selectedDistrict}/>
             </div>
             <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
         </header>
