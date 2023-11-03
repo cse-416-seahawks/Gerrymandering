@@ -1,4 +1,7 @@
-[
+{
+  "State": "Nevada",
+  "type" : "districtPlanData",
+  "data": [
     {
       "district_plan": 1,
       "opportunity_districts": 5,
@@ -35,4 +38,4 @@
       "map_value": [39.5, -120]
     }
   ]
-  
+}
