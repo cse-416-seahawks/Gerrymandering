@@ -18,6 +18,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
+import AlertModal from "../AlertModal";
 import {
   AreaChart,
   Area,
@@ -38,6 +39,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [coordinates, setCoordinates] = useState<Array<number>>([]);
     const [currentTab, setCurrentTab] = useState("1");
     const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
+    const [modal, setModal] = useState<boolean>(false);
 
     function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
       console.log(newValue);
@@ -100,8 +102,14 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
       const newSelected = selected.filter((item) => item.district_plan !== districtPlanNum);
       setDisplayedDistrictPlans(newSelected);
     }
+
+    function handleOpenModal(open: boolean) {
+      setModal(open);
+    }
+
     return (
       <>
+        <AlertModal openCallBack={handleOpenModal} isOpen={modal}/>
         <TabContext value={currentTab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
             <Tabs value={currentTab} onChange={handleTabChange}>
@@ -136,7 +144,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                   />
                   <Legend/>
                   <Scatter name="Available Data" data={sampleData.data01} fill="#82ca9d" onClick={handleDistrictSelection}/>
-                  <Scatter name="Unavailable Data" data={sampleData.data02} fill="#ca8287" />
+                  <Scatter name="Unavailable Data" data={sampleData.data02} fill="#ca8287" onClick={() => handleOpenModal(true)}/>
                 </ScatterChart>
               </div>
               <div style={{ display: "flex", fontSize: "1.0rem", width: "65%", margin: "2rem", fontWeight: "700", justifyContent: "end", }}>
