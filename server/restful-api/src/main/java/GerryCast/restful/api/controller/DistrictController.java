@@ -78,6 +78,11 @@ public class DistrictController{
     public DistrictController(MongoDatabase db) {
         this.db = db;
     }
+    @GetMapping("/checkDatabase")
+    public String checkDatabase() {
+        String connectedDatabase = db.getName();
+        return "Connected to database: " + connectedDatabase;
+    }
 
     @GetMapping("/getOutline/{state}")
     public ResponseEntity<String> getOutline(@PathVariable final String state){
@@ -150,6 +155,21 @@ public class DistrictController{
         }
         
         
+        Gson gson = new Gson();
+        String json = gson.toJson(dList);
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
+    @GetMapping("/getSampleData")
+    public ResponseEntity<String> getSampleData() {
+        MongoCollection<Document> geojsons = db.getCollection("SampleData");
+        FindIterable<Document> documents = geojsons.find();
+        List<Document> dList = new ArrayList<>();
+        for (Document d: documents) {
+            dList.add(d);
+        }
+        if (dList.isEmpty()) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
         Gson gson = new Gson();
         String json = gson.toJson(dList);
         return new ResponseEntity<>(json, HttpStatus.OK);
