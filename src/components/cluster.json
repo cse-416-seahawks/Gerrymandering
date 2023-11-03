@@ -1,0 +1,71 @@
+{
+    
+  "State": "Nevada",
+  "data": [
+    {
+      "cluster": 1,
+      "name": "clusterA",
+      "num_dist_plans": 312,
+      "avg_distance": 12.2,
+      "avg_rep": "47%",
+      "avg_dem": "53%",
+      "avg_white": "72%",
+      "avg_black": "1%",
+      "avg_asian": "1%",
+      "avg_latino": "18%",
+      "other": "7%"
+    },
+    {
+      "cluster": 2,
+      "name": "clusterB",
+      "num_dist_plans": 126,
+      "avg_distance": 32.8,
+      "avg_rep": "31%",
+      "avg_dem": "69%",
+      "avg_white": "2%",
+      "avg_black": "18%",
+      "avg_asian": "15%",
+      "avg_latino": "18%",
+      "other": "47%"
+    },
+    {
+      "cluster": 3,
+      "name": "clusterC",
+      "num_dist_plans": 229,
+      "avg_distance": 12.2,
+      "avg_rep": "47%",
+      "avg_dem": "53%",
+      "avg_white": "72%",
+      "avg_black": "1%",
+      "avg_asian": "1%",
+      "avg_latino": "18%",
+      "other": "7%"
+    },
+    {
+      "cluster": 4,
+      "name": "clusterD",
+      "num_dist_plans": 581,
+      "avg_distance": 12.2,
+      "avg_rep": "47%",
+      "avg_dem": "53%",
+      "avg_white": "72%",
+      "avg_black": "1%",
+      "avg_asian": "1%",
+      "avg_latino": "18%",
+      "other": "7%"
+    },
+    {
+      "cluster": 5,
+      "name": "clusterE",
+      "num_dist_plans": 414,
+      "avg_distance": 12.2,
+      "avg_rep": "47%",
+      "avg_dem": "53%",
+      "avg_white": "72%",
+      "avg_black": "1%",
+      "avg_asian": "1%",
+      "avg_latino": "18%",
+      "other": "7%"
+    }
+  ]
+}
