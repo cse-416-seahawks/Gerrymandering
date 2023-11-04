@@ -175,7 +175,7 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "ensembleData");
+        Document docFinder = new Document("type", "EnsembleData");
         Document document = stateCollection.find(docFinder).first();
 
         if (document == null) {
@@ -202,7 +202,7 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "clusterData");
+        Document docFinder = new Document("type", "ClusterData");
         Document document = stateCollection.find(docFinder).first();
 
         if (document == null) {
@@ -229,7 +229,7 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "districtPlanData");
+        Document docFinder = new Document("type", "DistrictPlanData");
         Document document = stateCollection.find(docFinder).first();
 
         if (document == null) {

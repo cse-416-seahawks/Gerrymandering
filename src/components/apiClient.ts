@@ -66,3 +66,7 @@ export async function fetchStateOutline(
     throw error;
   }
 }
+
+export async function fetchEnsembleData(State: AvailableStates) {
+
+}
