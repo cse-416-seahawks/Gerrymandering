@@ -29,7 +29,7 @@ export enum GlobalTypes {
   ChangeState = "CHANGE_STATE",
   DistanceMeasure = "DISTANCE_MEASURE",
   StepChange = "STEP_CHANGE",
-  PageChange = "PageChange",
+  PageChange = "PAGE_CHANGE",
 }
 
 export type GlobalState = {

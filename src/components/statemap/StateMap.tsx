@@ -23,7 +23,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
-import { GlobalContext, States } from "../../globalContext";
+import { GlobalContext, AvailableStates } from "../../globalContext";
 
 
 interface GeoJSON {
@@ -43,14 +43,14 @@ interface StateZoomData {
   [key: string]: number;
 }
 const stateData: StateData = {
-  Nevada: [38.5, -116.5],
-  Texas: [31.5, -99.9],
-  Virginia: [37.9, -79.5],
+  NEVADA: [38.5, -116.5],
+  TEXAS: [31.5, -99.9],
+  VIRGINIA: [37.9, -79.5],
 };
 const stateZoomData: StateZoomData = {
-  Nevada: 6,
-  Texas: 6,
-  Virginia: 7,
+  NEVADA: 6,
+  TEXAS: 6,
+  VIRGINIA: 7,
 };
 
 export default function StateMap(props: {
@@ -61,7 +61,7 @@ export default function StateMap(props: {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.districtCoordinates
   );
-  const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
+  const [zoom, setZoom] = useState(stateZoomData["NEVADA"]);
   
   const { state, dispatch } = useContext(GlobalContext);
 
@@ -83,19 +83,31 @@ export default function StateMap(props: {
 
   const handleStateChangeCoordinates = (event : SelectChangeEvent) => {
     const newState = event.target.value;
-    let newCurrentState : States;
-    if(newState === States.Nevada)
-      newCurrentState = States.Nevada;
-    else if(newState === States.Texas)
-      newCurrentState = States.Texas;
+    let newCurrentState : AvailableStates;
+    if(newState === AvailableStates.Nevada)
+      newCurrentState = AvailableStates.Nevada;
+    else if(newState === AvailableStates.Texas)
+      newCurrentState = AvailableStates.Texas;
     else
-      newCurrentState = States.Virginia;
+      newCurrentState = AvailableStates.Virginia;
 
     updateState(newCurrentState);
     dispatch({
       type : "CHANGE_OF_STATE",
       payload : {
         currentState : newCurrentState
+      }
+    })
+    dispatch({
+      type : "STEP_CHANGE",
+      payload : {
+        step : 0
+      }
+    })
+    dispatch({
+      type : "STATE_MAP",
+      payload : {
+        dismap : false
       }
     })
     setCenterCoordinates(stateData[newState]);
@@ -117,6 +129,8 @@ export default function StateMap(props: {
   const getMapVirginia = () =>  {
     return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
   }
+
+  console.log("center ", centerCoordinates)
 
   return (
     <div className="StateMap">
@@ -166,9 +180,9 @@ export default function StateMap(props: {
               onChange={handleStateChangeCoordinates}
               style={{ fontWeight: "bold", fontSize: "18px" }}
             >
-              <MenuItem value={"Nevada"}>Nevada</MenuItem>
-              <MenuItem value={"Texas"}>Texas</MenuItem>
-              <MenuItem value={"Virginia"}>Virginia</MenuItem>
+              <MenuItem value={"NEVADA"}>Nevada</MenuItem>
+              <MenuItem value={"TEXAS"}>Texas</MenuItem>
+              <MenuItem value={"VIRGINIA"}>Virginia</MenuItem>
             </Select>
           </FormControl>
         </div>

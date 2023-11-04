@@ -60,7 +60,7 @@ export async function fetchStateOutline(
       `http://localhost:4000/getOutline/${State}`
     );
     console.log("fetching state outlines", State, response);
-    return response.data;
+    return response.data[0];
   } catch (error) {
     console.error("Error fetching data");
     throw error;
