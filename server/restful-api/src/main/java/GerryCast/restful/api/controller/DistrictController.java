@@ -159,6 +159,7 @@ public class DistrictController{
         String json = gson.toJson(dList);
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
+
     @GetMapping("/getSampleData")
     public ResponseEntity<String> getSampleData() {
         MongoCollection<Document> geojsons = db.getCollection("SampleData");
@@ -174,5 +175,85 @@ public class DistrictController{
         String json = gson.toJson(dList);
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
+    
+    @GetMapping("/getEnsembleData/{state}")
+    public ResponseEntity<String> getEnsembleData(@PathVariable final String state) {
+        MongoCollection<Document> stateCollection = null;
 
+        if(state.equals("TEXAS")){
+            stateCollection = db.getCollection("Texas");
+        }
+        if(state.equals("VIRGINIA")){
+            stateCollection = db.getCollection("Virginia");
+        }
+        
+        if(state.equals("NEVADA")){
+            stateCollection = db.getCollection("Nevada");
+        }
+
+        Document docFinder = new Document("type", "ensembleData");
+        Document document = stateCollection.find(docFinder).first();
+
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getClusterData/{state}")
+    public ResponseEntity<String> getClusterData(@PathVariable final String state) {
+        MongoCollection<Document> stateCollection = null;
+
+        if(state.equals("TEXAS")){
+            stateCollection = db.getCollection("Texas");
+        }
+        if(state.equals("VIRGINIA")){
+            stateCollection = db.getCollection("Virginia");
+        }
+        
+        if(state.equals("NEVADA")){
+            stateCollection = db.getCollection("Nevada");
+        }
+
+        Document docFinder = new Document("type", "clusterData");
+        Document document = stateCollection.find(docFinder).first();
+
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getDistrictPlan/{state}")
+    public ResponseEntity<String> getDistrictPlan(@PathVariable final String state) {
+        MongoCollection<Document> stateCollection = null;
+
+        if(state.equals("TEXAS")){
+            stateCollection = db.getCollection("Texas");
+        }
+        if(state.equals("VIRGINIA")){
+            stateCollection = db.getCollection("Virginia");
+        }
+        
+        if(state.equals("NEVADA")){
+            stateCollection = db.getCollection("Nevada");
+        }
+
+        Document docFinder = new Document("type", "districtPlanData");
+        Document document = stateCollection.find(docFinder).first();
+
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
 }
