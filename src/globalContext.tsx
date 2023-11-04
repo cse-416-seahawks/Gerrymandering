@@ -17,10 +17,10 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
-export enum States {
-  Nevada = "Nevada",
-  Texas = "Texas",
-  Virginia = "Virginia",
+export enum AvailableStates {
+  Nevada = "NEVADA",
+  Texas = "TEXAS",
+  Virginia = "VIRGINIA"
 }
 
 export enum GlobalTypes {
@@ -29,13 +29,13 @@ export enum GlobalTypes {
   ChangeState = "CHANGE_STATE",
   DistanceMeasure = "DISTANCE_MEASURE",
   StepChange = "STEP_CHANGE",
-  PageChange = "PageChange",
+  PageChange = "PAGE_CHANGE",
 }
 
 export type GlobalState = {
   dismap: boolean;
   distanceMeasure: string;
-  currentState: States;
+  currentState: AvailableStates;
   step: number;
   clusterAnalysis: boolean;
 };
@@ -48,7 +48,7 @@ type GlobalStatePayload = {
     dismap: boolean;
   };
   [GlobalTypes.ChangeState]: {
-    currentState: States;
+    currentState: AvailableStates;
   };
   [GlobalTypes.DistanceMeasure]: {
     distanceMeasure: string;
@@ -145,7 +145,7 @@ const intialState: GlobalState[] = [
     dismap: false,
     distanceMeasure: "hamming",
     step: 0,
-    currentState: States.Nevada,
+    currentState: AvailableStates.Nevada,
     clusterAnalysis : true
   },
 ];

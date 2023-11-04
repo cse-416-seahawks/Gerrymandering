@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { GlobalContext, GlobalProvider, States } from "../../globalContext";
+import { GlobalContext, GlobalProvider, AvailableStates } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../statemap/StateMap";
 import Navbar from "./Navbar";
