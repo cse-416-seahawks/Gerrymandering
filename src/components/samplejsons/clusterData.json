@@ -1,4 +1,7 @@
-[
+{
+  "State": "Nevada",
+  "type" : "clusterData",
+  "data": [
     {
       "cluster": 1,
       "name": "clusterA",
@@ -65,4 +68,4 @@
       "other": "7%"
     }
   ]
-  
+}
