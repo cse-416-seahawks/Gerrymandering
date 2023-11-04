@@ -160,22 +160,6 @@ public class DistrictController{
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
-    @GetMapping("/getSampleData")
-    public ResponseEntity<String> getSampleData() {
-        MongoCollection<Document> geojsons = db.getCollection("SampleData");
-        FindIterable<Document> documents = geojsons.find();
-        List<Document> dList = new ArrayList<>();
-        for (Document d: documents) {
-            dList.add(d);
-        }
-        if (dList.isEmpty()) {
-            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
-        }
-        Gson gson = new Gson();
-        String json = gson.toJson(dList);
-        return new ResponseEntity<>(json, HttpStatus.OK);
-    }
-    
     @GetMapping("/getEnsembleData/{state}")
     public ResponseEntity<String> getEnsembleData(@PathVariable final String state) {
         MongoCollection<Document> stateCollection = null;
