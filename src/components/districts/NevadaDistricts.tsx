@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { nevadaSA } from "../../GeoJson/Nevada_State_Assembly";
 import { Polygon } from "react-leaflet";
 import { FeatureCollection } from "@turf/turf";
 import { AvailableStates } from "../../globalContext";
