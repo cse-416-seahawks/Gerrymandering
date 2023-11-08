@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext, useEffect} from "react";
 import "../css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
@@ -31,10 +31,20 @@ import {
   Legend,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
+import { fetchEnsembleData } from "../apiClient";
 
 interface EnsembleProps {
   showToggle : boolean,
   handleStep : (step : number, ensemble : number) => void
+}
+
+interface EnsembleData {
+  ensemble: number,
+  numClusters: number,
+  averageDistance: number,
+  numDistrictPlans: number,
+  plansNeeded: number,
+  expanded: boolean,
 }
 
 const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
@@ -43,7 +53,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
     event: React.MouseEvent<HTMLElement>,
     newMethod: string
   ) => {
-    console.log("hise", newMethod);
     dispatch({
       type: "DISTANCE_MEASURE",
       payload: {
@@ -53,18 +62,34 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
   };
 
   const [currentTab, setCurrentTab] = useState("1");
-
+  const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     console.log(newValue);
     setCurrentTab(String(newValue));
   }
-
 
   let color;
   function randomColor() {
     color = "#" + Math.floor(Math.random() * 16777215).toString(16);
     return color;
   }
+
+  useEffect(() => {
+    const currState = state[state.length-1].currentState;
+    async function fetchStateEnsemble() {
+      try {
+        const response = await fetchEnsembleData(currState);
+        for (var row of response.data) {
+          if (row["ensemble"] == 1) row["expanded"] = true
+          else row["expanded"] = false;
+        }
+        setEnsembleData(response.data);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    fetchStateEnsemble();
+  }, [state[state.length-1].currentState]);
 
   return (
     <div>
@@ -100,7 +125,7 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
           </Tabs>
         </Box>
         <TabPanel value="1">
-          {sampleData.sampleEnsembleData.map((row) => (
+          {ensembleData.map((row) => (
             <Accordion defaultExpanded={row.expanded}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Button
@@ -115,25 +140,15 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
               <AccordionDetails>
                 <Table sx={{ minWidth: 650 }}>
                   <TableBody>
-                  <TableRow>
-                    {row.data.map((tablerow) => (
-                        <TableCell align="center"><b>{tablerow.label}</b></TableCell>
-                        // <TableCell component="th" scope="row">
-                        //   {tablerow.label}
-                        // </TableCell>
-                        // <TableCell align="right">{tablerow.detail}</TableCell>
-                      
-                    ))}
+                    <TableRow>
+                      <TableCell align="center"><b>{"Numbers of clusters"}</b></TableCell>
+                      <TableCell align="center"><b>{"Average distance between clusters"}</b></TableCell>
+                      <TableCell align="center"><b>{"Number of district plans"}</b></TableCell>
                     </TableRow>
                     <TableRow>
-                    {row.data.map((tablerow) => (
-                        <TableCell align="center">{tablerow.detail}</TableCell>
-                        // <TableCell component="th" scope="row">
-                        //   {tablerow.label}
-                        // </TableCell>
-                        // <TableCell align="right">{tablerow.detail}</TableCell>
-                      
-                    ))}
+                      <TableCell align="center">{row.numClusters}</TableCell>
+                      <TableCell align="center">{row.averageDistance}</TableCell>
+                      <TableCell align="center">{row.numDistrictPlans}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

@@ -68,5 +68,14 @@ export async function fetchStateOutline(
 }
 
 export async function fetchEnsembleData(State: AvailableStates) {
-
+  try {
+    console.log("awaiting ensemble data")
+    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
+    console.log("response!!", response);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
 }

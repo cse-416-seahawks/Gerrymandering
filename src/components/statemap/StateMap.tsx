@@ -91,7 +91,7 @@ export default function StateMap(props: {
 
     updateState(newCurrentState);
     dispatch({
-      type : "CHANGE_OF_STATE",
+      type : "CHANGE_STATE",
       payload : {
         currentState : newCurrentState
       }

@@ -71,7 +71,6 @@ const dismapReducer = (
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
-        ...state,
         {
           dismap: false,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -82,7 +81,6 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistrictMap:
       return [
-        ...state,
         {
           dismap: true,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -93,7 +91,6 @@ const dismapReducer = (
       ];
     case GlobalTypes.StepChange:
       return [
-        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -104,7 +101,6 @@ const dismapReducer = (
       ];
     case GlobalTypes.ChangeState:
       return [
-        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -115,7 +111,6 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistanceMeasure:
       return [
-        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: action.payload.distanceMeasure,
@@ -126,7 +121,6 @@ const dismapReducer = (
       ];
     case GlobalTypes.PageChange:
       return [
-        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
