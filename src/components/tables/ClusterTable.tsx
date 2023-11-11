@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
@@ -20,7 +20,7 @@ import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
 import { ClusterSelectionProps } from "./TableTypes";
-
+import { fetchClusterData } from "../apiClient";
 import {
   XAxis,
   YAxis,
@@ -31,9 +31,23 @@ import {
   ZAxis,
 } from "recharts";
 
+interface ClusterData {
+  cluster: number,
+  name: string,
+  num_dist_plans: number,
+  avg_distance: number,
+  avg_rep: string,
+  avg_dem: string,
+  avg_white: string,
+  avg_black: string,
+  avg_asian: string,
+  avg_latino: string,
+  avg_other: string,
+}
+
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
-
+  const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -84,6 +98,21 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const domain = parseDomain();
   const range = [100, 1000];
 
+
+  useEffect(() => {
+    const currState = state[state.length-1].currentState;
+    const ensembleId = state[state.length-1].ensemble;
+    const distanceMeasure = state[state.length-1].distanceMeasure;
+    async function getClusterData() {
+      try {
+        const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
+        setClusterData(response.data);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+    getClusterData();
+  }, [state[state.length-1].ensemble]);
   return (
     <>
       <TabContext value={currentTab}>
@@ -121,7 +150,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sampleData.clusterData.map((row) => (
+                {clusterData.map((row) => (
                   <TableRow key={row.cluster}>
                     <TableCell align="center">
                       <Button

@@ -187,8 +187,8 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getClusterData/{state}")
-    public ResponseEntity<String> getClusterData(@PathVariable final String state) {
+    @GetMapping("/getClusterData/{state}/{ensembleId}/{distanceMeasure}")
+    public ResponseEntity<String> getClusterData(@PathVariable final String state, @PathVariable final int ensembleId, @PathVariable final String distanceMeasure) {
         MongoCollection<Document> stateCollection = null;
 
         if(state.equals("TEXAS")){
@@ -202,9 +202,8 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "ClusterData");
+        Document docFinder = new Document("type", "ClusterData").append("ensembleId", ensembleId).append("distanceMeasure", distanceMeasure);
         Document document = stateCollection.find(docFinder).first();
-
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
         } else {

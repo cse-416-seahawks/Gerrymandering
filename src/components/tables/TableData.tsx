@@ -51,6 +51,12 @@ function TableData(props: {
       });
     } else if (step == 1) {
       setEnsemble(ensemble);
+      dispatch({
+        type: "SET_ENSEMBLE",
+        payload: {
+          ensemble: ensemble,
+        }
+      });
     } else {
       dispatch({
         type: "STATE_MAP",

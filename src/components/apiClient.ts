@@ -79,3 +79,16 @@ export async function fetchEnsembleData(State: AvailableStates) {
     throw error;
   }
 }
+
+export async function fetchClusterData(State: AvailableStates, ensembleId: Number, distanceMeasure: String) {
+  try {
+    console.log("awaiting cluster data");
+    const response = await axios.get(`http://localhost:4000/getClusterData/${State}/${ensembleId}/${distanceMeasure}`);
+    console.log("response::", response);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
