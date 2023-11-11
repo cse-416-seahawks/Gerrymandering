@@ -31,6 +31,7 @@ export enum GlobalTypes {
   StepChange = "STEP_CHANGE",
   PageChange = "PAGE_CHANGE",
   SetEnsemble = "SET_ENSEMBLE",
+  SetCluster = "SET_CLUSTER",
 }
 
 export type GlobalState = {
@@ -40,6 +41,7 @@ export type GlobalState = {
   step: number;
   clusterAnalysis: boolean;
   ensemble: number;
+  cluster: number;
 };
 
 type GlobalStatePayload = {
@@ -64,6 +66,9 @@ type GlobalStatePayload = {
   [GlobalTypes.SetEnsemble]: {
     ensemble: number;
   }
+  [GlobalTypes.SetCluster]: {
+    cluster: number;
+  }
 };
 
 export type GlobalStateActions =
@@ -83,6 +88,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.DistrictMap:
@@ -94,6 +100,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.StepChange:
@@ -105,6 +112,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.ChangeState:
@@ -116,6 +124,7 @@ const dismapReducer = (
           currentState: action.payload.currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.DistanceMeasure:
@@ -127,6 +136,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.PageChange:
@@ -138,6 +148,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: action.payload.clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          cluster: state[state.length - 1].cluster,
         },
       ];
     case GlobalTypes.SetEnsemble:
@@ -149,6 +160,19 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: action.payload.ensemble,
+          cluster: state[state.length - 1].cluster,
+        },
+      ];
+    case GlobalTypes.SetCluster:
+      return [
+        {
+          dismap: state[state.length - 1].dismap,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+          ensemble: state[state.length - 1].ensemble,
+          cluster: action.payload.cluster,
         },
       ];
     default:
@@ -164,6 +188,7 @@ const intialState: GlobalState[] = [
     currentState: AvailableStates.Nevada,
     clusterAnalysis : true,
     ensemble: 0,
+    cluster: 0,
   },
 ];
 

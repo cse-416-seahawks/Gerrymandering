@@ -81,6 +81,12 @@ function TableData(props: {
 
   function handleClusterSelection(clusterNumber: number) {
     setCluster(clusterNumber);
+    dispatch({
+      type: "SET_CLUSTER",
+      payload: {
+        cluster: clusterNumber,
+      },
+    });
   }
 
   function getRandomNumber(min: number, max: number) {

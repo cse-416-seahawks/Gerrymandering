@@ -121,8 +121,6 @@ public class DistrictController{
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
     
-
-    
     @GetMapping("/getInformation/{state}")
     public ResponseEntity<String> getAllGeoJSONEntities(@PathVariable final String state) {
         MongoCollection<Document> geojsons = null;
@@ -213,8 +211,8 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getDistrictPlan/{state}")
-    public ResponseEntity<String> getDistrictPlan(@PathVariable final String state) {
+    @GetMapping("/getDistrictPlanData/{state}/{ensembleId}/{distanceMeasure}/{clusterId}")
+    public ResponseEntity<String> getDistrictPlanData(@PathVariable final String state, @PathVariable final int ensembleId, @PathVariable final String distanceMeasure, @PathVariable final int clusterId) {
         MongoCollection<Document> stateCollection = null;
 
         if(state.equals("TEXAS")){
@@ -228,9 +226,8 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "DistrictPlanData");
+        Document docFinder = new Document("type", "DistrictPlanData").append("ensembleId", ensembleId).append("distanceMeasure", distanceMeasure).append("clusterId", clusterId);
         Document document = stateCollection.find(docFinder).first();
-
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
         } else {
