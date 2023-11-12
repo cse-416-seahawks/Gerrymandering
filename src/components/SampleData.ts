@@ -36,46 +36,6 @@ for (let i = 1; i <= 500; i++) {
 }
 
 
-// District plan table data
-export const district_plan_data: district_summary_table[] = [
-  {
-    district_plan: 1,
-    opportunity_districts: 5,
-    democrat: '30%',
-    republican: '70%',
-    map_value: [35.5, -115],
-  },
-  {
-    district_plan: 2,
-    opportunity_districts: 20,
-    democrat: '60%',
-    republican: '40%',
-    map_value: [40.5, -115],
-  },
-  {
-    district_plan: 3,
-    opportunity_districts: 13,
-    democrat: '70%',
-    republican: '30%',
-    map_value: [38.5, -118], // -112 goes right and -115 goes left
-  },
-  {
-    district_plan: 4,
-    opportunity_districts: 9,
-    democrat: '55%',
-    republican: '45%',
-    map_value: [40.5, -118],
-  },
-  {
-    district_plan: 5,
-    opportunity_districts: 17,
-    democrat: '34%',
-    republican: '66%',
-    map_value: [39.5, -120],
-  },
-];
-
-
 // Scatter plot data for cluster and district plan (dummy data)
 export const data01 = [
   { x: 100, y: 60, z: 1 },
