@@ -236,4 +236,30 @@ public class DistrictController{
             return new ResponseEntity<>(json, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/getDistanceMeasureData/{state}/{ensembleId}")
+    public ResponseEntity<String> getDistanceMeasureData(@PathVariable final String state, @PathVariable final int ensembleId) {
+        MongoCollection<Document> stateCollection = null;
+        
+        if(state.equals("TEXAS")){
+            stateCollection = db.getCollection("Texas");
+        }
+        if(state.equals("VIRGINIA")){
+            stateCollection = db.getCollection("Virginia");
+        }
+        
+        if(state.equals("NEVADA")){
+            stateCollection = db.getCollection("Nevada");
+        }
+
+        Document docFinder = new Document("type", "DistanceMeasures").append("ensembleId", ensembleId);
+        Document document = stateCollection.find(docFinder).first();
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
 }
