@@ -33,6 +33,14 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "./TableTypes";
+import { fetchDistrictPlanData } from "../apiClient";
+
+interface DistrictPlanData {
+  district_plan: number,
+  opportunity_districts: number,
+  democrat: string,
+  republican: string,
+}
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [districtSelection, setDistrictSelection] = useState(0);
@@ -40,6 +48,8 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [currentTab, setCurrentTab] = useState("1");
     const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
     const [modal, setModal] = useState<boolean>(false);
+    const { state, dispatch } = useContext(GlobalContext);
+    const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
 
     function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
       console.log(newValue);
@@ -49,7 +59,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     function handleDistrictChange(district_num: number, coords: Array<number>) {
       console.log("tabledata", coords);
       onDistrictSelection(district_num, coords);
-      setCoordinates(coords);
+      // setCoordinates(coords);
       setDistrictSelection(district_num);
     }
   
@@ -106,6 +116,24 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     function handleOpenModal(open: boolean) {
       setModal(open);
     }
+
+
+    useEffect(() => {
+      async function fetchDistrictData() {
+        try {
+          const currState = state[state.length-1].currentState;
+          const ensembleId = state[state.length-1].ensemble;
+          const distanceMeasure = state[state.length-1].distanceMeasure;
+          const clusterId = state[state.length-1].cluster;
+          
+          const response = await fetchDistrictPlanData(currState, ensembleId, distanceMeasure, clusterId);
+          setDistrictPlans(response.data);
+        } catch(e) {
+          console.log(e);
+        }
+      }
+      fetchDistrictData();
+    }, []);
 
     return (
       <>
@@ -208,7 +236,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sampleData.district_plan_data.map((row) => (
+                  {districtPlans.map((row) => (
                       <TableRow key={row.district_plan}>
                         <TableCell component="th" scope="row">
                           {" "}
@@ -216,7 +244,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                             <button
                               style={buttonStyle}
                               onClick={() =>
-                                handleDistrictChange(row.district_plan, row.map_value)
+                                handleDistrictChange(row.district_plan, [-1,-1]) // change to map value
                               }
                             >
                               {row.district_plan}

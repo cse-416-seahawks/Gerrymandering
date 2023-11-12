@@ -105,6 +105,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     const distanceMeasure = state[state.length-1].distanceMeasure;
     async function getClusterData() {
       try {
+        console.log("changing cluster")
         const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
         setClusterData(response.data);
       } catch(e) {
@@ -113,6 +114,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     }
     getClusterData();
   }, [state[state.length-1].ensemble]);
+
   return (
     <>
       <TabContext value={currentTab}>

@@ -214,7 +214,7 @@ public class DistrictController{
     @GetMapping("/getDistrictPlanData/{state}/{ensembleId}/{distanceMeasure}/{clusterId}")
     public ResponseEntity<String> getDistrictPlanData(@PathVariable final String state, @PathVariable final int ensembleId, @PathVariable final String distanceMeasure, @PathVariable final int clusterId) {
         MongoCollection<Document> stateCollection = null;
-
+        
         if(state.equals("TEXAS")){
             stateCollection = db.getCollection("Texas");
         }

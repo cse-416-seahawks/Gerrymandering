@@ -84,8 +84,8 @@ function TableData(props: {
     dispatch({
       type: "SET_CLUSTER",
       payload: {
-        cluster: clusterNumber,
-      },
+        cluster: clusterNumber
+      }
     });
   }
 

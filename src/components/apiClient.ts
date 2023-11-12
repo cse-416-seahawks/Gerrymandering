@@ -92,3 +92,16 @@ export async function fetchClusterData(State: AvailableStates, ensembleId: Numbe
     throw error;
   }
 }
+
+export async function fetchDistrictPlanData(state: AvailableStates, ensembleId: Number, distanceMeasure: String, clusterId: Number) {
+  try {
+    console.log("awaiting district plan data", clusterId);
+    const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${ensembleId}/${distanceMeasure}/${clusterId}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    console.log("ERROR FETCHING")
+    throw error;
+  }
+}
