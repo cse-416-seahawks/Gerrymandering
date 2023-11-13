@@ -40,9 +40,9 @@ interface EnsembleProps {
 
 interface EnsembleData {
   ensemble: number,
-  numClusters: number,
-  averageDistance: number,
-  numDistrictPlans: number,
+  num_clusters: number,
+  avg_dist_clusters: number,
+  num_dist_plans: number,
   plansNeeded: number,
   expanded: boolean,
 }
@@ -76,36 +76,45 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
 
   useEffect(() => {
     const currState = state[state.length-1].currentState;
+    const distanceMeasure = state[state.length-1].distanceMeasure;
     async function fetchStateEnsemble() {
       try {
-        const response = await fetchEnsembleData(currState);
-        for (var row of response.data) {
-          if (row["ensemble"] == 1) row["expanded"] = true
-          else row["expanded"] = false;
+        const response = await fetchEnsembleData(currState, distanceMeasure);
+        console.log("EEK", response.ensembles)
+        const ensembles: Array<EnsembleData> = [];
+        for (var row of response.ensembles) {
+          ensembles.push({
+            "ensemble": response.ensembles.indexOf(row) + 1,
+            "expanded": true ? response.ensembles.indexOf(row) + 1 == 1 : false,
+            "num_clusters": row.num_clusters,
+            "num_dist_plans": row.num_dist_plans,
+            "avg_dist_clusters": row.avg_dist_clusters,
+            "plansNeeded": 1,
+          });
         }
-        setEnsembleData(response.data);
+        console.log("eeee", ensembles)
+        setEnsembleData(ensembles);
       } catch(error) {
         console.log(error);
       }
     }
     fetchStateEnsemble();
-  }, [state[state.length-1].currentState]);
+  }, [state[state.length-1].currentState, state[state.length-1].distanceMeasure]);
 
+  console.log("ensemble", ensembleData)
   return (
     <div>
       <div className="toggleButton-container">
         {
-          showToggle ? <ToggleButtonGroup
+          showToggle && <ToggleButtonGroup
           exclusive
           value={state[state.length - 1].distanceMeasure}
           onChange={handleAlignment}
         >
           <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
           <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
-          <ToggleButton value={"total"}>
-            Total Variation Distance
-          </ToggleButton>
-        </ToggleButtonGroup> : <div/>
+          <ToggleButton value={"total"}> Total Variation Distance </ToggleButton>
+        </ToggleButtonGroup>
         }
         
       </div>
@@ -146,9 +155,9 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
                       <TableCell align="center"><b>{"Number of district plans"}</b></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell align="center">{row.numClusters}</TableCell>
-                      <TableCell align="center">{row.averageDistance}</TableCell>
-                      <TableCell align="center">{row.numDistrictPlans}</TableCell>
+                      <TableCell align="center">{row.num_clusters}</TableCell>
+                      <TableCell align="center">{row.avg_dist_clusters}</TableCell>
+                      <TableCell align="center">{row.num_dist_plans}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
