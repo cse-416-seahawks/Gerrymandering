@@ -26,21 +26,22 @@ function Distance() {
   };
   return (
     <GlobalProvider>
-    <div className="Distance">
-      <Navbar />
+    <div className="Home">
+      <div className="Home-content">
+        <Navbar />
         <div className="StateMap-content">
           <header className="StateMap-header">
-            <div className="State-map">
+              <div className="State-map"> 
               <StateMap
-                selectedState={selectedState}
-                centerCoordinates={centerCoordinates}
-                selectedDistrict={selectedDistrict}
-              />
-            </div>
-            <DistanceTable/>
+                  selectedState={selectedState}
+                  centerCoordinates={centerCoordinates}
+                  selectedDistrict={selectedDistrict}
+                />
+              </div>
+              <DistanceTable/>
           </header>
         </div>
-      
+      </div>
     </div>
     </GlobalProvider>
   );
