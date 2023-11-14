@@ -5,13 +5,14 @@ import random
 This file serves to generate sample data for GerryCast
 """
 
+districtPlanIds = set()
 
 def generate_states():
 
     data = []
     States = ["Nevada", "Texas", "Virginia"]
     for state in States:
-        numEnsembles = random.randint(20, 40)
+        numEnsembles = random.randint(5, 20)
         StateData = {
             "State": state,
             "numEnsembles": numEnsembles,  # Added a comma here
@@ -84,6 +85,20 @@ def generate_random_decimals(sum_target, num_decimals):
     decimals.append(float("{:.{prec}f}".format((1 - max_num), prec=3)))
     return decimals
 
+import random
+
+def generate_random_id(id_length):
+    # Generate a random ID
+    while True:
+        random_id = ''.join(random.choice("0123456789") for _ in range(id_length))
+        if random_id not in districtPlanIds:
+            districtPlanIds.add(random_id)
+            return random_id
+        
+        
+for i in range(100):
+    generate_random_id(6)
+
 # Serializing json
 stateData = generate_states()
 nevada = json.dumps(stateData[0], indent=4)
@@ -91,9 +106,9 @@ texas = json.dumps(stateData[1], indent=4)
 virginia = json.dumps(stateData[2], indent=4)
 
 # Writing to sample.json
-with open("nevada.json", "w") as outfile:
+with open("_generated_/nevada.json", "w") as outfile:
     outfile.write(nevada)
-with open("texas.json", "w") as outfile:
+with open("_generated_/texas.json", "w") as outfile:
     outfile.write(texas)
-with open("virginia.json", "w") as outfile:
+with open("_generated_/virginia.json", "w") as outfile:
     outfile.write(virginia)
