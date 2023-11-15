@@ -17,7 +17,7 @@ export async function fetchDistricts(
   try {
     console.log("awaiting information", State);
     const response = await axios.get(
-      `http://localhost:4000/getInformation/${State}`
+      `http://localhost:4000/getGeoJSONEntities/${State}`
     )
 
     console.log(response);
@@ -107,9 +107,9 @@ export async function fetchDistrictPlanData(state: AvailableStates, ensembleId: 
 }
 
 
-export async function fetchEnsembleData(State: AvailableStates, distanceMeasure: String) {
+export async function fetchEnsembleData(State: AvailableStates) {
   try {
-    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}/${distanceMeasure}`);
+    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
     if (response.status == 200) {
       return response.data;
     }
