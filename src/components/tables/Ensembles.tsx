@@ -76,23 +76,34 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
 
   useEffect(() => {
     const currState = state[state.length-1].currentState;
-    const distanceMeasure = state[state.length-1].distanceMeasure;
+
+    var distanceMeasure = "";
+    const measure = state[state.length-1].distanceMeasure;
+    if (measure == "hamming") {
+      distanceMeasure = "Hamming Distance";
+    } else if (measure == "optimal") {
+      distanceMeasure = "Optimal Transport";
+    } else if (measure == "total") {
+      distanceMeasure = "Total Variation";
+    }
+
+
     async function fetchStateEnsemble() {
       try {
-        const response = await fetchEnsembleData(currState, distanceMeasure);
-        console.log("EEK", response.ensembles)
+        const response = await fetchEnsembleData(currState);
+        console.log("EEK", response)
         const ensembles: Array<EnsembleData> = [];
         for (var row of response.ensembles) {
+          const ensemble_table = row.data.find((item: any) => item.distance_measure == distanceMeasure);
           ensembles.push({
             "ensemble": response.ensembles.indexOf(row) + 1,
             "expanded": true ? response.ensembles.indexOf(row) + 1 == 1 : false,
-            "num_clusters": row.num_clusters,
-            "num_dist_plans": row.num_dist_plans,
-            "avg_dist_clusters": row.avg_dist_clusters,
+            "num_clusters": ensemble_table.num_clusters,
+            "num_dist_plans": row.num_district_plans,
+            "avg_dist_clusters": ensemble_table.avg_distance,
             "plansNeeded": 1,
           });
         }
-        console.log("eeee", ensembles)
         setEnsembleData(ensembles);
       } catch(error) {
         console.log(error);
@@ -101,7 +112,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
     fetchStateEnsemble();
   }, [state[state.length-1].currentState, state[state.length-1].distanceMeasure]);
 
-  console.log("ensemble", ensembleData)
   return (
     <div>
       <div className="toggleButton-container">
