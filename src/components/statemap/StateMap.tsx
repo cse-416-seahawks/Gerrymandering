@@ -24,7 +24,7 @@ import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
 import { GlobalContext, AvailableStates } from "../../globalContext";
-import ClusterSummary from "../summary/ClusterSummary";
+// import ClusterSummary from "../summary/ClusterSummary";
 
 
 interface GeoJSON {
@@ -186,7 +186,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
-        <ClusterSummary/>
+        {/* <ClusterSummary/> */}
     </div>
   );
 }

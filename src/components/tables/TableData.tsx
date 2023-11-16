@@ -37,10 +37,11 @@ function TableData(props: {
 
   // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble'
   useEffect(() => {
-    handleStepChange(0, 0);
+    handleStepChange(0, 0, '0');
   }, [props.selectedState]);
 
-  function handleStepChange(step: number, ensemble: number) {
+  function handleStepChange(step: number, ensemble: number, ensembleId: string) {
+    console.log("ensemble", ensemble)
     if (step === 2) {
       console.log("CHANGING TO DISTRICT MAP");
       dispatch({
@@ -55,6 +56,7 @@ function TableData(props: {
         type: "SET_ENSEMBLE",
         payload: {
           ensemble: ensemble,
+          ensembleId: ensembleId,
         }
       });
     } else {
@@ -106,7 +108,7 @@ function TableData(props: {
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() => handleStepChange(currentStep - 1, ensemble)}
+            onClick={() => handleStepChange(currentStep - 1, ensemble, state[state.length-1].ensembleId)}
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>
@@ -125,7 +127,7 @@ function TableData(props: {
             <Step key={label} completed={completed[index]}>
               <StepButton
                 color="inherit"
-                onClick={() => handleStepChange(index, ensemble)}
+                onClick={() => handleStepChange(index, ensemble, state[state.length-1].ensembleId)}
               >
                 {label}
               </StepButton>

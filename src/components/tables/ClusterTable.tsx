@@ -32,22 +32,40 @@ import {
 } from "recharts";
 
 interface ClusterData {
-  cluster: number,
+  cluster_number: number,
   name: string,
   num_dist_plans: number,
-  avg_distance: number,
   avg_rep: string,
   avg_dem: string,
-  avg_white: string,
-  avg_black: string,
-  avg_asian: string,
-  avg_latino: string,
-  avg_other: string,
+  avg_distance: number,
+  demographics: ClusterDemographicData,
+          // avg_white: string,
+          // avg_black: string,
+          // avg_asian: string,
+          // avg_latino: string,
+          // avg_other: string,
+  
 }
+
+interface ClusterDemographicData {
+  caucasian: number,
+  african_american: number,
+  asian_american: number,
+  hispanic: number,
+  other: number,
+}
+
+// interface ClusterFetchData {
+//   State: string,
+//   data: Array,
+//   distance_measure: string,
+//   ensemble_id: string,
+// }
 
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
+  const [fetchedClusterData, setFetchedClusterData] = useState<any>({});
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -101,13 +119,14 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
 
   useEffect(() => {
     const currState = state[state.length-1].currentState;
-    const ensembleId = state[state.length-1].ensemble;
+    const ensembleId = state[state.length-1].ensembleId;
     const distanceMeasure = state[state.length-1].distanceMeasure;
     async function getClusterData() {
       try {
-        console.log("changing cluster")
         const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
+        console.log("grr", response)
         setClusterData(response.data);
+        setFetchedClusterData(response);
       } catch(e) {
         console.log(e);
       }
@@ -115,6 +134,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     getClusterData();
   }, [state[state.length-1].ensemble]);
 
+  // console.log("oH", state[state.length - 1].ensemble)
   return (
     <>
       <TabContext value={currentTab}>
@@ -145,22 +165,22 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                   </TableCell>
                   <TableCell align="center">Avg Republican Voters</TableCell>
                   <TableCell align="center">Avg Democratic Voters</TableCell>
-                  <TableCell align="center">Avg White Pop.</TableCell>
-                  <TableCell align="center">Avg Black Pop.</TableCell>
-                  <TableCell align="center">Avg Asian Pop.</TableCell>
-                  <TableCell align="center">Avg Latino Pop.</TableCell>
+                  <TableCell align="center">Avg Caucasian Pop.</TableCell>
+                  <TableCell align="center">Avg Afrian-American Pop.</TableCell>
+                  <TableCell align="center">Avg Asian-American Pop.</TableCell>
+                  <TableCell align="center">Avg Hispanic Pop.</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {clusterData.map((row) => (
-                  <TableRow key={row.cluster}>
+                  <TableRow key={row.cluster_number}>
                     <TableCell align="center">
                       <Button
                         variant="text"
                         size="medium"
-                        onClick={() => handleStepChange(2, row.cluster)}
+                        onClick={() => handleStepChange(2, row.cluster_number)}
                       >
-                        {row.cluster}
+                        {row.cluster_number}
                       </Button>
                     </TableCell>
                     <ClusterNameCell name={row.name} />
@@ -168,10 +188,10 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                     <TableCell align="center"> {row.avg_distance} </TableCell>
                     <TableCell align="center"> {row.avg_rep} </TableCell>
                     <TableCell align="center"> {row.avg_dem} </TableCell>
-                    <TableCell align="center"> {row.avg_white} </TableCell>
-                    <TableCell align="center"> {row.avg_black} </TableCell>
-                    <TableCell align="center"> {row.avg_asian} </TableCell>
-                    <TableCell align="center"> {row.avg_latino} </TableCell>
+                    <TableCell align="center"> {row.demographics.caucasian} </TableCell>
+                    <TableCell align="center"> {row.demographics.african_american} </TableCell>
+                    <TableCell align="center"> {row.demographics.asian_american} </TableCell>
+                    <TableCell align="center"> {row.demographics.hispanic} </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
