@@ -85,8 +85,8 @@ public class DistrictController{
         return "Connected to database: " + connectedDatabase;
     }
 
-    @GetMapping("/getOutline/{state}")
-    public ResponseEntity<String> getOutline(@PathVariable final String state){
+    @GetMapping("/getStateOutline/{state}")
+    public ResponseEntity<String> getStateOutline(@PathVariable final String state){
         MongoCollection<Document> geojsons = null;
 
         if(state.equals("TEXAS")){
