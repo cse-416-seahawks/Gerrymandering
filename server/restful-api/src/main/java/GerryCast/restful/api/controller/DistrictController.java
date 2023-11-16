@@ -266,7 +266,7 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getClusterGraphData/{state, ensembleId, distanceMeasure}")
+    @GetMapping("/getClusterGraphData/{state}/{ensembleId}/{distanceMeasure}")
     public ResponseEntity<String> getClusterGraphData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
         MongoCollection<Document> stateCollection = null;
         
