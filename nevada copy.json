@@ -1,0 +1,1189 @@
+{
+    "State": "Nevada",
+    "numEnsembles": 5,
+    "distanceMeasure": "hamming",
+    "ensembles": [
+        {
+            "State": "Nevada",
+            "type": "ensembleData",
+            "ensemble_id": 1,
+            "num_clusters": 16,
+            "avg_dist_clusters": 53.1,
+            "num_dist_plans": 123,
+            "data": [
+                {
+                    "cluster_id": 1,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9824,
+                    "avg_distance": 40.4485,
+                    "avg_rep_split": 0.811,
+                    "avg_dem_split": 0.18899999999999995,
+                    "demographics": {
+                        "white": 0.629,
+                        "black": 0.23,
+                        "asian": 0.134,
+                        "latino": 0.002,
+                        "other": 0.995
+                    },
+                    "district_plans": [
+                        "101123", "12312", "1124124"
+                    ]
+                },
+                {
+                    "cluster": 2,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7692,
+                    "avg_distance": 37.5739,
+                    "avg_rep_split": 0.62,
+                    "avg_dem_split": 0.38,
+                    "demographics": {
+                        "white": 0.754,
+                        "black": 0.041,
+                        "asian": 0.093,
+                        "latino": 0.073,
+                        "other": 0.961
+                    },
+                    "district_plans": [
+                        "111111", "111112", "111113"
+                    ]
+                },
+                {
+                    "cluster": 3,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5194,
+                    "avg_distance": 32.8933,
+                    "avg_rep_split": 0.398,
+                    "avg_dem_split": 0.602,
+                    "demographics": {
+                        "white": 0.587,
+                        "black": 0.036,
+                        "asian": 0.061,
+                        "latino": 0.081,
+                        "other": 0.765
+                    },
+                    "district_plans": [
+                        "111114", "111115", "111116"
+                    ]
+                },
+                {
+                    "cluster": 4,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4060,
+                    "avg_distance": 13.2724,
+                    "avg_rep_split": 0.34,
+                    "avg_dem_split": 0.6599999999999999,
+                    "demographics": {
+                        "white": 0.922,
+                        "black": 0.035,
+                        "asian": 0.023,
+                        "latino": 0.011,
+                        "other": 0.991
+                    },
+                    "district_plans": [
+                        "111117", "111118", "111119"
+                    ]
+                },
+                {
+                    "cluster": 5,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3226,
+                    "avg_distance": 25.3629,
+                    "avg_rep_split": 0.288,
+                    "avg_dem_split": 0.712,
+                    "demographics": {
+                        "white": 0.65,
+                        "black": 0.14,
+                        "asian": 0.098,
+                        "latino": 0.069,
+                        "other": 0.957
+                    }
+                    ,
+                    "district_plans": [
+                        "111122", "111133", "111144"
+                    ]
+                },
+                {
+                    "cluster": 6,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6516,
+                    "avg_distance": 22.6927,
+                    "avg_rep_split": 0.091,
+                    "avg_dem_split": 0.909,
+                    "demographics": {
+                        "white": 0.398,
+                        "black": 0.451,
+                        "asian": 0.093,
+                        "latino": 0.057,
+                        "other": 0.999
+                    },
+                    "district_plans": [
+                        "111155", "111166", "111177"
+                    ]
+                },
+                {
+                    "cluster": 7,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4922,
+                    "avg_distance": 31.1324,
+                    "avg_rep_split": 0.457,
+                    "avg_dem_split": 0.5429999999999999,
+                    "demographics": {
+                        "white": 0.476,
+                        "black": 0.068,
+                        "asian": 0.044,
+                        "latino": 0.402,
+                        "other": 0.99
+                    },
+                    "district_plans": [
+                        "111188", "111199", "111222"
+                    ]
+                },
+                {
+                    "cluster": 8,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6645,
+                    "avg_distance": 41.0788,
+                    "avg_rep_split": 0.005,
+                    "avg_dem_split": 0.995,
+                    "demographics": {
+                        "white": 0.786,
+                        "black": 0.109,
+                        "asian": 0.006,
+                        "latino": 0.075,
+                        "other": 0.976
+                    }
+                },
+                {
+                    "cluster": 9,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4115,
+                    "avg_distance": 49.9591,
+                    "avg_rep_split": 0.957,
+                    "avg_dem_split": 0.04300000000000004,
+                    "demographics": {
+                        "white": 0.736,
+                        "black": 0.251,
+                        "asian": 0.007,
+                        "latino": 0.004,
+                        "other": 0.998
+                    }
+                },
+                {
+                    "cluster": 10,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8169,
+                    "avg_distance": 17.496,
+                    "avg_rep_split": 0.162,
+                    "avg_dem_split": 0.838,
+                    "demographics": {
+                        "white": 0.488,
+                        "black": 0.454,
+                        "asian": 0.023,
+                        "latino": 0.026,
+                        "other": 0.991
+                    }
+                },
+                {
+                    "cluster": 11,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1299,
+                    "avg_distance": 20.818,
+                    "avg_rep_split": 0.941,
+                    "avg_dem_split": 0.05900000000000005,
+                    "demographics": {
+                        "white": 0.054,
+                        "black": 0.743,
+                        "asian": 0.122,
+                        "latino": 0.055,
+                        "other": 0.974
+                    }
+                },
+                {
+                    "cluster": 12,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5777,
+                    "avg_distance": 29.911,
+                    "avg_rep_split": 0.037,
+                    "avg_dem_split": 0.963,
+                    "demographics": {
+                        "white": 0.206,
+                        "black": 0.172,
+                        "asian": 0.479,
+                        "latino": 0.019,
+                        "other": 0.876
+                    }
+                },
+                {
+                    "cluster": 13,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4816,
+                    "avg_distance": 26.306,
+                    "avg_rep_split": 0.761,
+                    "avg_dem_split": 0.239,
+                    "demographics": {
+                        "white": 0.255,
+                        "black": 0.252,
+                        "asian": 0.088,
+                        "latino": 0.301,
+                        "other": 0.896
+                    }
+                },
+                {
+                    "cluster": 14,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1542,
+                    "avg_distance": 34.498,
+                    "avg_rep_split": 0.276,
+                    "avg_dem_split": 0.724,
+                    "demographics": {
+                        "white": 0.412,
+                        "black": 0.296,
+                        "asian": 0.107,
+                        "latino": 0.176,
+                        "other": 0.991
+                    }
+                },
+                {
+                    "cluster": 15,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9307,
+                    "avg_distance": 35.9677,
+                    "avg_rep_split": 0.342,
+                    "avg_dem_split": 0.6579999999999999,
+                    "demographics": {
+                        "white": 0.151,
+                        "black": 0.164,
+                        "asian": 0.483,
+                        "latino": 0.062,
+                        "other": 0.86
+                    }
+                },
+                {
+                    "cluster": 16,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7856,
+                    "avg_distance": 48.277,
+                    "avg_rep_split": 0.563,
+                    "avg_dem_split": 0.43700000000000006,
+                    "demographics": {
+                        "white": 0.181,
+                        "black": 0.151,
+                        "asian": 0.04,
+                        "latino": 0.045,
+                        "other": 0.417
+                    }
+                }
+            ]
+        },
+        {
+            "State": "Nevada",
+            "type": "ensembleData",
+            "ensemble_id": 1,
+            "num_clusters": 18,
+            "avg_dist_clusters": 53.1,
+            "num_dist_plans": 123,
+            "data": [
+                {
+                    "cluster": 1,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6321,
+                    "avg_distance": 15.6354,
+                    "avg_rep_split": 0.021,
+                    "avg_dem_split": 0.979,
+                    "demographics": {
+                        "white": 0.906,
+                        "black": 0.064,
+                        "asian": 0.009,
+                        "latino": 0.014,
+                        "other": 0.993
+                    }
+                },
+                {
+                    "cluster": 2,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4138,
+                    "avg_distance": 22.6994,
+                    "avg_rep_split": 0.79,
+                    "avg_dem_split": 0.20999999999999996,
+                    "demographics": {
+                        "white": 0.655,
+                        "black": 0.295,
+                        "asian": 0.027,
+                        "latino": 0.01,
+                        "other": 0.987
+                    }
+                },
+                {
+                    "cluster": 3,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3733,
+                    "avg_distance": 14.608,
+                    "avg_rep_split": 0.49,
+                    "avg_dem_split": 0.51,
+                    "demographics": {
+                        "white": 0.549,
+                        "black": 0.401,
+                        "asian": 0.005,
+                        "latino": 0.001,
+                        "other": 0.956
+                    }
+                },
+                {
+                    "cluster": 4,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 729,
+                    "avg_distance": 16.1186,
+                    "avg_rep_split": 0.04,
+                    "avg_dem_split": 0.96,
+                    "demographics": {
+                        "white": 0.651,
+                        "black": 0.285,
+                        "asian": 0.03,
+                        "latino": 0.008,
+                        "other": 0.974
+                    }
+                },
+                {
+                    "cluster": 5,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5103,
+                    "avg_distance": 43.8326,
+                    "avg_rep_split": 0.472,
+                    "avg_dem_split": 0.528,
+                    "demographics": {
+                        "white": 0.334,
+                        "black": 0.117,
+                        "asian": 0.233,
+                        "latino": 0.116,
+                        "other": 0.8
+                    }
+                },
+                {
+                    "cluster": 6,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9082,
+                    "avg_distance": 44.4159,
+                    "avg_rep_split": 0.748,
+                    "avg_dem_split": 0.252,
+                    "demographics": {
+                        "white": 0.155,
+                        "black": 0.123,
+                        "asian": 0.587,
+                        "latino": 0.04,
+                        "other": 0.905
+                    }
+                },
+                {
+                    "cluster": 7,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 2238,
+                    "avg_distance": 17.0121,
+                    "avg_rep_split": 0.518,
+                    "avg_dem_split": 0.482,
+                    "demographics": {
+                        "white": 0.269,
+                        "black": 0.453,
+                        "asian": 0.025,
+                        "latino": 0.154,
+                        "other": 0.901
+                    }
+                },
+                {
+                    "cluster": 8,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5793,
+                    "avg_distance": 33.7345,
+                    "avg_rep_split": 0.188,
+                    "avg_dem_split": 0.812,
+                    "demographics": {
+                        "white": 0.516,
+                        "black": 0.224,
+                        "asian": 0.169,
+                        "latino": 0.058,
+                        "other": 0.967
+                    }
+                },
+                {
+                    "cluster": 9,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9646,
+                    "avg_distance": 44.1401,
+                    "avg_rep_split": 0.383,
+                    "avg_dem_split": 0.617,
+                    "demographics": {
+                        "white": 0.258,
+                        "black": 0.21,
+                        "asian": 0.278,
+                        "latino": 0.168,
+                        "other": 0.914
+                    }
+                },
+                {
+                    "cluster": 10,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 2734,
+                    "avg_distance": 24.4887,
+                    "avg_rep_split": 0.699,
+                    "avg_dem_split": 0.30100000000000005,
+                    "demographics": {
+                        "white": 0.36,
+                        "black": 0.259,
+                        "asian": 0.348,
+                        "latino": 0.015,
+                        "other": 0.982
+                    }
+                },
+                {
+                    "cluster": 11,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8101,
+                    "avg_distance": 41.0786,
+                    "avg_rep_split": 0.772,
+                    "avg_dem_split": 0.22799999999999998,
+                    "demographics": {
+                        "white": 0.684,
+                        "black": 0.264,
+                        "asian": 0.032,
+                        "latino": 0.01,
+                        "other": 0.99
+                    }
+                },
+                {
+                    "cluster": 12,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3404,
+                    "avg_distance": 30.3951,
+                    "avg_rep_split": 0.995,
+                    "avg_dem_split": 0.0050000000000000044,
+                    "demographics": {
+                        "white": 0.169,
+                        "black": 0.149,
+                        "asian": 0.124,
+                        "latino": 0.255,
+                        "other": 0.697
+                    }
+                },
+                {
+                    "cluster": 13,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7986,
+                    "avg_distance": 31.5952,
+                    "avg_rep_split": 0.113,
+                    "avg_dem_split": 0.887,
+                    "demographics": {
+                        "white": 0.708,
+                        "black": 0.064,
+                        "asian": 0.104,
+                        "latino": 0.099,
+                        "other": 0.975
+                    }
+                },
+                {
+                    "cluster": 14,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5762,
+                    "avg_distance": 26.6863,
+                    "avg_rep_split": 0.351,
+                    "avg_dem_split": 0.649,
+                    "demographics": {
+                        "white": 0.977,
+                        "black": 0.014,
+                        "asian": 0.004,
+                        "latino": 0.004,
+                        "other": 0.999
+                    }
+                },
+                {
+                    "cluster": 15,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5345,
+                    "avg_distance": 39.35,
+                    "avg_rep_split": 0.775,
+                    "avg_dem_split": 0.22499999999999998,
+                    "demographics": {
+                        "white": 0.033,
+                        "black": 0.17,
+                        "asian": 0.761,
+                        "latino": 0.021,
+                        "other": 0.985
+                    }
+                },
+                {
+                    "cluster": 16,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 683,
+                    "avg_distance": 24.6913,
+                    "avg_rep_split": 0.228,
+                    "avg_dem_split": 0.772,
+                    "demographics": {
+                        "white": 0.964,
+                        "black": 0.006,
+                        "asian": 0.005,
+                        "latino": 0.012,
+                        "other": 0.987
+                    }
+                },
+                {
+                    "cluster": 17,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3848,
+                    "avg_distance": 39.8882,
+                    "avg_rep_split": 0.518,
+                    "avg_dem_split": 0.482,
+                    "demographics": {
+                        "white": 0.916,
+                        "black": 0.01,
+                        "asian": 0.016,
+                        "latino": 0.001,
+                        "other": 0.943
+                    }
+                },
+                {
+                    "cluster": 18,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7452,
+                    "avg_distance": 18.5757,
+                    "avg_rep_split": 0.666,
+                    "avg_dem_split": 0.33399999999999996,
+                    "demographics": {
+                        "white": 0.653,
+                        "black": 0.323,
+                        "asian": 0.016,
+                        "latino": 0.001,
+                        "other": 0.993
+                    }
+                }
+            ]
+        },
+        {
+            "State": "Nevada",
+            "type": "ensembleData",
+            "ensemble_id": 1,
+            "num_clusters": 12,
+            "avg_dist_clusters": 53.1,
+            "num_dist_plans": 123,
+            "data": [
+                {
+                    "cluster": 1,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 779,
+                    "avg_distance": 15.1443,
+                    "avg_rep_split": 0.996,
+                    "avg_dem_split": 0.0040000000000000036,
+                    "demographics": {
+                        "white": 0.906,
+                        "black": 0.001,
+                        "asian": 0.055,
+                        "latino": 0.016,
+                        "other": 0.978
+                    }
+                },
+                {
+                    "cluster": 2,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5985,
+                    "avg_distance": 45.6912,
+                    "avg_rep_split": 0.157,
+                    "avg_dem_split": 0.843,
+                    "demographics": {
+                        "white": 0.035,
+                        "black": 0.813,
+                        "asian": 0.045,
+                        "latino": 0.077,
+                        "other": 0.97
+                    }
+                },
+                {
+                    "cluster": 3,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9604,
+                    "avg_distance": 42.4293,
+                    "avg_rep_split": 0.275,
+                    "avg_dem_split": 0.725,
+                    "demographics": {
+                        "white": 0.347,
+                        "black": 0.091,
+                        "asian": 0.369,
+                        "latino": 0.162,
+                        "other": 0.969
+                    }
+                },
+                {
+                    "cluster": 4,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7753,
+                    "avg_distance": 45.5251,
+                    "avg_rep_split": 0.077,
+                    "avg_dem_split": 0.923,
+                    "demographics": {
+                        "white": 0.888,
+                        "black": 0.103,
+                        "asian": 0.003,
+                        "latino": 0.005,
+                        "other": 0.999
+                    }
+                },
+                {
+                    "cluster": 5,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4326,
+                    "avg_distance": 43.395,
+                    "avg_rep_split": 0.748,
+                    "avg_dem_split": 0.252,
+                    "demographics": {
+                        "white": 0.576,
+                        "black": 0.058,
+                        "asian": 0.349,
+                        "latino": 0.015,
+                        "other": 0.998
+                    }
+                },
+                {
+                    "cluster": 6,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5938,
+                    "avg_distance": 49.8834,
+                    "avg_rep_split": 0.228,
+                    "avg_dem_split": 0.772,
+                    "demographics": {
+                        "white": 0.438,
+                        "black": 0.094,
+                        "asian": 0.392,
+                        "latino": 0.034,
+                        "other": 0.958
+                    }
+                },
+                {
+                    "cluster": 7,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1358,
+                    "avg_distance": 17.4345,
+                    "avg_rep_split": 0.477,
+                    "avg_dem_split": 0.523,
+                    "demographics": {
+                        "white": 0.62,
+                        "black": 0.316,
+                        "asian": 0.027,
+                        "latino": 0.024,
+                        "other": 0.987
+                    }
+                },
+                {
+                    "cluster": 8,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6059,
+                    "avg_distance": 38.4329,
+                    "avg_rep_split": 0.974,
+                    "avg_dem_split": 0.026000000000000023,
+                    "demographics": {
+                        "white": 0.271,
+                        "black": 0.641,
+                        "asian": 0.064,
+                        "latino": 0.013,
+                        "other": 0.989
+                    }
+                },
+                {
+                    "cluster": 9,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5754,
+                    "avg_distance": 33.2585,
+                    "avg_rep_split": 0.317,
+                    "avg_dem_split": 0.683,
+                    "demographics": {
+                        "white": 0.475,
+                        "black": 0.148,
+                        "asian": 0.305,
+                        "latino": 0.018,
+                        "other": 0.946
+                    }
+                },
+                {
+                    "cluster": 10,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 2980,
+                    "avg_distance": 10.4185,
+                    "avg_rep_split": 0.782,
+                    "avg_dem_split": 0.21799999999999997,
+                    "demographics": {
+                        "white": 0.497,
+                        "black": 0.155,
+                        "asian": 0.046,
+                        "latino": 0.138,
+                        "other": 0.836
+                    }
+                },
+                {
+                    "cluster": 11,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3818,
+                    "avg_distance": 15.3547,
+                    "avg_rep_split": 0.674,
+                    "avg_dem_split": 0.32599999999999996,
+                    "demographics": {
+                        "white": 0.359,
+                        "black": 0.48,
+                        "asian": 0.03,
+                        "latino": 0.048,
+                        "other": 0.917
+                    }
+                },
+                {
+                    "cluster": 12,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8843,
+                    "avg_distance": 45.7445,
+                    "avg_rep_split": 0.766,
+                    "avg_dem_split": 0.23399999999999999,
+                    "demographics": {
+                        "white": 0.662,
+                        "black": 0.104,
+                        "asian": 0.017,
+                        "latino": 0.215,
+                        "other": 0.998
+                    }
+                }
+            ]
+        },
+        {
+            "State": "Nevada",
+            "type": "ensembleData",
+            "ensemble_id": 1,
+            "num_clusters": 16,
+            "avg_dist_clusters": 53.1,
+            "num_dist_plans": 123,
+            "data": [
+                {
+                    "cluster": 1,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4489,
+                    "avg_distance": 38.6085,
+                    "avg_rep_split": 0.878,
+                    "avg_dem_split": 0.122,
+                    "demographics": {
+                        "white": 0.19,
+                        "black": 0.671,
+                        "asian": 0.093,
+                        "latino": 0.037,
+                        "other": 0.991
+                    }
+                },
+                {
+                    "cluster": 2,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6385,
+                    "avg_distance": 20.2552,
+                    "avg_rep_split": 0.072,
+                    "avg_dem_split": 0.928,
+                    "demographics": {
+                        "white": 0.569,
+                        "black": 0.333,
+                        "asian": 0.084,
+                        "latino": 0.009,
+                        "other": 0.995
+                    }
+                },
+                {
+                    "cluster": 3,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1621,
+                    "avg_distance": 10.8471,
+                    "avg_rep_split": 0.265,
+                    "avg_dem_split": 0.735,
+                    "demographics": {
+                        "white": 0.717,
+                        "black": 0.197,
+                        "asian": 0.068,
+                        "latino": 0.007,
+                        "other": 0.989
+                    }
+                },
+                {
+                    "cluster": 4,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1171,
+                    "avg_distance": 13.3366,
+                    "avg_rep_split": 0.856,
+                    "avg_dem_split": 0.14400000000000002,
+                    "demographics": {
+                        "white": 0.543,
+                        "black": 0.114,
+                        "asian": 0.038,
+                        "latino": 0.23,
+                        "other": 0.925
+                    }
+                },
+                {
+                    "cluster": 5,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8510,
+                    "avg_distance": 45.4881,
+                    "avg_rep_split": 0.916,
+                    "avg_dem_split": 0.08399999999999996,
+                    "demographics": {
+                        "white": 0.713,
+                        "black": 0.034,
+                        "asian": 0.235,
+                        "latino": 0.016,
+                        "other": 0.998
+                    }
+                },
+                {
+                    "cluster": 6,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9663,
+                    "avg_distance": 24.3499,
+                    "avg_rep_split": 0.479,
+                    "avg_dem_split": 0.521,
+                    "demographics": {
+                        "white": 0.222,
+                        "black": 0.735,
+                        "asian": 0.007,
+                        "latino": 0.022,
+                        "other": 0.986
+                    }
+                },
+                {
+                    "cluster": 7,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1436,
+                    "avg_distance": 22.7857,
+                    "avg_rep_split": 0.894,
+                    "avg_dem_split": 0.10599999999999998,
+                    "demographics": {
+                        "white": 0.754,
+                        "black": 0.125,
+                        "asian": 0.015,
+                        "latino": 0.088,
+                        "other": 0.982
+                    }
+                },
+                {
+                    "cluster": 8,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8993,
+                    "avg_distance": 33.2875,
+                    "avg_rep_split": 0.582,
+                    "avg_dem_split": 0.41800000000000004,
+                    "demographics": {
+                        "white": 0.081,
+                        "black": 0.169,
+                        "asian": 0.036,
+                        "latino": 0.453,
+                        "other": 0.739
+                    }
+                },
+                {
+                    "cluster": 9,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1054,
+                    "avg_distance": 28.859,
+                    "avg_rep_split": 0.03,
+                    "avg_dem_split": 0.97,
+                    "demographics": {
+                        "white": 0.826,
+                        "black": 0.087,
+                        "asian": 0.081,
+                        "latino": 0.001,
+                        "other": 0.995
+                    }
+                },
+                {
+                    "cluster": 10,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3683,
+                    "avg_distance": 16.5409,
+                    "avg_rep_split": 0.422,
+                    "avg_dem_split": 0.5780000000000001,
+                    "demographics": {
+                        "white": 0.884,
+                        "black": 0.02,
+                        "asian": 0.01,
+                        "latino": 0.075,
+                        "other": 0.989
+                    }
+                },
+                {
+                    "cluster": 11,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 2479,
+                    "avg_distance": 29.8637,
+                    "avg_rep_split": 0.652,
+                    "avg_dem_split": 0.348,
+                    "demographics": {
+                        "white": 0.487,
+                        "black": 0.003,
+                        "asian": 0.474,
+                        "latino": 0.008,
+                        "other": 0.972
+                    }
+                },
+                {
+                    "cluster": 12,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9344,
+                    "avg_distance": 26.6305,
+                    "avg_rep_split": 0.761,
+                    "avg_dem_split": 0.239,
+                    "demographics": {
+                        "white": 0.204,
+                        "black": 0.481,
+                        "asian": 0.104,
+                        "latino": 0.116,
+                        "other": 0.905
+                    }
+                },
+                {
+                    "cluster": 13,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9311,
+                    "avg_distance": 37.0001,
+                    "avg_rep_split": 0.376,
+                    "avg_dem_split": 0.624,
+                    "demographics": {
+                        "white": 0.413,
+                        "black": 0.385,
+                        "asian": 0.168,
+                        "latino": 0.003,
+                        "other": 0.969
+                    }
+                },
+                {
+                    "cluster": 14,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4807,
+                    "avg_distance": 25.5342,
+                    "avg_rep_split": 0.966,
+                    "avg_dem_split": 0.03400000000000003,
+                    "demographics": {
+                        "white": 0.097,
+                        "black": 0.202,
+                        "asian": 0.46,
+                        "latino": 0.045,
+                        "other": 0.804
+                    }
+                },
+                {
+                    "cluster": 15,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 4243,
+                    "avg_distance": 13.663,
+                    "avg_rep_split": 0.817,
+                    "avg_dem_split": 0.18300000000000005,
+                    "demographics": {
+                        "white": 0.7,
+                        "black": 0.104,
+                        "asian": 0.039,
+                        "latino": 0.098,
+                        "other": 0.941
+                    }
+                },
+                {
+                    "cluster": 16,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3805,
+                    "avg_distance": 43.6962,
+                    "avg_rep_split": 0.953,
+                    "avg_dem_split": 0.04700000000000004,
+                    "demographics": {
+                        "white": 0.072,
+                        "black": 0.618,
+                        "asian": 0.307,
+                        "latino": 0.002,
+                        "other": 0.999
+                    }
+                }
+            ]
+        },
+        {
+            "State": "Nevada",
+            "type": "ensembleData",
+            "ensemble_id": 1,
+            "num_clusters": 12,
+            "avg_dist_clusters": 53.1,
+            "num_dist_plans": 123,
+            "data": [
+                {
+                    "cluster": 1,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 889,
+                    "avg_distance": 40.8487,
+                    "avg_rep_split": 0.454,
+                    "avg_dem_split": 0.546,
+                    "demographics": {
+                        "white": 0.914,
+                        "black": 0.006,
+                        "asian": 0.026,
+                        "latino": 0.02,
+                        "other": 0.966
+                    }
+                },
+                {
+                    "cluster": 2,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 7151,
+                    "avg_distance": 49.7807,
+                    "avg_rep_split": 0.377,
+                    "avg_dem_split": 0.623,
+                    "demographics": {
+                        "white": 0.569,
+                        "black": 0.359,
+                        "asian": 0.061,
+                        "latino": 0.006,
+                        "other": 0.995
+                    }
+                },
+                {
+                    "cluster": 3,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 565,
+                    "avg_distance": 46.0268,
+                    "avg_rep_split": 0.795,
+                    "avg_dem_split": 0.20499999999999996,
+                    "demographics": {
+                        "white": 0.773,
+                        "black": 0.151,
+                        "asian": 0.018,
+                        "latino": 0.004,
+                        "other": 0.946
+                    }
+                },
+                {
+                    "cluster": 4,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 6009,
+                    "avg_distance": 49.0362,
+                    "avg_rep_split": 0.1,
+                    "avg_dem_split": 0.9,
+                    "demographics": {
+                        "white": 0.262,
+                        "black": 0.393,
+                        "asian": 0.25,
+                        "latino": 0.029,
+                        "other": 0.934
+                    }
+                },
+                {
+                    "cluster": 5,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3946,
+                    "avg_distance": 14.485,
+                    "avg_rep_split": 0.088,
+                    "avg_dem_split": 0.912,
+                    "demographics": {
+                        "white": 0.571,
+                        "black": 0.221,
+                        "asian": 0.188,
+                        "latino": 0.002,
+                        "other": 0.982
+                    }
+                },
+                {
+                    "cluster": 6,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8686,
+                    "avg_distance": 39.8382,
+                    "avg_rep_split": 0.561,
+                    "avg_dem_split": 0.43899999999999995,
+                    "demographics": {
+                        "white": 0.16,
+                        "black": 0.56,
+                        "asian": 0.031,
+                        "latino": 0.115,
+                        "other": 0.866
+                    }
+                },
+                {
+                    "cluster": 7,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 3726,
+                    "avg_distance": 28.4774,
+                    "avg_rep_split": 0.019,
+                    "avg_dem_split": 0.981,
+                    "demographics": {
+                        "white": 0.175,
+                        "black": 0.264,
+                        "asian": 0.12,
+                        "latino": 0.172,
+                        "other": 0.731
+                    }
+                },
+                {
+                    "cluster": 8,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 1822,
+                    "avg_distance": 15.5913,
+                    "avg_rep_split": 0.35,
+                    "avg_dem_split": 0.65,
+                    "demographics": {
+                        "white": 0.769,
+                        "black": 0.118,
+                        "asian": 0.021,
+                        "latino": 0.076,
+                        "other": 0.984
+                    }
+                },
+                {
+                    "cluster": 9,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 5992,
+                    "avg_distance": 20.7862,
+                    "avg_rep_split": 0.658,
+                    "avg_dem_split": 0.34199999999999997,
+                    "demographics": {
+                        "white": 0.063,
+                        "black": 0.044,
+                        "asian": 0.887,
+                        "latino": 0.001,
+                        "other": 0.995
+                    }
+                },
+                {
+                    "cluster": 10,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 9304,
+                    "avg_distance": 22.6812,
+                    "avg_rep_split": 0.742,
+                    "avg_dem_split": 0.258,
+                    "demographics": {
+                        "white": 0.076,
+                        "black": 0.507,
+                        "asian": 0.359,
+                        "latino": 0.032,
+                        "other": 0.974
+                    }
+                },
+                {
+                    "cluster": 11,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 8780,
+                    "avg_distance": 12.2257,
+                    "avg_rep_split": 0.371,
+                    "avg_dem_split": 0.629,
+                    "demographics": {
+                        "white": 0.094,
+                        "black": 0.718,
+                        "asian": 0.017,
+                        "latino": 0.072,
+                        "other": 0.901
+                    }
+                },
+                {
+                    "cluster": 12,
+                    "name": "cluster_placeholder",
+                    "num_dist_plans": 2119,
+                    "avg_distance": 20.4604,
+                    "avg_rep_split": 0.374,
+                    "avg_dem_split": 0.626,
+                    "demographics": {
+                        "white": 0.08,
+                        "black": 0.298,
+                        "asian": 0.095,
+                        "latino": 0.224,
+                        "other": 0.697
+                    }
+                }
+            ]
+        }
+    ]
+}
