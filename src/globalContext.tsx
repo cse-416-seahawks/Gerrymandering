@@ -41,6 +41,7 @@ export type GlobalState = {
   step: number;
   clusterAnalysis: boolean;
   ensemble: number;
+  ensembleId: string;
   cluster: number;
 };
 
@@ -65,6 +66,7 @@ type GlobalStatePayload = {
   };
   [GlobalTypes.SetEnsemble]: {
     ensemble: number;
+    ensembleId: string;
   }
   [GlobalTypes.SetCluster]: {
     cluster: number;
@@ -88,6 +90,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -100,6 +103,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -112,6 +116,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -124,6 +129,7 @@ const dismapReducer = (
           currentState: action.payload.currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -136,6 +142,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -148,6 +155,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: action.payload.clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -160,6 +168,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: action.payload.ensemble,
+          ensembleId: action.payload.ensembleId,
           cluster: state[state.length - 1].cluster,
         },
       ];
@@ -172,6 +181,7 @@ const dismapReducer = (
           currentState: state[state.length - 1].currentState,
           clusterAnalysis: state[state.length - 1].clusterAnalysis,
           ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
           cluster: action.payload.cluster,
         },
       ];
@@ -183,11 +193,12 @@ const dismapReducer = (
 const intialState: GlobalState[] = [
   {
     dismap: false,
-    distanceMeasure: "hamming",
+    distanceMeasure: "Hamming Distance",
     step: 0,
     currentState: AvailableStates.Nevada,
     clusterAnalysis : true,
     ensemble: 0,
+    ensembleId: '0',
     cluster: 0,
   },
 ];

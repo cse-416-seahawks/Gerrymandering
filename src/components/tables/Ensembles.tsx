@@ -34,17 +34,15 @@ import { GlobalContext } from "../../globalContext";
 import { fetchEnsembleData } from "../apiClient";
 
 interface EnsembleProps {
-  showToggle: boolean;
-  handleStep: (step: number, ensemble: number) => void;
+  showToggle : boolean,
+  handleStep : (step : number, ensemble : number, ensembleId: string) => void
 }
 
 interface EnsembleData {
-  ensemble: number;
-  num_clusters: number;
-  avg_dist_clusters: number;
-  num_dist_plans: number;
-  plansNeeded: number;
-  expanded: boolean;
+  ensemble: number,
+  num_clusters: number,
+  avg_dist_clusters: number,
+  num_dist_plans: number,
 }
 
 const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
@@ -63,6 +61,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
 
   const [currentTab, setCurrentTab] = useState("1");
   const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
+  const [fetchedEnsembleData, setFetchedEnsembleData] = useState<any>({});
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     console.log(newValue);
     setCurrentTab(String(newValue));
@@ -75,17 +74,8 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   }
 
   useEffect(() => {
-    const currState = state[state.length - 1].currentState;
-
-    var distanceMeasure = "";
-    const measure = state[state.length - 1].distanceMeasure;
-    if (measure == "hamming") {
-      distanceMeasure = "Hamming Distance";
-    } else if (measure == "optimal") {
-      distanceMeasure = "Optimal Transport";
-    } else if (measure == "total") {
-      distanceMeasure = "Total Variation";
-    }
+    const currState = state[state.length-1].currentState;
+    const distanceMeasure = state[state.length-1].distanceMeasure;
 
     async function fetchStateEnsemble() {
       try {
@@ -97,14 +87,13 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
             (item: any) => item.distance_measure == distanceMeasure
           );
           ensembles.push({
-            ensemble: response.ensembles.indexOf(row) + 1,
-            expanded: true ? response.ensembles.indexOf(row) + 1 == 1 : false,
-            num_clusters: ensemble_table.num_clusters,
-            num_dist_plans: row.num_district_plans,
-            avg_dist_clusters: ensemble_table.avg_distance,
-            plansNeeded: 1,
+            "ensemble": response.ensembles.indexOf(row) + 1,
+            "num_clusters": ensemble_table.num_clusters,
+            "num_dist_plans": row.num_district_plans,
+            "avg_dist_clusters": ensemble_table.avg_distance,
           });
         }
+        setFetchedEnsembleData(response);
         setEnsembleData(ensembles);
       } catch (error) {
         console.log(error);
@@ -127,19 +116,17 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   return (
     <div>
       <div className="toggleButton-container">
-        {showToggle && (
-          <ToggleButtonGroup
-            exclusive
-            value={state[state.length - 1].distanceMeasure}
-            onChange={handleAlignment}
-          >
-            <ToggleButton value={"hamming"}>Hamming Distance</ToggleButton>
-            <ToggleButton value={"optimal"}>Optimal Transport</ToggleButton>
-            <ToggleButton value={"total"}>
-              Total Variation Distance
-            </ToggleButton>
-          </ToggleButtonGroup>
-        )}
+        {
+          showToggle && <ToggleButtonGroup
+          exclusive
+          value={state[state.length - 1].distanceMeasure}
+          onChange={handleAlignment}
+        >
+          <ToggleButton value={"Hamming Distance"}> Hamming Distance </ToggleButton>
+          <ToggleButton value={"Optimal Transport"}> Optimal Transport </ToggleButton>
+          <ToggleButton value={"Total Variation"}> Total Variation Distance </ToggleButton>
+        </ToggleButtonGroup>
+        }
       </div>
 
       <TabContext value={currentTab}>
@@ -169,12 +156,12 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
         )}
         <TabPanel value="1">
           {spliceEnsemble(ensembleData, page).map((row) => (
-            <Accordion defaultExpanded={row.expanded}>
+            <Accordion defaultExpanded={row.ensemble == 1 ? true : false}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Button
                   variant="text"
                   size="large"
-                  onClick={() => handleStep(1, row.ensemble)}
+                  onClick={() => handleStep(1, row.ensemble, fetchedEnsembleData.ensembles[row.ensemble-1].ensemble_id)}
                 >
                   Ensemble {row.ensemble}
                 </Button>
