@@ -23,7 +23,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
-import { GlobalContext, AvailableStates } from "../../globalContext";
+import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
 import ClusterSummary from "../summary/ClusterSummary";
 
 
@@ -109,6 +109,7 @@ export default function StateMap(props: {
         dismap : false
       }
     })
+    console.log("current state",state[state.length - 1].currentState)
     setCenterCoordinates(stateData[newState]);
     setZoom(stateZoomData[newState]);
   };
@@ -118,20 +119,21 @@ export default function StateMap(props: {
   }
 
   const getMapNevada = () =>  {
-    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
+    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap onClick={() => {}}/>
   }
 
   const getMapTexas = () =>  {
-    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
+    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap onClick={() => {}}/>
   }
 
   const getMapVirginia = () =>  {
-    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
+    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap onClick={() => {}}/>
   }
 
   console.log("center ", centerCoordinates)
 
   return (
+    <GlobalProvider>
     <div className="StateMap">
       <DistrictInfoCard currentState={currentState}/>
       <>
@@ -188,5 +190,6 @@ export default function StateMap(props: {
         </div>
         <ClusterSummary/>
     </div>
+    </GlobalProvider>
   );
 }

@@ -15,7 +15,9 @@ interface MapState {
   data: any | null; // Adjust the type based on your actual data structure
 }
 
-export default () => {
+export default (props : {
+  onClick: () => void;
+}) => {
   const [nevadaOutline, setData] = useState<MapState["data"]>(null);
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export default () => {
                 color: "white",
               });
             },
+            click: props.onClick
           }}
         />
       ) : (

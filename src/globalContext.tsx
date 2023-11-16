@@ -20,7 +20,8 @@ export type ActionMap<M extends { [index: string]: any }> = {
 export enum AvailableStates {
   Nevada = "NEVADA",
   Texas = "TEXAS",
-  Virginia = "VIRGINIA"
+  Virginia = "VIRGINIA",
+  Unselected = "UNSELECTED"
 }
 
 export enum GlobalTypes {
@@ -81,6 +82,7 @@ const dismapReducer = (
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
+        ...state,
         {
           dismap: false,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -93,6 +95,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistrictMap:
       return [
+        ...state,
         {
           dismap: true,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -105,6 +108,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.StepChange:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -117,6 +121,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.ChangeState:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -129,6 +134,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistanceMeasure:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: action.payload.distanceMeasure,
@@ -141,6 +147,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.PageChange:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -153,6 +160,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.SetEnsemble:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -165,6 +173,7 @@ const dismapReducer = (
       ];
     case GlobalTypes.SetCluster:
       return [
+        ...state,
         {
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
@@ -185,7 +194,7 @@ const intialState: GlobalState[] = [
     dismap: false,
     distanceMeasure: "hamming",
     step: 0,
-    currentState: AvailableStates.Nevada,
+    currentState: AvailableStates.Unselected,
     clusterAnalysis : true,
     ensemble: 0,
     cluster: 0,

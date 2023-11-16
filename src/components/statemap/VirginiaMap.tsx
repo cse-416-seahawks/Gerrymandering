@@ -11,7 +11,9 @@ const getColor = () => {
   return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
 };
 
-export default () => {
+export default (props : {
+  onClick: () => void;
+}) => {
 
   interface MapState {
     data: any | null; // Adjust the type based on your actual data structure
@@ -72,6 +74,7 @@ export default () => {
                 color: "white",
               });
             },
+            click: props.onClick
           }}
         />
       ) : (

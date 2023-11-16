@@ -21,17 +21,21 @@ function Home() {
   
 
   return (
+    
     <div className="Home">
       <div className="Home-content">
       <Navbar />
       <GlobalProvider>
       <div className="StateMap-content">
-        <header className="StateMap-header">
-            <div className="State-map"> 
+        
+          
+          <header className="StateMap-header">
+          <div className="State-map"> 
               <StateMap selectedState={state[state.length-1].currentState} centerCoordinates={centerCoordinates} selectedDistrict={selectedDistrict}/>
             </div>
             <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
         </header>
+        
       </div>
       </GlobalProvider>
       </div>
