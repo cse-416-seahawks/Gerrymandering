@@ -24,6 +24,7 @@ import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
 import { GlobalContext, AvailableStates } from "../../globalContext";
+import ClusterSummary from "../summary/ClusterSummary";
 
 
 interface GeoJSON {
@@ -140,6 +141,7 @@ export default function StateMap(props: {
           zoom={6}
           scrollWheelZoom={false}
           className="State-map"
+          style={{height : "125%"}}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -184,6 +186,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
+        <ClusterSummary/>
     </div>
   );
 }
