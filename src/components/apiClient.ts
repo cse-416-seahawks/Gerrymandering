@@ -17,7 +17,7 @@ export async function fetchDistricts(
   try {
     console.log("awaiting information", State);
     const response = await axios.get(
-      `http://localhost:4000/getGeoJSONEntities/${State}`
+      `http://localhost:4000/getCurrentDistrictPlan/${State}`
     )
 
     console.log(response);
@@ -57,7 +57,7 @@ export async function fetchStateOutline(
   try {
     console.log("awaiting state data", State);
     const response = await axios.get(
-      `http://localhost:4000/getOutline/${State}`
+      `http://localhost:4000/getStateOutline/${State}`
     );
     console.log("fetching state outlines", State, response);
     return response.data[0];
