@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Pagination, TablePagination } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
@@ -34,20 +34,20 @@ import { GlobalContext } from "../../globalContext";
 import { fetchEnsembleData } from "../apiClient";
 
 interface EnsembleProps {
-  showToggle : boolean,
-  handleStep : (step : number, ensemble : number) => void
+  showToggle: boolean;
+  handleStep: (step: number, ensemble: number) => void;
 }
 
 interface EnsembleData {
-  ensemble: number,
-  num_clusters: number,
-  avg_dist_clusters: number,
-  num_dist_plans: number,
-  plansNeeded: number,
-  expanded: boolean,
+  ensemble: number;
+  num_clusters: number;
+  avg_dist_clusters: number;
+  num_dist_plans: number;
+  plansNeeded: number;
+  expanded: boolean;
 }
 
-const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
+const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const handleAlignment = (
     event: React.MouseEvent<HTMLElement>,
@@ -75,10 +75,10 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
   }
 
   useEffect(() => {
-    const currState = state[state.length-1].currentState;
+    const currState = state[state.length - 1].currentState;
 
     var distanceMeasure = "";
-    const measure = state[state.length-1].distanceMeasure;
+    const measure = state[state.length - 1].distanceMeasure;
     if (measure == "hamming") {
       distanceMeasure = "Hamming Distance";
     } else if (measure == "optimal") {
@@ -87,47 +87,61 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
       distanceMeasure = "Total Variation";
     }
 
-
     async function fetchStateEnsemble() {
       try {
         const response = await fetchEnsembleData(currState);
-        console.log("EEK", response)
+        console.log("EEK", response);
         const ensembles: Array<EnsembleData> = [];
         for (var row of response.ensembles) {
-          const ensemble_table = row.data.find((item: any) => item.distance_measure == distanceMeasure);
+          const ensemble_table = row.data.find(
+            (item: any) => item.distance_measure == distanceMeasure
+          );
           ensembles.push({
-            "ensemble": response.ensembles.indexOf(row) + 1,
-            "expanded": true ? response.ensembles.indexOf(row) + 1 == 1 : false,
-            "num_clusters": ensemble_table.num_clusters,
-            "num_dist_plans": row.num_district_plans,
-            "avg_dist_clusters": ensemble_table.avg_distance,
-            "plansNeeded": 1,
+            ensemble: response.ensembles.indexOf(row) + 1,
+            expanded: true ? response.ensembles.indexOf(row) + 1 == 1 : false,
+            num_clusters: ensemble_table.num_clusters,
+            num_dist_plans: row.num_district_plans,
+            avg_dist_clusters: ensemble_table.avg_distance,
+            plansNeeded: 1,
           });
         }
         setEnsembleData(ensembles);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     }
     fetchStateEnsemble();
-  }, [state[state.length-1].currentState, state[state.length-1].distanceMeasure]);
+  }, [
+    state[state.length - 1].currentState,
+    state[state.length - 1].distanceMeasure,
+  ]);
 
+  const [page, setPage] = React.useState(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const spliceEnsemble = (ensembleData: Array<EnsembleData>, page: number) => {
+    return ensembleData.slice((page - 1) * 7, page * 7);
+  };
   return (
     <div>
       <div className="toggleButton-container">
-        {
-          showToggle && <ToggleButtonGroup
-          exclusive
-          value={state[state.length - 1].distanceMeasure}
-          onChange={handleAlignment}
-        >
-          <ToggleButton value={"hamming"}> Hamming Distance </ToggleButton>
-          <ToggleButton value={"optimal"}> Optimal Transport </ToggleButton>
-          <ToggleButton value={"total"}> Total Variation Distance </ToggleButton>
-        </ToggleButtonGroup>
-        }
-        
+        {showToggle && (
+          <ToggleButtonGroup
+            exclusive
+            value={state[state.length - 1].distanceMeasure}
+            onChange={handleAlignment}
+          >
+            <ToggleButton value={"hamming"}>Hamming Distance</ToggleButton>
+            <ToggleButton value={"optimal"}>Optimal Transport</ToggleButton>
+            <ToggleButton value={"total"}>
+              Total Variation Distance
+            </ToggleButton>
+          </ToggleButtonGroup>
+        )}
       </div>
+
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
           <Tabs value={currentTab} onChange={handleTabChange}>
@@ -143,14 +157,24 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
             />
           </Tabs>
         </Box>
+        {currentTab == "1" ? (
+          <Pagination
+            page={page}
+            onChange={handleChange}
+            sx={{ mt: "1rem" }}
+            count={Math.floor(ensembleData.length / 7)}
+          />
+        ) : (
+          <></>
+        )}
         <TabPanel value="1">
-          {ensembleData.map((row) => (
+          {spliceEnsemble(ensembleData, page).map((row) => (
             <Accordion defaultExpanded={row.expanded}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Button
                   variant="text"
                   size="large"
-                  onClick={() => handleStep(1,row.ensemble)}
+                  onClick={() => handleStep(1, row.ensemble)}
                 >
                   Ensemble {row.ensemble}
                 </Button>
@@ -160,13 +184,21 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
                 <Table sx={{ minWidth: 650 }}>
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center"><b>{"Numbers of clusters"}</b></TableCell>
-                      <TableCell align="center"><b>{"Average distance between clusters"}</b></TableCell>
-                      <TableCell align="center"><b>{"Number of district plans"}</b></TableCell>
+                      <TableCell align="center">
+                        <b>{"Numbers of clusters"}</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>{"Average distance between clusters"}</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>{"Number of district plans"}</b>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell align="center">{row.num_clusters}</TableCell>
-                      <TableCell align="center">{row.avg_dist_clusters}</TableCell>
+                      <TableCell align="center">
+                        {row.avg_dist_clusters}
+                      </TableCell>
                       <TableCell align="center">{row.num_dist_plans}</TableCell>
                     </TableRow>
                   </TableBody>
@@ -174,6 +206,7 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
               </AccordionDetails>
             </Accordion>
           ))}
+
           <br />
         </TabPanel>
         <TabPanel value="2">
@@ -269,6 +302,6 @@ const Ensembles : React.FC<EnsembleProps> = ({ showToggle, handleStep}) => {
       </TabContext>
     </div>
   );
-}
+};
 
 export default Ensembles;
