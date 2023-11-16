@@ -211,8 +211,8 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getDistrictPlanData/{state}/{districtPlanId}")
-    public ResponseEntity<String> getDistrictPlanData(@PathVariable final String state, @PathVariable final String[] districtPlanId) {
+    @GetMapping("/getDistrictPlanData/{state}/{districtPlanIds}")
+    public ResponseEntity<String> getDistrictPlanData(@PathVariable final String state, @PathVariable final String[] districtPlanIds) {
         MongoCollection<Document> stateCollection = null;
         
         if(state.equals("TEXAS")){
@@ -226,7 +226,7 @@ public class DistrictController{
         }
 
         List<String> districtPlans = new ArrayList<>();
-        for (String id: districtPlanId) {
+        for (String id: districtPlanIds) {
             Document docFinder = new Document("type", "DistrictPlanData").append("district_plan_id", id);
             Document document = stateCollection.find(docFinder).first();
             if (document == null) {
@@ -266,7 +266,7 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getClusterGraphData")
+    @GetMapping("/getClusterGraphData/{state, ensembleId, distanceMeasure}")
     public ResponseEntity<String> getClusterGraphData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
         MongoCollection<Document> stateCollection = null;
         
@@ -292,7 +292,7 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getDistrictPlanGraphData")
+    @GetMapping("/getDistrictPlanGraphData/{state}/{clusterId}")
     public ResponseEntity<String> getDistrictPlanGraphData(@PathVariable final String state, @PathVariable final String clusterId) {
         MongoCollection<Document> stateCollection = null;
         
@@ -344,7 +344,7 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getAssociationData")
+    @GetMapping("/getAssociationData/{state}")
     public ResponseEntity<String> getAssociationData(@PathVariable final String state) {
         MongoCollection<Document> stateCollection = null;
         
