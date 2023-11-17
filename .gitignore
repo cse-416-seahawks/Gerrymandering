@@ -11,6 +11,9 @@
 # production
 /build
 
+# generated files
+/scripts/_generated_
+
 # misc
 .DS_Store
 .env.local 
