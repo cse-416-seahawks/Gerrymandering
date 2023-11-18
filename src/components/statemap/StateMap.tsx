@@ -55,16 +55,14 @@ const stateZoomData: StateZoomData = {
 };
 
 export default function StateMap(props: {
-  selectedState: string;
+  selectedState: AvailableStates;
   centerCoordinates: Array<number>;
   selectedDistrict: number;
 }) {
-  const [centerCoordinates, setCenterCoordinates] = useState(props.centerCoordinates);
+  const [centerCoordinates, setCenterCoordinates] = useState(stateData[props.selectedState]);
   const [zoom, setZoom] = useState(stateZoomData[props.selectedState]);
-  
   const { state, dispatch } = useContext(GlobalContext);
 
-  const [currentState, updateState] = useState(state[state.length - 1].currentState)
 
   const SetMapView = () => {
     const map = useMap();
@@ -74,11 +72,6 @@ export default function StateMap(props: {
      return null;
    }
 
-  useEffect(() => {
-    setCenterCoordinates(props.centerCoordinates);
-
-    if (props.selectedDistrict !== -1) setZoom(8);
-  }, [props.centerCoordinates]);
 
   const handleStateChangeCoordinates = (event : SelectChangeEvent) => {
     const newState = event.target.value;
@@ -90,7 +83,6 @@ export default function StateMap(props: {
     else
       newCurrentState = AvailableStates.Virginia;
 
-    updateState(newCurrentState);
     dispatch({
       type : "CHANGE_STATE",
       payload : {
@@ -109,22 +101,14 @@ export default function StateMap(props: {
         dismap : false
       }
     })
-    console.log("current state",state[state.length - 1].currentState)
     setCenterCoordinates(stateData[newState]);
     setZoom(stateZoomData[newState]);
   };
 
-  {
-    console.log("current state coords", centerCoordinates);
-  }
-
-
-  console.log("center ", centerCoordinates)
 
   return (
-    <GlobalProvider>
     <div className="StateMap">
-      <DistrictInfoCard currentState={currentState}/>
+      <DistrictInfoCard />
       <>
         <MapContainer
           id="mapid"
@@ -141,6 +125,7 @@ export default function StateMap(props: {
           <NevadaDistricts/>
           <TexasDistricts/>
           <VirginiaDistricts/>
+        
 
           <SetMapView />
         </MapContainer>
@@ -159,7 +144,7 @@ export default function StateMap(props: {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
-              value={currentState}
+              value={state[state.length - 1].currentState}
               onChange={handleStateChangeCoordinates}
               style={{ fontWeight: "bold", fontSize: "18px" }}
             >
@@ -171,6 +156,5 @@ export default function StateMap(props: {
         </div>
         {/* <ClusterSummary/> */}
     </div>
-    </GlobalProvider>
   );
 }

@@ -63,7 +63,6 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
   const [fetchedEnsembleData, setFetchedEnsembleData] = useState<any>({});
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-    console.log(newValue);
     setCurrentTab(String(newValue));
   }
 
@@ -80,7 +79,6 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
     async function fetchStateEnsemble() {
       try {
         const response = await fetchEnsembleData(currState);
-        console.log("EEK", response);
         const ensembles: Array<EnsembleData> = [];
         for (var row of response.ensembles) {
           const ensemble_table = row.data.find(
@@ -96,7 +94,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
         setFetchedEnsembleData(response);
         setEnsembleData(ensembles);
       } catch (error) {
-        console.log(error);
+        throw error;
       }
     }
     fetchStateEnsemble();

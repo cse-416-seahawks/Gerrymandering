@@ -66,7 +66,6 @@ function DistanceTable() {
 
   function BackButton() {
     if (currentStep > 0) {
-      // console.log("slay")
       return (
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton
@@ -79,7 +78,6 @@ function DistanceTable() {
         </Stack>
       );
     }
-    // console.log("not slay")
     return null;
   }
 

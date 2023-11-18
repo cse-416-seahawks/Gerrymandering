@@ -17,7 +17,6 @@ export default () => {
 
   const { state, dispatch } = useContext(GlobalContext);
 
-  const [select, updateSelect] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,8 +27,6 @@ export default () => {
         currentState : AvailableStates.Texas
       }
     })
-    updateSelect(true);
-    console.log("changing current state", state)
     navigate("/Home");
   }
 
@@ -38,7 +35,6 @@ export default () => {
       try {
         const result = await fetchStateOutline(AvailableStates.Texas);
         setData(result);
-        console.log("State outline Texas", result);
       } catch (error) {}
     }
 

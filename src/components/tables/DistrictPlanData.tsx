@@ -52,19 +52,16 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
 
     function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-      console.log(newValue);
       setCurrentTab(String(newValue));
     }
 
     function handleDistrictChange(district_num: number, coords: Array<number>) {
-      console.log("tabledata", coords);
       onDistrictSelection(district_num, coords);
       // setCoordinates(coords);
       setDistrictSelection(district_num);
     }
   
     function SetMapView() {
-      console.log("e", [coordinates[0], coordinates[1]]);
       const map = useMapEvent("mouseover", (e) => {
         map.setView([coordinates[0], coordinates[1]], 8, {});
         // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
@@ -81,7 +78,6 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
      * @returns
      */
     function goTo(coord: string) {
-      console.log(coord);
       return coord;
     }
     const buttonStyle = {
@@ -128,8 +124,8 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           
           const response = await fetchDistrictPlanData(currState, ensembleId, distanceMeasure, clusterId);
           setDistrictPlans(response.data);
-        } catch(e) {
-          console.log(e);
+        } catch(error) {
+          throw error;
         }
       }
       fetchDistrictData();

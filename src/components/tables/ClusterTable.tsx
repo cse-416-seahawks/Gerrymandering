@@ -69,7 +69,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-    console.log(newValue);
     setCurrentTab(String(newValue));
   }
 
@@ -77,8 +76,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     
     if (step === 2) {
       if (clusterNumber) onClusterSelection(clusterNumber);
-      
-      console.log("CHANGING TO DISTRICT MAP");
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -100,7 +97,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
       }
     })
 
-    console.log("step changed ", step);
   }
 
   const parseDomain = () => [
@@ -124,17 +120,15 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     async function getClusterData() {
       try {
         const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
-        console.log("grr", response)
         setClusterData(response.data);
         setFetchedClusterData(response);
-      } catch(e) {
-        console.log(e);
+      } catch(error) {
+        throw error;
       }
     }
     getClusterData();
   }, [state[state.length-1].ensemble]);
 
-  // console.log("oH", state[state.length - 1].ensemble)
   return (
     <>
       <TabContext value={currentTab}>

@@ -27,7 +27,6 @@ export default () => {
       try {
         const result = await fetchDistricts(AvailableStates.Virginia);
         setVirginiaHouse(result);
-        console.log("virginia districts", result);
       } catch (error) {}
     }
 

@@ -41,9 +41,7 @@ function TableData(props: {
   }, [props.selectedState]);
 
   function handleStepChange(step: number, ensemble: number, ensembleId: string) {
-    console.log("ensemble", ensemble)
     if (step === 2) {
-      console.log("CHANGING TO DISTRICT MAP");
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -59,22 +57,14 @@ function TableData(props: {
           ensembleId: ensembleId,
         }
       });
-    } else {
-      dispatch({
-        type: "STATE_MAP",
-        payload: {
-          dismap: false,
-        },
-      });
     }
+
     dispatch({
       type: "STEP_CHANGE",
       payload: {
         step: step,
       },
     });
-
-    console.log("step changed ", step);
   }
 
   function handleDistrictChange(district_num: number, coords: Array<number>) {
@@ -90,11 +80,6 @@ function TableData(props: {
       }
     });
   }
-
-  function getRandomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   /**
    *
    * Table Data for ensembles
@@ -102,7 +87,6 @@ function TableData(props: {
 
   function BackButton() {
     if (currentStep > 0) {
-      // console.log("slay")
       return (
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton
@@ -115,7 +99,6 @@ function TableData(props: {
         </Stack>
       );
     }
-    // console.log("not slay")
     return null;
   }
 

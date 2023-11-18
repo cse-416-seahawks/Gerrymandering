@@ -15,6 +15,7 @@ export default () => {
   const [nevadaDistrict, setNevadaDistrict] =
     useState<DistrictState["data"]>(null);
 
+
   const generateColor = () => {
     return (
       "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
@@ -25,7 +26,6 @@ export default () => {
     async function fetchDistrictsAsync() {
       try {
         const result = await fetchDistricts(AvailableStates.Nevada);
-        console.log("nevada district ", result);
         setNevadaDistrict(result);
       } catch (error) {
         throw error;

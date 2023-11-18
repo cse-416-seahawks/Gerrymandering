@@ -84,8 +84,9 @@ const mainReducer = (
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
+        ...state,
         {
-          ...state,
+         
           dismap: false,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -98,8 +99,8 @@ const mainReducer = (
       ];
     case GlobalTypes.DistrictMap:
       return [
+        ...state,
         {
-          ...state,
           dismap: true,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -112,8 +113,8 @@ const mainReducer = (
       ];
     case GlobalTypes.StepChange:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: action.payload.step,
@@ -126,8 +127,8 @@ const mainReducer = (
       ];
     case GlobalTypes.ChangeState:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -140,8 +141,8 @@ const mainReducer = (
       ];
     case GlobalTypes.DistanceMeasure:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: action.payload.distanceMeasure,
           step: state[state.length - 1].step,
@@ -154,8 +155,8 @@ const mainReducer = (
       ];
     case GlobalTypes.PageChange:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -168,8 +169,8 @@ const mainReducer = (
       ];
     case GlobalTypes.SetEnsemble:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -182,8 +183,8 @@ const mainReducer = (
       ];
     case GlobalTypes.SetCluster:
       return [
+        ...state,
         {
-          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -204,7 +205,7 @@ const intialState: GlobalState[] = [
     dismap: false,
     distanceMeasure: "Hamming Distance",
     step: 0,
-    currentState: AvailableStates.Unselected,
+    currentState: AvailableStates.Nevada,
     clusterAnalysis: true,
     ensemble: 0,
     ensembleId: "0",

@@ -23,7 +23,6 @@ export default () => {
     async function fetchDistrictsAsync() {
       try {
         const result = await fetchDistricts(AvailableStates.Texas);
-        console.log("texas district ", result);
         setTexasDistrict(result);
       } catch (error) {}
     }

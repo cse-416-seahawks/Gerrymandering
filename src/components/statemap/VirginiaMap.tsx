@@ -41,7 +41,6 @@ export default () => {
       try {
         const result = await fetchStateOutline(AvailableStates.Virginia);
         setData(result);
-        console.log("State outline Virginia", result);
       } catch (error) {}
     }
 

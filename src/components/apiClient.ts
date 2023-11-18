@@ -15,19 +15,15 @@ export async function fetchDistricts(
   State: AvailableStates
 ): Promise<FeatureCollection> {
   try {
-    console.log("awaiting information", State);
     const response = await axios.get(
       `http://localhost:4000/getCurrentDistrictPlan/${State}`
     )
 
-    console.log(response);
 
     if(isFeatureCollection(response.data[0])){
-      console.log("found a feature collection")
       return response.data[0];
     }
     else if(isFeatureArray(response.data)){
-      console.log("found a feature array");
       const newCollection : FeatureCollection = {
         type: "FeatureCollection",
         "features": response.data
@@ -41,12 +37,7 @@ export async function fetchDistricts(
       }
       return newCollection;
     }
-    // console.log("district data: ", response);
-    // if (State === AvailableStates.Virginia) {
-      
-    // } else return response.data[0];
   } catch(error) {
-    console.log(error)
     throw error;
   }
 }
@@ -55,11 +46,9 @@ export async function fetchStateOutline(
   State: AvailableStates
 ): Promise<FeatureCollection> {
   try {
-    console.log("awaiting state data", State);
     const response = await axios.get(
       `http://localhost:4000/getStateOutline/${State}`
     );
-    console.log("fetching state outlines", State, response);
     return response.data[0];
   } catch (error) {
     console.error("Error fetching data");
@@ -73,16 +62,14 @@ export async function fetchEnsembleData(State: AvailableStates) {
     if (response.status == 200) {
       return response.data;
     }
-  } catch(e) {
-    console.log(e);
+  } catch(error) {
+    throw error;
   }
 }
 
 export async function fetchClusterData(State: AvailableStates, ensembleId: String, distanceMeasure: String) {
   try {
-    console.log("awaiting cluster data");
     const response = await axios.get(`http://localhost:4000/getClusterData/${State}/${ensembleId}/${distanceMeasure}`);
-    console.log("response::", response);
     if (response.status == 200) {
       return response.data;
     }
@@ -93,13 +80,11 @@ export async function fetchClusterData(State: AvailableStates, ensembleId: Strin
 
 export async function fetchDistrictPlanData(state: AvailableStates, ensembleId: Number, distanceMeasure: String, clusterId: Number) {
   try {
-    console.log("awaiting district plan data", clusterId);
     const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${ensembleId}/${distanceMeasure}/${clusterId}`);
     if (response.status == 200) {
       return response.data;
     }
   } catch(error) {
-    console.log("ERROR FETCHING")
     throw error;
   }
 }

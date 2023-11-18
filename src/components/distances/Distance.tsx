@@ -9,7 +9,6 @@ import { GlobalProvider } from "../../globalContext";
 import DistanceTable from "./DistanceTable";
 
 function Distance() {
-  const [selectedState, setSelectedState] = useState("Nevada");
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>(
     [38.5, -116.5]
@@ -25,7 +24,6 @@ function Distance() {
     setCenterCoordinates(coordinates);
   };
   return (
-    <GlobalProvider>
     <div className="Home">
       <div className="Home-content">
         <Navbar />
@@ -33,7 +31,7 @@ function Distance() {
           <header className="StateMap-header">
               <div className="State-map"> 
               <StateMap
-                  selectedState={selectedState}
+                  selectedState={state[state.length - 1].currentState}
                   centerCoordinates={centerCoordinates}
                   selectedDistrict={selectedDistrict}
                 />
@@ -43,7 +41,6 @@ function Distance() {
         </div>
       </div>
     </div>
-    </GlobalProvider>
   );
 }
 

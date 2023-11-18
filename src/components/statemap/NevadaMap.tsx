@@ -22,7 +22,6 @@ export default () => {
 
   const { state, dispatch } = useContext(GlobalContext);
 
-  const [select, updateSelect] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,7 +32,6 @@ export default () => {
         currentState : AvailableStates.Nevada
       }
     });
-    updateSelect(true);
     navigate("/Home");
   }
 
@@ -42,7 +40,6 @@ export default () => {
       try {
         const result = await fetchStateOutline(AvailableStates.Nevada);
         setData(result);
-        console.log("State outline Nevada", result);
       } catch (error) {}
     }
 

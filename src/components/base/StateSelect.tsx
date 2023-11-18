@@ -16,16 +16,13 @@ export default function StateSelect(props: {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.centerCoordinates
   );
-  const [zoom, setZoom] = useState(5);
 
   return (
-    <GlobalProvider>
     <div className="Home">
       <div className="Home-content">
         <Navbar />
           <Map centerCoordinates={centerCoordinates} />
       </div>
     </div>
-    </GlobalProvider>
   );
 }

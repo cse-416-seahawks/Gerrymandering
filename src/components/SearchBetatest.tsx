@@ -106,7 +106,6 @@ export default function SearchBetatest(props: {
   const handleSearchDist = async () => {
     try {
       let response = await axios.get(`http://localhost:4000/District/${searchDist}`)
-      console.log(response)
       if(response.status === 200){
         const newDistrict: district_summary_table = {
           district: response.data.districtId,
@@ -117,7 +116,7 @@ export default function SearchBetatest(props: {
         setIsVisible(true)
       }
     } catch (error) {
-      console.log('Error fetching data');
+      throw error;
     }
   };
   function handleClear(){

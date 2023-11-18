@@ -14,21 +14,16 @@ function Home() {
   
   
   const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
-    console.log("now inhome", district_num)
     setSelectedDistrict(district_num);
     setCenterCoordinates(coordinates);
   }
   
 
   return (
-    <GlobalProvider>
     <div className="Home">
       <div className="Home-content">
       <Navbar />
-      
       <div className="StateMap-content">
-        
-          
           <header className="StateMap-header">
           <div className="State-map"> 
               <StateMap selectedState={state[state.length-1].currentState} centerCoordinates={centerCoordinates} selectedDistrict={selectedDistrict}/>
@@ -40,7 +35,6 @@ function Home() {
       
       </div>
     </div>
-    </GlobalProvider>
   );
 }
 
