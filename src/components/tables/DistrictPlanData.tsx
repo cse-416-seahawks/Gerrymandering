@@ -236,7 +236,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {districtPlans.map((row) => (
+                  {sampleData.district_plan_data.map((row) => ( // districtPlans
                       <TableRow key={row.district_plan}>
                         <TableCell component="th" scope="row">
                           {" "}

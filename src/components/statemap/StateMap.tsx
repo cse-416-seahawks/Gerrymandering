@@ -188,7 +188,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
-        <ClusterSummary/>
+        {/* <ClusterSummary/> */}
     </div>
     </GlobalProvider>
   );

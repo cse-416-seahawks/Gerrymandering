@@ -67,20 +67,18 @@ export async function fetchStateOutline(
   }
 }
 
-// export async function fetchEnsembleData(State: AvailableStates) {
-//   try {
-//     console.log("awaiting ensemble data")
-//     const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
-//     console.log("response!!", response);
-//     if (response.status == 200) {
-//       return response.data;
-//     }
-//   } catch(error) {
-//     throw error;
-//   }
-// }
+export async function fetchEnsembleData(State: AvailableStates) {
+  try {
+    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(e) {
+    console.log(e);
+  }
+}
 
-export async function fetchClusterData(State: AvailableStates, ensembleId: Number, distanceMeasure: String) {
+export async function fetchClusterData(State: AvailableStates, ensembleId: String, distanceMeasure: String) {
   try {
     console.log("awaiting cluster data");
     const response = await axios.get(`http://localhost:4000/getClusterData/${State}/${ensembleId}/${distanceMeasure}`);
@@ -103,17 +101,5 @@ export async function fetchDistrictPlanData(state: AvailableStates, ensembleId: 
   } catch(error) {
     console.log("ERROR FETCHING")
     throw error;
-  }
-}
-
-
-export async function fetchEnsembleData(State: AvailableStates) {
-  try {
-    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
-    if (response.status == 200) {
-      return response.data;
-    }
-  } catch(e) {
-    console.log(e);
   }
 }
