@@ -118,17 +118,6 @@ export default function StateMap(props: {
     console.log("current state coords", centerCoordinates);
   }
 
-  const getMapNevada = () =>  {
-    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap onClick={() => {}}/>
-  }
-
-  const getMapTexas = () =>  {
-    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap onClick={() => {}}/>
-  }
-
-  const getMapVirginia = () =>  {
-    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap onClick={() => {}}/>
-  }
 
   console.log("center ", centerCoordinates)
 
@@ -149,17 +138,9 @@ export default function StateMap(props: {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {
-            getMapTexas()
-          }
-
-          {
-            getMapNevada()
-          }
-
-          {
-            getMapVirginia()
-          }
+          <NevadaDistricts/>
+          <TexasDistricts/>
+          <VirginiaDistricts/>
 
           <SetMapView />
         </MapContainer>

@@ -23,38 +23,6 @@ export default function StateSelect(props: {
   const { state, dispatch } = useContext(GlobalContext);
   const navigate = useNavigate();
 
-  const selectVirginia = () => {
-    console.log("SELECTING VIRGINIA")
-    dispatch({
-        type : "CHANGE_STATE",
-        payload : {
-          currentState : AvailableStates.Virginia
-        }
-      })
-      navigate("/Home");
-  }
-  const selectNevada = () => {
-    console.log("SELECTING NEVADA")
-    dispatch({
-        type : "CHANGE_STATE",
-        payload : {
-          currentState : AvailableStates.Nevada
-        }
-      })
-      navigate("/Home");
-  }
-  const selectTexas = () => {
-    console.log("SELECTING TEXAS")
-    dispatch({
-        type : "CHANGE_STATE",
-        payload : {
-          currentState : AvailableStates.Texas
-        }
-      })
-      navigate("/Home");
-      
-  }
-
   const SetMapView = () => {
     const map = useMap();
     useEffect(() => {
@@ -76,9 +44,9 @@ export default function StateSelect(props: {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <NevadaMap onClick={selectNevada} />
-      <TexasMap onClick={selectTexas} />
-      <VirginiaMap onClick={selectVirginia} />
+      <NevadaMap />
+      <TexasMap />
+      <VirginiaMap/>
 
       <SetMapView />
     </MapContainer>

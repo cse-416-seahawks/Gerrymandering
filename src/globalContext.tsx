@@ -21,7 +21,7 @@ export enum AvailableStates {
   Nevada = "NEVADA",
   Texas = "TEXAS",
   Virginia = "VIRGINIA",
-  Unselected = "UNSELECTED"
+  Unselected = "UNSELECTED",
 }
 
 export enum GlobalTypes {
@@ -68,24 +68,24 @@ type GlobalStatePayload = {
   [GlobalTypes.SetEnsemble]: {
     ensemble: number;
     ensembleId: string;
-  }
+  };
   [GlobalTypes.SetCluster]: {
     cluster: number;
-  }
+  };
 };
 
 export type GlobalStateActions =
   ActionMap<GlobalStatePayload>[keyof ActionMap<GlobalStatePayload>];
 
-const dismapReducer = (
+const mainReducer = (
   state: GlobalState[],
   action: GlobalStateActions
 ): GlobalState[] => {
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
-        ...state,
         {
+          ...state,
           dismap: false,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -98,8 +98,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistrictMap:
       return [
-        ...state,
         {
+          ...state,
           dismap: true,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -112,8 +112,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.StepChange:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: action.payload.step,
@@ -126,8 +126,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.ChangeState:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -140,8 +140,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.DistanceMeasure:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: action.payload.distanceMeasure,
           step: state[state.length - 1].step,
@@ -154,8 +154,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.PageChange:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -168,8 +168,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.SetEnsemble:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -182,8 +182,8 @@ const dismapReducer = (
       ];
     case GlobalTypes.SetCluster:
       return [
-        ...state,
         {
+          ...state,
           dismap: state[state.length - 1].dismap,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -205,9 +205,9 @@ const intialState: GlobalState[] = [
     distanceMeasure: "Hamming Distance",
     step: 0,
     currentState: AvailableStates.Unselected,
-    clusterAnalysis : true,
+    clusterAnalysis: true,
     ensemble: 0,
-    ensembleId: '0',
+    ensembleId: "0",
     cluster: 0,
   },
 ];
@@ -224,7 +224,7 @@ interface Props {
 }
 
 const GlobalProvider: React.FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(dismapReducer, intialState);
+  const [state, dispatch] = useReducer(mainReducer, intialState);
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

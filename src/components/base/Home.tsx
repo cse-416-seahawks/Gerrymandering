@@ -21,11 +21,11 @@ function Home() {
   
 
   return (
-    
+    <GlobalProvider>
     <div className="Home">
       <div className="Home-content">
       <Navbar />
-      <GlobalProvider>
+      
       <div className="StateMap-content">
         
           
@@ -37,9 +37,10 @@ function Home() {
         </header>
         
       </div>
-      </GlobalProvider>
+      
       </div>
     </div>
+    </GlobalProvider>
   );
 }
 

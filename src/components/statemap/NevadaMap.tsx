@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
@@ -6,6 +6,7 @@ import { fetchStateOutline } from "../apiClient";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 import { Polygon } from "react-leaflet";
 import { FeatureCollection } from "@turf/turf";
+import { useNavigate } from "react-router-dom";
 
 const getColor = () => {
   return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
@@ -15,10 +16,26 @@ interface MapState {
   data: any | null; // Adjust the type based on your actual data structure
 }
 
-export default (props : {
-  onClick: () => void;
-}) => {
+export default () => {
   const [nevadaOutline, setData] = useState<MapState["data"]>(null);
+  
+
+  const { state, dispatch } = useContext(GlobalContext);
+
+  const [select, updateSelect] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    dispatch({
+      type : "CHANGE_STATE",
+      payload : {
+        currentState : AvailableStates.Nevada
+      }
+    });
+    updateSelect(true);
+    navigate("/Home");
+  }
 
   useEffect(() => {
     async function fetchOutlineAsync() {
@@ -66,7 +83,7 @@ export default (props : {
                 color: "white",
               });
             },
-            click: props.onClick
+            click: handleClick
           }}
         />
       ) : (

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 
 import { Polygon } from "react-leaflet";
-import { AvailableStates } from "../../globalContext";
+import { AvailableStates, GlobalContext, GlobalTypes } from "../../globalContext";
 import { fetchStateOutline } from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 const getColor = () => {
   return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
 };
 
-export default (props : {
-  onClick: () => void;
-}) => {
+export default () => {
 
   interface MapState {
     data: any | null; // Adjust the type based on your actual data structure
@@ -21,6 +20,20 @@ export default (props : {
   
 
   const [virginiaOutline, setData] = useState<MapState["data"]>(null);
+
+  const { state, dispatch } = useContext(GlobalContext);
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    dispatch({
+      type : GlobalTypes.ChangeState,
+      payload : {
+        currentState : AvailableStates.Virginia
+      }
+    })
+    navigate("/Home");
+  }
 
 
   useEffect(() => {
@@ -74,7 +87,7 @@ export default (props : {
                 color: "white",
               });
             },
-            click: props.onClick
+            click: handleClick
           }}
         />
       ) : (
