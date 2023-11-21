@@ -215,7 +215,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {clusterData.map((row) => (
+                {clusterData && clusterData.map((row) => (
                   <TableRow key={row.cluster_number}>
                     <TableCell align="center">
                       <Button
