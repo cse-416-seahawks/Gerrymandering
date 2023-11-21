@@ -307,7 +307,7 @@ public class DistrictController{
             stateCollection = db.getCollection("Nevada");
         }
 
-        Document docFinder = new Document("type", "ScatterPlotOfDistrictPlans").append("cluster_id", clusterId);
+        Document docFinder = new Document("graph_type", "ScatterPlotOfDistrictPlans").append("cluster_id", clusterId);
         Document document = stateCollection.find(docFinder).first();
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);

@@ -52,6 +52,7 @@ export type GlobalState = {
   ensemble: number;
   ensembleId: string;
   cluster: number;
+  clusterId: string;
   districtPlanIds: Array<string>;
   ensembleDetails: Array<EnsembleData>;
 };
@@ -81,6 +82,7 @@ type GlobalStatePayload = {
   };
   [GlobalTypes.SetCluster]: {
     cluster: number;
+    clusterId: string;
     districtPlanIds: Array<string>;
   };
   [GlobalTypes.AddEnsembleDetail]: {
@@ -109,6 +111,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -125,6 +128,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -141,6 +145,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -157,6 +162,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -173,6 +179,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -189,6 +196,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -205,6 +213,7 @@ const mainReducer = (
           ensemble: action.payload.ensemble,
           ensembleId: action.payload.ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -221,6 +230,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: action.payload.cluster,
+          clusterId: action.payload.clusterId,
           districtPlanIds: action.payload.districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
         },
@@ -243,6 +253,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: newDetails,
         },
@@ -260,8 +271,9 @@ const intialState: GlobalState[] = [
     currentState: AvailableStates.Unselected,
     clusterAnalysis: true,
     ensemble: 0,
-    ensembleId: "0",
+    ensembleId: "",
     cluster: 0,
+    clusterId: "",
     districtPlanIds: [],
     ensembleDetails: [],
   },

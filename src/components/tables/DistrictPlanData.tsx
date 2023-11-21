@@ -1,5 +1,4 @@
 import React, { FC, useState, useContext, useEffect } from "react";
-import "../css/TableData.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +18,7 @@ import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
 import AlertModal from "../AlertModal";
+import '../css/DistrictPlanData.css';
 import {
   AreaChart,
   Area,
@@ -26,6 +26,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  TooltipProps,
   Legend,
   ScatterChart,
   Scatter,
@@ -33,13 +34,29 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "./TableTypes";
-import { fetchClusterDetails } from "../apiClient";
+import { fetchClusterDetails, fetchDistrictPlanGraphData } from "../apiClient";
 
 interface DistrictPlanData {
   district_plan: number,
   opportunity_districts: number,
   democrat: string,
   republican: string,
+}
+
+interface DistrictPlanPoints {
+  district_plan_id: number,
+  district_plan: number,
+  availableData: boolean,
+  x: number,
+  y: number,
+}
+
+interface CustomTooltipProps extends TooltipProps<any, any> {
+  active?: boolean;
+  payload?: Array<{
+    name: string; payload: 
+      {district_plan: number; x: number; y: number; }
+  }>;
 }
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
@@ -49,7 +66,11 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
     const [modal, setModal] = useState<boolean>(false);
     const { state, dispatch } = useContext(GlobalContext);
+
     const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
+    const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+    const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
+    const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
 
     function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
       setCurrentTab(String(newValue));
@@ -91,8 +112,9 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     };
 
     function handleDistrictSelection(point: any) {
+      console.log("point", point)
       const plan = {
-        district_plan: point.z,
+        district_plan: point.district_plan,
         opportunity_districts: 5,
         democrat: '30%',
         republican: '70%',
@@ -117,18 +139,46 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     useEffect(() => {
       async function fetchDistrictData() {
         try {
-          console.log("EEE", state)
+          // Table Data
           const currState = state[state.length-1].currentState;
-          const districtPlanIds = state[state.length-1].districtPlanIds;
-          
-          // const response = await fetchClusterDetails(currState, districtPlanIds);
-          // setDistrictPlans(response.data);
+          const ensembleId = state[state.length-1].ensembleId;
+          const clusterId = state[state.length-1].clusterId;
+          // const response = await fetchClusterDetails(currState, ensembleId, clusterId);
+          // if (response) {
+          //   setDistrictPlans(response.data);
+          // }
+
+          // Graph Data
+          const response1 = await fetchDistrictPlanGraphData(currState, clusterId);
+          if (response1) {
+            setAxisLabels([response1.x_axis_label, response1.y_axis_label]);
+            console.log(response1.data)
+            const availableData = response1.data.filter((plan: DistrictPlanPoints) => plan.availableData);
+            const unavailableData = response1.data.filter((plan: DistrictPlanPoints) => !plan.availableData);
+            setAvailableDataPoints(availableData);
+            setUnavailableDataPoints(unavailableData);
+          }
         } catch(error) {
           throw error;
         }
       }
       fetchDistrictData();
     }, []);
+
+    const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+      if (active && payload && payload.length) {
+        const selectedPoint = payload[0].payload;
+        return (
+          <div className="custom-tooltip">
+            <p className="tooltip-text"><b>{"District Plan: "}</b>{selectedPoint.district_plan}</p>
+            <p className="tooltip-text"><b>{`${axisLabels[0]}: `}</b>{selectedPoint.x}</p>
+            <p className="tooltip-text"><b>{`${axisLabels[1]}: `}</b>{selectedPoint.y}</p>
+          </div>
+        );
+      }
+    
+      return null;
+    };
 
     return (
       <>
@@ -151,27 +201,29 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <TabPanel value="1">
             <div className="graph-container-row">
               <div className="graph-container">
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "350px", }}>
-                  <div style={{ fontWeight: "700", textAlign: "center", fontSize: "1.0rem", height: "100px", width: "60px", }}>
-                    {"# Districts w/ African American Population > 5,000,000"}
+                <div className="y-axis-label-container">
+                  <div className="y-axis-l-label">
+                    {/* Y-Axis Label */}
+                    {axisLabels[1]}
                   </div>
                 </div>
-                <ScatterChart width={800}  height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10, }}>
+                <ScatterChart width={700}  height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10, }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <ZAxis dataKey="z" type="number" name="District Plan" />
-                  <XAxis dataKey="x" type="number" name="Average African-American Population (%)"/>
-                  <YAxis dataKey="y" type="number" name="# Districts w/ African American Population > 5,000,000" />
+                  <XAxis dataKey="x" type="number" name={axisLabels[0]} />
+                  <YAxis dataKey="y" type="number" name={axisLabels[1]} />
                   <Tooltip
+                    content={<CustomTooltip />}
                     cursor={{ strokeDasharray: "3 3" }}
                     contentStyle={{ fontSize: 18 }}
                   />
                   <Legend/>
-                  <Scatter name="Available Data" data={sampleData.data01} fill="#82ca9d" onClick={handleDistrictSelection}/>
-                  <Scatter name="Unavailable Data" data={sampleData.data02} fill="#ca8287" onClick={() => handleOpenModal(true)}/>
+                  <Scatter name="Available Data" data={availableDataPoints} fill="#82ca9d" onClick={handleDistrictSelection}/>
+                  <Scatter name="Unavailable Data" data={unavailableDataPoints} fill="#ca8287" onClick={() => handleOpenModal(true)}/>
                 </ScatterChart>
               </div>
               <div style={{ display: "flex", fontSize: "1.0rem", width: "65%", margin: "2rem", fontWeight: "700", justifyContent: "end", }}>
-                {"Average African-American Population (%)"}
+                {/* X-Axis Label */}
+                {axisLabels[0]}
               </div>
             </div>
             {/* 
@@ -180,7 +232,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
               PLANS
             */}
             <TableContainer className="plan-table-container" component={Paper}>
-            <div style={{  width:'100%', maxHeight: 300, overflow: 'auto' }}>
+            <div style={{  width:'100%', maxHeight: 250, overflow: 'auto' }}>
               <Table>
                 <TableHead>
                   <TableRow>

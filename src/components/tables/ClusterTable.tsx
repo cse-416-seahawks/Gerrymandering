@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import "../css/TableData.css";
 import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
@@ -66,6 +65,14 @@ interface ClusterPoints {
   y: number,
 }
 
+interface CustomTooltipProps extends TooltipProps<any, any> {
+  active?: boolean;
+  payload?: Array<{
+    name: string; payload: 
+      {cluster_num: number; num_district_plans: number; x: number; y: number; id: string }
+  }>;
+}
+
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
@@ -80,6 +87,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   function handleStepChange(step: number, clusterNumber: number, clusterId: string) {
     
     if (step === 2) { // Display selected cluster summary of district plans
+      console.log("EEE!", clusterId)
       onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
 
       dispatch({
@@ -143,7 +151,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
-          console.log(response.data)
         }
       } catch(error) {
         throw error;
@@ -152,15 +159,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     getClusterGraphData();
 
   }, [state[state.length-1].ensemble]);
-
-  interface CustomTooltipProps extends TooltipProps<any, any> {
-    active?: boolean;
-    payload?: Array<{
-      name: string; payload: {
-        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
-} 
-}>;
-  }
   
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {

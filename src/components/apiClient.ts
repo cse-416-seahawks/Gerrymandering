@@ -100,9 +100,9 @@ export async function fetchClusterDetails(state: AvailableStates, ensembleId: st
   }
 }
 
-export async function fetchDistrictPlanGraphData(state: AvailableStates, districtPlanIds: Array<string>) {
+export async function fetchDistrictPlanGraphData(state: AvailableStates, clusterId: string) {
   try {
-    const response = await axios.get(`http://localhost:4000/getDistrictPlanGraphData/${state}/${districtPlanIds}`);
+    const response = await axios.get(`http://localhost:4000/getDistrictPlanGraphData/${state}/${clusterId}`);
     if (response.status == 200) {
       return response.data;
     }

@@ -1,0 +1,44 @@
+.graph-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.graph-container-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+b {
+    font-weight: 500;
+}
+
+.custom-tooltip {
+    background: rgba(233, 240, 253, 0.7);
+    border-radius: 1rem;
+    border: 1rem;
+    border-color: black;
+    padding: 0.5rem;
+}
+
+.tooltip-text {
+    font-size: 1rem;
+}
+
+.y-axis-label-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 360px;
+    width: 100px;
+}
+
+.y-axis-l-label {
+    margin-left : 1rem;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1rem;
+    height: 120px;
+    width: 150px;
+}
