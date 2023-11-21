@@ -79,7 +79,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   function handleStepChange(step: number, clusterNumber?: number) {
     
     if (step === 2) { // Display selected cluster summary of district plans
-      console.log("datapoint", clusterNumber)
       if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
       dispatch({
         type: "DISTRICT_MAP",
@@ -139,7 +138,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
-          console.log(response.data)
         }
       } catch(error) {
         throw error;

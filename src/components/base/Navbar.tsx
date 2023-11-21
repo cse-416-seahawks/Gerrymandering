@@ -19,17 +19,17 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Button from "@mui/material/Button/Button";
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  const isMenuOpen = Boolean(anchorEl);
   const { state, dispatch } = useContext(GlobalContext);
+  const [isStateUnselected, setStateUnselected] = useState(state[state.length - 1].currentState === AvailableStates.Unselected)
   let clusterAnalysis = state[state.length - 1].clusterAnalysis;
+
   const NavbarOptions = [
     {
       title: "Cluster Analysis",
@@ -51,36 +51,18 @@ export default function PrimarySearchAppBar() {
     },
   ];
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+  const handleGoHome = () => {
+    setStateUnselected(true);
+    dispatch({
+      type : "CHANGE_STATE",
+      payload :{
+        currentState : AvailableStates.Unselected
+      } 
+    })
+    navigate("/")
+  }
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -92,9 +74,7 @@ export default function PrimarySearchAppBar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={() => {
-              navigate("/");
-            }}
+            onClick={handleGoHome}
           >
             <HomeIcon fontSize="large" />
           </IconButton>
@@ -107,8 +87,7 @@ export default function PrimarySearchAppBar() {
             GerryCast
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          {state[state.length - 1].currentState ==
-          AvailableStates.Unselected ? (
+          {isStateUnselected ? (
             <div>Select a state from the map</div>
           ) : (
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -129,7 +108,6 @@ export default function PrimarySearchAppBar() {
           )}
         </Toolbar>
       </AppBar>
-      {renderMenu}
     </Box>
   );
 }

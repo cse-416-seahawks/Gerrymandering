@@ -108,15 +108,12 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   };
 
   const handleSeeDetails = (Ensemble: EnsembleData) => {
-    console.log("CLICKED DETAILS");
     dispatch({
       type: "ADD_ENS_DETAIL",
       payload: {
         EnsembleData: Ensemble,
       },
     });
-    console.log("details added");
-    console.log(state);
   };
 
   const handleUpdateDistanceMeasure = (event: SelectChangeEvent) => {
