@@ -71,7 +71,7 @@ function TableData(props: {
     props.onDistrictSelection(district_num, coords);
   }
 
-  function handleClusterSelection(clusterNumber: number, districtPlanIds: Array<String>) {
+  function handleClusterSelection(clusterNumber: number, districtPlanIds: Array<string>) {
     setCluster(clusterNumber);
     dispatch({
       type: "SET_CLUSTER",

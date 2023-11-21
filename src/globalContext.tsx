@@ -44,7 +44,7 @@ export type GlobalState = {
   ensemble: number;
   ensembleId: string;
   cluster: number;
-  districtPlanIds: Array<String>;
+  districtPlanIds: Array<string>;
 };
 
 type GlobalStatePayload = {
@@ -72,7 +72,7 @@ type GlobalStatePayload = {
   };
   [GlobalTypes.SetCluster]: {
     cluster: number;
-    districtPlanIds: Array<String>;
+    districtPlanIds: Array<string>;
   };
 };
 

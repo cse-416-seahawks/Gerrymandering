@@ -20,7 +20,8 @@ import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
 import { ClusterSelectionProps } from "./TableTypes";
-import { fetchClusterData } from "../apiClient";
+import { fetchClusterData, fetchClusterGraphData } from "../apiClient";
+import '../css/ClusterTable.css';
 import {
   XAxis,
   YAxis,
@@ -29,6 +30,7 @@ import {
   ScatterChart,
   Scatter,
   ZAxis,
+  TooltipProps
 } from "recharts";
 
 interface ClusterData {
@@ -39,7 +41,7 @@ interface ClusterData {
   avg_dem: string,
   avg_distance: number,
   demographics: ClusterDemographicData,
-  district_plans: Array<String>,
+  district_plans: Array<string>,
           // avg_white: string,
           // avg_black: string,
           // avg_asian: string,
@@ -56,16 +58,18 @@ interface ClusterDemographicData {
   other: number,
 }
 
-// interface ClusterFetchData {
-//   State: string,
-//   data: Array,
-//   distance_measure: string,
-//   ensemble_id: string,
-// }
+interface ClusterPoints {
+  cluster_num: number,
+  num_district_plans: number,
+  x: number,
+  y: number,
+}
 
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
+  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+  const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -75,6 +79,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   function handleStepChange(step: number, clusterNumber?: number) {
     
     if (step === 2) { // Display selected cluster summary of district plans
+      console.log("datapoint", clusterNumber)
       if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
       dispatch({
         type: "DISTRICT_MAP",
@@ -100,11 +105,11 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   }
 
   const parseDomain = () => [
-    300,
+    500,
     Math.max(
       Math.max.apply(
         null,
-        sampleData.data01.map((entry) => entry.y)
+        dataPoints.map((entry) => entry.num_district_plans)
       )
     ),
   ];
@@ -117,18 +122,62 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     const currState = state[state.length-1].currentState;
     const ensembleId = state[state.length-1].ensembleId;
     const distanceMeasure = state[state.length-1].distanceMeasure;
+
     async function getClusterData() {
       try {
         const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
-        setClusterData(response.data);
+        if (response) setClusterData(response.data);
       } catch(error) {
         throw error;
       }
     }
     getClusterData();
+
+    async function getClusterGraphData() {
+      try {
+        const response = await fetchClusterGraphData(currState, ensembleId, distanceMeasure);
+        if (response) {
+          setAxisLabels([response.x_axis_label, response.y_axis_label]);
+          setDataPoints(response.data);
+          console.log(response.data)
+        }
+      } catch(error) {
+        throw error;
+      }
+    }
+    getClusterGraphData();
+
   }, [state[state.length-1].ensemble]);
 
-  console.log(clusterData, state) //.data[clusterNumber].district_plans
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
+} 
+}>;
+  }
+  
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      
+      const selectedPoint = payload[0].payload;
+      const xLabel = payload[0].name;
+      const yLabel = payload[1].name;
+      const zLabel = payload[2].name;
+      return (
+        <div className="custom-tooltip">
+          <p className="tooltip-text"><b>{"Cluster: "}</b>{selectedPoint.cluster_num}</p>
+          <p className="tooltip-text"><b>{`${xLabel}: `}</b>{selectedPoint.x}</p>
+          <p className="tooltip-text"><b>{`${yLabel}: `}</b>{selectedPoint.y}</p>
+          <p className="tooltip-text"><b>{`${zLabel}: `}</b>{selectedPoint.num_district_plans}</p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
   return (
     <>
       <TabContext value={currentTab}>
@@ -201,27 +250,14 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
             </AccordionSummary>
             <div className="graph-container-row">
               <div className="graph-container">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "460px",
-                  }}
-                >
-                  <div
-                    style={{
-                      marginLeft : "1rem",
-                      fontWeight: "700",
-                      textAlign: "center",
-                      fontSize: "1rem",
-                      height: "120px",
-                      width: "75px",
-                    }}
-                  >
-                    {"# Districts w/ African American Population > 5,000,000"}
+                <div className="y-axis-container">
+                  <div className="y-axis-label">
+                    {/* Y-Axis label */}
+                    {axisLabels[1]} 
                   </div>
                 </div>
+
+
                 <ScatterChart
                   width={740}
                   height={460}
@@ -231,29 +267,30 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                   <XAxis
                     type="number"
                     dataKey="x"
-                    name="Average African-American Population (%)"
+                    name={axisLabels[0]} 
                   ></XAxis>
                   <YAxis
                     yAxisId="left"
                     type="number"
                     dataKey="y"
-                    name="# Districts w/ African American Population > 5,000,000"
+                    name={axisLabels[1]} 
                     opacity="1"
                     stroke="#7aa9ff"
                   />
-                  <ZAxis dataKey="y" domain={domain} range={range} />
+                  <ZAxis dataKey="num_district_plans" name="# District Plans" domain={domain} range={range} />
                   <Tooltip
+                    content={<CustomTooltip />}
                     cursor={{ strokeDasharray: "3 3" }}
                     wrapperStyle={{ outline: "none" }}
                     contentStyle={{ fontSize: 18 }}
                   />
                   <Scatter
                     yAxisId="left"
-                    data={sampleData.data01}
+                    data={dataPoints}
                     fill="#bfd6ff"
                     stroke="#037cff"
                     opacity={4}
-                    onClick={() => handleStepChange(2)}
+                    onClick={(datapoint) => handleStepChange(2, datapoint.cluster_num)}
                   />
                 </ScatterChart>
               </div>
@@ -265,9 +302,11 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                   marginBottom: "1rem",
                   fontWeight: "700",
                   justifyContent: "end",
+                  textAlign: 'center'
                 }}
               >
-                {"Average African-American Population (%)"}
+                {/* X-Axis label */}
+                {axisLabels[0]} 
               </div>
             </div>
           </Accordion>

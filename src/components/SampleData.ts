@@ -35,7 +35,6 @@ for (let i = 1; i <= 500; i++) {
   });
 }
 
-
 // Scatter plot data for cluster and district plan (dummy data)
 export const data01 = [
   { x: 100, y: 60, z: 1 },

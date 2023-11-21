@@ -78,7 +78,18 @@ export async function fetchClusterData(State: AvailableStates, ensembleId: Strin
   }
 }
 
-export async function fetchDistrictPlanData(state: AvailableStates, districtPlanIds: Array<String>) {
+export async function fetchClusterGraphData(State: AvailableStates, ensembleId: String, distanceMeasure: String) {
+  try {
+    const response = await axios.get(`http://localhost:4000/getClusterGraphData/${State}/${ensembleId}/${distanceMeasure}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
+
+export async function fetchDistrictPlanData(state: AvailableStates, districtPlanIds: Array<string>) {
   try {
     const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${districtPlanIds}`);
     if (response.status == 200) {

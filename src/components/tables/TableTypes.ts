@@ -9,7 +9,7 @@ export type DistrictSelectionProps = {
   export type ClusterSelectionProps = {
     onClusterSelection: (
       clusterNum: number,
-      districtPlanIds: Array<String>
+      districtPlanIds: Array<string>
     ) => void;
   }
 
