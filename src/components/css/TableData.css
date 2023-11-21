@@ -6,6 +6,11 @@
   justify-content: flex-start;
 }
 
+.ensemble-table-header {
+  display : flex;
+  flex-direction: row;
+}
+
 .distance-options-group {
   margin-bottom: 1rem;
 }
@@ -42,7 +47,7 @@
 }
 
 .cluster-table-container {
-  margin-left: -1rem;
+  margin-left: -3rem;
 }
 
 .cluster-name:hover {

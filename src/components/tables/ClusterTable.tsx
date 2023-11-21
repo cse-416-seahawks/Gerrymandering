@@ -197,7 +197,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
         </Box>
         <TabPanel value="1">
           <TableContainer className="cluster-table-container" component={Paper}>
-            <Table sx={{ minWidth: 630, minHeight : 600, marginRight : 2 }}>
+            <Table size="small" style={{ maxWidth: '100%', overflowX: 'auto' }}>
               <TableHead>
                 <TableRow>
                   <TableCell align="center">Cluster</TableCell>

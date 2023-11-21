@@ -1,6 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import { Tabs, Tab, Pagination, TablePagination } from "@mui/material";
+import {
+  Tabs,
+  Tab,
+  Pagination,
+  TablePagination,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  OutlinedInput,
+  Chip,
+  Stack,
+} from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
@@ -11,8 +24,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -30,38 +41,22 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, EnsembleData } from "../../globalContext";
 import { fetchEnsembleData } from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 interface EnsembleProps {
-  showToggle : boolean,
-  handleStep : (step : number, ensemble : number, ensembleId: string) => void
-}
-
-interface EnsembleData {
-  ensemble: number,
-  num_clusters: number,
-  avg_dist_clusters: number,
-  num_dist_plans: number,
+  showToggle: boolean;
+  handleStep: (step: number, ensemble: number, ensembleId: string) => void;
 }
 
 const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   const { state, dispatch } = useContext(GlobalContext);
-  const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
-    newMethod: string
-  ) => {
-    dispatch({
-      type: "DISTANCE_MEASURE",
-      payload: {
-        distanceMeasure: newMethod,
-      },
-    });
-  };
-
+  const [disMeasure, setDismeasure] = useState("Hamming Distance");
   const [currentTab, setCurrentTab] = useState("1");
   const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
   const [fetchedEnsembleData, setFetchedEnsembleData] = useState<any>({});
+  const navigate = useNavigate();
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
   }
@@ -73,8 +68,8 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   }
 
   useEffect(() => {
-    const currState = state[state.length-1].currentState;
-    const distanceMeasure = state[state.length-1].distanceMeasure;
+    const currState = state[state.length - 1].currentState;
+    const distanceMeasure = state[state.length - 1].distanceMeasure;
 
     async function fetchStateEnsemble() {
       try {
@@ -85,10 +80,10 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
             (item: any) => item.distance_measure == distanceMeasure
           );
           ensembles.push({
-            "ensemble": response.ensembles.indexOf(row) + 1,
-            "num_clusters": ensemble_table.num_clusters,
-            "num_dist_plans": row.num_district_plans,
-            "avg_dist_clusters": ensemble_table.avg_distance,
+            ensemble: response.ensembles.indexOf(row) + 1,
+            num_clusters: ensemble_table.num_clusters,
+            num_dist_plans: row.num_district_plans,
+            avg_dist_clusters: ensemble_table.avg_distance,
           });
         }
         setFetchedEnsembleData(response);
@@ -108,25 +103,37 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
     setPage(value);
   };
 
+  const handleClick = () => {
+    console.info("You clicked the Chip.");
+  };
+
+  const handleSeeDetails = (Ensemble: EnsembleData) => {
+    console.log("CLICKED DETAILS");
+    dispatch({
+      type: "ADD_ENS_DETAIL",
+      payload: {
+        EnsembleData: Ensemble,
+      },
+    });
+    console.log("details added");
+    console.log(state);
+  };
+
+  const handleUpdateDistanceMeasure = (event: SelectChangeEvent) => {
+    dispatch({
+      type: "DISTANCE_MEASURE",
+      payload: {
+        distanceMeasure: event.target.value,
+      },
+    });
+    setDismeasure(event.target.value);
+  };
+
   const spliceEnsemble = (ensembleData: Array<EnsembleData>, page: number) => {
-    return ensembleData.slice((page - 1) * 7, page * 7);
+    return ensembleData.slice((page - 1) * 9, page * 9);
   };
   return (
     <div>
-      <div className="toggleButton-container">
-        {
-          showToggle && <ToggleButtonGroup
-          exclusive
-          value={state[state.length - 1].distanceMeasure}
-          onChange={handleAlignment}
-        >
-          <ToggleButton value={"Hamming Distance"}> Hamming Distance </ToggleButton>
-          <ToggleButton value={"Optimal Transport"}> Optimal Transport </ToggleButton>
-          <ToggleButton value={"Total Variation"}> Total Variation Distance </ToggleButton>
-        </ToggleButtonGroup>
-        }
-      </div>
-
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
           <Tabs value={currentTab} onChange={handleTabChange}>
@@ -142,53 +149,92 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
             />
           </Tabs>
         </Box>
-        {currentTab == "1" ? (
-          <Pagination
-            page={page}
-            onChange={handleChange}
-            sx={{ mt: "1rem" }}
-            count={Math.floor(ensembleData.length / 7)}
-          />
-        ) : (
-          <></>
-        )}
         <TabPanel value="1">
+          <div className="ensemble-table-header">
+            <Pagination
+              size="large"
+              page={page}
+              onChange={handleChange}
+              sx={{ mt: "1rem", mb: "1rem" }}
+              count={Math.floor(ensembleData.length / 7)}
+            />
+            <Box sx={{ flexGrow: 1 }} />
+            <div className="toggleButton-container">
+              {showToggle && (
+                <FormControl required sx={{ m: 1, minWidth: 190 }} size="small">
+                  <InputLabel id="demo-select-small-label">
+                    Distance Measure
+                  </InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    input={<OutlinedInput label="Select a distance measure" />}
+                    value={disMeasure}
+                    label="Distance Measure"
+                    onChange={handleUpdateDistanceMeasure}
+                  >
+                    <MenuItem value={"Hamming Distance"}>
+                      Hamming Distance
+                    </MenuItem>
+                    <MenuItem value={"Optimal Transport"}>
+                      Optimal Transport
+                    </MenuItem>
+                    <MenuItem value={"Total Variation"}>
+                      Total Variation
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+          </div>
           {spliceEnsemble(ensembleData, page).map((row) => (
-            <Accordion defaultExpanded={row.ensemble == 1 ? true : false}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion defaultExpanded={false}>
+              <AccordionSummary sx={{pointerEvents : "none"}}>
                 <Button
                   variant="text"
                   size="large"
-                  onClick={() => handleStep(1, row.ensemble, fetchedEnsembleData.ensembles[row.ensemble-1].ensemble_id)}
+                  sx={{pointerEvents : "auto"}}
+                  onClick={() =>
+                    handleStep(
+                      1,
+                      row.ensemble,
+                      fetchedEnsembleData.ensembles[row.ensemble - 1]
+                        .ensemble_id
+                    )
+                  }
                 >
                   Ensemble {row.ensemble}
                 </Button>
+                <Box sx={{ flexGrow: 1 }} />
+                <Stack direction="row" spacing={1}>
+                  <Chip
+                    label="See details"
+                    variant="outlined"
+                    sx={{pointerEvents : "auto"}}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleSeeDetails(row);
+                    }}
+                  />
+                  <Chip
+                  sx={{pointerEvents : "auto"}}
+                    label="Compare distance measures"
+                    onClick={() =>{
+
+                      handleStep(
+                        1,
+                        row.ensemble,
+                        fetchedEnsembleData.ensembles[row.ensemble - 1]
+                          .ensemble_id
+                      )
+                      navigate("/distances")
+                    }
+                     
+                    }
+                  />
+                </Stack>
               </AccordionSummary>
               <Divider />
-              <AccordionDetails>
-                <Table sx={{ minWidth: 650 }}>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center">
-                        <b>{"Numbers of clusters"}</b>
-                      </TableCell>
-                      <TableCell align="center">
-                        <b>{"Average distance between clusters"}</b>
-                      </TableCell>
-                      <TableCell align="center">
-                        <b>{"Number of district plans"}</b>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell align="center">{row.num_clusters}</TableCell>
-                      <TableCell align="center">
-                        {row.avg_dist_clusters}
-                      </TableCell>
-                      <TableCell align="center">{row.num_dist_plans}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </AccordionDetails>
             </Accordion>
           ))}
 

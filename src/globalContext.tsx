@@ -17,6 +17,13 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
+export interface EnsembleData {
+  ensemble: number;
+  num_clusters: number;
+  avg_dist_clusters: number;
+  num_dist_plans: number;
+}
+
 export enum AvailableStates {
   Nevada = "NEVADA",
   Texas = "TEXAS",
@@ -33,6 +40,7 @@ export enum GlobalTypes {
   PageChange = "PAGE_CHANGE",
   SetEnsemble = "SET_ENSEMBLE",
   SetCluster = "SET_CLUSTER",
+  AddEnsembleDetail = "ADD_ENS_DETAIL",
 }
 
 export type GlobalState = {
@@ -45,6 +53,7 @@ export type GlobalState = {
   ensembleId: string;
   cluster: number;
   districtPlanIds: Array<string>;
+  ensembleDetails: Array<EnsembleData>;
 };
 
 type GlobalStatePayload = {
@@ -74,6 +83,9 @@ type GlobalStatePayload = {
     cluster: number;
     districtPlanIds: Array<string>;
   };
+  [GlobalTypes.AddEnsembleDetail]: {
+    EnsembleData: EnsembleData;
+  };
 };
 
 export type GlobalStateActions =
@@ -83,12 +95,12 @@ const mainReducer = (
   state: GlobalState[],
   action: GlobalStateActions
 ): GlobalState[] => {
+  console.log("ACTION TYPE", action.type)
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
         ...state,
         {
-         
           dismap: false,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -98,6 +110,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.DistrictMap:
@@ -113,6 +126,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.StepChange:
@@ -128,6 +142,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.ChangeState:
@@ -143,6 +158,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.DistanceMeasure:
@@ -158,6 +174,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.PageChange:
@@ -173,6 +190,7 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.SetEnsemble:
@@ -188,6 +206,7 @@ const mainReducer = (
           ensembleId: action.payload.ensembleId,
           cluster: state[state.length - 1].cluster,
           districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
         },
       ];
     case GlobalTypes.SetCluster:
@@ -203,6 +222,29 @@ const mainReducer = (
           ensembleId: state[state.length - 1].ensembleId,
           cluster: action.payload.cluster,
           districtPlanIds: action.payload.districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
+        },
+      ];
+    case GlobalTypes.AddEnsembleDetail:
+      console.log("Adding the deets");
+      let newDetails = state[state.length - 1].ensembleDetails;
+      if (newDetails.length > 3) {
+        newDetails.shift()
+      }
+      if(!newDetails.includes(action.payload.EnsembleData))newDetails.push(action.payload.EnsembleData);
+      return [
+        ...state,
+        {
+          dismap: state[state.length - 1].dismap,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+          ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
+          cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: newDetails,
         },
       ];
     default:
@@ -215,12 +257,13 @@ const intialState: GlobalState[] = [
     dismap: false,
     distanceMeasure: "Hamming Distance",
     step: 0,
-    currentState: AvailableStates.Nevada,
+    currentState: AvailableStates.Unselected,
     clusterAnalysis: true,
     ensemble: 0,
     ensembleId: "0",
     cluster: 0,
     districtPlanIds: [],
+    ensembleDetails: [],
   },
 ];
 

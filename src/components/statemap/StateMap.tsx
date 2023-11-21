@@ -5,17 +5,9 @@ import React, {
 } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import DistrictInfoCard from "../base/DistrictInfoCard";
+import DistrictInfoCard from "../infocards/MainInfoCard";
 
 import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
-
-// import MarkerClusterGroup from "react-leaflet-cluster";
-// import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
-import { MongoClient, GridFSBucket } from "mongodb";
-import axios from "axios";
-import VirginiaMap from "./VirginiaMap";
-import TexasMap from "./TexasMap";
-import NevadaMap from "./NevadaMap";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -108,7 +100,6 @@ export default function StateMap(props: {
 
   return (
     <div className="StateMap">
-      <DistrictInfoCard />
       <>
         <MapContainer
           id="mapid"
@@ -154,7 +145,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
-        {/* <ClusterSummary/> */}
+        <DistrictInfoCard/>
     </div>
   );
 }
