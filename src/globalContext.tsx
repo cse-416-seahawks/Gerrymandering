@@ -44,6 +44,7 @@ export type GlobalState = {
   ensemble: number;
   ensembleId: string;
   cluster: number;
+  districtPlanIds: Array<String>;
 };
 
 type GlobalStatePayload = {
@@ -71,6 +72,7 @@ type GlobalStatePayload = {
   };
   [GlobalTypes.SetCluster]: {
     cluster: number;
+    districtPlanIds: Array<String>;
   };
 };
 
@@ -95,6 +97,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.DistrictMap:
@@ -109,6 +112,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.StepChange:
@@ -123,6 +127,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.ChangeState:
@@ -137,6 +142,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.DistanceMeasure:
@@ -151,6 +157,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.PageChange:
@@ -165,6 +172,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.SetEnsemble:
@@ -179,6 +187,7 @@ const mainReducer = (
           ensemble: action.payload.ensemble,
           ensembleId: action.payload.ensembleId,
           cluster: state[state.length - 1].cluster,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
         },
       ];
     case GlobalTypes.SetCluster:
@@ -193,6 +202,7 @@ const mainReducer = (
           ensemble: state[state.length - 1].ensemble,
           ensembleId: state[state.length - 1].ensembleId,
           cluster: action.payload.cluster,
+          districtPlanIds: action.payload.districtPlanIds,
         },
       ];
     default:
@@ -210,6 +220,7 @@ const intialState: GlobalState[] = [
     ensemble: 0,
     ensembleId: "0",
     cluster: 0,
+    districtPlanIds: [],
   },
 ];
 

@@ -39,6 +39,7 @@ interface ClusterData {
   avg_dem: string,
   avg_distance: number,
   demographics: ClusterDemographicData,
+  district_plans: Array<String>,
           // avg_white: string,
           // avg_black: string,
           // avg_asian: string,
@@ -65,7 +66,6 @@ interface ClusterDemographicData {
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
-  const [fetchedClusterData, setFetchedClusterData] = useState<any>({});
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -74,8 +74,8 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
 
   function handleStepChange(step: number, clusterNumber?: number) {
     
-    if (step === 2) {
-      if (clusterNumber) onClusterSelection(clusterNumber);
+    if (step === 2) { // Display selected cluster summary of district plans
+      if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -121,7 +121,6 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
       try {
         const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
         setClusterData(response.data);
-        setFetchedClusterData(response);
       } catch(error) {
         throw error;
       }
@@ -129,6 +128,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     getClusterData();
   }, [state[state.length-1].ensemble]);
 
+  console.log(clusterData, state) //.data[clusterNumber].district_plans
   return (
     <>
       <TabContext value={currentTab}>

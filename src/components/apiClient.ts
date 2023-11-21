@@ -78,9 +78,9 @@ export async function fetchClusterData(State: AvailableStates, ensembleId: Strin
   }
 }
 
-export async function fetchDistrictPlanData(state: AvailableStates, ensembleId: Number, distanceMeasure: String, clusterId: Number) {
+export async function fetchDistrictPlanData(state: AvailableStates, districtPlanIds: Array<String>) {
   try {
-    const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${ensembleId}/${distanceMeasure}/${clusterId}`);
+    const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${districtPlanIds}`);
     if (response.status == 200) {
       return response.data;
     }

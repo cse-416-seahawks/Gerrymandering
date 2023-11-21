@@ -118,12 +118,10 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
       async function fetchDistrictData() {
         try {
           const currState = state[state.length-1].currentState;
-          const ensembleId = state[state.length-1].ensemble;
-          const distanceMeasure = state[state.length-1].distanceMeasure;
-          const clusterId = state[state.length-1].cluster;
+          const districtPlanIds = state[state.length-1].districtPlanIds;
           
-          const response = await fetchDistrictPlanData(currState, ensembleId, distanceMeasure, clusterId);
-          setDistrictPlans(response.data);
+          // const response = await fetchDistrictPlanData(currState, districtPlanIds);
+          // setDistrictPlans(response.data);
         } catch(error) {
           throw error;
         }
