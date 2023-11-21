@@ -13,11 +13,16 @@ export default () => {
   }
 
   const [TexasDistricts, setTexasDistrict] = useState<DistrictState["data"]>(null);
-  const generateColor = () => {
-    return (
-      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
-    );
-  };
+  function getRandomHexCode(): string {
+    // Array of possible colors
+    const colors = ["#FF0000", "#0000FF"];
+
+    // Randomly select a color index
+    const randomIndex = Math.floor(Math.random() * colors.length);
+
+    // Return the selected color
+    return colors[randomIndex];
+  }
 
   useEffect(() => {
     async function fetchDistrictsAsync() {
@@ -38,7 +43,7 @@ export default () => {
             return (
               <Polygon
                 pathOptions={{
-                  fillColor: "#4287f5",
+                  fillColor: getRandomHexCode(),
                   fillOpacity: 0.5,
                   weight: 2,
                   opacity: 1,

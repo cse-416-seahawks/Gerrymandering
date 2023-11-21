@@ -103,10 +103,6 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
     setPage(value);
   };
 
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-  };
-
   const handleSeeDetails = (Ensemble: EnsembleData) => {
     dispatch({
       type: "ADD_ENS_DETAIL",
