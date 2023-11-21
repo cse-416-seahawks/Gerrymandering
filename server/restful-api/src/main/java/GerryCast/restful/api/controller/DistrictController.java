@@ -158,8 +158,8 @@ public class DistrictController{
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
-    @GetMapping("/getEnsembleData/{state}")
-    public ResponseEntity<String> getEnsembleData(@PathVariable final String state) {
+    @GetMapping("/getStateEnsembles/{state}")
+    public ResponseEntity<String> getStateEnsembles(@PathVariable final String state) {
         MongoCollection<Document> stateCollection = null;
 
         if(state.equals("TEXAS")){
@@ -185,8 +185,8 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getClusterData/{state}/{ensembleId}/{distanceMeasure}")
-    public ResponseEntity<String> getClusterData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
+    @GetMapping("/getClusterSummaryData/{state}/{ensembleId}/{distanceMeasure}")
+    public ResponseEntity<String> getClusterSummaryData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
         MongoCollection<Document> stateCollection = null;
 
         if(state.equals("TEXAS")){
@@ -211,8 +211,8 @@ public class DistrictController{
         }
     }
 
-    @GetMapping("/getDistrictPlanData/{state}/{districtPlanIds}")
-    public ResponseEntity<String> getDistrictPlanData(@PathVariable final String state, @PathVariable final String[] districtPlanIds) {
+    @GetMapping("/getClusterDetails/{state}/{districtPlanIds}")
+    public ResponseEntity<String> getClusterDetails(@PathVariable final String state, @PathVariable final String[] districtPlanIds) {
         MongoCollection<Document> stateCollection = null;
         
         if(state.equals("TEXAS")){

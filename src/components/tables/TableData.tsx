@@ -71,12 +71,13 @@ function TableData(props: {
     props.onDistrictSelection(district_num, coords);
   }
 
-  function handleClusterSelection(clusterNumber: number, districtPlanIds: Array<string>) {
+  function handleClusterSelection(clusterNumber: number, clusterId: string, districtPlanIds: Array<string>) {
     setCluster(clusterNumber);
     dispatch({
       type: "SET_CLUSTER",
       payload: {
         cluster: clusterNumber,
+        clusterId: clusterId,
         districtPlanIds: districtPlanIds
       }
     });

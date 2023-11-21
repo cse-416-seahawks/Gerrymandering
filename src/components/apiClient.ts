@@ -56,9 +56,9 @@ export async function fetchStateOutline(
   }
 }
 
-export async function fetchEnsembleData(State: AvailableStates) {
+export async function fetchStateEnsembles(State: AvailableStates) {
   try {
-    const response = await axios.get(`http://localhost:4000/getEnsembleData/${State}`);
+    const response = await axios.get(`http://localhost:4000/getStateEnsembles/${State}`);
     if (response.status == 200) {
       return response.data;
     }
@@ -67,9 +67,9 @@ export async function fetchEnsembleData(State: AvailableStates) {
   }
 }
 
-export async function fetchClusterData(State: AvailableStates, ensembleId: String, distanceMeasure: String) {
+export async function fetchClusterSummaryData(State: AvailableStates, ensembleId: String, distanceMeasure: String) {
   try {
-    const response = await axios.get(`http://localhost:4000/getClusterData/${State}/${ensembleId}/${distanceMeasure}`);
+    const response = await axios.get(`http://localhost:4000/getClusterSummaryData/${State}/${ensembleId}/${distanceMeasure}`);
     if (response.status == 200) {
       return response.data;
     }
@@ -89,9 +89,9 @@ export async function fetchClusterGraphData(State: AvailableStates, ensembleId: 
   }
 }
 
-export async function fetchDistrictPlanData(state: AvailableStates, districtPlanIds: Array<string>) {
+export async function fetchClusterDetails(state: AvailableStates, districtPlanIds: Array<string>) {
   try {
-    const response = await axios.get(`http://localhost:4000/getDistrictPlanData/${state}/${districtPlanIds}`);
+    const response = await axios.get(`http://localhost:4000/getClusterDetails/${state}/${districtPlanIds}`);
     if (response.status == 200) {
       return response.data;
     }

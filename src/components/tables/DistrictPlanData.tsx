@@ -33,7 +33,7 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "./TableTypes";
-import { fetchDistrictPlanData } from "../apiClient";
+import { fetchClusterDetails } from "../apiClient";
 
 interface DistrictPlanData {
   district_plan: number,
@@ -120,7 +120,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           const currState = state[state.length-1].currentState;
           const districtPlanIds = state[state.length-1].districtPlanIds;
           
-          // const response = await fetchDistrictPlanData(currState, districtPlanIds);
+          // const response = await fetchClusterDetails(currState, districtPlanIds);
           // setDistrictPlans(response.data);
         } catch(error) {
           throw error;

@@ -42,7 +42,7 @@ import {
   Legend,
 } from "recharts";
 import { GlobalContext, EnsembleData } from "../../globalContext";
-import { fetchEnsembleData } from "../apiClient";
+import { fetchStateEnsembles } from "../apiClient";
 import { useNavigate } from "react-router-dom";
 
 interface EnsembleProps {
@@ -73,7 +73,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
 
     async function fetchStateEnsemble() {
       try {
-        const response = await fetchEnsembleData(currState);
+        const response = await fetchStateEnsembles(currState);
         const ensembles: Array<EnsembleData> = [];
         for (var row of response.ensembles) {
           const ensemble_table = row.data.find(

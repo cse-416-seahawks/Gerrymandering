@@ -20,7 +20,7 @@ import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
 import { ClusterSelectionProps } from "./TableTypes";
-import { fetchClusterData, fetchClusterGraphData } from "../apiClient";
+import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import {
   XAxis,
@@ -35,6 +35,7 @@ import {
 
 interface ClusterData {
   cluster_number: number,
+  cluster_id: string,
   name: string,
   num_dist_plans: number,
   avg_rep: string,
@@ -76,11 +77,11 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     setCurrentTab(String(newValue));
   }
 
-  function handleStepChange(step: number, clusterNumber?: number) {
+  function handleStepChange(step: number, clusterNumber: number, clusterId: string) {
     
     if (step === 2) { // Display selected cluster summary of district plans
-      console.log("datapoint", clusterNumber)
-      if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
+      onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
+
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -123,15 +124,18 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     const ensembleId = state[state.length-1].ensembleId;
     const distanceMeasure = state[state.length-1].distanceMeasure;
 
-    async function getClusterData() {
+    async function getClusterSummaryData() {
       try {
-        const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
-        if (response) setClusterData(response.data);
+        const response = await fetchClusterSummaryData(currState, ensembleId, distanceMeasure);
+        if (response) {
+          console.log(response.data)
+          setClusterData(response.data);
+        }
       } catch(error) {
         throw error;
       }
     }
-    getClusterData();
+    getClusterSummaryData();
 
     async function getClusterGraphData() {
       try {
@@ -221,7 +225,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                       <Button
                         variant="text"
                         size="medium"
-                        onClick={() => handleStepChange(2, row.cluster_number)}
+                        onClick={() => handleStepChange(2, row.cluster_number, row.cluster_id)}
                       >
                         {row.cluster_number}
                       </Button>
@@ -290,7 +294,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                     fill="#bfd6ff"
                     stroke="#037cff"
                     opacity={4}
-                    onClick={(datapoint) => handleStepChange(2, datapoint.cluster_num)}
+                    onClick={(datapoint) => handleStepChange(2, datapoint.cluster_num, datapoint.cluster_id)}
                   />
                 </ScatterChart>
               </div>
