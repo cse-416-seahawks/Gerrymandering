@@ -1,81 +1,138 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, { useState, useContext, useEffect } from "react";
+import "../css/TableData.css";
+import { Tabs, Tab } from "@mui/material";
+import TabPanel from "@mui/lab/TabPanel";
+import TabContext from "@mui/lab/TabContext";
+import Box from "@mui/material/Box";
+import { GlobalContext } from "../../globalContext";
+import { ClusterSelectionProps } from "../tables/TableTypes";
+import { fetchClusterData, fetchClusterGraphData } from "../apiClient";
+import '../css/ClusterTable.css';
+import ClusterTable from "../tables/ClusterTable";
+import ClusterScatterPlot from "../graphs/ClusterScatterPlot";
 
-function createData(
+interface ClusterData {
+  cluster_number: number,
+  cluster_id: string,
   name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
+  num_dist_plans: number,
+  avg_rep: string,
+  avg_dem: string,
+  avg_distance: number,
+  demographics: ClusterDemographicData,
+  district_plans: Array<string>,
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+interface ClusterDemographicData {
+  caucasian: number,
+  african_american: number,
+  asian_american: number,
+  hispanic: number,
+  other: number,
+}
 
-function BasicTable() {
+interface ClusterPoints {
+  cluster_num: number,
+  num_district_plans: number,
+  x: number,
+  y: number,
+}
+
+export default function ClusterSummary({onClusterSelection}: ClusterSelectionProps) {
+  const [currentTab, setCurrentTab] = useState("1");
+  const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
+  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+  const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
+  const { state, dispatch } = useContext(GlobalContext);
+
+  function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+    setCurrentTab(String(newValue));
+  }
+
+  function handleStepChange(step: number, clusterNumber?: number) {
+    
+    if (step === 2) { // Display selected cluster summary of district plans
+      if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
+      dispatch({
+        type: "DISTRICT_MAP",
+        payload: {
+          dismap: true,
+        },
+      });
+    } else {
+      dispatch({
+        type: "STATE_MAP",
+        payload: {
+          dismap: false,
+        },
+      });
+    }
+    dispatch({
+      type : "STEP_CHANGE",
+      payload : {
+        step : step
+      }
+    })
+
+  }
+
+
+  useEffect(() => {
+    const currState = state[state.length-1].currentState;
+    const ensembleId = state[state.length-1].ensembleId;
+    const distanceMeasure = state[state.length-1].distanceMeasure;
+
+    async function getClusterData() {
+      try {
+        const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
+        if (response) setClusterData(response.data);
+      } catch(error) {
+        throw error;
+      }
+    }
+    getClusterData();
+
+    async function getClusterGraphData() {
+      try {
+        const response = await fetchClusterGraphData(currState, ensembleId, distanceMeasure);
+        if (response) {
+          setAxisLabels([response.x_axis_label, response.y_axis_label]);
+          setDataPoints(response.data);
+        }
+      } catch(error) {
+        throw error;
+      }
+    }
+    getClusterGraphData();
+
+  }, [state[state.length-1].ensemble]);
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <TabContext value={currentTab}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab
+              value="1"
+              label="Cluster Summary"
+              sx={{ textTransform: "none" }}
+            />
+            <Tab
+              value="2"
+              label="Cluster Graph"
+              sx={{ textTransform: "none" }}
+            />
+          </Tabs>
+        </Box>
+        <TabPanel value="1">
+          <ClusterTable clusters={clusterData} />
+        </TabPanel>
+        <TabPanel value="2">
+          <ClusterScatterPlot data={clusterData} data_points={dataPoints} axis_labels={axisLabels}/>
+        </TabPanel>
+      </TabContext>
+
+    </Box>
   );
 }
 
-export default function ImgMediaCard() {
-  return (
-    <Card sx={{ minWidth : 245, mt : "1rem", height : "70%", justifyContent : "space-between"}}>
-      <CardContent>
-        <Typography gutterBottom variant="h6" textAlign={"left"} component="div">
-          Cluster Summary
-        </Typography>
-        {/* <BasicTable/> */}
-        <Typography variant="body2" textAlign="left" color="text.secondary">
-          Select an Ensemble to view Cluster Summary
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-}

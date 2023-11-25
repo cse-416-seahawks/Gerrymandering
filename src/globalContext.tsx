@@ -95,6 +95,7 @@ const mainReducer = (
   state: GlobalState[],
   action: GlobalStateActions
 ): GlobalState[] => {
+  console.log("Action Type: ", action.type);
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [

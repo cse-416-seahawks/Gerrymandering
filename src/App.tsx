@@ -9,7 +9,7 @@ function App() {
   return (
     <GlobalProvider>
     <Routes>
-      <Route path="/Home" element={<Home/>}/>
+      <Route path="/home" element={<Home/>}/>
       <Route path="/" element={<StateSelect centerCoordinates={[34.5, -95.5]}/>}/>
       <Route path="/distances" element={<Distance/>}/>
     </Routes>

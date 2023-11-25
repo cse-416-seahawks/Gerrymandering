@@ -27,7 +27,7 @@ export default () => {
         currentState : AvailableStates.Texas
       }
     })
-    navigate("/Home");
+    navigate("/home");
   }
 
   useEffect(() => {

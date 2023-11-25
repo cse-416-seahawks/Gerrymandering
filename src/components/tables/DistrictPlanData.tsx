@@ -115,7 +115,9 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
 
 
     useEffect(() => {
+      
       async function fetchDistrictData() {
+        
         try {
           const currState = state[state.length-1].currentState;
           const districtPlanIds = state[state.length-1].districtPlanIds;

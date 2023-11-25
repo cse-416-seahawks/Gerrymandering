@@ -4,7 +4,6 @@ import {
   Tabs,
   Tab,
   Pagination,
-  TablePagination,
   FormControl,
   InputLabel,
   MenuItem,
