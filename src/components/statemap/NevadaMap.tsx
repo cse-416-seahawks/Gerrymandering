@@ -32,7 +32,7 @@ export default () => {
         currentState : AvailableStates.Nevada
       }
     });
-    navigate("/Home");
+    navigate("/home");
   }
 
   useEffect(() => {

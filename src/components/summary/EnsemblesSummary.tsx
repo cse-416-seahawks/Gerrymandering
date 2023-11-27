@@ -4,7 +4,6 @@ import {
   Tabs,
   Tab,
   Pagination,
-  TablePagination,
   FormControl,
   InputLabel,
   MenuItem,
@@ -103,20 +102,13 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
     setPage(value);
   };
 
-  const handleClick = () => {
-    console.info("You clicked the Chip.");
-  };
-
   const handleSeeDetails = (Ensemble: EnsembleData) => {
-    console.log("CLICKED DETAILS");
     dispatch({
       type: "ADD_ENS_DETAIL",
       payload: {
         EnsembleData: Ensemble,
       },
     });
-    console.log("details added");
-    console.log(state);
   };
 
   const handleUpdateDistanceMeasure = (event: SelectChangeEvent) => {

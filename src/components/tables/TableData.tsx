@@ -7,9 +7,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { GlobalContext } from "../../globalContext";
-import Ensembles from "./Ensembles";
-import ClusterTable from "./ClusterTable";
-import DistrictPlanData from "./DistrictPlanData";
+import Ensembles from "../summary/EnsemblesSummary";
+import ClusterTable from "../summary/ClusterSummary";
+import DistrictPlanData from "../summary/ClusterDetail";
 
 function TableData(props: {
   selectedState: string;
@@ -123,7 +123,7 @@ function TableData(props: {
       <div className="table-info">
         <BackButton />
         {currentStep == 1 && <div className="ensemble-number">Viewing Ensemble {ensemble}</div>}
-        {currentStep == 2 && <div className="ensemble-number cluster-number">Viewing Ensemble {ensemble}, Cluster {cluster}</div>}
+        {currentStep == 2 && <div className="ensemble-number cluster-number">Viewing Ensemble {ensemble}, Cluster {state[state.length - 1].cluster}</div>}
       </div>
 
       {/* State Details */}

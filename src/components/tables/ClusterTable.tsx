@@ -15,11 +15,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
-import ClusterNameCell from "./ClusterNameCell";
 import * as sampleData from "../SampleData";
 import { GlobalContext } from "../../globalContext";
 import { ClusterSelectionProps } from "./TableTypes";
-import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
+import { fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import {
   XAxis,
@@ -34,7 +33,6 @@ import {
 
 interface ClusterData {
   cluster_number: number,
-  cluster_id: string,
   name: string,
   num_dist_plans: number,
   avg_rep: string,
@@ -51,11 +49,11 @@ interface ClusterData {
 }
 
 interface ClusterDemographicData {
-  caucasian: number,
-  african_american: number,
-  asian_american: number,
-  hispanic: number,
-  other: number,
+  caucasian: number;
+  african_american: number;
+  asian_american: number;
+  hispanic: number;
+  other: number;
 }
 
 interface ClusterPoints {
@@ -63,14 +61,6 @@ interface ClusterPoints {
   num_district_plans: number,
   x: number,
   y: number,
-}
-
-interface CustomTooltipProps extends TooltipProps<any, any> {
-  active?: boolean;
-  payload?: Array<{
-    name: string; payload: 
-      {cluster_num: number; num_district_plans: number; x: number; y: number; id: string }
-  }>;
 }
 
 function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
@@ -84,12 +74,11 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     setCurrentTab(String(newValue));
   }
 
-  function handleStepChange(step: number, clusterNumber: number, clusterId: string) {
+  function handleStepChange(step: number, clusterNumber?: number) {
     
     if (step === 2) { // Display selected cluster summary of district plans
-      console.log("EEE!", clusterId)
-      onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
-
+      console.log("datapoint", clusterNumber)
+      if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -132,18 +121,15 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     const ensembleId = state[state.length-1].ensembleId;
     const distanceMeasure = state[state.length-1].distanceMeasure;
 
-    async function getClusterSummaryData() {
+    async function getClusterData() {
       try {
-        const response = await fetchClusterSummaryData(currState, ensembleId, distanceMeasure);
-        if (response) {
-          console.log(response.data)
-          setClusterData(response.data);
-        }
+        const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
+        if (response) setClusterData(response.data);
       } catch(error) {
         throw error;
       }
     }
-    getClusterSummaryData();
+    getClusterData();
 
     async function getClusterGraphData() {
       try {
@@ -151,6 +137,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
+          console.log(response.data)
         }
       } catch(error) {
         throw error;
@@ -159,6 +146,15 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     getClusterGraphData();
 
   }, [state[state.length-1].ensemble]);
+
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
+} 
+}>;
+  }
   
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -217,13 +213,13 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {clusterData && clusterData.map((row) => (
+                {clusterData.map((row) => (
                   <TableRow key={row.cluster_number}>
                     <TableCell align="center">
                       <Button
                         variant="text"
                         size="medium"
-                        onClick={() => handleStepChange(2, row.cluster_number, row.cluster_id)}
+                        onClick={() => handleStepChange(2, row.cluster_number)}
                       >
                         {row.cluster_number}
                       </Button>
@@ -292,7 +288,7 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
                     fill="#bfd6ff"
                     stroke="#037cff"
                     opacity={4}
-                    onClick={(datapoint) => handleStepChange(2, datapoint.cluster_num, datapoint.cluster_id)}
+                    onClick={(datapoint) => handleStepChange(2, datapoint.cluster_num)}
                   />
                 </ScatterChart>
               </div>
@@ -319,5 +315,3 @@ function ClusterTable({onClusterSelection}: ClusterSelectionProps) {
     </>
   );
 }
-
-export default ClusterTable;

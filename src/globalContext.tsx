@@ -97,7 +97,7 @@ const mainReducer = (
   state: GlobalState[],
   action: GlobalStateActions
 ): GlobalState[] => {
-  console.log("ACTION TYPE", action.type)
+  console.log("Action Type: ", action.type);
   switch (action.type) {
     case GlobalTypes.StateMap:
       return [
@@ -236,7 +236,6 @@ const mainReducer = (
         },
       ];
     case GlobalTypes.AddEnsembleDetail:
-      console.log("Adding the deets");
       let newDetails = state[state.length - 1].ensembleDetails;
       if (newDetails.length > 3) {
         newDetails.shift()

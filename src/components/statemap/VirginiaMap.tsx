@@ -32,7 +32,7 @@ export default () => {
         currentState : AvailableStates.Virginia
       }
     })
-    navigate("/Home");
+    navigate("/home");
   }
 
 

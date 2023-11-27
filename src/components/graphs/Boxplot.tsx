@@ -37,7 +37,10 @@ export default () => {
   const options: ApexOptions = {
     chart: {
       type: "boxPlot",
-      height: 300,
+      height: 500,
+      toolbar : {
+        show : false
+      }
     },
     yaxis : {
         min : 25
