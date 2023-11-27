@@ -9,7 +9,7 @@ import DistanceGraph from "./DistanceGraph";
 import { GlobalContext } from "../../globalContext";
 import { Stack, IconButton } from "@mui/material";
 import * as sampleData from "../SampleData"
-import  Ensembles  from "../tables/Ensembles"
+import  Ensembles  from "../summary/EnsemblesSummary"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function DistanceTable() {

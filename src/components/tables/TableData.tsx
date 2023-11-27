@@ -7,9 +7,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { GlobalContext } from "../../globalContext";
-import Ensembles from "./Ensembles";
+import Ensembles from "../summary/EnsemblesSummary";
 import ClusterTable from "../summary/ClusterSummary";
-import DistrictPlanData from "./DistrictPlanData";
+import DistrictPlanData from "../summary/ClusterDetail";
 
 function TableData(props: {
   selectedState: string;
