@@ -28,10 +28,8 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import {
-  DistrictSelectionProps,
   district_summary_table,
 } from "../tables/TableTypes";
-import { fetchDistrictPlanData } from "../apiClient";
 
 interface DistrictPlanData {
   district_plan: number;

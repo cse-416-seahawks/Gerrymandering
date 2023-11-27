@@ -10,6 +10,7 @@ import { GlobalContext } from "../../globalContext";
 import Ensembles from "../summary/EnsemblesSummary";
 import ClusterTable from "../summary/ClusterSummary";
 import DistrictPlanData from "../summary/ClusterDetail";
+import ClusterSummary from "../summary/ClusterSummary";
 
 function TableData(props: {
   selectedState: string;
@@ -131,7 +132,7 @@ function TableData(props: {
         <Ensembles showToggle={true} handleStep={handleStepChange} />
       )}
       {/* Summary of Cluster */}
-      {currentStep == 1 && <ClusterTable onClusterSelection={handleClusterSelection}/>}
+      {currentStep == 1 && <ClusterSummary onClusterSelection={handleClusterSelection}/>}
       {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
       {currentStep == 2 && (
         <DistrictPlanData onDistrictSelection={handleDistrictChange} />

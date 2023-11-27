@@ -6,7 +6,7 @@ import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { GlobalContext } from "../../globalContext";
 import { ClusterSelectionProps } from "../tables/TableTypes";
-import { fetchClusterData, fetchClusterGraphData } from "../apiClient";
+import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
 import ClusterScatterPlot from "../graphs/ClusterScatterPlot";
@@ -49,10 +49,10 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
     setCurrentTab(String(newValue));
   }
 
-  function handleStepChange(step: number, clusterNumber?: number) {
+  function handleStepChange(step: number, clusterId : string, clusterNumber?: number) {
     
     if (step === 2) { // Display selected cluster summary of district plans
-      if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
+      if (clusterNumber) onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
       dispatch({
         type: "DISTRICT_MAP",
         payload: {
@@ -84,7 +84,7 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
 
     async function getClusterData() {
       try {
-        const response = await fetchClusterData(currState, ensembleId, distanceMeasure);
+        const response = await fetchClusterSummaryData(currState, ensembleId, distanceMeasure);
         if (response) setClusterData(response.data);
       } catch(error) {
         throw error;
@@ -135,4 +135,3 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
     </Box>
   );
 }
-

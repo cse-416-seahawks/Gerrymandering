@@ -28,7 +28,6 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "../tables/TableTypes";
-import { fetchDistrictPlanData } from "../apiClient";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterPlot";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 

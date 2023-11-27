@@ -16,7 +16,7 @@ import {
   TooltipProps,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { fetchClusterData, fetchClusterGraphData } from "../apiClient";
+import { fetchClusterGraphData } from "../apiClient";
 
 interface ClusterData {
     cluster_number: number,
