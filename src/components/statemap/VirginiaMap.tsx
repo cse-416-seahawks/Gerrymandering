@@ -7,17 +7,13 @@ import { Polygon } from "react-leaflet";
 import { AvailableStates, GlobalContext, GlobalTypes } from "../../globalContext";
 import { fetchStateOutline } from "../apiClient";
 import { useNavigate } from "react-router-dom";
+import { MapState } from "../interfaces/MapInterface";
 
 const getColor = () => {
   return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
 };
 
 export default () => {
-
-  interface MapState {
-    data: any | null; // Adjust the type based on your actual data structure
-  }
-  
 
   const [virginiaOutline, setData] = useState<MapState["data"]>(null);
 

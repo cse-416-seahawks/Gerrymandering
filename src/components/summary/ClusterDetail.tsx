@@ -30,13 +30,7 @@ import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "../tables/TableTypes";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterPlot";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
-
-interface DistrictPlanData {
-  district_plan: number,
-  opportunity_districts: number,
-  democrat: string,
-  republican: string,
-}
+import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
     const [districtSelection, setDistrictSelection] = useState(0);

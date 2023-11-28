@@ -24,3 +24,11 @@ export interface ClusterPoints {
     x: number,
     y: number,
 }
+
+export interface DistrictPlanData {
+    district_plan: number;
+    opportunity_districts: number;
+    democrat: string;
+    republican: string;
+}
+  

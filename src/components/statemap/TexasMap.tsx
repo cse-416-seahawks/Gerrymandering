@@ -2,21 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-
 import { Polygon } from "react-leaflet";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { fetchStateOutline } from "../apiClient";
 import { useNavigate } from "react-router-dom";
+import { MapState } from "../interfaces/MapInterface";
 
 export default () => {
-  interface MapState {
-    data: any | null; // Adjust the type based on your actual data structure
-  }
-
   const [texasOutline, setData] = useState<MapState["data"]>(null);
 
   const { state, dispatch } = useContext(GlobalContext);
-
 
   const navigate = useNavigate();
 
