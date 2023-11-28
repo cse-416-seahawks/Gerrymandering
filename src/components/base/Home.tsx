@@ -3,7 +3,7 @@ import { GlobalContext, GlobalProvider, AvailableStates } from "../../globalCont
 import "../../App.css";
 import StateMap from "../statemap/StateMap";
 import Navbar from "./Navbar";
-import TableData from "../tables/TableData";
+import TableData from "./ClusterAnalysis";
 
 
 function Home() {

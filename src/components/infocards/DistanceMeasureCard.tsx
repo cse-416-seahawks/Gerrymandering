@@ -10,7 +10,7 @@ import {
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
 
-export default function ScatterPlotOptions() {
+export default function DistanceMeasureCard() {
     const stateDetails = {
         Nevada: "Nevada State Assembly 2022",
         Texas: "Texas House Districts 2022",

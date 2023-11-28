@@ -13,6 +13,9 @@ import { useContext } from "react";
 import EnsembleDetailTable from "../tables/EnsembleDetailTable";
 import EnsembleInfoCard from "./EnsembleInfoCard";
 import ClusterAssociationInfoCard from "./ClusterAssociation";
+import ScatterPlotOptions from "./ScatterPlotOptions";
+import DistanceMeasureCard from "./DistanceMeasureCard";
+import ClusterInfoCard from "./ClusterInfoCard";
 
 export default function InfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -41,10 +44,48 @@ export default function InfoCard() {
         </Card>
       );
     case InfoCardType.clusterPlotOptions:
-      return <Card></Card>;
+      return (
+        <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <ScatterPlotOptions />
+        </Card>
+      );
     case InfoCardType.distanceMeasure:
-      return <Card></Card>;
+      return (
+        <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <DistanceMeasureCard />
+        </Card>
+      );
+    case InfoCardType.clusterSummary:
+      return (
+        <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <ClusterInfoCard />
+        </Card>
+      );
     default:
-      return <Card></Card>;
+      return (
+        <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <EnsembleInfoCard />
+        </Card>
+      );
   }
 }

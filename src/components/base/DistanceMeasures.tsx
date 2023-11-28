@@ -4,9 +4,9 @@ import "../css/Distance.css";
 import "../css/StateMap.css"
 import "../../App.css";
 import StateMap from "../statemap/StateMap";
-import Navbar from "../base/Navbar";
+import Navbar from "./Navbar";
 import { GlobalProvider } from "../../globalContext";
-import DistanceTable from "./DistanceTable";
+import DistanceTable from "../tables/DistanceTable";
 
 function Distance() {
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom"
 import  Home  from "./components/base/Home"
-import Distance from "./components/distances/Distance"
+import Distance from "./components/base/DistanceMeasures"
 import StateSelect from "./components/base/StateSelect";
 import { GlobalProvider } from "./globalContext";
 

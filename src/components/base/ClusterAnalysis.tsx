@@ -6,7 +6,7 @@ import StepButton from "@mui/material/StepButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, InfoCardType } from "../../globalContext";
 import Ensembles from "../summary/EnsemblesList";
 import ClusterTable from "../summary/ClusterSummary";
 import DistrictPlanData from "../summary/ClusterDetail";
@@ -38,19 +38,38 @@ function TableData(props: {
 
   // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble'
   useEffect(() => {
-    handleStepChange(0, 0, '0');
+    handleStepChange(0, 0, "0");
   }, [props.selectedState]);
 
-  function handleStepChange(step: number, ensemble: number, ensembleId: string) {
-if (step == 1) {
+  function handleStepChange(
+    step: number,
+    ensemble: number,
+    ensembleId: string
+  ) {
+    if(step === 0) {
+      dispatch ({
+        type : "CHANGE_INFO_CARD",
+        payload : {
+          infoCardType : InfoCardType.ensembleInfo
+        }
+      })
+    }
+    if (step === 1) {
       setEnsemble(ensemble);
       dispatch({
         type: "SET_ENSEMBLE",
         payload: {
           ensemble: ensemble,
           ensembleId: ensembleId,
-        }
+        },
       });
+
+      dispatch ({
+        type : "CHANGE_INFO_CARD",
+        payload : {
+          infoCardType : InfoCardType.clusterSummary
+        }
+      })
     }
 
     dispatch({
@@ -65,15 +84,19 @@ if (step == 1) {
     props.onDistrictSelection(district_num, coords);
   }
 
-  function handleClusterSelection(clusterNumber: number, clusterId: string, districtPlanIds: Array<string>) {
+  function handleClusterSelection(
+    clusterNumber: number,
+    clusterId: string,
+    districtPlanIds: Array<string>
+  ) {
     setCluster(clusterNumber);
     dispatch({
       type: "SET_CLUSTER",
       payload: {
         cluster: clusterNumber,
         clusterId: clusterId,
-        districtPlanIds: districtPlanIds
-      }
+        districtPlanIds: districtPlanIds,
+      },
     });
   }
   /**
@@ -88,7 +111,13 @@ if (step == 1) {
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() => handleStepChange(currentStep - 1, ensemble, state[state.length-1].ensembleId)}
+            onClick={() =>
+              handleStepChange(
+                currentStep - 1,
+                ensemble,
+                state[state.length - 1].ensembleId
+              )
+            }
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>
@@ -106,7 +135,13 @@ if (step == 1) {
             <Step key={label} completed={completed[index]}>
               <StepButton
                 color="inherit"
-                onClick={() => handleStepChange(index, ensemble, state[state.length-1].ensembleId)}
+                onClick={() =>
+                  handleStepChange(
+                    index,
+                    ensemble,
+                    state[state.length - 1].ensembleId
+                  )
+                }
               >
                 {label}
               </StepButton>
@@ -116,8 +151,15 @@ if (step == 1) {
       </div>
       <div className="table-info">
         <BackButton />
-        {currentStep == 1 && <div className="ensemble-number">Viewing Ensemble {ensemble}</div>}
-        {currentStep == 2 && <div className="ensemble-number cluster-number">Viewing Ensemble {ensemble}, Cluster {state[state.length - 1].cluster}</div>}
+        {currentStep == 1 && (
+          <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
+        )}
+        {currentStep == 2 && (
+          <div className="ensemble-number cluster-number">
+            Viewing Ensemble {ensemble}, Cluster{" "}
+            {state[state.length - 1].cluster}
+          </div>
+        )}
       </div>
 
       {/* State Details */}
@@ -125,7 +167,9 @@ if (step == 1) {
         <Ensembles showToggle={true} handleStep={handleStepChange} />
       )}
       {/* Summary of Cluster */}
-      {currentStep == 1 && <ClusterSummary onClusterSelection={handleClusterSelection}/>}
+      {currentStep == 1 && (
+        <ClusterSummary onClusterSelection={handleClusterSelection} />
+      )}
       {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
       {currentStep == 2 && (
         <DistrictPlanData onDistrictSelection={handleDistrictChange} />

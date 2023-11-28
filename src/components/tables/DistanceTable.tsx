@@ -5,7 +5,7 @@ import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import "../css/TableData.css";
 import TabPanel from "@mui/lab/TabPanel";
-import DistanceGraph from "./DistanceGraph";
+import DistanceGraph from "../graphs/DistanceGraph";
 import { GlobalContext } from "../../globalContext";
 import { Stack, IconButton } from "@mui/material";
 import * as sampleData from "../SampleData"
