@@ -48,6 +48,7 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
             EnsembleData: Ensemble,
           },
         });
+        console.log("EEP", state)
       };
     
       const handleUpdateDistanceMeasure = (event: SelectChangeEvent) => {

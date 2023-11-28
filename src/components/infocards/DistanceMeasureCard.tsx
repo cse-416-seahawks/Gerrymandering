@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -19,7 +19,7 @@ export default function DistanceMeasureCard() {
       const { state, dispatch } = useContext(GlobalContext);
       const [curDetails, setDetails] = React.useState("");
     
-      React.useEffect(() => {
+      useEffect(() => {
         let currentState = state[state.length - 1].currentState;
         if (currentState === AvailableStates.Nevada) {
           setDetails(stateDetails.Nevada);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   TableContainer,
   Paper,
@@ -12,14 +12,25 @@ import {
 import { GlobalContext } from "../../globalContext";
 
 export default function EnsembleDetailTable() {
-  const { state } = useContext(GlobalContext);
-  const [ensDetails, updateDetails] = useState(
-    state[state.length - 1].ensembleDetails
-  );
+  const { state, dispatch } = useContext(GlobalContext);
+  const [ensDetails, updateDetails] = useState(state[state.length - 1].ensembleDetails);
 
-  React.useEffect(() => {
+  function updateEnsembleDetails(index: number) {
+    ensDetails.splice(index, 1);
+    
+    dispatch({
+      type: "UPDATE_ENS_DETAIL",
+      payload: {
+        EnsembleData: ensDetails,
+      },
+    });
+
+  }
+
+  useEffect(() => {
     updateDetails(state[state.length - 1].ensembleDetails);
   }, [state[state.length - 1].ensembleDetails]);
+
   return (
     <div>
       {ensDetails.length === 0 ? (
@@ -42,6 +53,7 @@ export default function EnsembleDetailTable() {
                 <TableRow
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  onDoubleClick={() => updateEnsembleDetails(index)}
                 >
                   <TableCell component="th" scope="row">
                     Ensemble {ensemble.ensemble}
