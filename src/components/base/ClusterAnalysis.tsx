@@ -131,37 +131,41 @@ function TableData(props: TableDataProps) {
   console.log(state)
   return (
     <div className="table-container">
-      <div className="stepper-container">
-        <Stepper activeStep={currentStep}>
-          {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
-              <StepButton
-                color="inherit"
-                onClick={() =>
-                  handleStepChange(
-                    index,
-                    ensemble,
-                    state[state.length - 1].ensembleId
-                  )
-                }
-              >
-                {label}
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
-      </div>
-      <div className="table-info">
+      <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
         <BackButton />
-        {currentStep == 1 && (
-          <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
-        )}
-        {currentStep == 2 && (
-          <div className="ensemble-number cluster-number">
-            Viewing Ensemble {ensemble}, Cluster {cluster}
-          </div>
-        )}
+        <div className="stepper-container">
+          <Stepper activeStep={currentStep}>
+            {steps.map((label, index) => (
+              <Step key={label} completed={completed[index]}>
+                <StepButton
+                  color="inherit"
+                  onClick={() =>
+                    handleStepChange(
+                      index,
+                      ensemble,
+                      state[state.length - 1].ensembleId
+                    )
+                  }
+                >
+                  {label}
+                </StepButton>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
       </div>
+      {/* <div style={{display:'flex', width: '100%'}}> */}
+        <div className='table-info'>
+          {currentStep == 1 && (
+            <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
+          )}
+          {currentStep == 2 && (
+            <div className="ensemble-number">
+              Viewing Ensemble {ensemble}, Cluster {cluster}
+            </div>
+          )}
+        </div>
+      {/* </div> */}
 
       {/* State Details */}
       {currentStep == 0 && (
