@@ -5,38 +5,12 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { GlobalContext, InfoCardType } from "../../globalContext";
-import { ClusterSelectionProps } from "../tables/TableTypes";
 import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
 import ClusterScatterPlot from "../graphs/ClusterScatterPlot";
+import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
-interface ClusterData {
-  cluster_number: number,
-  cluster_id: string,
-  name: string,
-  num_dist_plans: number,
-  avg_rep: string,
-  avg_dem: string,
-  avg_distance: number,
-  demographics: ClusterDemographicData,
-  district_plans: Array<string>,
-}
-
-interface ClusterDemographicData {
-  caucasian: number,
-  african_american: number,
-  asian_american: number,
-  hispanic: number,
-  other: number,
-}
-
-interface ClusterPoints {
-  cluster_num: number,
-  num_district_plans: number,
-  x: number,
-  y: number,
-}
 
 interface ClusterSummaryProps {
   onClusterSelection: (
@@ -58,21 +32,6 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
   function setClusterSelection(clusterTableProps: any) {
     onClusterSelection(clusterTableProps);
   }
-
-  function handleStepChange(step: number, clusterId : string, clusterNumber?: number) {
-    
-    if (step === 2) { // Display selected cluster summary of district plans
-      // if (clusterNumber) onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
-    } 
-    dispatch({
-      type : "STEP_CHANGE",
-      payload : {
-        step : step
-      }
-    })
-
-  }
-
 
   useEffect(() => {
     const currState = state[state.length-1].currentState;

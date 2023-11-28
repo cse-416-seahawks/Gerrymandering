@@ -15,26 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { GlobalContext } from "../../globalContext";
-
-interface ClusterData {
-  cluster_number: number;
-  cluster_id: string;
-  name: string;
-  num_dist_plans: number;
-  avg_rep: string;
-  avg_dem: string;
-  avg_distance: number;
-  demographics: ClusterDemographicData;
-  district_plans: Array<string>;
-}
-
-interface ClusterDemographicData {
-  caucasian: number;
-  african_american: number;
-  asian_american: number;
-  hispanic: number;
-  other: number;
-}
+import { ClusterData } from "../interfaces/AnalysisInterface";
 
 interface ClusterTableRowProps {
   data: ClusterData;
