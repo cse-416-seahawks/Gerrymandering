@@ -14,6 +14,7 @@ import {
   Scatter,
   ZAxis,
   TooltipProps,
+  Label,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { fetchClusterGraphData } from "../apiClient";
@@ -114,12 +115,24 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
   return (
 
           <ScatterChart
-            width={740}
-            height={460}
-            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+            width={760}
+            height={630}
+            margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
           >
             <CartesianGrid />
-            <XAxis type="number" dataKey="x" name={axis_labels[0]}></XAxis>
+            <XAxis type="number" dataKey="x" name={axis_labels[0]}>
+            <Label
+              style={{
+                textAnchor: "middle",
+                fontSize: "0.5rem",
+                fill: "black",
+              }}
+              value={"African-American Population"}
+              position={"insideBottom"}
+              offset={-30}
+              
+            />
+            </XAxis>
             <YAxis
               yAxisId="left"
               type="number"
@@ -127,7 +140,19 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
               name={axis_labels[1]}
               opacity="1"
               stroke="#7aa9ff"
+            >
+              <Label
+              style={{
+                textAnchor: "middle",
+                fontSize: "1rem",
+                fill: "black",
+
+              }}
+              position={"insideLeft"}
+              angle={270}
+              value={"Num. Districts - African American Pop. > 5 mil"}
             />
+            </YAxis>
             <ZAxis
               dataKey="num_district_plans"
               name="# District Plans"

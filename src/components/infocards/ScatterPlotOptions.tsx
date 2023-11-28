@@ -14,10 +14,14 @@ import {
   SelectChangeEvent,
   Theme,
   useTheme,
+  Slider,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,17 +34,11 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+const x_axis = [
+  "African American Population",
+  "Caucasian Population",
+  "Asian American Population",
+  "Hispanic Population",
 ];
 
 function getStyles(name: string, personName: string[], theme: Theme) {
@@ -52,39 +50,32 @@ function getStyles(name: string, personName: string[], theme: Theme) {
   };
 }
 
-
 export default function ScatterPlotOptions() {
-    const theme = useTheme();
-    const [personName, setPersonName] = React.useState<string[]>([]);
-  
-    const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
-    };
-    
-    const stateDetails = {
-        Nevada: "Nevada State Assembly 2022",
-        Texas: "Texas House Districts 2022",
-        Virginia: "Virginia House Districts 2022",
-      };
-      const { state, dispatch } = useContext(GlobalContext);
-      const [curDetails, setDetails] = React.useState("");
-    
-      React.useEffect(() => {
-        let currentState = state[state.length - 1].currentState;
-        if (currentState === AvailableStates.Nevada) {
-          setDetails(stateDetails.Nevada);
-        } else if (currentState === AvailableStates.Virginia) {
-          setDetails(stateDetails.Virginia);
-        } else {
-          setDetails(stateDetails.Texas);
-        }
-      }, [state[state.length - 1].currentState]);
+  const theme = useTheme();
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
+
+  const stateDetails = {
+    Nevada: "Nevada State Assembly 2022",
+    Texas: "Texas House Districts 2022",
+    Virginia: "Virginia House Districts 2022",
+  };
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
+
+  React.useEffect(() => {
+    let currentState = state[state.length - 1].currentState;
+    if (currentState === AvailableStates.Nevada) {
+      setDetails(stateDetails.Nevada);
+    } else if (currentState === AvailableStates.Virginia) {
+      setDetails(stateDetails.Virginia);
+    } else {
+      setDetails(stateDetails.Texas);
+    }
+  }, [state[state.length - 1].currentState]);
   return (
     <CardContent>
       <Typography
@@ -112,28 +103,64 @@ export default function ScatterPlotOptions() {
           />
         </Stack>
       </Box>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput label="Name" />}
-          MenuProps={MenuProps}
-        >
-          {names.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+      <Box sx={{display : "flex"}}> 
+      <Box sx={{ margin: "2rem" }}>
+        <FormControl sx={{ alignItems: "left", m: 1, minWidth: 250 }}>
+          <InputLabel>Demographic</InputLabel>
+          <Select
+            labelId="demo-select-small-label"
+            id="demo-select-small"
+            defaultValue={x_axis[0]}
+            label="Demographic"
+            onChange={handleChange}
+          >
+            {x_axis.map((value) => {
+              return <MenuItem value={value}>{value}</MenuItem>;
+            })}
+          </Select>
+        </FormControl>
+        
+      </Box>
+      <Box sx={{flexGrow : 1}}/>
+      <Box sx={{margin : "2.5rem"}}>
+          <FormControl>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              defaultValue={"greater-than"}
             >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+              <FormControlLabel
+                value="greater-than"
+                control={<Radio />}
+                label="Greater"
+              />
+              <FormControlLabel
+                value="less-than"
+                control={<Radio />}
+                label="Less"
+              />
+            </RadioGroup>
+          </FormControl>
+      
+          </Box>
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ margin : "1rem", width: 650 }}>
+          <Typography align="left" id="input-slider" gutterBottom>
+            Population Threshold
+          </Typography>
+          <Slider
+            aria-label="Population Threshold"
+            defaultValue={30}
+            valueLabelDisplay="auto"
+            step={100000000}
+            marks
+            min={1000000000}
+            max={5000000000}
+          />
+        </Box>
+      </Box>
     </CardContent>
   );
 }
