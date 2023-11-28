@@ -30,8 +30,14 @@ interface ClusterDemographicData {
 
 interface ClusterTableProps {
   clusters: ClusterData[];
+  onClusterSelection: (
+    cluster: ClusterData,
+  ) => void;
 }
-export default function ClusterTable({ clusters }: ClusterTableProps) {
+export default function ClusterTable({ clusters, onClusterSelection }: ClusterTableProps) {
+  function setSelectedCluster(cluster: ClusterData) {
+    onClusterSelection(cluster);
+  }
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -49,7 +55,7 @@ export default function ClusterTable({ clusters }: ClusterTableProps) {
         </TableHead>
         <TableBody>
           {clusters.map((cluster) => (
-            <ClusterTableRow key={cluster.name} data={cluster} />
+            <ClusterTableRow key={cluster.name} data={cluster} onClusterSelection={setSelectedCluster}/>
           ))}
         </TableBody>
       </Table>

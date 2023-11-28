@@ -12,6 +12,26 @@ import ClusterTable from "../summary/ClusterSummary";
 import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
 
+interface ClusterDemographicData {
+  caucasian: number,
+  african_american: number,
+  asian_american: number,
+  hispanic: number,
+  other: number,
+}
+
+interface ClusterData {
+  cluster_number: number,
+  cluster_id: string,
+  name: string,
+  num_dist_plans: number,
+  avg_rep: string,
+  avg_dem: string,
+  avg_distance: number,
+  demographics: ClusterDemographicData,
+  district_plans: Array<string>,
+}
+
 function TableData(props: {
   selectedState: string;
   onDistrictSelection: (
@@ -84,21 +104,20 @@ function TableData(props: {
     props.onDistrictSelection(district_num, coords);
   }
 
-  function handleClusterSelection(
-    clusterNumber: number,
-    clusterId: string,
-    districtPlanIds: Array<string>
-  ) {
-    setCluster(clusterNumber);
+  function handleClusterSelection(clusterData: ClusterData) {
+    console.log("am i", clusterData)
+    setCluster(clusterData.cluster_number);
     dispatch({
       type: "SET_CLUSTER",
       payload: {
-        cluster: clusterNumber,
-        clusterId: clusterId,
-        districtPlanIds: districtPlanIds,
+        cluster: clusterData.cluster_number,
+        clusterId: clusterData.cluster_id,
+        districtPlanIds: clusterData.district_plans,
       },
     });
   }
+
+
   /**
    *
    * Table Data for ensembles
@@ -127,6 +146,7 @@ function TableData(props: {
     return null;
   }
 
+  console.log(state)
   return (
     <div className="table-container">
       <div className="stepper-container">
@@ -156,8 +176,7 @@ function TableData(props: {
         )}
         {currentStep == 2 && (
           <div className="ensemble-number cluster-number">
-            Viewing Ensemble {ensemble}, Cluster{" "}
-            {state[state.length - 1].cluster}
+            Viewing Ensemble {ensemble}, Cluster {cluster}
           </div>
         )}
       </div>

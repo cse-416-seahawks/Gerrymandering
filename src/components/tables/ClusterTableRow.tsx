@@ -38,9 +38,12 @@ interface ClusterDemographicData {
 
 interface ClusterTableRowProps {
   data: ClusterData;
+  onClusterSelection: (
+    cluster: ClusterData,
+  ) => void;
 }
 
-export default function ClusterTableRow({ data }: ClusterTableRowProps) {
+export default function ClusterTableRow({ data, onClusterSelection }: ClusterTableRowProps) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [clusterName, setName] = useState(data.name);
@@ -65,10 +68,9 @@ export default function ClusterTableRow({ data }: ClusterTableRowProps) {
     setName(event.target.value);
   };
 
-  function handleStepChange(step: number, cluster : ClusterData) {
-    
+  function handleStepChange(step: number, cluster: ClusterData) {
     if (step === 2) { // Display selected cluster summary of district plans
-      // onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
+      onClusterSelection(cluster);
       dispatch({
         type: "SET_CLUSTER",
         payload: {

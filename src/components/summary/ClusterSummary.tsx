@@ -38,7 +38,13 @@ interface ClusterPoints {
   y: number,
 }
 
-export default function ClusterSummary({onClusterSelection}: ClusterSelectionProps) {
+interface ClusterSummaryProps {
+  onClusterSelection: (
+    cluster: ClusterData,
+  ) => void;
+}
+
+export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
@@ -49,10 +55,14 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
     setCurrentTab(String(newValue));
   }
 
+  function setClusterSelection(clusterTableProps: any) {
+    onClusterSelection(clusterTableProps);
+  }
+
   function handleStepChange(step: number, clusterId : string, clusterNumber?: number) {
     
     if (step === 2) { // Display selected cluster summary of district plans
-      if (clusterNumber) onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
+      // if (clusterNumber) onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
     } 
     dispatch({
       type : "STEP_CHANGE",
@@ -132,7 +142,7 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <ClusterTable clusters={clusterData} />
+          <ClusterTable clusters={clusterData} onClusterSelection={setClusterSelection}/>
         </TabPanel>
         <TabPanel value="2">
           <ClusterScatterPlot data={clusterData} data_points={dataPoints} axis_labels={axisLabels}/>
