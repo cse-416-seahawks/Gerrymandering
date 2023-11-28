@@ -97,6 +97,15 @@ export default function StateMap(props: {
     setZoom(stateZoomData[newState]);
   };
 
+  const displayDistricts = () => {
+    if(<NevadaDistricts/> && <TexasDistricts/> && <VirginiaDistricts/>){
+      return true;
+    }
+    else{
+      return false
+    }
+  }
+
 
   return (
     <div className="StateMap">
@@ -113,6 +122,7 @@ export default function StateMap(props: {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          
           <NevadaDistricts/>
           <TexasDistricts/>
           <VirginiaDistricts/>

@@ -75,7 +75,7 @@ export default () => {
           }}
         />
       );
-    } ) : <div></div>
+    } ) : null
   }, [TexasDistricts]);
 
   return (

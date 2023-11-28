@@ -4,7 +4,7 @@ import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterSelectionProps } from "../tables/TableTypes";
 import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
@@ -94,6 +94,24 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
 
   }, [state[state.length-1].ensemble]);
 
+  function handleSummaryCard(): void {
+    dispatch({
+      type : "CHANGE_INFO_CARD",
+      payload : {
+        infoCardType : InfoCardType.clusterSummary
+      }
+    })
+  }
+
+  function handlePlotOptions(): void {
+    dispatch({
+      type : "CHANGE_INFO_CARD",
+      payload : {
+        infoCardType : InfoCardType.clusterPlotOptions
+      }
+    })
+  }
+
   return (
     <Box>
       <TabContext value={currentTab}>
@@ -103,11 +121,13 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
               value="1"
               label="Cluster Summary"
               sx={{ textTransform: "none" }}
+              onClick={handleSummaryCard}
             />
             <Tab
               value="2"
               label="Cluster Graph"
               sx={{ textTransform: "none" }}
+              onClick={handlePlotOptions}
             />
           </Tabs>
         </Box>

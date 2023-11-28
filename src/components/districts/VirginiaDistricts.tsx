@@ -76,7 +76,7 @@ export default () => {
           );
         })
       ) : (
-        <div></div>
+        null
       )}
     </>
   );
