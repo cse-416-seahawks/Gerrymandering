@@ -57,6 +57,16 @@ export default function PrimarySearchAppBar() {
     navigate("/");
   };
 
+  const handleClick = (path : string) => {
+    dispatch({
+      type : "CHANGE_STATE",
+      payload : {
+        currentState : state[state.length - 1].currentState
+      }
+    })
+    navigate(path);
+  }
+
   const menuId = "primary-search-account-menu";
 
   return (
@@ -88,15 +98,14 @@ export default function PrimarySearchAppBar() {
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               {NavbarOptions.map((option, index) => {
                 return (
-                  <Link href={option.path}>
                     <Button
                       key={index}
                       variant="outlined"
                       sx={{ margin: "0.5rem", color: "white" }}
+                      onClick={() => {handleClick(option.path)}}
                     >
                       {option.title}
                     </Button>
-                  </Link>
                 );
               })}
             </Box>

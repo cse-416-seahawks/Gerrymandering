@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -13,7 +12,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Tooltip } from "@mui/material";
 import { GlobalContext } from "../../globalContext";
 import { ClusterData } from "../interfaces/AnalysisInterface";
 
@@ -56,9 +55,9 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
         type: "SET_CLUSTER",
         payload: {
           cluster: cluster.cluster_id,
-          districtPlanIds: cluster.district_plans
-        }
-      })
+          districtPlanIds: cluster.district_plans,
+        },
+      });
     } else {
       dispatch({
         type: "STATE_MAP",
@@ -68,12 +67,11 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
       });
     }
     dispatch({
-      type : "STEP_CHANGE",
-      payload : {
-        step : step
-      }
-    })
-
+      type: "STEP_CHANGE",
+      payload: {
+        step: step,
+      },
+    });
   }
 
   return (
@@ -85,24 +83,30 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
             size="small"
             onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? (
+              <KeyboardArrowUpIcon />
+            ) : (
+              <Tooltip title="View demographics">
+                <KeyboardArrowDownIcon />
+              </Tooltip>
+            )}
           </IconButton>
         </TableCell>
         <TableCell align="center">
           <Button
             variant="text"
             size="medium"
-            onClick={() =>
-              handleStepChange(2, data)
-            }
+            onClick={() => handleStepChange(2, data)}
           >
             {data.cluster_number}
           </Button>
         </TableCell>
         <TableCell>
-          <IconButton onClick={handleEdit}>
-            <EditIcon />
-          </IconButton>
+          <Tooltip title="Edit cluster name">
+            <IconButton onClick={handleEdit}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </TableCell>
         <TableCell align="center">
           {editing ? (
