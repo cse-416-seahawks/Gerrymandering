@@ -32,7 +32,7 @@ function Distance() {
               <div className="State-map"> 
               <StateMap
                   selectedState={state[state.length - 1].currentState}
-                  centerCoordinates={centerCoordinates}
+                  centerCoordinates={[38.5, -116.5]}
                   selectedDistrict={selectedDistrict}
                 />
               </div>

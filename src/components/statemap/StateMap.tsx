@@ -106,6 +106,8 @@ export default function StateMap(props: {
     }
   }
 
+  console.log(state[state.length - 1].currentState)
+
 
   return (
     <div className="StateMap">
