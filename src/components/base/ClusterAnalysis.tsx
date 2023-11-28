@@ -87,7 +87,6 @@ function TableData(props: TableDataProps) {
   }
 
   function handleClusterSelection(clusterData: ClusterData) {
-    console.log("am i", clusterData)
     setCluster(clusterData.cluster_number);
     dispatch({
       type: "SET_CLUSTER",
@@ -128,7 +127,6 @@ function TableData(props: TableDataProps) {
     return null;
   }
 
-  console.log(state)
   return (
     <div className="table-container">
       <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
