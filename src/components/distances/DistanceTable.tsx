@@ -9,7 +9,7 @@ import DistanceGraph from "./DistanceGraph";
 import { GlobalContext } from "../../globalContext";
 import { Stack, IconButton } from "@mui/material";
 import * as sampleData from "../SampleData"
-import  Ensembles  from "../summary/EnsemblesSummary"
+import  Ensembles  from "../summary/EnsemblesList"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function DistanceTable() {
@@ -30,34 +30,9 @@ function DistanceTable() {
         step : step
       }
     })
-    if (step === 1) {
-      dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
-    } else {
-      dispatch({
-        type: "STATE_MAP",
-        payload: {
-          dismap: false,
-        },
-      });
-    }
     
   }
 
-  useEffect(() => {
-    if(currentStep === 1){
-      dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
-    }
-  })
 
   function getRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

@@ -58,20 +58,7 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
     
     if (step === 2) { // Display selected cluster summary of district plans
     //   if (clusterNumber) onClusterSelection(clusterNumber, clusterData[clusterNumber].district_plans);
-      dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
-    } else {
-      dispatch({
-        type: "STATE_MAP",
-        payload: {
-          dismap: false,
-        },
-      });
-    }
+    } 
     dispatch({
       type : "STEP_CHANGE",
       payload : {

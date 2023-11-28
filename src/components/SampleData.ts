@@ -10,13 +10,7 @@ function getRandomNumber(min: number, max: number) {
 
 
 // Details about the ensembles (Distance measures data)
-export const Data3: ensemble_summary_table[] = [
-  { ensemble: 1, num_clusters: 3, plans_needed: 309 },
-  { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },
-  { ensemble: 3, num_clusters: 4.6, plans_needed: 321 },
-  { ensemble: 4, num_clusters: 5.3, plans_needed: 251 },
-  { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
-];
+
 
 // Ensemble data
 export const ensembleData_2: ensembleData[] = [];

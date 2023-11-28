@@ -76,12 +76,6 @@ export default function ClusterTableRow({ data }: ClusterTableRowProps) {
           districtPlanIds: cluster.district_plans
         }
       })
-      dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
     } else {
       dispatch({
         type: "STATE_MAP",

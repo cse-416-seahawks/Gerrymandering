@@ -27,7 +27,7 @@ export default function EnsembleDetailTable() {
           Click "See Details" on any Ensemble to view details here
         </Typography>
       ) : (
-        <TableContainer component={Paper} sx={{ marginTop: "1em" }}>
+        <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>

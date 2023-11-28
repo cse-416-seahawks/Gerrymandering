@@ -5,7 +5,6 @@ import React, {
 } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import DistrictInfoCard from "../infocards/MainInfoCard";
 
 import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,6 +16,7 @@ import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
 import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
 import ClusterSummary from "../summary/ClusterSummary";
+import MainInfoCard from "../infocards/MainInfoCard";
 
 
 interface GeoJSON {
@@ -145,7 +145,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
-        <DistrictInfoCard/>
+        <MainInfoCard/>
     </div>
   );
 }

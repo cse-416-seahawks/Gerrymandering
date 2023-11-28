@@ -7,7 +7,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { GlobalContext } from "../../globalContext";
-import Ensembles from "../summary/EnsemblesSummary";
+import Ensembles from "../summary/EnsemblesList";
 import ClusterTable from "../summary/ClusterSummary";
 import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
@@ -42,14 +42,7 @@ function TableData(props: {
   }, [props.selectedState]);
 
   function handleStepChange(step: number, ensemble: number, ensembleId: string) {
-    if (step === 2) {
-      dispatch({
-        type: "DISTRICT_MAP",
-        payload: {
-          dismap: true,
-        },
-      });
-    } else if (step == 1) {
+if (step == 1) {
       setEnsemble(ensemble);
       dispatch({
         type: "SET_ENSEMBLE",
