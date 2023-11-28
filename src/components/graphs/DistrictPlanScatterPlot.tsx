@@ -109,7 +109,7 @@ export default function DistrictPlanScatterPlot({
             </div>
           </div>
           <ScatterChart
-            width={800}
+            width={700}
             height={350}
             margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
           >
