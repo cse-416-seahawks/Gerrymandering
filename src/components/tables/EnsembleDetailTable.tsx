@@ -24,7 +24,6 @@ export default function EnsembleDetailTable() {
         EnsembleData: ensDetails,
       },
     });
-
   }
 
   useEffect(() => {

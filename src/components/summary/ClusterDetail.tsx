@@ -40,82 +40,69 @@ interface DistrictPlanData {
 }
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
-    const [districtSelection, setDistrictSelection] = useState(0);
-    const [coordinates, setCoordinates] = useState<Array<number>>([]);
-    const [currentTab, setCurrentTab] = useState("1");
-    const { state, dispatch } = useContext(GlobalContext);
-    const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
+  const [districtSelection, setDistrictSelection] = useState(0);
+  const [coordinates, setCoordinates] = useState<Array<number>>([]);
+  const [currentTab, setCurrentTab] = useState("1");
+  const { state, dispatch } = useContext(GlobalContext);
+  const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
 
-    function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-      setCurrentTab(String(newValue));
-    }
-
-    function handleDistrictChange(district_num: number, coords: Array<number>) {
-      onDistrictSelection(district_num, coords);
-      // setCoordinates(coords);
-      setDistrictSelection(district_num);
-    }
-  
-    function SetMapView() {
-      const map = useMapEvent("mouseover", (e) => {
-        map.setView([coordinates[0], coordinates[1]], 8, {});
-        // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-      });
-  
-      return null;
-    }
-  
-    useEffect(() => {
-      
-      async function fetchDistrictData() {
-        
-        try {
-          const currState = state[state.length-1].currentState;
-          const districtPlanIds = state[state.length-1].districtPlanIds;
-          
-          // const response = await fetchDistrictPlanData(currState, districtPlanIds);
-          // setDistrictPlans(response.data);
-        } catch(error) {
-          throw error;
-        }
-      }
-      fetchDistrictData();
-    }, []);
-
-    return (
-      <>
-        <TabContext value={currentTab}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
-            <Tabs value={currentTab} onChange={handleTabChange}>
-              <Tab
-                value="1"
-                label="Graph View"
-                sx={{ textTransform: "none" }}
-              />
-              <Tab
-                value="2"
-                label="Table View"
-                sx={{ textTransform: "none" }}
-              />
-               <Tab
-                value="3"
-                label="Party Split"
-                sx={{ textTransform: "none" }}
-              />
-            </Tabs>
-          </Box>
-          <TabPanel value="1">
-            <DistrictPlanScatterPlot district_plans={districtPlans}/>
-          </TabPanel>
-          <TabPanel value="2">
-            <ClusterDetailTable districtChange={handleDistrictChange}/>
-          </TabPanel>
-          <TabPanel value="3">
-            <PartySplitChart/>
-          </TabPanel>
-        </TabContext>
-    
-      </>
-    );
+  function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+    setCurrentTab(String(newValue));
   }
+
+  function handleDistrictChange(district_num: number, coords: Array<number>) {
+    onDistrictSelection(district_num, coords);
+    setDistrictSelection(district_num);
+  }
+
+  useEffect(() => {
+    async function fetchDistrictData() {
+      try {
+        const currState = state[state.length-1].currentState;
+        const districtPlanIds = state[state.length-1].districtPlanIds;
+        
+        // const response = await fetchDistrictPlanData(currState, districtPlanIds);
+        // setDistrictPlans(response.data);
+      } catch(error) {
+        throw error;
+      }
+    }
+    fetchDistrictData();
+  }, []);
+
+  return (
+    <>
+      <TabContext value={currentTab}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab
+              value="1"
+              label="Graph View"
+              sx={{ textTransform: "none" }}
+            />
+            <Tab
+              value="2"
+              label="Table View"
+              sx={{ textTransform: "none" }}
+            />
+              <Tab
+              value="3"
+              label="Party Split"
+              sx={{ textTransform: "none" }}
+            />
+          </Tabs>
+        </Box>
+        <TabPanel value="1">
+          <DistrictPlanScatterPlot district_plans={districtPlans}/>
+        </TabPanel>
+        <TabPanel value="2">
+          <ClusterDetailTable districtChange={handleDistrictChange}/>
+        </TabPanel>
+        <TabPanel value="3">
+          <PartySplitChart/>
+        </TabPanel>
+      </TabContext>
+    </>
+  );
+}
   

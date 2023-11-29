@@ -41,16 +41,9 @@ const x_axis = [
   "Hispanic Population",
 ];
 
-function getStyles(name: string, personName: string[], theme: Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 export default function ScatterPlotOptions() {
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
   const theme = useTheme();
   const [age, setAge] = React.useState("");
 
@@ -63,10 +56,8 @@ export default function ScatterPlotOptions() {
     Texas: "Texas House Districts 2022",
     Virginia: "Virginia House Districts 2022",
   };
-  const { state, dispatch } = useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     let currentState = state[state.length - 1].currentState;
     if (currentState === AvailableStates.Nevada) {
       setDetails(stateDetails.Nevada);
@@ -121,8 +112,8 @@ export default function ScatterPlotOptions() {
         </FormControl>
         
       </Box>
-      <Box sx={{flexGrow : 1}}/>
-      <Box sx={{margin : "2.5rem"}}>
+      <Box sx={{flexGrow: 1}}/>
+        <Box sx={{margin: "2.5rem"}}>
           <FormControl>
             <RadioGroup
               row
@@ -142,8 +133,7 @@ export default function ScatterPlotOptions() {
               />
             </RadioGroup>
           </FormControl>
-      
-          </Box>
+        </Box>
       </Box>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ margin : "1rem", width: 650 }}>

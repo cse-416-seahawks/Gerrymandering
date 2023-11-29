@@ -10,9 +10,7 @@ import { MapState } from "../interfaces/MapInterface";
 
 export default () => {
   const [texasOutline, setData] = useState<MapState["data"]>(null);
-
   const { state, dispatch } = useContext(GlobalContext);
-
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -38,7 +36,7 @@ export default () => {
 
   return (
     <>
-      {texasOutline ? (
+      {texasOutline && (
         <Polygon
           pathOptions={{
             fillColor: "#4287f5",
@@ -73,8 +71,6 @@ export default () => {
             click: handleClick
           }}
         />
-      ) : (
-        <div></div>
       )}
     </>
   );

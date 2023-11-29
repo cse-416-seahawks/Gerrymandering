@@ -13,18 +13,20 @@ import {
 } from "recharts";
 
 export default function ClusterAssociationGraph() {
+
   let color;
   function randomColor() {
     color = "#" + Math.floor(Math.random() * 16777215).toString(16);
     return color;
   }
+
   return (
     <div>
       <Typography>
         <b>Association of clusters with ensemble size</b>
       </Typography>
       <div className="graph-container">
-        <LineChart width={800} height={670} margin={{ top : 10, right : 10, bottom : 30, left : 10}} data={sampleData.ensembleData_2}>
+        <LineChart width={800} height={670} margin={{ top: 10, right: 10, bottom: 30, left: 10}} data={sampleData.ensembleData_2}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="Num">
             <Label
@@ -36,7 +38,6 @@ export default function ClusterAssociationGraph() {
               value={"Number of District Plans"}
               position={"insideBottom"}
               offset={-50}
-              
             />
           </XAxis>
           <YAxis>
@@ -45,7 +46,6 @@ export default function ClusterAssociationGraph() {
                 textAnchor: "middle",
                 fontSize: "1rem",
                 fill: "black",
-
               }}
               position={"insideLeft"}
               angle={270}
@@ -84,10 +84,6 @@ export default function ClusterAssociationGraph() {
             stroke={randomColor()}
             fill={color}
           />
-          {/*
-                                Dev note, remember, all of this is not dynamic yet, so it's yet to be implemented with
-                                data, so this is will still need fixes before this is ready.
-                                */}
         </LineChart>
       </div>
     </div>

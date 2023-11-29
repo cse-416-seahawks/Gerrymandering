@@ -5,20 +5,14 @@ import type { LatLngTuple } from "leaflet";
 import { fetchDistricts } from "../apiClient";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
-import { Feature, FeatureCollection } from "@turf/turf";
 import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
   const [TexasDistricts, setTexasDistrict] = useState<DistrictState["data"]>(null);
   
   function getRandomHexCode(): string {
-    // Array of possible colors
     const colors = ["#FF0000", "#0000FF"];
-
-    // Randomly select a color index
     const randomIndex = Math.floor(Math.random() * colors.length);
-
-    // Return the selected color
     return colors[randomIndex];
   }
 
@@ -29,12 +23,11 @@ export default () => {
         setTexasDistrict(result);
       } catch (error) {}
     }
-
     fetchDistrictsAsync();
   }, []);
 
   const districtMap = useMemo(() => {
-    return TexasDistricts ? 
+    return TexasDistricts && 
      TexasDistricts.features.map((district: any) => {
       return (
         <Polygon
@@ -72,7 +65,7 @@ export default () => {
           }}
         />
       );
-    } ) : null
+    })
   }, [TexasDistricts]);
 
   return (

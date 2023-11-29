@@ -20,28 +20,29 @@ import MapIcon from '@mui/icons-material/Map';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
 export default function ClusterInfoCard() {
-    const stateDetails = {
-        Nevada: "Nevada State Assembly 2022",
-        Texas: "Texas House Districts 2022",
-        Virginia: "Virginia House Districts 2022",
-      };
-      const { state, dispatch } = useContext(GlobalContext);
-      const [curDetails, setDetails] = React.useState("");
-    
-      const Demo = styled('div')(({ theme }) => ({
-        backgroundColor: theme.palette.background.paper,
-      }));
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
 
-      useEffect(() => {
-        let currentState = state[state.length - 1].currentState;
-        if (currentState === AvailableStates.Nevada) {
-          setDetails(stateDetails.Nevada);
-        } else if (currentState === AvailableStates.Virginia) {
-          setDetails(stateDetails.Virginia);
-        } else {
-          setDetails(stateDetails.Texas);
-        }
-      }, [state[state.length - 1].currentState]);
+  const stateDetails = {
+    Nevada: "Nevada State Assembly 2022",
+    Texas: "Texas House Districts 2022",
+    Virginia: "Virginia House Districts 2022",
+  };
+
+  const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+  }));
+
+  useEffect(() => {
+    let currentState = state[state.length - 1].currentState;
+    if (currentState === AvailableStates.Nevada) {
+      setDetails(stateDetails.Nevada);
+    } else if (currentState === AvailableStates.Virginia) {
+      setDetails(stateDetails.Virginia);
+    } else {
+      setDetails(stateDetails.Texas);
+    }
+  }, [state[state.length - 1].currentState]);
       
   return (
     <CardContent>
@@ -76,15 +77,14 @@ export default function ClusterInfoCard() {
           </Typography>
           <Demo>
             <List>
-           
-            <ListItem>
-                  <ListItemIcon>
-                    <BubbleChartIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={<Typography variant="subtitle1">Total Number of Clusters</Typography>}
-                  />
-                  <Typography variant="subtitle1">6 Clusters</Typography>
+              <ListItem>
+                <ListItemIcon>
+                  <BubbleChartIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<Typography variant="subtitle1">Total Number of Clusters</Typography>}
+                />
+                <Typography variant="subtitle1">6 Clusters</Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>

@@ -11,19 +11,19 @@ import * as sampleData from "../SampleData";
 
 
 interface ClusterDetailTableProps {
-    districtChange : (district_num: number, coords: number[]) => void
+    districtChange: (district_num: number, coords: number[]) => void
 }
 
 export default function ClusterDetailTable({ districtChange } : ClusterDetailTableProps) {
     const buttonStyle = {
-        padding: "10px 20px",
-        fontSize: "16px",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        transition: "background-color 0.3s ease",
-      };
+      padding: "10px 20px",
+      fontSize: "16px",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      transition: "background-color 0.3s ease",
+    };
 
     return (
         <TableContainer className="plan-table-container" component={Paper}>
@@ -37,14 +37,14 @@ export default function ClusterDetailTable({ districtChange } : ClusterDetailTab
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sampleData.district_plan_data.map((row) => ( // districtPlans
+                  {sampleData.district_plan_data.map((row) => (
                       <TableRow key={row.district_plan}>
                         <TableCell component="th" scope="row">
                           {
                             <button
                               style={buttonStyle}
                               onClick={() =>
-                                districtChange(row.district_plan, [-1,-1]) // change to map value
+                                districtChange(row.district_plan, [-1,-1])
                               }
                             >
                               {row.district_plan}

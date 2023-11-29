@@ -23,15 +23,11 @@ interface TableDataProps {
 
 function TableData(props: TableDataProps) {
   const { state, dispatch } = useContext(GlobalContext);
-
-  let currentStep = state[state.length - 1].step;
-
   const [ensemble, setEnsemble] = useState(0);
   const [cluster, setCluster] = useState(0);
+  let currentStep = state[state.length - 1].step;
 
-  const [completed, setCompleted] = useState<{
-    [k: number]: boolean;
-  }>({});
+  const [completed, setCompleted] = useState<{ [k: number]: boolean; }>({});
 
   const steps = [
     "Select an Ensemble",
@@ -44,11 +40,7 @@ function TableData(props: TableDataProps) {
     handleStepChange(0, 0, "0");
   }, [props.selectedState]);
 
-  function handleStepChange(
-    step: number,
-    ensemble: number,
-    ensembleId: string
-  ) {
+  function handleStepChange(step: number, ensemble: number, ensembleId: string) {
     if (step === 0 && state[state.length - 1].step !== 0) {
       dispatch({
         type: "CHANGE_INFO_CARD",
@@ -107,11 +99,6 @@ function TableData(props: TableDataProps) {
     });
   }
 
-  /**
-   *
-   * Table Data for ensembles
-   */
-
   function BackButton() {
     if (currentStep > 0) {
       return (
@@ -163,15 +150,15 @@ function TableData(props: TableDataProps) {
             </div>
           </div>
 
-          {/* State Details */}
+          {/* State Ensemble Details */}
           {currentStep == 0 && (
             <EnsemblesList showToggle={true} handleStep={handleStepChange} />
           )}
-          {/* Summary of Cluster */}
+          {/* Summary of clusters in selected ensemble */}
           {currentStep == 1 && (
             <ClusterSummary onClusterSelection={handleClusterSelection} />
           )}
-          {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
+          {/* Summary of selected cluster */}
           {currentStep == 2 && (
             <DistrictPlanData onDistrictSelection={handleDistrictChange} />
           )}

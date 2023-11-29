@@ -40,7 +40,7 @@ export default () => {
 
   return (
     <>
-      {virginiaHouse ? (
+      {virginiaHouse && (
         virginiaHouse.features.map((district: any) => {
           return (
             <Polygon
@@ -75,8 +75,6 @@ export default () => {
             />
           );
         })
-      ) : (
-        null
       )}
     </>
   );

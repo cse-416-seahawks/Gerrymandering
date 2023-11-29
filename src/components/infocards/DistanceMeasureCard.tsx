@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Stack, Chip } from "@mui/material";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
 import DistanceTable from "../tables/DistanceTable";
 
 export default function DistanceMeasureCard() {
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
+
   const stateDetails = {
     Nevada: "Nevada State Assembly 2022",
     Texas: "Texas House Districts 2022",
     Virginia: "Virginia House Districts 2022",
   };
-  const { state, dispatch } = useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
 
   useEffect(() => {
     let currentState = state[state.length - 1].currentState;

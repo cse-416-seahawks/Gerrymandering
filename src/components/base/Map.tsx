@@ -1,27 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TileLayer, MapContainer, useMap } from "react-leaflet";
-import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
 import NevadaMap from "../statemap/NevadaMap";
 import TexasMap from "../statemap/TexasMap";
 import VirginiaMap from "../statemap/VirginiaMap";
-import Navbar from "./Navbar";
 import 'leaflet/dist/leaflet.css'
-import { useNavigate } from "react-router-dom";
 import "../../App.css";
 
 
   
-export default function StateSelect(props: {
-    centerCoordinates: Array<number>;
-  }) {
+export default function Map(props: { centerCoordinates: Array<number>; }) {
 
-  const [centerCoordinates, setCenterCoordinates] = useState(
-    props.centerCoordinates
-  );
+  const [centerCoordinates, setCenterCoordinates] = useState(props.centerCoordinates);
   const [zoom, setZoom] = useState(5);
-
-  const { state, dispatch } = useContext(GlobalContext);
-  const navigate = useNavigate();
 
   const SetMapView = () => {
     const map = useMap();

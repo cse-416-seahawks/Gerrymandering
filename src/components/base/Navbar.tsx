@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as VscIcons from "react-icons/vsc";
 import "../css/Navbar.css";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import AppBar from "@mui/material/AppBar";
@@ -9,7 +8,6 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
-import Button from "@mui/material/Button/Button";
 import { Breadcrumbs, Link } from "@mui/material";
 
 export default function PrimarySearchAppBar() {
@@ -28,8 +26,6 @@ export default function PrimarySearchAppBar() {
     navigate("/");
   };
 
-
-  console.log("Nav", state)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -53,31 +49,27 @@ export default function PrimarySearchAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected ? 
-          ( <div> Select a state from the map </div> ) :
-          
-          <>
-            <Breadcrumbs aria-label="breadcrumb">
-              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
-                <Link underline="none" color="white">
-                  { state[state.length - 1].distanceMeasure}
-                </Link>
-              }
-              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
-                <Link underline="none" color="white">
-                  Ensemble { state[state.length - 1].ensemble}
-                </Link>
-              }
-              { state[state.length - 1].currentInfoCard == "Cluster Details" && 
-                <Link underline="none" color="white">
-                  Cluster { state[state.length - 1].cluster}
-                </Link>
-              }
-            </Breadcrumbs>
-          </>
+          {isStateUnselected ? ( <div> Select a state from the map </div> ) :
+            <>
+              <Breadcrumbs aria-label="breadcrumb">
+                { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
+                  <Link underline="none" color="white">
+                    { state[state.length - 1].distanceMeasure}
+                  </Link>
+                }
+                { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
+                  <Link underline="none" color="white">
+                    Ensemble { state[state.length - 1].ensemble}
+                  </Link>
+                }
+                { state[state.length - 1].currentInfoCard == "Cluster Details" && 
+                  <Link underline="none" color="white">
+                    Cluster { state[state.length - 1].cluster}
+                  </Link>
+                }
+              </Breadcrumbs>
+            </>
           }
-
-          
         </Toolbar>
       </AppBar>
     </Box>

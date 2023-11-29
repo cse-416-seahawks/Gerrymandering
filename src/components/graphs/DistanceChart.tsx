@@ -2,7 +2,7 @@ import React from "react";
 import Boxplot from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-export default () => {
+export default function DistanceChart () {
   const series = [
     {
       type: "boxPlot",
@@ -34,6 +34,7 @@ export default () => {
       ],
     },
   ];
+  
   const options: ApexOptions = {
     chart: {
       type: "boxPlot",
@@ -42,9 +43,7 @@ export default () => {
         show: false,
       },
     },
-    yaxis :{
-      min : 25
-    },
+    yaxis: { min: 25 },
     title: {
       text: "Distance Measure Variation",
       align: "center",
@@ -62,5 +61,6 @@ export default () => {
       width : 1
     }
   };
+
   return <Boxplot options={options} series={series} height={710} />;
 };

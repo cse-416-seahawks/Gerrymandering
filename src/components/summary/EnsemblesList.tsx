@@ -19,14 +19,12 @@ interface EnsembleProps {
 
 const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   const { state, dispatch } = useContext(GlobalContext);
-
   const [currentTab, setCurrentTab] = useState("1");
   const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
-  const [fetchedEnsembleData, setFetchedEnsembleData] = useState<any>({});
+
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
   }
-
 
   useEffect(() => {
     const currState = state[state.length - 1].currentState;
@@ -37,9 +35,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
         const response = await fetchStateEnsembles(currState);
         const ensembles: Array<EnsembleData> = [];
         for (var row of response.ensembles) {
-          const ensemble_table = row.data.find(
-            (item: any) => item.distance_measure == distanceMeasure
-          );
+          const ensemble_table = row.data.find( (item: any) => item.distance_measure == distanceMeasure);
           ensembles.push({
             ensemble: response.ensembles.indexOf(row) + 1,
             ensemble_id: row.ensemble_id,
@@ -48,7 +44,6 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
             avg_dist_clusters: ensemble_table.avg_distance,
           });
         }
-        setFetchedEnsembleData(response);
         setEnsembleData(ensembles);
       } catch (error) {
         throw error;

@@ -1,3 +1,5 @@
+import { TooltipProps } from "recharts";
+
 export interface ClusterData {
     cluster_number: number,
     cluster_id: string,
@@ -32,3 +34,11 @@ export interface DistrictPlanData {
     republican: string;
 }
   
+export interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
+      } 
+    }>;
+}

@@ -39,7 +39,6 @@ export default function StateMap(props: {
   const [zoom, setZoom] = useState(stateZoomData[props.selectedState]);
   const { state, dispatch } = useContext(GlobalContext);
 
-
   const SetMapView = () => {
     const map = useMap();
      useEffect(() => {
@@ -47,7 +46,6 @@ export default function StateMap(props: {
      }, [centerCoordinates[0], centerCoordinates[1]]);
      return null;
    }
-
 
   const handleStateChangeCoordinates = (event : SelectChangeEvent) => {
     const newState = event.target.value;
@@ -81,18 +79,6 @@ export default function StateMap(props: {
     setZoom(stateZoomData[newState]);
   };
 
-  const displayDistricts = () => {
-    if(<NevadaDistricts/> && <TexasDistricts/> && <VirginiaDistricts/>){
-      return true;
-    }
-    else{
-      return false
-    }
-  }
-
-  console.log(state[state.length - 1].currentState)
-
-
   return (
     <div className="StateMap">
       <>
@@ -112,7 +98,6 @@ export default function StateMap(props: {
           <NevadaDistricts/>
           <TexasDistricts/>
           <VirginiaDistricts/>
-        
 
           <SetMapView />
         </MapContainer>

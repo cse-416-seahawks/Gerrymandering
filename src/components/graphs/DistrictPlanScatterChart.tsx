@@ -19,7 +19,6 @@ import {
   Scatter,
   ZAxis,
 } from "recharts";
-import { GlobalContext } from "../../globalContext";
 import {
   district_summary_table,
 } from "../tables/TableTypes";
@@ -30,12 +29,7 @@ interface DistrictPlanScatterPlotProps {
 }
 
 export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlanScatterPlotProps) {
-  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<
-    Array<district_summary_table>
-  >([]);
-  const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>(
-    []
-  );
+  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
   const [modal, setModal] = useState<boolean>(false);
 
   function handleDistrictSelection(point: any) {

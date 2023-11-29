@@ -7,11 +7,9 @@ import TableData from "./ClusterAnalysis";
 
 
 function Home() {
-  const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
+  const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([38.5, -116.5]);
-
   const {state, dispatch} = useContext(GlobalContext);
-  
   
   const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
     setSelectedDistrict(district_num);
@@ -25,7 +23,7 @@ function Home() {
       <Navbar />
       <div className="StateMap-content">
           <header className="StateMap-header">
-          <div className="State-map"> 
+            <div className="State-map"> 
               <StateMap selectedState={state[state.length-1].currentState} centerCoordinates={centerCoordinates} selectedDistrict={selectedDistrict}/>
             </div>
             <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>

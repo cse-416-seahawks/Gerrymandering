@@ -117,7 +117,6 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
           <ClusterScatterPlot data={clusterData} data_points={dataPoints} axis_labels={axisLabels}/>
         </TabPanel>
       </TabContext>
-
     </Box>
   );
 }
