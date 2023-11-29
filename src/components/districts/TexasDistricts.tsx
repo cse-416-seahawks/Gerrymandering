@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { fetchDistricts } from "../apiClient";
+import { fetchCurrDistrictPlan } from "../apiClient";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
 import { DistrictState } from "../interfaces/MapInterface";
@@ -17,13 +17,13 @@ export default () => {
   }
 
   useEffect(() => {
-    async function fetchDistrictsAsync() {
+    async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistricts(AvailableStates.Texas);
+        const result = await fetchCurrDistrictPlan(AvailableStates.Texas);
         setTexasDistrict(result);
       } catch (error) {}
     }
-    fetchDistrictsAsync();
+    fetchDistrictPlanAsync();
   }, []);
 
   const districtMap = useMemo(() => {

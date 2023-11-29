@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
-import { fetchDistricts } from "../apiClient";
+import { fetchCurrDistrictPlan } from "../apiClient";
 import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
@@ -17,15 +17,15 @@ export default () => {
   }
 
   useEffect(() => {
-    async function fetchDistrictsAsync() {
+    async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistricts(AvailableStates.Nevada);
+        const result = await fetchCurrDistrictPlan(AvailableStates.Nevada);
         setNevadaDistrict(result);
       } catch (error) {
         throw error;
       }
     }
-    fetchDistrictsAsync();
+    fetchDistrictPlanAsync();
   }, []);
   return (
     <>

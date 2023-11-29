@@ -5,7 +5,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { GlobalContext, InfoCardType } from "../../globalContext";
-import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
+import { fetchClusterSummaryData, fetchClusterSummaryGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
 import ClusterScatterPlot from "../graphs/ClusterScatterChart";
@@ -49,9 +49,9 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
     }
     getClusterData();
 
-    async function getClusterGraphData() {
+    async function getClusterSummaryGraphData() {
       try {
-        const response = await fetchClusterGraphData(currState, ensembleId, distanceMeasure);
+        const response = await fetchClusterSummaryGraphData(currState, ensembleId, distanceMeasure);
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
@@ -60,7 +60,7 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
         throw error;
       }
     }
-    getClusterGraphData();
+    getClusterSummaryGraphData();
 
   }, [state[state.length-1].ensemble]);
 

@@ -22,17 +22,23 @@ import {
 import {
   district_summary_table,
 } from "../tables/TableTypes";
-import { DistrictPlanData } from "../interfaces/AnalysisInterface";
+import { DistrictPlanData, DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface";
+import {  GlobalContext } from "../../globalContext";
+import { Global } from "@emotion/react";
+import { fetchClusterDetailGraph } from "../apiClient";
 
 interface DistrictPlanScatterPlotProps {
-  district_plans: DistrictPlanData[];
+  axisLabels: Array<string>;
+  availableData: Array<DistrictPlanPoints>;
+  unavailableData: Array<DistrictPlanPoints>;
 }
 
-export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlanScatterPlotProps) {
+export default function DistrictPlanScatterPlot({ axisLabels, availableData, unavailableData }: DistrictPlanScatterPlotProps) {
+  const { state, dispatch } = useContext(GlobalContext);
   const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
   const [modal, setModal] = useState<boolean>(false);
-
-  function handleDistrictSelection(point: any) {
+  
+  function handleDistrictPlanSelection(point: any) {
     const plan = {
       district_plan: point.z,
       opportunity_districts: 5,
@@ -40,11 +46,7 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
       republican: "70%",
       map_value: [35.5, -115],
     };
-    if (
-      !displayedDistrictPlans.some(
-        (item) => item.district_plan === plan.district_plan
-      )
-    ) {
+    if (!displayedDistrictPlans.some((item) => item.district_plan === plan.district_plan)) {
       setDisplayedDistrictPlans([...displayedDistrictPlans, plan]);
     }
   }
@@ -53,15 +55,14 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
     const selected = displayedDistrictPlans.map((item) => {
       return item;
     });
-    const newSelected = selected.filter(
-      (item) => item.district_plan !== districtPlanNum
-    );
+    const newSelected = selected.filter((item) => item.district_plan !== districtPlanNum);
     setDisplayedDistrictPlans(newSelected);
   }
 
   function handleOpenModal(open: boolean) {
     setModal(open);
   }
+
   return (
     <div>
       <AlertModal openCallBack={handleOpenModal} isOpen={modal} />
@@ -84,7 +85,7 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
                 width: "60px",
               }}
             >
-              {"# Districts w/ African American Population > 5,000,000"}
+              {axisLabels[1]}
             </div>
           </div>
           <ScatterChart
@@ -97,12 +98,12 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
             <XAxis
               dataKey="x"
               type="number"
-              name="Average African-American Population (%)"
+              name={axisLabels[0]}
             />
             <YAxis
               dataKey="y"
               type="number"
-              name="# Districts w/ African American Population > 5,000,000"
+              name={axisLabels[1]}
             />
             <Tooltip
               cursor={{ strokeDasharray: "3 3" }}
@@ -111,13 +112,13 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
             <Legend />
             <Scatter
               name="Available Data"
-              data={sampleData.data01}
+              data={availableData}
               fill="#82ca9d"
-              onClick={handleDistrictSelection}
+              onClick={handleDistrictPlanSelection}
             />
             <Scatter
               name="Unavailable Data"
-              data={sampleData.data02}
+              data={unavailableData}
               fill="#ca8287"
               onClick={() => handleOpenModal(true)}
             />
@@ -133,7 +134,7 @@ export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlan
             justifyContent: "end",
           }}
         >
-          {"Average African-American Population (%)"}
+          {axisLabels[0]}
         </div>
       </div>
       <TableContainer className="plan-table-container" component={Paper}>

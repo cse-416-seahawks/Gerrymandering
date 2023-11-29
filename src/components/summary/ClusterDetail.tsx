@@ -1,50 +1,27 @@
 import React, { FC, useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { useMapEvent } from "react-leaflet";
-import * as sampleData from "../SampleData";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
-import AlertModal from "../AlertModal";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ScatterChart,
-  Scatter,
-  ZAxis,
-} from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { DistrictSelectionProps, district_summary_table} from "../tables/TableTypes";
+import { DistrictSelectionProps } from "../tables/TableTypes";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
-
-interface DistrictPlanData {
-  district_plan: number,
-  opportunity_districts: number,
-  democrat: string,
-  republican: string,
-}
+import { fetchClusterDetailGraph } from "../apiClient";
+import { DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface"
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
   const [districtSelection, setDistrictSelection] = useState(0);
   const [coordinates, setCoordinates] = useState<Array<number>>([]);
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
-  const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
+  const [districtPlans, setDistrictPlans] = useState<DistrictPlanGraphData | any>();
+  
+  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+  const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
+  const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
@@ -56,18 +33,20 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
   }
 
   useEffect(() => {
-    async function fetchDistrictData() {
+    const currState = state[state.length - 1].currentState;
+    const currClusterId = state[state.length - 1].clusterId;
+
+    async function getClusterDetailGraph() {
       try {
-        const currState = state[state.length-1].currentState;
-        const districtPlanIds = state[state.length-1].districtPlanIds;
-        
-        // const response = await fetchDistrictPlanData(currState, districtPlanIds);
-        // setDistrictPlans(response.data);
+        const response = await fetchClusterDetailGraph(currState, currClusterId);
+        setAxisLabels([response.x_axis_label, response.y_axis_label]);
+        setAvailableDataPoints(response.data.filter((points: DistrictPlanPoints) => points.availableData));
+        setUnavailableDataPoints(response.data.filter((points: DistrictPlanPoints) => !points.availableData));
       } catch(error) {
-        throw error;
+        console.log(error);
       }
     }
-    fetchDistrictData();
+    getClusterDetailGraph();
   }, []);
 
   return (
@@ -93,7 +72,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <DistrictPlanScatterPlot district_plans={districtPlans}/>
+          <DistrictPlanScatterPlot axisLabels={axisLabels} availableData={availableDataPoints} unavailableData={unavailableDataPoints}/>
         </TabPanel>
         <TabPanel value="2">
           <ClusterDetailTable districtChange={handleDistrictChange}/>
