@@ -27,7 +27,7 @@ export default function PrimarySearchAppBar() {
   const NavbarOptions = [
     {
       title: "Cluster Analysis",
-      path: "/Home",
+      path: "/home",
       icon: <VscIcons.VscGraphScatter />,
       cName: "nav-text",
       selected: clusterAnalysis,
