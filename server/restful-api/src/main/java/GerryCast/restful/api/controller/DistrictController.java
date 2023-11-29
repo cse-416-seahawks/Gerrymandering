@@ -30,49 +30,42 @@ import org.bson.Document;
 @CrossOrigin(origins = "http://localhost:3000")
 public class DistrictController {
     private final MongoDatabase db;
-    // private final GeoJSONService geoJSONService;
 
     @Autowired
     public DistrictController(MongoDatabase db) {
         this.db = db;
     }
-    
-    @GetMapping("/checkDatabase")
-    public String checkDatabase() {
-        String connectedDatabase = db.getName();
-        return "Connected to database: " + connectedDatabase;
+
+    public MongoCollection<Document> getStateCollection(@PathVariable final String state) {
+        if(state.equals("TEXAS")) {
+            return db.getCollection("Texas");
+        } else if (state.equals("VIRGINIA")) {
+            return db.getCollection("Virginia");
+        } else if (state.equals("NEVADA")) {
+            return db.getCollection("Nevada");
+        }
+        return null;
     }
-
+    
     @GetMapping("/getStateOutline/{state}")
-    public ResponseEntity<String> getStateOutline(@PathVariable final String state){
-        MongoCollection<Document> geojsons = null;
+    public ResponseEntity<String> getStateOutline(@PathVariable final String state) {
+        MongoCollection<Document> stateCollection = getStateCollection(state);
 
-        if(state.equals("TEXAS")){
-            geojsons = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            geojsons = db.getCollection("Virginia");
-        }
-        
-        if(state.equals("NEVADA")){
-            geojsons = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        if(geojsons == null){
-            return new ResponseEntity<>("Input a valid state, put in the correct two letter capitalized abbreviation of the state.", HttpStatus.BAD_REQUEST);
-        }
-
-        FindIterable<Document> documents = geojsons.find();
+        FindIterable<Document> documents = stateCollection.find();
 
         List<Document> dList = new ArrayList<>();
 
         for (Document d: documents) {
             dList.add(d);
         }
+
         if (dList.isEmpty()) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
         }
-        
         
         Gson gson = new Gson();
         String json = gson.toJson(dList);
@@ -81,25 +74,13 @@ public class DistrictController {
     
     @GetMapping("/getCurrentDistrictPlan/{state}")
     public ResponseEntity<String> getCurrentDistrictPlan(@PathVariable final String state) {
-        MongoCollection<Document> geojsons = null;
-
-
-        if(state.equals("TEXAS")){
-            geojsons = db.getCollection("TexasDistrict");
-        }
-        if(state.equals("VIRGINIA")){
-            geojsons = db.getCollection("VirginiaDistrict");
-        }
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("NEVADA")){
-            geojsons = db.getCollection("NevadaDistrict");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        if(geojsons == null){
-            return new ResponseEntity<>("Input a valid state, put in the state in all capitalization.", HttpStatus.BAD_REQUEST);
-        }
-
-        FindIterable<Document> documents = geojsons.find();
+        FindIterable<Document> documents = stateCollection.find();
 
         List<Document> dList = new ArrayList<>();
 
@@ -110,7 +91,6 @@ public class DistrictController {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
         }
         
-        
         Gson gson = new Gson();
         String json = gson.toJson(dList);
         return new ResponseEntity<>(json, HttpStatus.OK);
@@ -118,17 +98,10 @@ public class DistrictController {
 
     @GetMapping("/getStateEnsembles/{state}")
     public ResponseEntity<String> getStateEnsembles(@PathVariable final String state) {
-        MongoCollection<Document> stateCollection = null;
-
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("type", "EnsembleData");
@@ -145,17 +118,10 @@ public class DistrictController {
 
     @GetMapping("/getClusterSummaryData/{state}/{ensembleId}/{distanceMeasure}")
     public ResponseEntity<String> getClusterSummaryData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
-        MongoCollection<Document> stateCollection = null;
-
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("type", "ClusterData").append("ensemble_id", ensembleId).append("distance_measure", distanceMeasure);
@@ -171,16 +137,10 @@ public class DistrictController {
 
     @GetMapping("/getClusterDetails/{state}/{districtPlanIds}")
     public ResponseEntity<String> getClusterDetails(@PathVariable final String state, @PathVariable final String[] districtPlanIds) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         List<String> districtPlans = new ArrayList<>();
@@ -201,16 +161,10 @@ public class DistrictController {
 
     @GetMapping("/getDistrictPlanGeoJSON/{state}/{districtPlanId}")
     public ResponseEntity<String> getDistrictPlanGeoJSON(@PathVariable final String state, @PathVariable final String districtPlanId) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("TexasDistrict");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("VirginiaDistrict");
-        }
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("NevadaDistrict");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("type", "DistrictPlanGeoJSON").append("district_plan_id", districtPlanId);
@@ -226,17 +180,10 @@ public class DistrictController {
 
     @GetMapping("/getClusterGraphData/{state}/{ensembleId}/{distanceMeasure}")
     public ResponseEntity<String> getClusterGraphData(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
-        
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("graph_type", "ScatterPlotOfClusters").append("ensemble_id", ensembleId).append("distance_measure", distanceMeasure);
@@ -252,17 +199,10 @@ public class DistrictController {
 
     @GetMapping("/getDistrictPlanGraphData/{state}/{clusterId}")
     public ResponseEntity<String> getDistrictPlanGraphData(@PathVariable final String state, @PathVariable final String clusterId) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
-        
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("graph_type", "ScatterPlotOfDistrictPlans").append("cluster_id", clusterId);
@@ -278,17 +218,10 @@ public class DistrictController {
 
     @GetMapping("/getDistanceMeasureData/{state}/{ensembleId}")
     public ResponseEntity<String> getDistanceMeasureData(@PathVariable final String state, @PathVariable final String ensembleId) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
-        
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("type", "DistanceMeasuresData").append("ensemble_id", ensembleId);
@@ -304,17 +237,10 @@ public class DistrictController {
 
     @GetMapping("/getAssociationData/{state}")
     public ResponseEntity<String> getAssociationData(@PathVariable final String state) {
-        MongoCollection<Document> stateCollection = null;
+        MongoCollection<Document> stateCollection = getStateCollection(state);
         
-        if(state.equals("TEXAS")){
-            stateCollection = db.getCollection("Texas");
-        }
-        if(state.equals("VIRGINIA")){
-            stateCollection = db.getCollection("Virginia");
-        }
-        
-        if(state.equals("NEVADA")){
-            stateCollection = db.getCollection("Nevada");
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
         Document docFinder = new Document("type", "AssociationData");
