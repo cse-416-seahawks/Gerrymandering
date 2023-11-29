@@ -27,7 +27,6 @@ router.get('/file/:filename', (req, res) => {
 */
 
 const GeoJSONModel = require("../src/components/Schemas/GeoJSONSchema")
-//const VirginiaModel = mongoose.model('Virginia', GeoJSONSchema);
 
 conn.once('open', async () => {
     router.get('/find?', async (req, res) => {
