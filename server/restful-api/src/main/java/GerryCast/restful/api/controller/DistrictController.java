@@ -74,7 +74,15 @@ public class DistrictController {
     
     @GetMapping("/getCurrentDistrictPlan/{state}")
     public ResponseEntity<String> getCurrentDistrictPlan(@PathVariable final String state) {
-        MongoCollection<Document> stateCollection = getStateCollection(state);
+        MongoCollection<Document> stateCollection = null;
+
+        if(state.equals("TEXAS")) {
+            stateCollection = db.getCollection("TexasPlans");
+        } else if (state.equals("VIRGINIA")) {
+            stateCollection = db.getCollection("VirginiaPlans");
+        } else if (state.equals("NEVADA")) {
+            stateCollection = db.getCollection("NevadaPlans");
+        }
         
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
