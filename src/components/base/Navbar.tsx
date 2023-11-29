@@ -34,10 +34,9 @@ export default function PrimarySearchAppBar() {
     navigate("/");
   };
 
-  console.log("Nav", state);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton
             size="large"
@@ -74,21 +73,18 @@ export default function PrimarySearchAppBar() {
                     Cluster Analysis
                   </Link>
                 )}
-                {state[state.length - 1].currentInfoCard !== "Ensemble Info" &&
-                  state[state.length - 1].currentInfoCard !==
-                    InfoCardType.distanceMeasure && (
+                {state[state.length - 1].step > 0 && state[state.length - 1].currentInfoCard !==
+                InfoCardType.distanceMeasure && (
                     <Link underline="none" color="white">
                       {state[state.length - 1].distanceMeasure}
                     </Link>
                   )}
-                {state[state.length - 1].currentInfoCard !==
-                  InfoCardType.ensembleInfo && (
+                {state[state.length - 1].step > 0 && (
                   <Link underline="none" color="white">
                     Ensemble {state[state.length - 1].ensemble}
                   </Link>
                 )}
-                {state[state.length - 1].currentInfoCard ==
-                  InfoCardType.clusterDetails && (
+                {state[state.length - 1].step > 1 && (
                   <Link underline="none" color="white">
                     Cluster {state[state.length - 1].cluster}
                   </Link>
