@@ -88,12 +88,20 @@ function TableData(props: TableDataProps) {
 
   function handleClusterSelection(clusterData: ClusterData) {
     setCluster(clusterData.cluster_number);
+    
     dispatch({
       type: "SET_CLUSTER",
       payload: {
         cluster: clusterData.cluster_number,
         clusterId: clusterData.cluster_id,
         districtPlanIds: clusterData.district_plans,
+      },
+    });
+
+    dispatch({
+      type: "CHANGE_INFO_CARD",
+      payload: {
+        infoCardType: InfoCardType.clusterDetails,
       },
     });
   }
@@ -152,18 +160,6 @@ function TableData(props: TableDataProps) {
           </Stepper>
         </div>
       </div>
-      {/* <div style={{display:'flex', width: '100%'}}> */}
-        <div className='table-info'>
-          {currentStep == 1 && (
-            <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
-          )}
-          {currentStep == 2 && (
-            <div className="ensemble-number">
-              Viewing Ensemble {ensemble}, Cluster {cluster}
-            </div>
-          )}
-        </div>
-      {/* </div> */}
 
       {/* State Details */}
       {currentStep == 0 && (

@@ -10,20 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button/Button";
-import { Link } from "@mui/material";
+import { Breadcrumbs, Link } from "@mui/material";
 
 export default function PrimarySearchAppBar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const { state, dispatch } = useContext(GlobalContext);
-  const [isStateUnselected, setStateUnselected] = useState(
-    state[state.length - 1].currentState === AvailableStates.Unselected
-  );
-  let clusterAnalysis = state[state.length - 1].clusterAnalysis;
-
-  const [breadcrumbs, setBreadcrumbs] = useState<Array<React.JSX.Element>>([]);
-
+  const [isStateUnselected, setStateUnselected] = useState(state[state.length - 1].currentState === AvailableStates.Unselected);
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -36,18 +28,8 @@ export default function PrimarySearchAppBar() {
     navigate("/");
   };
 
-  const handleClick = (path : string) => {
-    dispatch({
-      type : "CHANGE_STATE",
-      payload : {
-        currentState : state[state.length - 1].currentState
-      }
-    })
-    navigate(path);
-  }
 
-  const menuId = "primary-search-account-menu";
-
+  console.log("Nav", state)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -71,7 +53,31 @@ export default function PrimarySearchAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected && ( <div> Select a state from the map </div> )}
+          {isStateUnselected ? 
+          ( <div> Select a state from the map </div> ) :
+          
+          <>
+            <Breadcrumbs aria-label="breadcrumb">
+              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
+                <Link underline="none" color="white">
+                  { state[state.length - 1].distanceMeasure}
+                </Link>
+              }
+              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
+                <Link underline="none" color="white">
+                  Ensemble { state[state.length - 1].ensemble}
+                </Link>
+              }
+              { state[state.length - 1].currentInfoCard == "Cluster Details" && 
+                <Link underline="none" color="white">
+                  Cluster { state[state.length - 1].cluster}
+                </Link>
+              }
+            </Breadcrumbs>
+          </>
+          }
+
+          
         </Toolbar>
       </AppBar>
     </Box>

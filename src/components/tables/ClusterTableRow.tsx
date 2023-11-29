@@ -56,7 +56,8 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
       dispatch({
         type: "SET_CLUSTER",
         payload: {
-          cluster: cluster.cluster_id,
+          cluster: cluster.cluster_number,
+          clusterId: cluster.cluster_id,
           districtPlanIds: cluster.district_plans,
         },
       });
