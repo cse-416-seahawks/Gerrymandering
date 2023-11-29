@@ -18,7 +18,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import { EnsembleData, GlobalContext } from "../../globalContext";
+import { EnsembleData, GlobalContext, InfoCardType } from "../../globalContext";
 import { useNavigate } from "react-router-dom";
 
 
@@ -108,13 +108,24 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
               variant="text"
               size="large"
               sx={{pointerEvents : "auto"}}
-              onClick={() =>
+              onClick={() =>{
                 handleStep(
                   1,
                   row.ensemble,
                   ensembleData[row.ensemble - 1]
                     .ensemble_id
                 )
+                if(!showToggle){
+                  dispatch({
+                    type : "CHANGE_INFO_CARD",
+                    payload : {
+                      infoCardType : InfoCardType.distanceMeasure
+                    }
+                  })
+                }
+              }
+                
+                
               }
             >
               Ensemble {row.ensemble}
@@ -141,6 +152,12 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
                     ensembleData[row.ensemble - 1]
                       .ensemble_id
                   )
+                  dispatch({
+                    type : "CHANGE_INFO_CARD",
+                    payload : {
+                      infoCardType : InfoCardType.distanceMeasure
+                    }
+                  })
                   navigate("/distances")
                 }
                  

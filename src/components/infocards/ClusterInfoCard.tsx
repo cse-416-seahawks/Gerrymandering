@@ -83,7 +83,7 @@ export default function ClusterInfoCard() {
                   <ListItemText
                     primary={<Typography variant="subtitle1">Total Number of Clusters</Typography>}
                   />
-                  <Typography variant="subtitle1">10 Clusters</Typography>
+                  <Typography variant="subtitle1">6 Clusters</Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
@@ -92,7 +92,7 @@ export default function ClusterInfoCard() {
                   <ListItemText
                     primary={<Typography variant="subtitle1">Total Number of District Plans</Typography>}
                   />
-                  <Typography variant="subtitle1">10 Plans</Typography>
+                  <Typography variant="subtitle1">112 Plans</Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>

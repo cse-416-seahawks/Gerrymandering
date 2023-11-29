@@ -7,16 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useMapEvent } from "react-leaflet";
 import * as sampleData from "../SampleData";
-import TabPanel from "@mui/lab/TabPanel";
-import TabContext from "@mui/lab/TabContext";
-import Box from "@mui/material/Box";
-import { Tabs, Tab } from "@mui/material";
 import AlertModal from "../AlertModal";
 import {
-  AreaChart,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,

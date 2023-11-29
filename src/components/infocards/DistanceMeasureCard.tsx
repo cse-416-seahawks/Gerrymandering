@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
+import DistanceTable from "../tables/DistanceTable";
 
 export default function DistanceMeasureCard() {
     const stateDetails = {
@@ -56,6 +57,7 @@ export default function DistanceMeasureCard() {
           />
         </Stack>
       </Box>
+    <DistanceTable/>
     </CardContent>
   );
 }

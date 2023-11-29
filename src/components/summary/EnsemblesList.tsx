@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import { GlobalContext, EnsembleData, InfoCardType } from "../../globalContext";
 import { fetchStateEnsembles } from "../apiClient";
 import EnsemblesList from "../tables/EnsembleTable";
-import ClusterAssociationGraph from "../graphs/ClusterAssociationGraph";
+import ClusterAssociationGraph from "../graphs/ClusterAssociationChart";
 
 interface EnsembleProps {
   showToggle: boolean;

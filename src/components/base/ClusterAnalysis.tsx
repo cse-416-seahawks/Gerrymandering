@@ -46,7 +46,7 @@ function TableData(props: {
     ensemble: number,
     ensembleId: string
   ) {
-    if(step === 0) {
+    if(step === 0 && state[state.length - 1].step !== 0) {
       dispatch ({
         type : "CHANGE_INFO_CARD",
         payload : {

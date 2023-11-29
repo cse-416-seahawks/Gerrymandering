@@ -9,7 +9,8 @@ import { ClusterSelectionProps } from "../tables/TableTypes";
 import { fetchClusterSummaryData, fetchClusterGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
-import ClusterScatterPlot from "../graphs/ClusterScatterPlot";
+import ClusterScatterPlot from "../graphs/ClusterScatterChart";
+import MDSChart from "../graphs/MDSChart";
 
 interface ClusterData {
   cluster_number: number,
@@ -125,7 +126,13 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
             />
             <Tab
               value="2"
-              label="Cluster Graph"
+              label="MDS Graph"
+              sx={{ textTransform: "none" }}
+              onClick={handleSummaryCard}
+            />
+            <Tab
+              value="3"
+              label="Custom Graph"
               sx={{ textTransform: "none" }}
               onClick={handlePlotOptions}
             />
@@ -135,6 +142,9 @@ export default function ClusterSummary({onClusterSelection}: ClusterSelectionPro
           <ClusterTable clusters={clusterData} />
         </TabPanel>
         <TabPanel value="2">
+          <MDSChart data={clusterData} data_points={dataPoints} axis_labels={axisLabels} />
+        </TabPanel>
+        <TabPanel value="3">
           <ClusterScatterPlot data={clusterData} data_points={dataPoints} axis_labels={axisLabels}/>
         </TabPanel>
       </TabContext>

@@ -28,8 +28,9 @@ import {
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
 import { DistrictSelectionProps, district_summary_table} from "../tables/TableTypes";
-import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterPlot";
+import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
+import PartySplitChart from "../graphs/PartySplitChart";
 
 interface DistrictPlanData {
   district_plan: number,
@@ -96,6 +97,11 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
                 label="Table View"
                 sx={{ textTransform: "none" }}
               />
+               <Tab
+                value="3"
+                label="Party Split"
+                sx={{ textTransform: "none" }}
+              />
             </Tabs>
           </Box>
           <TabPanel value="1">
@@ -103,6 +109,9 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           </TabPanel>
           <TabPanel value="2">
             <ClusterDetailTable districtChange={handleDistrictChange}/>
+          </TabPanel>
+          <TabPanel value="3">
+            <PartySplitChart/>
           </TabPanel>
         </TabContext>
     

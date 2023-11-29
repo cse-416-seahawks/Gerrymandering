@@ -19,11 +19,11 @@ import { GlobalContext, AvailableStates } from "../../globalContext";
 
 export default function ClusterAssociationInfoCard() {
   const Data3: ensemble_summary_table[] = [
-    { ensemble: 1, num_clusters: 3, plans_needed: 309 },
-    { ensemble: 2, num_clusters: 4.3, plans_needed: 425 },
-    { ensemble: 3, num_clusters: 4.6, plans_needed: 321 },
-    { ensemble: 4, num_clusters: 5.3, plans_needed: 251 },
-    { ensemble: 5, num_clusters: 6.3, plans_needed: 268 },
+    { ensemble: 1, num_clusters: 62, plans_needed: 309 },
+    { ensemble: 2, num_clusters: 28, plans_needed: 425 },
+    { ensemble: 3, num_clusters: 6, plans_needed: 321 },
+    { ensemble: 4, num_clusters: 37, plans_needed: 251 },
+    { ensemble: 5, num_clusters: 39, plans_needed: 268 },
   ];
 
   const stateDetails = {
@@ -75,9 +75,9 @@ export default function ClusterAssociationInfoCard() {
         <Table size="small" sx={{ minWidth: 650 }}>
           <TableHead sx={{ height: "10px", fontSize: "10px" }}>
             <TableRow>
-              <TableCell>Ensemble</TableCell>
-              <TableCell align="right"># of clusters at 500</TableCell>
-              <TableCell align="right">
+              <TableCell align="center">Ensemble</TableCell>
+              <TableCell align="center"># of clusters at 500</TableCell>
+              <TableCell align="center">
                 Plans needed to reach max clusters
               </TableCell>
             </TableRow>
@@ -86,11 +86,11 @@ export default function ClusterAssociationInfoCard() {
           <TableBody>
             {Data3.map((row) => (
               <TableRow key={row.ensemble}>
-                <TableCell component="th" scope="row">
+                <TableCell align="center" component="th" scope="row">
                   {row.ensemble}
                 </TableCell>
-                <TableCell align="right">{row.num_clusters}</TableCell>
-                <TableCell align="right">{row.plans_needed}</TableCell>
+                <TableCell align="center">{row.num_clusters}</TableCell>
+                <TableCell align="center">{row.plans_needed}</TableCell>
               </TableRow>
             ))}
           </TableBody>
