@@ -68,6 +68,7 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle } 
             page={page}
             onChange={handleChange}
             count={Math.floor(ensembleData.length / 7)}
+            sx={{ marginBottom : "1rem"}}
           />
           <Box sx={{ flexGrow: 1 }} />
           <div className="toggleButton-container">

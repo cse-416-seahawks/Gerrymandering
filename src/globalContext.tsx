@@ -25,6 +25,12 @@ export interface EnsembleData {
   num_dist_plans: number;
 }
 
+export interface GraphOptions {
+  demographic : string,
+  population : number,
+  comparison : boolean
+}
+
 export enum InfoCardType {
   ensembleInfo = "Ensemble Info",
   associationDetail = "Ensemble Size Association",
@@ -51,6 +57,7 @@ export enum GlobalTypes {
   SetCluster = "SET_CLUSTER",
   AddEnsembleDetail = "ADD_ENS_DETAIL",
   UpdateEnsembleDetail = "UPDATE_ENS_DETAIL",
+  EditGraphOptions = "EDIT_GRAPH_OPTIONS"
 }
 
 export type GlobalState = {
