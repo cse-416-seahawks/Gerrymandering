@@ -12,6 +12,7 @@ import { Stack, IconButton, Stepper, Step, StepButton } from "@mui/material";
 import Ensembles from "../summary/EnsemblesList";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DistanceMeasureInfo from "../summary/DistanceMeasureInfo";
+import { useNavigate } from "react-router-dom";
 
 function Distance() {
   const [selectedDistrict, setSelectedDistrict] = useState<number>(-1);
@@ -20,6 +21,7 @@ function Distance() {
   ]);
 
   const { state, dispatch } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const handleDistrictSelection = (
     district_num: number,
@@ -65,7 +67,7 @@ function Distance() {
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() => handleStepChange(currentStep - 1)}
+            onClick={() => navigate("/home")}
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>
@@ -90,20 +92,6 @@ function Distance() {
             <div className="distance-table-container">
               <div className="navigation-container">
                 <BackButton />
-                <div className="stepper-container">
-                  <Stepper activeStep={currentStep}>
-                    {steps.map((label, index) => (
-                      <Step key={label} completed={completed[index]}>
-                        <StepButton
-                          color="inherit"
-                          onClick={() => handleStepChange(index)}
-                        >
-                          {label}
-                        </StepButton>
-                      </Step>
-                    ))}
-                  </Stepper>
-                </div>
               </div>
               {/* State Details */}
               {currentStep === 0 && (

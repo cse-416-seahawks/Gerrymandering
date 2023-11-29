@@ -145,3 +145,7 @@ img {
   color: rgb(176, 193, 251);
   transform: scale(0.98);
 }
+
+.MuiBreadcrumbs-separator{
+  color: white;
+}

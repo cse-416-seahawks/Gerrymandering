@@ -89,12 +89,20 @@ function TableData(props: TableDataProps) {
 
   function handleClusterSelection(clusterData: ClusterData) {
     setCluster(clusterData.cluster_number);
+    
     dispatch({
       type: "SET_CLUSTER",
       payload: {
         cluster: clusterData.cluster_number,
         clusterId: clusterData.cluster_id,
         districtPlanIds: clusterData.district_plans,
+      },
+    });
+
+    dispatch({
+      type: "CHANGE_INFO_CARD",
+      payload: {
+        infoCardType: InfoCardType.clusterDetails,
       },
     });
   }
