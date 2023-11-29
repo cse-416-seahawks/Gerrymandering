@@ -14,7 +14,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { ensemble_summary_table } from "../tables/TableTypes";
+import { ensemble_summary_table } from "../types/TableTypes";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 
 export default function ClusterAssociationInfoCard() {

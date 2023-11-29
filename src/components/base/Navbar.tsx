@@ -2,7 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as VscIcons from "react-icons/vsc";
 import "../css/Navbar.css";
-import { AvailableStates, GlobalContext } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  InfoCardType,
+} from "../../globalContext";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,7 +19,9 @@ import { Breadcrumbs, Link } from "@mui/material";
 export default function PrimarySearchAppBar() {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(GlobalContext);
-  const [isStateUnselected, setStateUnselected] = useState(state[state.length - 1].currentState === AvailableStates.Unselected);
+  const [isStateUnselected, setStateUnselected] = useState(
+    state[state.length - 1].currentState === AvailableStates.Unselected
+  );
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -28,8 +34,7 @@ export default function PrimarySearchAppBar() {
     navigate("/");
   };
 
-
-  console.log("Nav", state)
+  console.log("Nav", state);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -45,39 +50,54 @@ export default function PrimarySearchAppBar() {
             <HomeIcon fontSize="large" />
           </IconButton>
           <Typography
-            variant="h5"
             component="div"
+            fontWeight={"bold"}
+            fontSize={"1.5rem"}
             sx={{ mr: 2, display: { xs: "none", sm: "block" } }}
           >
             GerryCast
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected ? 
-          ( <div> Select a state from the map </div> ) :
-          
-          <>
-            <Breadcrumbs aria-label="breadcrumb">
-              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
-                <Link underline="none" color="white">
-                  { state[state.length - 1].distanceMeasure}
-                </Link>
-              }
-              { state[state.length - 1].currentInfoCard !== "Ensemble Info" && 
-                <Link underline="none" color="white">
-                  Ensemble { state[state.length - 1].ensemble}
-                </Link>
-              }
-              { state[state.length - 1].currentInfoCard == "Cluster Details" && 
-                <Link underline="none" color="white">
-                  Cluster { state[state.length - 1].cluster}
-                </Link>
-              }
-            </Breadcrumbs>
-          </>
-          }
-
-          
+          {isStateUnselected ? (
+            <div> Select a state from the map </div>
+          ) : (
+            <>
+              <Breadcrumbs aria-label="breadcrumb">
+                {state[state.length - 1].currentInfoCard ===
+                InfoCardType.distanceMeasure ? (
+                  <Link underline="none" color="white">
+                    Distance Measure Comparision
+                  </Link>
+                ) : (
+                  <Link underline="none" color="white">
+                    Cluster Analysis
+                  </Link>
+                )}
+                {state[state.length - 1].currentInfoCard !== "Ensemble Info" &&
+                  state[state.length - 1].currentInfoCard !==
+                    InfoCardType.distanceMeasure && (
+                    <Link underline="none" color="white">
+                      {state[state.length - 1].distanceMeasure}
+                    </Link>
+                  )}
+                {state[state.length - 1].currentInfoCard !==
+                  InfoCardType.ensembleInfo && (
+                  <Link underline="none" color="white">
+                    Ensemble {state[state.length - 1].ensemble}
+                  </Link>
+                )}
+                {state[state.length - 1].currentInfoCard ==
+                  InfoCardType.clusterDetails && (
+                  <Link underline="none" color="white">
+                    Cluster {state[state.length - 1].cluster}
+                  </Link>
+                )}
+              </Breadcrumbs>
+            </>
+          )}
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit">About</Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -22,15 +22,15 @@ export default function ClusterTable({ clusters, onClusterSelection }: ClusterTa
   }
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
+      <Table size="small" aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
             <TableCell align="center">Number</TableCell>
             <TableCell />
             <TableCell align="center">Name</TableCell>
-            <TableCell align="center"># District Plans</TableCell>
-            <TableCell align="center">Avg Distance Between Plans</TableCell>
+            <TableCell align="center">District Plans</TableCell>
+            <TableCell align="center">Avg Distance</TableCell>
             <TableCell align="center">Avg Republican Voters</TableCell>
             <TableCell align="center">Avg Democratic Voters</TableCell>
           </TableRow>

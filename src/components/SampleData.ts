@@ -2,7 +2,7 @@ import type {
   ensembleData,
   ensemble_summary_table,
   district_summary_table,
-} from "./tables/TableTypes";
+} from "./types/TableTypes";
 
 function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;

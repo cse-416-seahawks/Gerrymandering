@@ -22,7 +22,7 @@ import {
 import { GlobalContext } from "../../globalContext";
 import {
   district_summary_table,
-} from "../tables/TableTypes";
+} from "../types/TableTypes";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 
 interface DistrictPlanScatterPlotProps {

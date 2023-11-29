@@ -19,8 +19,10 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  CardActions,
+  Button,
 } from "@mui/material";
-import { AvailableStates, GlobalContext } from "../../globalContext";
+import { AvailableStates, Demographics, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
 
 const ITEM_HEIGHT = 48;
@@ -34,12 +36,7 @@ const MenuProps = {
   },
 };
 
-const x_axis = [
-  "African American Population",
-  "Caucasian Population",
-  "Asian American Population",
-  "Hispanic Population",
-];
+const x_axis = Object.values(Demographics)
 
 function getStyles(name: string, personName: string[], theme: Theme) {
   return {
@@ -104,7 +101,7 @@ export default function ScatterPlotOptions() {
         </Stack>
       </Box>
       <Box sx={{display : "flex"}}> 
-      <Box sx={{ margin: "2rem" }}>
+      <Box sx={{ margin: "1rem" }}>
         <FormControl sx={{ alignItems: "left", m: 1, minWidth: 250 }}>
           <InputLabel>Demographic</InputLabel>
           <Select
@@ -146,21 +143,23 @@ export default function ScatterPlotOptions() {
           </Box>
       </Box>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ margin : "1rem", width: 650 }}>
+        <Box sx={{ margin : "0.5rem", width: 650 }}>
           <Typography align="left" id="input-slider" gutterBottom>
-            Population Threshold
+            Population Threshold (Millions)
           </Typography>
           <Slider
             aria-label="Population Threshold"
             defaultValue={30}
             valueLabelDisplay="auto"
-            step={100000000}
+            step={0.1}
             marks
-            min={1000000000}
-            max={5000000000}
+            min={1}
+            max={5}
           />
         </Box>
       </Box>
+      <Button size="small">Plot</Button>
+      
     </CardContent>
   );
 }

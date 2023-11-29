@@ -27,7 +27,7 @@ import {
   ZAxis,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { DistrictSelectionProps, district_summary_table} from "../tables/TableTypes";
+import { DistrictSelectionProps, district_summary_table} from "../types/TableTypes";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";

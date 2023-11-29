@@ -25,8 +25,15 @@ export interface EnsembleData {
   num_dist_plans: number;
 }
 
+export enum Demographics {
+  AfroAmerican = "African American Population",
+  Causcasian = "Caucasian Population",
+  AsianAmerican = "Asian American Population",
+  Hispanic = "Hispanic Population",
+}
+
 export interface GraphOptions {
-  demographic : string,
+  demographic : Demographics,
   population : number,
   comparison : boolean
 }
