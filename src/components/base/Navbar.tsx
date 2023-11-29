@@ -24,27 +24,6 @@ export default function PrimarySearchAppBar() {
 
   const [breadcrumbs, setBreadcrumbs] = useState<Array<React.JSX.Element>>([]);
 
-  const NavbarOptions = [
-    {
-      title: "Cluster Analysis",
-      path: "/home",
-      icon: <VscIcons.VscGraphScatter />,
-      cName: "nav-text",
-      selected: clusterAnalysis,
-      onClick: () =>
-        dispatch({ type: "PAGE_CHANGE", payload: !clusterAnalysis }),
-    },
-    {
-      title: "Distance Measures",
-      path: "/distances",
-      icon: <VscIcons.VscMap />,
-      cName: "nav-text",
-      selected: !clusterAnalysis,
-      onClick: () =>
-        dispatch({ type: "PAGE_CHANGE", payload: !clusterAnalysis }),
-    },
-  ];
-
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -92,24 +71,7 @@ export default function PrimarySearchAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected ? (
-            <div>Select a state from the map</div>
-          ) : (
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              {NavbarOptions.map((option, index) => {
-                return (
-                    <Button
-                      key={index}
-                      variant="outlined"
-                      sx={{ margin: "0.5rem", color: "white" }}
-                      onClick={() => {handleClick(option.path)}}
-                    >
-                      {option.title}
-                    </Button>
-                );
-              })}
-            </Box>
-          )}
+          {isStateUnselected && ( <div> Select a state from the map </div> )}
         </Toolbar>
       </AppBar>
     </Box>
