@@ -3,61 +3,42 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import {
-  Stack,
-  Chip,
-} from "@mui/material";
+import { Stack, Chip } from "@mui/material";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
 import DistanceTable from "../tables/DistanceTable";
 
 export default function DistanceMeasureCard() {
-    const stateDetails = {
-        Nevada: "Nevada State Assembly 2022",
-        Texas: "Texas House Districts 2022",
-        Virginia: "Virginia House Districts 2022",
-      };
-      const { state, dispatch } = useContext(GlobalContext);
-      const [curDetails, setDetails] = React.useState("");
-    
-      useEffect(() => {
-        let currentState = state[state.length - 1].currentState;
-        if (currentState === AvailableStates.Nevada) {
-          setDetails(stateDetails.Nevada);
-        } else if (currentState === AvailableStates.Virginia) {
-          setDetails(stateDetails.Virginia);
-        } else {
-          setDetails(stateDetails.Texas);
-        }
-      }, [state[state.length - 1].currentState]);
+  const stateDetails = {
+    Nevada: "Nevada State Assembly 2022",
+    Texas: "Texas House Districts 2022",
+    Virginia: "Virginia House Districts 2022",
+  };
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
+
+  useEffect(() => {
+    let currentState = state[state.length - 1].currentState;
+    if (currentState === AvailableStates.Nevada) {
+      setDetails(stateDetails.Nevada);
+    } else if (currentState === AvailableStates.Virginia) {
+      setDetails(stateDetails.Virginia);
+    } else {
+      setDetails(stateDetails.Texas);
+    }
+  }, [state[state.length - 1].currentState]);
   return (
     <CardContent>
-      <Typography
-        align="left"
-        sx={{ fontSize: 14 }}
-        color="text.secondary"
-        gutterBottom
-      >
-        Current District Plan
-      </Typography>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h5" component="div">
+      <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom : "1rem" }}>
+        <Typography fontWeight="bold" sx={{ fontSize: 14 }}>
           {curDetails}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Stack direction="row" spacing={1}>
-          <Chip
-            label="Democratic Districts"
-            style={{ backgroundColor: "blue", color: "white" }}
-          />
-          <Chip
-            label="Republican Districts"
-            style={{ backgroundColor: "red", color: "white" }}
-            variant="outlined"
-          />
-        </Stack>
+        <Typography fontWeight="bold" sx={{ fontSize: 14 }} component="div">
+          Ensemble {state[state.length - 1].ensemble}
+        </Typography>
       </Box>
-    <DistanceTable/>
+      <DistanceTable />
     </CardContent>
   );
 }

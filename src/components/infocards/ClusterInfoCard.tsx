@@ -70,8 +70,8 @@ export default function ClusterInfoCard() {
           />
         </Stack>
       </Box>
-      <Grid item xs={12} md={6}>
-          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+      <Grid>
+          <Typography sx={{ mt: 4, mb: 1 }} variant="subtitle1" component="div">
             Ensemble {state[state.length - 1].ensemble} Summary
           </Typography>
           <Demo>
@@ -100,7 +100,6 @@ export default function ClusterInfoCard() {
                     <TimelineIcon />
                   </ListItemIcon>
                   <ListItemText
-
                     primary={<Typography variant="subtitle1">Distance Measure</Typography>}
                   />
                   <Typography color="blue" variant="subtitle1">{state[state.length - 1].distanceMeasure}</Typography>

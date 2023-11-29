@@ -38,25 +38,29 @@ export default () => {
     chart: {
       type: "boxPlot",
       height: 800,
-      toolbar : {
-        show : false
-      }
+      toolbar: {
+        show: false,
+      },
     },
-    yaxis : {
-        min : 25
+    yaxis :{
+      min : 25
     },
     title: {
       text: "Distance Measure Variation",
-      align: "left",
+      align: "center",
     },
     plotOptions: {
       boxPlot: {
         colors: {
-          upper: "#5C4742",
-          lower: "#A5978B",
+          upper: "#e9ecef",
+          lower: "#f8f9fa",
         },
       },
     },
+    stroke: {
+      colors: ['#6c757d'],
+      width : 1
+    }
   };
-  return <Boxplot options={options} series={series} />;
+  return <Boxplot options={options} series={series} height={710} />;
 };
