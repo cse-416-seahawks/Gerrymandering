@@ -8,13 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import * as sampleData from "../SampleData";
-
+import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 
 interface ClusterDetailTableProps {
-    districtChange: (district_num: number, coords: number[]) => void
+  districtPlanData: Array<DistrictPlanData>,
+  districtChange: (district_num: number, coords: number[]) => void,
 }
 
-export default function ClusterDetailTable({ districtChange } : ClusterDetailTableProps) {
+export default function ClusterDetailTable({ districtPlanData, districtChange } : ClusterDetailTableProps) {
     const buttonStyle = {
       padding: "10px 20px",
       fontSize: "16px",
@@ -37,23 +38,21 @@ export default function ClusterDetailTable({ districtChange } : ClusterDetailTab
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sampleData.district_plan_data.map((row) => (
-                      <TableRow key={row.district_plan}>
+                  {districtPlanData.map((row) => (
+                      <TableRow key={districtPlanData.indexOf(row)}>
                         <TableCell component="th" scope="row">
                           {
                             <button
                               style={buttonStyle}
-                              onClick={() =>
-                                districtChange(row.district_plan, [-1,-1])
-                              }
+                              // onClick={() => districtChange(row.district_plan, [-1,-1])}
                             >
-                              {row.district_plan}
+                              {districtPlanData.indexOf(row) + 1}
                             </button>
                           }
                         </TableCell>
                         <TableCell align="center">{row.opportunity_districts}</TableCell>
-                        <TableCell align="center">{row.democrat}</TableCell>
-                        <TableCell align="center">{row.republican}</TableCell>
+                        <TableCell align="center">{row.avg_democrat}</TableCell>
+                        <TableCell align="center">{row.avg_republican}</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>

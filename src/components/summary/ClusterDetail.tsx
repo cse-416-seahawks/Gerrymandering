@@ -9,15 +9,13 @@ import { DistrictSelectionProps } from "../tables/TableTypes";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
-import { fetchClusterDetailGraph } from "../apiClient";
-import { DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface"
+import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
+import { DistrictPlanGraphData, DistrictPlanPoints, DistrictPlanData } from "../interfaces/AnalysisInterface"
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
-  const [districtSelection, setDistrictSelection] = useState(0);
-  const [coordinates, setCoordinates] = useState<Array<number>>([]);
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
-  const [districtPlans, setDistrictPlans] = useState<DistrictPlanGraphData | any>();
+  const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
@@ -29,12 +27,21 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
 
   function handleDistrictChange(district_num: number, coords: Array<number>) {
     onDistrictSelection(district_num, coords);
-    setDistrictSelection(district_num);
   }
 
   useEffect(() => {
     const currState = state[state.length - 1].currentState;
     const currClusterId = state[state.length - 1].clusterId;
+
+    async function getClusterDetail() {
+      try {
+        const response = await fetchClusterDetails(currState, currClusterId);
+        setTableData(response.data);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getClusterDetail();
 
     async function getClusterDetailGraph() {
       try {
@@ -75,7 +82,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <DistrictPlanScatterPlot axisLabels={axisLabels} availableData={availableDataPoints} unavailableData={unavailableDataPoints}/>
         </TabPanel>
         <TabPanel value="2">
-          <ClusterDetailTable districtChange={handleDistrictChange}/>
+          <ClusterDetailTable districtPlanData={tableData} districtChange={handleDistrictChange}/>
         </TabPanel>
         <TabPanel value="3">
           <PartySplitChart/>

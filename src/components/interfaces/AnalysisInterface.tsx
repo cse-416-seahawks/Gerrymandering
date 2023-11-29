@@ -28,10 +28,11 @@ export interface ClusterPoints {
 }
 
 export interface DistrictPlanData {
-  district_plan: number;
+  district_plan_id: number;
   opportunity_districts: number;
-  democrat: string;
-  republican: string;
+  splits: string;
+  avg_democrat: string;
+  avg_republican: string;
 }
 
 export interface DistrictPlanGraphData {
