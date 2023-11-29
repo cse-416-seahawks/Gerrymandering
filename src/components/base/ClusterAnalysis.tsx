@@ -8,17 +8,19 @@ import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { GlobalContext, InfoCardType } from "../../globalContext";
 import Ensembles from "../summary/EnsemblesList";
-import ClusterTable from "../summary/ClusterSummary";
 import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
+import { ClusterData } from "../interfaces/AnalysisInterface";
 
-function TableData(props: {
+interface TableDataProps {
   selectedState: string;
   onDistrictSelection: (
     district_num: number,
     coordinates: Array<number>
   ) => void;
-}) {
+}
+
+function TableData(props: TableDataProps) {
   const { state, dispatch } = useContext(GlobalContext);
 
   let currentStep = state[state.length - 1].step;
@@ -84,21 +86,19 @@ function TableData(props: {
     props.onDistrictSelection(district_num, coords);
   }
 
-  function handleClusterSelection(
-    clusterNumber: number,
-    clusterId: string,
-    districtPlanIds: Array<string>
-  ) {
-    setCluster(clusterNumber);
+  function handleClusterSelection(clusterData: ClusterData) {
+    setCluster(clusterData.cluster_number);
     dispatch({
       type: "SET_CLUSTER",
       payload: {
-        cluster: clusterNumber,
-        clusterId: clusterId,
-        districtPlanIds: districtPlanIds,
+        cluster: clusterData.cluster_number,
+        clusterId: clusterData.cluster_id,
+        districtPlanIds: clusterData.district_plans,
       },
     });
   }
+
+
   /**
    *
    * Table Data for ensembles
@@ -129,38 +129,41 @@ function TableData(props: {
 
   return (
     <div className="table-container">
-      <div className="stepper-container">
-        <Stepper activeStep={currentStep}>
-          {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
-              <StepButton
-                color="inherit"
-                onClick={() =>
-                  handleStepChange(
-                    index,
-                    ensemble,
-                    state[state.length - 1].ensembleId
-                  )
-                }
-              >
-                {label}
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
-      </div>
-      <div className="table-info">
+      <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
         <BackButton />
-        {currentStep == 1 && (
-          <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
-        )}
-        {currentStep == 2 && (
-          <div className="ensemble-number cluster-number">
-            Viewing Ensemble {ensemble}, Cluster{" "}
-            {state[state.length - 1].cluster}
-          </div>
-        )}
+        <div className="stepper-container">
+          <Stepper activeStep={currentStep}>
+            {steps.map((label, index) => (
+              <Step key={label} completed={completed[index]}>
+                <StepButton
+                  color="inherit"
+                  onClick={() =>
+                    handleStepChange(
+                      index,
+                      ensemble,
+                      state[state.length - 1].ensembleId
+                    )
+                  }
+                >
+                  {label}
+                </StepButton>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
       </div>
+      {/* <div style={{display:'flex', width: '100%'}}> */}
+        <div className='table-info'>
+          {currentStep == 1 && (
+            <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
+          )}
+          {currentStep == 2 && (
+            <div className="ensemble-number">
+              Viewing Ensemble {ensemble}, Cluster {cluster}
+            </div>
+          )}
+        </div>
+      {/* </div> */}
 
       {/* State Details */}
       {currentStep == 0 && (

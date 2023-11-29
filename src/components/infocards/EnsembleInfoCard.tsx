@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -12,24 +12,25 @@ import { useContext } from "react";
 import EnsembleDetailTable from "../tables/EnsembleDetailTable";
 
 export default function EnsembleInfoCard() {
-    const stateDetails = {
-        Nevada: "Nevada State Assembly 2022",
-        Texas: "Texas House Districts 2022",
-        Virginia: "Virginia House Districts 2022",
-      };
-      const { state, dispatch } = useContext(GlobalContext);
-      const [curDetails, setDetails] = React.useState("");
-    
-      React.useEffect(() => {
-        let currentState = state[state.length - 1].currentState;
-        if (currentState === AvailableStates.Nevada) {
-          setDetails(stateDetails.Nevada);
-        } else if (currentState === AvailableStates.Virginia) {
-          setDetails(stateDetails.Virginia);
-        } else {
-          setDetails(stateDetails.Texas);
-        }
-      }, [state[state.length - 1].currentState]);
+  const stateDetails = {
+      Nevada: "Nevada State Assembly 2022",
+      Texas: "Texas House Districts 2022",
+      Virginia: "Virginia House Districts 2022",
+    };
+  const { state, dispatch } = useContext(GlobalContext);
+  const [curDetails, setDetails] = React.useState("");
+
+  useEffect(() => {
+    let currentState = state[state.length - 1].currentState;
+    if (currentState === AvailableStates.Nevada) {
+      setDetails(stateDetails.Nevada);
+    } else if (currentState === AvailableStates.Virginia) {
+      setDetails(stateDetails.Virginia);
+    } else {
+      setDetails(stateDetails.Texas);
+    }
+  }, [state[state.length - 1].currentState]);
+  
   return (
     <CardContent>
       <Typography

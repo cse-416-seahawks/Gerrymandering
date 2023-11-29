@@ -50,6 +50,7 @@ export enum GlobalTypes {
   SetEnsemble = "SET_ENSEMBLE",
   SetCluster = "SET_CLUSTER",
   AddEnsembleDetail = "ADD_ENS_DETAIL",
+  UpdateEnsembleDetail = "UPDATE_ENS_DETAIL",
 }
 
 export type GlobalState = {
@@ -94,6 +95,9 @@ type GlobalStatePayload = {
   [GlobalTypes.AddEnsembleDetail]: {
     EnsembleData: EnsembleData;
   };
+  [GlobalTypes.UpdateEnsembleDetail]: {
+    EnsembleData: EnsembleData[];
+  }
 };
 
 export type GlobalStateActions =
@@ -244,6 +248,23 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: newDetails,
+        },
+      ];
+    case GlobalTypes.UpdateEnsembleDetail:
+     return [
+        ...state,
+        {
+          currentInfoCard : state[state.length - 1].currentInfoCard,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+          ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
+          cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: action.payload.EnsembleData,
         },
       ];
     default:

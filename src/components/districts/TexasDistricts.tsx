@@ -6,14 +6,11 @@ import { fetchDistricts } from "../apiClient";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
 import { Feature, FeatureCollection } from "@turf/turf";
+import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
-  interface DistrictState {
-    data: FeatureCollection | null; // Adjust the type based on your actual data structure
-  }
-
-  const [TexasDistricts, setTexasDistrict] =
-    useState<DistrictState["data"]>(null);
+  const [TexasDistricts, setTexasDistrict] = useState<DistrictState["data"]>(null);
+  
   function getRandomHexCode(): string {
     // Array of possible colors
     const colors = ["#FF0000", "#0000FF"];

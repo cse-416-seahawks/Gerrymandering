@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import CardContent from "@mui/material/CardContent";
 
 import {
@@ -34,7 +34,7 @@ export default function ClusterAssociationInfoCard() {
   const { state, dispatch } = React.useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     let currentState = state[state.length - 1].currentState;
     if (currentState === AvailableStates.Nevada) {
       setDetails(stateDetails.Nevada);

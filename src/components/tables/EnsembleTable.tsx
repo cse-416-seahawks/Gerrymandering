@@ -39,8 +39,6 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
         setPage(value);
       };
 
-      
-    
       const handleSeeDetails = (Ensemble: EnsembleData) => {
         dispatch({
           type: "ADD_ENS_DETAIL",
@@ -63,44 +61,44 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
         return ensembleData.slice((page - 1) * 9, page * 9);
       };
     return (
-        <div>
+      <div>
         <div className="ensemble-table-header">
-        <Pagination
-          size="large"
-          page={page}
-          onChange={handleChange}
-          sx={{ mt: "1rem", mb: "1rem" }}
-          count={Math.floor(ensembleData.length / 7)}
-        />
-        <Box sx={{ flexGrow: 1 }} />
-        <div className="toggleButton-container">
-          {showToggle && (
-            <FormControl required sx={{ m: 1, minWidth: 190 }} size="small">
-              <InputLabel id="demo-select-small-label">
-                Distance Measure
-              </InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                input={<OutlinedInput label="Select a distance measure" />}
-                value={disMeasure}
-                label="Distance Measure"
-                onChange={handleUpdateDistanceMeasure}
-              >
-                <MenuItem value={"Hamming Distance"}>
-                  Hamming Distance
-                </MenuItem>
-                <MenuItem value={"Optimal Transport"}>
-                  Optimal Transport
-                </MenuItem>
-                <MenuItem value={"Total Variation"}>
-                  Total Variation
-                </MenuItem>
-              </Select>
-            </FormControl>
-          )}
+          <Pagination
+            size="large"
+            page={page}
+            onChange={handleChange}
+            sx={{ mb: "1rem" }}
+            count={Math.floor(ensembleData.length / 7)}
+          />
+          <Box sx={{ flexGrow: 1 }} />
+          <div className="toggleButton-container">
+            {showToggle && (
+              <FormControl required sx={{ m: -2, minWidth: 190 }} size="small">
+                <InputLabel id="demo-select-small-label">
+                  Distance Measure
+                </InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  input={<OutlinedInput label="Select a distance measure" />}
+                  value={disMeasure}
+                  label="Distance Measure"
+                  onChange={handleUpdateDistanceMeasure}
+                >
+                  <MenuItem value={"Hamming Distance"}>
+                    Hamming Distance
+                  </MenuItem>
+                  <MenuItem value={"Optimal Transport"}>
+                    Optimal Transport
+                  </MenuItem>
+                  <MenuItem value={"Total Variation"}>
+                    Total Variation
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          </div>
         </div>
-      </div>
       {spliceEnsemble(ensembleData, page).map((row) => (
         <Accordion defaultExpanded={false}>
           <AccordionSummary sx={{pointerEvents : "none"}}>

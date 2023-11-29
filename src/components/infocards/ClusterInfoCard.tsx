@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -32,7 +32,7 @@ export default function ClusterInfoCard() {
         backgroundColor: theme.palette.background.paper,
       }));
 
-      React.useEffect(() => {
+      useEffect(() => {
         let currentState = state[state.length - 1].currentState;
         if (currentState === AvailableStates.Nevada) {
           setDetails(stateDetails.Nevada);
@@ -42,6 +42,7 @@ export default function ClusterInfoCard() {
           setDetails(stateDetails.Texas);
         }
       }, [state[state.length - 1].currentState]);
+      
   return (
     <CardContent>
       <Typography

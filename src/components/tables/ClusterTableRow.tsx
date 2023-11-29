@@ -14,32 +14,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { Button, TextField, Tooltip } from "@mui/material";
 import { GlobalContext } from "../../globalContext";
-
-interface ClusterData {
-  cluster_number: number;
-  cluster_id: string;
-  name: string;
-  num_dist_plans: number;
-  avg_rep: string;
-  avg_dem: string;
-  avg_distance: number;
-  demographics: ClusterDemographicData;
-  district_plans: Array<string>;
-}
-
-interface ClusterDemographicData {
-  caucasian: number;
-  african_american: number;
-  asian_american: number;
-  hispanic: number;
-  other: number;
-}
+import { ClusterData } from "../interfaces/AnalysisInterface";
 
 interface ClusterTableRowProps {
   data: ClusterData;
+  onClusterSelection: (
+    cluster: ClusterData,
+  ) => void;
 }
 
-export default function ClusterTableRow({ data }: ClusterTableRowProps) {
+export default function ClusterTableRow({ data, onClusterSelection }: ClusterTableRowProps) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [clusterName, setName] = useState(data.name);
@@ -65,9 +49,8 @@ export default function ClusterTableRow({ data }: ClusterTableRowProps) {
   };
 
   function handleStepChange(step: number, cluster: ClusterData) {
-    if (step === 2) {
-      // Display selected cluster summary of district plans
-      // onClusterSelection(clusterNumber, clusterId, clusterData[clusterNumber].district_plans);
+    if (step === 2) { // Display selected cluster summary of district plans
+      onClusterSelection(cluster);
       dispatch({
         type: "SET_CLUSTER",
         payload: {

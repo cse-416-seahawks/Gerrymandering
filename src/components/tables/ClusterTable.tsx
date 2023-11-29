@@ -7,31 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ClusterTableRow from "./ClusterTableRow";
-
-interface ClusterData {
-  cluster_number: number;
-  cluster_id: string;
-  name: string;
-  num_dist_plans: number;
-  avg_rep: string;
-  avg_dem: string;
-  avg_distance: number;
-  demographics: ClusterDemographicData;
-  district_plans: Array<string>;
-}
-
-interface ClusterDemographicData {
-  caucasian: number;
-  african_american: number;
-  asian_american: number;
-  hispanic: number;
-  other: number;
-}
+import { ClusterData } from "../interfaces/AnalysisInterface";
 
 interface ClusterTableProps {
   clusters: ClusterData[];
+  onClusterSelection: (
+    cluster: ClusterData,
+  ) => void;
 }
-export default function ClusterTable({ clusters }: ClusterTableProps) {
+
+export default function ClusterTable({ clusters, onClusterSelection }: ClusterTableProps) {
+  function setSelectedCluster(cluster: ClusterData) {
+    onClusterSelection(cluster);
+  }
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -49,7 +37,7 @@ export default function ClusterTable({ clusters }: ClusterTableProps) {
         </TableHead>
         <TableBody>
           {clusters.map((cluster) => (
-            <ClusterTableRow key={cluster.name} data={cluster} />
+            <ClusterTableRow key={cluster.name} data={cluster} onClusterSelection={setSelectedCluster}/>
           ))}
         </TableBody>
       </Table>

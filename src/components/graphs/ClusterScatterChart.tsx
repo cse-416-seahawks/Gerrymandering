@@ -1,9 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "../css/ClusterTable.css";
 import {
   XAxis,
@@ -17,39 +13,12 @@ import {
   Label,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { fetchClusterGraphData } from "../apiClient";
-
-interface ClusterData {
-    cluster_number: number,
-    name: string,
-    num_dist_plans: number,
-    avg_rep: string,
-    avg_dem: string,
-    avg_distance: number,
-    demographics: ClusterDemographicData,
-    district_plans: Array<string>,
-  }
-  
-  interface ClusterDemographicData {
-    caucasian: number,
-    african_american: number,
-    asian_american: number,
-    hispanic: number,
-    other: number,
-  }
-  
-  interface ClusterPoints {
-    cluster_num: number,
-    num_district_plans: number,
-    x: number,
-    y: number,
-  }
+import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
 interface ClusterScatterPlotProps {
     data : ClusterData[]
     data_points : ClusterPoints[],
     axis_labels : string[]
-
 }
 
 export default function ClusterScatterPlot({ data, data_points, axis_labels } : ClusterScatterPlotProps) {

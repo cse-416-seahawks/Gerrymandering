@@ -17,24 +17,8 @@ import VirginiaDistricts from "../districts/VirginiaDistricts";
 import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
 import ClusterSummary from "../summary/ClusterSummary";
 import MainInfoCard from "../infocards/MainInfoCard";
+import { GeoJSON, GeoJSONFeature, StateData, StateZoomData } from "../interfaces/MapInterface";
 
-
-interface GeoJSON {
-  type: string;
-  features: GeoJSONFeature[];
-}
-interface GeoJSONFeature {
-  type: string;
-  properties: any;
-  geometry: any;
-}
-
-interface StateData {
-  [key: string]: [number, number];
-}
-interface StateZoomData {
-  [key: string]: number;
-}
 const stateData: StateData = {
   NEVADA: [38.5, -116.5],
   TEXAS: [31.5, -99.9],

@@ -23,21 +23,13 @@ import { GlobalContext } from "../../globalContext";
 import {
   district_summary_table,
 } from "../tables/TableTypes";
-
-interface DistrictPlanData {
-  district_plan: number;
-  opportunity_districts: number;
-  democrat: string;
-  republican: string;
-}
+import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 
 interface DistrictPlanScatterPlotProps {
   district_plans: DistrictPlanData[];
 }
 
-export default function DistrictPlanScatterPlot({
-  district_plans,
-}: DistrictPlanScatterPlotProps) {
+export default function DistrictPlanScatterPlot({ district_plans }: DistrictPlanScatterPlotProps) {
   const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<
     Array<district_summary_table>
   >([]);

@@ -6,12 +6,9 @@ import { Polygon } from "react-leaflet";
 import { FeatureCollection } from "@turf/turf";
 import { AvailableStates } from "../../globalContext";
 import { fetchDistricts } from "../apiClient";
+import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
-  interface DistrictState {
-    data: FeatureCollection | null; // Adjust the type based on your actual data structure
-  }
-
   const [nevadaDistrict, setNevadaDistrict] =
     useState<DistrictState["data"]>(null);
 
