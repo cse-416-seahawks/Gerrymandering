@@ -88,21 +88,23 @@ function Distance() {
               />
             </div>
             <div className="distance-table-container">
-              <div className="stepper-container">
-                <Stepper activeStep={currentStep}>
-                  {steps.map((label, index) => (
-                    <Step key={label} completed={completed[index]}>
-                      <StepButton
-                        color="inherit"
-                        onClick={() => handleStepChange(index)}
-                      >
-                        {label}
-                      </StepButton>
-                    </Step>
-                  ))}
-                </Stepper>
+              <div className="navigation-container">
+                <BackButton />
+                <div className="stepper-container">
+                  <Stepper activeStep={currentStep}>
+                    {steps.map((label, index) => (
+                      <Step key={label} completed={completed[index]}>
+                        <StepButton
+                          color="inherit"
+                          onClick={() => handleStepChange(index)}
+                        >
+                          {label}
+                        </StepButton>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </div>
               </div>
-              <BackButton />
               {/* State Details */}
               {currentStep === 0 && (
                 <Ensembles showToggle={false} handleStep={handleStepChange} />
