@@ -29,7 +29,7 @@ interface EnsemblesListProps {
 }
 
 
-export default function EnsemblesList({ ensembleData, handleStep, showToggle } : EnsemblesListProps) {
+export default function EnsemblesTable({ ensembleData, handleStep, showToggle } : EnsemblesListProps) {
 
     const { state, dispatch } = useContext(GlobalContext);
     const navigate = useNavigate();
@@ -67,7 +67,6 @@ export default function EnsemblesList({ ensembleData, handleStep, showToggle } :
             size="large"
             page={page}
             onChange={handleChange}
-            sx={{ mb: "1rem" }}
             count={Math.floor(ensembleData.length / 7)}
           />
           <Box sx={{ flexGrow: 1 }} />

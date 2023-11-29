@@ -24,7 +24,7 @@ export default function ClusterAssociationGraph() {
         <b>Association of clusters with ensemble size</b>
       </Typography>
       <div className="graph-container">
-        <LineChart width={800} height={690} margin={{ top : 10, right : 10, bottom : 30, left : 10}} data={sampleData.ensembleData_2}>
+        <LineChart width={800} height={670} margin={{ top : 10, right : 10, bottom : 30, left : 10}} data={sampleData.ensembleData_2}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="Num">
             <Label

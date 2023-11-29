@@ -7,10 +7,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { GlobalContext, InfoCardType } from "../../globalContext";
-import Ensembles from "../summary/EnsemblesList";
+import EnsemblesList from "../summary/EnsemblesList";
 import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
 import { ClusterData } from "../interfaces/AnalysisInterface";
+import { Card, CardContent } from "@mui/material";
 
 interface TableDataProps {
   selectedState: string;
@@ -48,13 +49,13 @@ function TableData(props: TableDataProps) {
     ensemble: number,
     ensembleId: string
   ) {
-    if(step === 0 && state[state.length - 1].step !== 0) {
-      dispatch ({
-        type : "CHANGE_INFO_CARD",
-        payload : {
-          infoCardType : InfoCardType.ensembleInfo
-        }
-      })
+    if (step === 0 && state[state.length - 1].step !== 0) {
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.ensembleInfo,
+        },
+      });
     }
     if (step === 1) {
       setEnsemble(ensemble);
@@ -66,12 +67,12 @@ function TableData(props: TableDataProps) {
         },
       });
 
-      dispatch ({
-        type : "CHANGE_INFO_CARD",
-        payload : {
-          infoCardType : InfoCardType.clusterSummary
-        }
-      })
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.clusterSummary,
+        },
+      });
     }
 
     dispatch({
@@ -97,7 +98,6 @@ function TableData(props: TableDataProps) {
       },
     });
   }
-
 
   /**
    *
@@ -129,54 +129,46 @@ function TableData(props: TableDataProps) {
 
   return (
     <div className="table-container">
-      <div className="navigation-container">
-        <BackButton />
-        <div className="stepper-container">
-          <Stepper activeStep={currentStep}>
-            {steps.map((label, index) => (
-              <Step key={label} completed={completed[index]}>
-                <StepButton
-                  color="inherit"
-                  onClick={() =>
-                    handleStepChange(
-                      index,
-                      ensemble,
-                      state[state.length - 1].ensembleId
-                    )
-                  }
-                >
-                  {label}
-                </StepButton>
-              </Step>
-            ))}
-          </Stepper>
-        </div>
-      </div>
-      {/* <div style={{display:'flex', width: '100%'}}> */}
-        <div className='table-info'>
-          {currentStep == 1 && (
-            <div className="ensemble-number">Viewing Ensemble {ensemble}</div>
-          )}
-          {currentStep == 2 && (
-            <div className="ensemble-number">
-              Viewing Ensemble {ensemble}, Cluster {cluster}
+      <Card sx={{ height: 840 }}>
+        <CardContent>
+          <div className="navigation-container">
+            <BackButton />
+            <div className="stepper-container">
+              <Stepper activeStep={currentStep}>
+                {steps.map((label, index) => (
+                  <Step key={label} completed={completed[index]}>
+                    <StepButton
+                      color="inherit"
+                      onClick={() =>
+                        handleStepChange(
+                          index,
+                          ensemble,
+                          state[state.length - 1].ensembleId
+                        )
+                      }
+                    >
+                      {label}
+                    </StepButton>
+                  </Step>
+                ))}
+              </Stepper>
             </div>
-          )}
-        </div>
-      {/* </div> */}
+          </div>
 
-      {/* State Details */}
-      {currentStep == 0 && (
-        <Ensembles showToggle={true} handleStep={handleStepChange} />
-      )}
-      {/* Summary of Cluster */}
-      {currentStep == 1 && (
-        <ClusterSummary onClusterSelection={handleClusterSelection} />
-      )}
-      {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
-      {currentStep == 2 && (
-        <DistrictPlanData onDistrictSelection={handleDistrictChange} />
-      )}
+          {/* State Details */}
+          {currentStep == 0 && (
+            <EnsemblesList showToggle={true} handleStep={handleStepChange} />
+          )}
+          {/* Summary of Cluster */}
+          {currentStep == 1 && (
+            <ClusterSummary onClusterSelection={handleClusterSelection} />
+          )}
+          {/* <AverageMeasureTable/> <Party Affilations, Association of Clusters*/}
+          {currentStep == 2 && (
+            <DistrictPlanData onDistrictSelection={handleDistrictChange} />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
