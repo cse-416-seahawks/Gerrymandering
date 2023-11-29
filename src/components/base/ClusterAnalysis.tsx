@@ -129,7 +129,7 @@ function TableData(props: TableDataProps) {
 
   return (
     <div className="table-container">
-      <div style={{display:'flex', flexDirection:'row', width:'100%'}}>
+      <div className="navigation-container">
         <BackButton />
         <div className="stepper-container">
           <Stepper activeStep={currentStep}>

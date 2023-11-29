@@ -63,6 +63,12 @@
   width: 95%;
 }
 
+.navigation-container {
+  display: flex; 
+  flex-direction: row; 
+  width: 100%;
+}
+
 .sub-table-container {
   display: table;
   border-radius: 1rem;
