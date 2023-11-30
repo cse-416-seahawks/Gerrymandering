@@ -19,8 +19,8 @@ interface ClusterDetailTableProps {
 }
 
 export default function ClusterDetailTable({ districtPlanData, districtChange } : ClusterDetailTableProps) {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(9);
   
   const buttonStyle = {
     padding: "10px 20px",
@@ -33,8 +33,8 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
   };
 
   function spliceTableData() {
-    return districtPlanData.slice((page) * 9, page * 9 + 9);
-  };
+    return districtPlanData.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage);
+  }  
 
   function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     setPage(newPage);
@@ -80,11 +80,13 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
           <TableFooter>
             <TableRow>
               <TablePagination
+                rowsPerPageOptions={[-1]}
                 count={districtPlanData.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                // ActionsComponent={TablePaginationActions}
               />
             </TableRow>
           </TableFooter>

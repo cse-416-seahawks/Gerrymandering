@@ -157,7 +157,7 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
         </div>
       </div>
       <TableContainer className="plan-table-container" component={Paper}>
-        <div style={{ width: "100%", maxHeight: 300, overflow: "auto" }}>
+        <div style={{ width: "100%", overflow: "auto" }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -168,17 +168,9 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
               </TableRow>
             </TableHead>
             {displayedDistrictPlans.length == 0 ? (
-              <>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  width="100rem"
-                ></TableCell>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  width="100rem"
-                ></TableCell>
+              <TableRow sx={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+                <TableCell component="th" scope="row" width="100rem"></TableCell>
+                <TableCell component="th" scope="row" width="100rem"></TableCell>
                 <div
                   style={{
                     fontSize: "1.2rem",
@@ -192,7 +184,7 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
                 >
                   No selected district plans
                 </div>
-              </>
+              </TableRow>
             ) : (
               <>
                 <TableBody>
