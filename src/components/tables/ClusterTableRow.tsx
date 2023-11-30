@@ -35,7 +35,6 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
 
   const handleBlur = () => {
     setEditing(false);
-    // Save the changes or perform any required actions here
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

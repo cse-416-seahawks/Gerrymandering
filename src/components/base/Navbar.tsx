@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as VscIcons from "react-icons/vsc";
 import "../css/Navbar.css";
 import {
   AvailableStates,
@@ -13,8 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
-import Button from "@mui/material/Button/Button";
-import { Breadcrumbs, Link } from "@mui/material";
+import { Breadcrumbs, Button, Link } from "@mui/material";
 
 export default function PrimarySearchAppBar() {
   const navigate = useNavigate();

@@ -4,43 +4,34 @@ import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 
 import { Polygon } from "react-leaflet";
-import { FeatureCollection } from "@turf/turf";
-import { fetchDistricts } from "../apiClient";
+import { fetchCurrDistrictPlan } from "../apiClient";
 import { AvailableStates } from "../../globalContext";
+interface DistrictState {
+  data: any | null; 
+}
 
-export default () => {
-  interface DistrictState {
-    data: any | null; // Adjust the type based on your actual data structure
+export default function VirginiaDistricts () {
+  const [virginiaHouse, setVirginiaHouse] = useState<DistrictState["data"]>(null);
+
+  function getRandomHexCode(): string {
+    const colors = ["#FF0000", "#0000FF"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
   }
 
-  const [virginiaHouse, setVirginiaHouse] =
-    useState<DistrictState["data"]>(null);
-
-    function getRandomHexCode(): string {
-      // Array of possible colors
-      const colors = ["#FF0000", "#0000FF"];
-  
-      // Randomly select a color index
-      const randomIndex = Math.floor(Math.random() * colors.length);
-  
-      // Return the selected color
-      return colors[randomIndex];
-    }
-
   useEffect(() => {
-    async function fetchDistrictsAsync() {
+    async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistricts(AvailableStates.Virginia);
+        const result = await fetchCurrDistrictPlan(AvailableStates.Virginia);
         setVirginiaHouse(result);
       } catch (error) {}
     }
-
-    fetchDistrictsAsync();
+    fetchDistrictPlanAsync();
   }, []);
 
   return (
     <>
-      {virginiaHouse ? (
+      {virginiaHouse && (
         virginiaHouse.features.map((district: any) => {
           return (
             <Polygon
@@ -75,8 +66,6 @@ export default () => {
             />
           );
         })
-      ) : (
-        null
       )}
     </>
   );

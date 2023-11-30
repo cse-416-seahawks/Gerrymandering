@@ -2,39 +2,32 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { fetchDistricts } from "../apiClient";
+import { fetchCurrDistrictPlan } from "../apiClient";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
-import { Feature, FeatureCollection } from "@turf/turf";
 import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
   const [TexasDistricts, setTexasDistrict] = useState<DistrictState["data"]>(null);
   
   function getRandomHexCode(): string {
-    // Array of possible colors
     const colors = ["#FF0000", "#0000FF"];
-
-    // Randomly select a color index
     const randomIndex = Math.floor(Math.random() * colors.length);
-
-    // Return the selected color
     return colors[randomIndex];
   }
 
   useEffect(() => {
-    async function fetchDistrictsAsync() {
+    async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistricts(AvailableStates.Texas);
+        const result = await fetchCurrDistrictPlan(AvailableStates.Texas);
         setTexasDistrict(result);
       } catch (error) {}
     }
-
-    fetchDistrictsAsync();
+    fetchDistrictPlanAsync();
   }, []);
 
   const districtMap = useMemo(() => {
-    return TexasDistricts ? 
+    return TexasDistricts && 
      TexasDistricts.features.map((district: any) => {
       return (
         <Polygon
@@ -72,7 +65,7 @@ export default () => {
           }}
         />
       );
-    } ) : null
+    })
   }, [TexasDistricts]);
 
   return (

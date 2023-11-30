@@ -3,41 +3,33 @@ import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 import { Polygon } from "react-leaflet";
-import { FeatureCollection } from "@turf/turf";
 import { AvailableStates } from "../../globalContext";
-import { fetchDistricts } from "../apiClient";
+import { fetchCurrDistrictPlan } from "../apiClient";
 import { DistrictState } from "../interfaces/MapInterface";
 
 export default () => {
-  const [nevadaDistrict, setNevadaDistrict] =
-    useState<DistrictState["data"]>(null);
+  const [nevadaDistrict, setNevadaDistrict] = useState<DistrictState["data"]>(null);
 
   function getRandomHexCode(): string {
-    // Array of possible colors
     const colors = ["#FF0000", "#0000FF"];
-
-    // Randomly select a color index
     const randomIndex = Math.floor(Math.random() * colors.length);
-
-    // Return the selected color
     return colors[randomIndex];
   }
 
   useEffect(() => {
-    async function fetchDistrictsAsync() {
+    async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistricts(AvailableStates.Nevada);
+        const result = await fetchCurrDistrictPlan(AvailableStates.Nevada);
         setNevadaDistrict(result);
       } catch (error) {
         throw error;
       }
     }
-
-    fetchDistrictsAsync();
+    fetchDistrictPlanAsync();
   }, []);
   return (
     <>
-      {nevadaDistrict ? (
+      {nevadaDistrict && (
         nevadaDistrict.features.map((district: any) => {
           return (
             <Polygon
@@ -72,8 +64,6 @@ export default () => {
             />
           );
         })
-      ) : (
-        null
       )}
     </>
   );

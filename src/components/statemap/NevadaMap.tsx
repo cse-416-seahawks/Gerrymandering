@@ -5,27 +5,18 @@ import type { LatLngTuple } from "leaflet";
 import { fetchStateOutline } from "../apiClient";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 import { Polygon } from "react-leaflet";
-import { FeatureCollection } from "@turf/turf";
 import { useNavigate } from "react-router-dom";
 import { MapState } from "../interfaces/MapInterface";
 
-const getColor = () => {
-  return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
-};
-
-export default () => {
+export default function NevadaMap() {
   const [nevadaOutline, setData] = useState<MapState["data"]>(null);
-  
-
   const { state, dispatch } = useContext(GlobalContext);
-
-
   const navigate = useNavigate();
 
   const handleClick = () => {
     dispatch({
-      type : "CHANGE_STATE",
-      payload : {
+      type: "CHANGE_STATE",
+      payload: {
         currentState : AvailableStates.Nevada
       }
     });
@@ -37,15 +28,14 @@ export default () => {
       try {
         const result = await fetchStateOutline(AvailableStates.Nevada);
         setData(result);
-      } catch (error) {}
+      } catch (error) { console.log(error); }
     }
-
     fetchOutlineAsync();
   }, []);
 
   return (
     <>
-      {nevadaOutline ? (
+      {nevadaOutline && (
         <Polygon
           pathOptions={{
             fillColor: "#4287f5",
@@ -80,8 +70,6 @@ export default () => {
             click: handleClick
           }}
         />
-      ) : (
-        <div></div>
       )}
     </>
   );

@@ -143,33 +143,36 @@ public class DistrictController {
         }
     }
 
-    @GetMapping("/getClusterDetails/{state}/{districtPlanIds}")
-    public ResponseEntity<String> getClusterDetails(@PathVariable final String state, @PathVariable final String[] districtPlanIds) {
+    @GetMapping("/getClusterDetails/{state}/{clusterId}")
+    public ResponseEntity<String> getClusterDetails(@PathVariable final String state, @PathVariable final String clusterId) {
         MongoCollection<Document> stateCollection = getStateCollection(state);
         
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        List<String> districtPlans = new ArrayList<>();
-        for (String id: districtPlanIds) {
-            Document docFinder = new Document("type", "DistrictPlanData").append("district_plan_id", id);
-            Document document = stateCollection.find(docFinder).first();
-            if (document == null) {
-                return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
-            } else {
-                Gson gson = new Gson();
-                String json = gson.toJson(document);
-                districtPlans.add(json);
-            }
+        Document docFinder = new Document("type", "DistrictPlanData").append("cluster_id", clusterId);
+        Document document = stateCollection.find(docFinder).first();
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         }
-        String districtPlansJson = "[" + String.join(",", districtPlans) + "]";
-        return new ResponseEntity<>(districtPlansJson, HttpStatus.OK);
     }
 
     @GetMapping("/getDistrictPlanGeoJSON/{state}/{districtPlanId}")
     public ResponseEntity<String> getDistrictPlanGeoJSON(@PathVariable final String state, @PathVariable final String districtPlanId) {
-        MongoCollection<Document> stateCollection = getStateCollection(state);
+        MongoCollection<Document> stateCollection = null;
+
+        if(state.equals("TEXAS")) {
+            stateCollection = db.getCollection("TexasPlans");
+        } else if (state.equals("VIRGINIA")) {
+            stateCollection = db.getCollection("VirginiaPlans");
+        } else if (state.equals("NEVADA")) {
+            stateCollection = db.getCollection("NevadaPlans");
+        }
         
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);

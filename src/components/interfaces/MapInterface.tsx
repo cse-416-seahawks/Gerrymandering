@@ -1,11 +1,11 @@
 import { FeatureCollection } from "@turf/turf";
 
 export interface MapState {
-    data: any | null; // Adjust the type based on your actual data structure
+    data: any | null;
 }
 
 export interface DistrictState {
-    data: FeatureCollection | null; // Adjust the type based on your actual data structure
+    data: FeatureCollection | null;
 }
 
 export interface GeoJSON {

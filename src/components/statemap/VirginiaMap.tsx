@@ -13,12 +13,9 @@ const getColor = () => {
   return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
 };
 
-export default () => {
-
+export default function VirginiaMap() {
   const [virginiaOutline, setData] = useState<MapState["data"]>(null);
-
   const { state, dispatch } = useContext(GlobalContext);
-
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -31,7 +28,6 @@ export default () => {
     navigate("/home");
   }
 
-
   useEffect(() => {
     async function fetchOutlineAsync() {
       try {
@@ -39,14 +35,12 @@ export default () => {
         setData(result);
       } catch (error) {}
     }
-
     fetchOutlineAsync();
   }, []);
-
   
   return (
     <>
-      {virginiaOutline ? (
+      {virginiaOutline && (
         <Polygon
           pathOptions={{
             fillColor: "#4287f5",
@@ -85,8 +79,6 @@ export default () => {
             click: handleClick
           }}
         />
-      ) : (
-        <div></div>
       )}
     </>
   );

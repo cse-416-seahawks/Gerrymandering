@@ -1,121 +1,94 @@
 import React, { FC, useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { useMapEvent } from "react-leaflet";
-import * as sampleData from "../SampleData";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
-import AlertModal from "../AlertModal";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ScatterChart,
-  Scatter,
-  ZAxis,
-} from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { DistrictSelectionProps, district_summary_table} from "../types/TableTypes";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
-
-interface DistrictPlanData {
-  district_plan: number,
-  opportunity_districts: number,
-  democrat: string,
-  republican: string,
-}
+import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
+import { DistrictPlanGraphData, DistrictPlanPoints, DistrictPlanData } from "../interfaces/AnalysisInterface"
+import { DistrictSelectionProps } from "../types/TableTypes";
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
-    const [districtSelection, setDistrictSelection] = useState(0);
-    const [coordinates, setCoordinates] = useState<Array<number>>([]);
-    const [currentTab, setCurrentTab] = useState("1");
-    const { state, dispatch } = useContext(GlobalContext);
-    const [districtPlans, setDistrictPlans] = useState<Array<DistrictPlanData>>([]);
-
-    function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-      setCurrentTab(String(newValue));
-    }
-
-    function handleDistrictChange(district_num: number, coords: Array<number>) {
-      onDistrictSelection(district_num, coords);
-      // setCoordinates(coords);
-      setDistrictSelection(district_num);
-    }
+  const [currentTab, setCurrentTab] = useState("1");
+  const { state, dispatch } = useContext(GlobalContext);
+  const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   
-    function SetMapView() {
-      const map = useMapEvent("mouseover", (e) => {
-        map.setView([coordinates[0], coordinates[1]], 8, {});
-        // map.setZoomAround([centerCoordinates[0], centerCoordinates[1]], 6);
-      });
-  
-      return null;
-    }
-  
-    useEffect(() => {
-      
-      async function fetchDistrictData() {
-        
-        try {
-          const currState = state[state.length-1].currentState;
-          const districtPlanIds = state[state.length-1].districtPlanIds;
-          
-          // const response = await fetchDistrictPlanData(currState, districtPlanIds);
-          // setDistrictPlans(response.data);
-        } catch(error) {
-          throw error;
-        }
-      }
-      fetchDistrictData();
-    }, []);
+  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+  const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
+  const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
 
-    return (
-      <>
-        <TabContext value={currentTab}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
-            <Tabs value={currentTab} onChange={handleTabChange}>
-              <Tab
-                value="1"
-                label="Graph View"
-                sx={{ textTransform: "none" }}
-              />
-              <Tab
-                value="2"
-                label="Table View"
-                sx={{ textTransform: "none" }}
-              />
-               <Tab
-                value="3"
-                label="Party Split"
-                sx={{ textTransform: "none" }}
-              />
-            </Tabs>
-          </Box>
-          <TabPanel value="1">
-            <DistrictPlanScatterPlot district_plans={districtPlans}/>
-          </TabPanel>
-          <TabPanel value="2">
-            <ClusterDetailTable districtChange={handleDistrictChange}/>
-          </TabPanel>
-          <TabPanel value="3">
-            <PartySplitChart/>
-          </TabPanel>
-        </TabContext>
-    
-      </>
-    );
+  function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
+    setCurrentTab(String(newValue));
   }
+
+  function handleDistrictChange(district_num: number, coords: Array<number>) {
+    onDistrictSelection(district_num, coords);
+  }
+
+  useEffect(() => {
+    const currState = state[state.length - 1].currentState;
+    const currClusterId = state[state.length - 1].clusterId;
+
+    async function getClusterDetail() {
+      try {
+        const response = await fetchClusterDetails(currState, currClusterId);
+        setTableData(response.data);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getClusterDetail();
+
+    async function getClusterDetailGraph() {
+      try {
+        const response = await fetchClusterDetailGraph(currState, currClusterId);
+        setAxisLabels([response.x_axis_label, response.y_axis_label]);
+        setAvailableDataPoints(response.data.filter((points: DistrictPlanPoints) => points.availableData));
+        setUnavailableDataPoints(response.data.filter((points: DistrictPlanPoints) => !points.availableData));
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getClusterDetailGraph();
+  }, []);
+
+  return (
+    <>
+      <TabContext value={currentTab}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab
+              value="1"
+              label="Graph View"
+              sx={{ textTransform: "none" }}
+            />
+            <Tab
+              value="2"
+              label="Table View"
+              sx={{ textTransform: "none" }}
+            />
+              <Tab
+              value="3"
+              label="Party Split"
+              sx={{ textTransform: "none" }}
+            />
+          </Tabs>
+        </Box>
+        <TabPanel value="1">
+          <DistrictPlanScatterPlot axisLabels={axisLabels} availableData={availableDataPoints} unavailableData={unavailableDataPoints}/>
+        </TabPanel>
+        <TabPanel value="2">
+          <ClusterDetailTable districtPlanData={tableData} districtChange={handleDistrictChange}/>
+        </TabPanel>
+        <TabPanel value="3">
+          <PartySplitChart/>
+        </TabPanel>
+      </TabContext>
+    </>
+  );
+}
   

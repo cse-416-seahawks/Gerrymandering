@@ -63,16 +63,16 @@ export default function PartySplitChart() {
                 fontSize: "1rem",
                 fill: "black",
 
-              }}
-              position={"insideLeft"}
-              angle={270}
-              value={"Number of Districts"}/>
-          </YAxis>
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="democrat" fill="#4287f5"  />
-          <Bar dataKey="republican" fill="#f54242"  />
-        </BarChart>
+            }}
+            position={"insideLeft"}
+            angle={270}
+            value={"Number of Districts"}/>
+        </YAxis>
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="democrat" fill="#4287f5"  />
+        <Bar dataKey="republican" fill="#f54242"  />
+      </BarChart>
     );
   
 }

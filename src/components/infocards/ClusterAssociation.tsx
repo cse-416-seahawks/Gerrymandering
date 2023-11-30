@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CardContent from "@mui/material/CardContent";
-
 import {
   Box,
   Chip,
@@ -44,6 +43,7 @@ export default function ClusterAssociationInfoCard() {
       setDetails(stateDetails.Texas);
     }
   }, [state[state.length - 1].currentState]);
+  
   return (
     <CardContent>
       <Typography
