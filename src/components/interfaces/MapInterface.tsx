@@ -25,3 +25,16 @@ export interface StateData {
 export interface StateZoomData {
     [key: string]: number;
 }
+
+export interface StateMapData {
+    centerCoordinates: [number, number];
+    zoom: number;
+}
+
+export interface StateDistrictPlanType {
+    [state: string]: string;
+  }
+
+export interface MapData {
+    [state: string]: StateMapData;
+}

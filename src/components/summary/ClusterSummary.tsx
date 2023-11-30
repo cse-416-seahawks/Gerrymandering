@@ -75,9 +75,9 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
 
   function handlePlotOptions(): void {
     dispatch({
-      type : "CHANGE_INFO_CARD",
-      payload : {
-        infoCardType : InfoCardType.clusterPlotOptions
+      type: "CHANGE_INFO_CARD",
+      payload: {
+        infoCardType: InfoCardType.clusterPlotOptions
       }
     })
   }
@@ -111,10 +111,10 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
           <ClusterTable clusters={clusterData} onClusterSelection={setClusterSelection}/>
         </TabPanel>
         <TabPanel value="2">
-          <MDSChart data={clusterData} data_points={dataPoints} axis_labels={axisLabels} />
+          <MDSChart data={clusterData} dataPoints={dataPoints} axisLabels={axisLabels} />
         </TabPanel>
         <TabPanel value="3">
-          <ClusterScatterPlot data={clusterData} data_points={dataPoints} axis_labels={axisLabels}/>
+          <ClusterScatterPlot data={clusterData} dataPoints={dataPoints} axisLabels={axisLabels}/>
         </TabPanel>
       </TabContext>
     </Box>

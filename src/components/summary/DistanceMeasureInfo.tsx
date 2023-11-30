@@ -4,7 +4,7 @@ import DistanceChart from "../graphs/DistanceChart";
 export default function DistanceMeasureInfo() {
   return (
       <div>
-        <DistanceChart />
+        {/* <DistanceChart /> */}
       </div>
   );
 }

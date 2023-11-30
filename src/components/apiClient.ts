@@ -3,7 +3,7 @@ import { AvailableStates } from "../globalContext";
 import { Feature, FeatureCollection } from "@turf/turf";
 
 
-function isFeatureCollection(data : any) : data is FeatureCollection {
+function isFeatureCollection(data: any): data is FeatureCollection {
   return data.type === 'FeatureCollection'
 }
 
@@ -11,9 +11,20 @@ function isFeatureArray(data: any): data is Feature[] {
   return Array.isArray(data);
 }
 
+export async function fetchMapData() {
+  try {
+    const response = await axios.get(`http://localhost:4000/getMapCoordinatesData/`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
+
 export async function fetchCurrDistrictPlan(State: AvailableStates): Promise<FeatureCollection> {
   try {
-    const response = await axios.get(`http://localhost:4000/getCurrentDistrictPlan/${State}`)
+    const response = await axios.get(`http://localhost:4000/getCurrentDistrictPlan/${State}`);
 
     if (isFeatureCollection(response.data[0])){
       return response.data[0];
@@ -82,7 +93,6 @@ export async function fetchClusterSummaryGraphData(State: AvailableStates, ensem
 
 export async function fetchClusterDetails(state: AvailableStates, clusterId: string) {
   try {
-    console.log("pls",state, clusterId)
     const response = await axios.get(`http://localhost:4000/getClusterDetails/${state}/${clusterId}`);
     if (response.status == 200) {
       return response.data;
@@ -114,16 +124,16 @@ export async function fetchClusterDetailGraph(state: AvailableStates, clusterId:
 //   }
 // }
 
-// export async function fetchDistanceMeasureData(state: AvailableStates, ensembleId: string) {
-//   try {
-//     const response = await axios.get(`http://localhost:4000/getDistanceMeasureData/${state}/${ensembleId}`);
-//     if (response.status == 200) {
-//       return response.data;
-//     }
-//   } catch(error) {
-//     throw error;
-//   }
-// }
+export async function fetchDistanceMeasureData(state: AvailableStates, ensembleId: string) {
+  try {
+    const response = await axios.get(`http://localhost:4000/getDistanceMeasureData/${state}/${ensembleId}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
 
 // export async function fetchAssociationData(state: AvailableStates) {
 //   try {

@@ -1,4 +1,19 @@
-import { TooltipProps } from "recharts";
+export interface DistanceMeasureType {
+  distanceMeasure: string;
+  min: number;
+  first_quartile: number;
+  median: number;
+  third_quartile: number;
+  max: number;
+}
+
+export interface EnsembleData {
+  ensemble: number;
+  ensemble_id : string;
+  num_clusters: number;
+  avg_dist_clusters: number;
+  num_dist_plans: number;
+}
 
 export interface ClusterData {
   cluster_number: number,
@@ -29,6 +44,7 @@ export interface ClusterPoints {
 
 export interface DistrictPlanData {
   district_plan_id: number;
+  district_plan: number;
   opportunity_districts: number;
   splits: string;
   avg_democrat: string;
@@ -49,13 +65,4 @@ export interface DistrictPlanPoints {
   availableData: boolean;
   x: number;
   y: number;
-}
-  
-export interface CustomTooltipProps extends TooltipProps<any, any> {
-  active?: boolean;
-  payload?: Array<{
-    name: string; payload: {
-      cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
-    } 
-  }>;
 }

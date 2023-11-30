@@ -5,7 +5,6 @@ import React, {
 } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-
 import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,27 +16,13 @@ import VirginiaDistricts from "../districts/VirginiaDistricts";
 import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
 import ClusterSummary from "../summary/ClusterSummary";
 import MainInfoCard from "../infocards/MainInfoCard";
-import { GeoJSON, GeoJSONFeature, StateData, StateZoomData } from "../interfaces/MapInterface";
 
-const stateData: StateData = {
-  NEVADA: [38.5, -116.5],
-  TEXAS: [31.5, -99.9],
-  VIRGINIA: [37.9, -79.5],
-};
-const stateZoomData: StateZoomData = {
-  NEVADA: 6,
-  TEXAS: 6,
-  VIRGINIA: 7,
-};
-
-export default function StateMap(props: {
-  selectedState: AvailableStates;
-  centerCoordinates: Array<number>;
-  selectedDistrict: number;
-}) {
-  const [centerCoordinates, setCenterCoordinates] = useState(stateData[props.selectedState]);
-  const [zoom, setZoom] = useState(stateZoomData[props.selectedState]);
+export default function StateMap() {
   const { state, dispatch } = useContext(GlobalContext);
+  const currentStateMapData = state[state.length-1].mapData[state[state.length - 1].currentState];
+  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
+  const [zoom, setZoom] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const SetMapView = () => {
     const map = useMap();
@@ -75,34 +60,40 @@ export default function StateMap(props: {
         dismap : false
       }
     })
-    setCenterCoordinates(stateData[newState]);
-    setZoom(stateZoomData[newState]);
   };
 
-  return (
-    <div className="StateMap">
-      <>
-        <MapContainer
-          id="mapid"
-          center={[centerCoordinates[0], centerCoordinates[1]]}
-          zoom={6}
-          scrollWheelZoom={false}
-          className="State-map"
-          style={{height : "125%"}}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          
-          <NevadaDistricts/>
-          <TexasDistricts/>
-          <VirginiaDistricts/>
+  useEffect(() => {
+    if (currentStateMapData) {
+      setCenterCoordinates(currentStateMapData.centerCoordinates);
+      setZoom(currentStateMapData.zoom);
+      setLoading(false);
+    }
+  }, [currentStateMapData])
 
-          <SetMapView />
-        </MapContainer>
-      </>
-      <div className="State-map stack-top">
+  return (
+      <div className="StateMap">
+        { !loading && <>
+          <MapContainer
+            id="mapid"
+            center={[centerCoordinates[0], centerCoordinates[1]]}
+            zoom={6}
+            scrollWheelZoom={false}
+            className="State-map"
+            style={{height : "125%"}}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            
+            <NevadaDistricts/>
+            <TexasDistricts/>
+            <VirginiaDistricts/>
+
+            <SetMapView />
+          </MapContainer>
+        </>}
+        <div className="State-map stack-top">
           <FormControl
             variant="filled"
             sx={{ m: 1, minWidth: 120 }}
@@ -126,7 +117,7 @@ export default function StateMap(props: {
             </Select>
           </FormControl>
         </div>
-        <MainInfoCard/>
+      <MainInfoCard/>
     </div>
   );
 }

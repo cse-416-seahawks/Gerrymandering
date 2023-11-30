@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext, GlobalProvider, AvailableStates } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../statemap/StateMap";
 import Navbar from "./Navbar";
 import TableData from "./ClusterAnalysis";
-
+import { fetchMapData } from "../apiClient";
 
 function Home() {
   const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
@@ -15,6 +15,20 @@ function Home() {
     setSelectedDistrict(district_num);
     setCenterCoordinates(coordinates);
   }
+
+  useEffect(() => {
+    async function getMapData() {
+      const response = await fetchMapData();
+      if (response) {
+        dispatch({
+          type: "SET_MAP_DATA",
+          payload: { mapData: response.stateMapData, districtPlanTypes: response.stateDistrictPlanType }
+        })
+      }
+    }
+    getMapData();
+  }, []);
+
   
 
   return (
@@ -24,7 +38,7 @@ function Home() {
       <div className="StateMap-content">
           <header className="StateMap-header">
             <div className="State-map"> 
-              <StateMap selectedState={state[state.length-1].currentState} centerCoordinates={centerCoordinates} selectedDistrict={selectedDistrict}/>
+              <StateMap/>
             </div>
             <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
         </header>

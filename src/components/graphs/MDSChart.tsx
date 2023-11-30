@@ -13,15 +13,15 @@ import {
   Label,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { ClusterData, ClusterPoints, CustomTooltipProps } from "../interfaces/AnalysisInterface";
+import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
 interface ClusterScatterPlotProps {
     data: ClusterData[]
-    data_points: ClusterPoints[],
-    axis_labels: string[]
+    dataPoints: ClusterPoints[],
+    axisLabels: string[]
 }
 
-export default function MDSChart({ data, data_points, axis_labels } : ClusterScatterPlotProps) {
+export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleStepChange(step: number) {
@@ -38,7 +38,7 @@ export default function MDSChart({ data, data_points, axis_labels } : ClusterSca
     Math.max(
       Math.max.apply(
         null,
-        data_points.map((entry) => entry.num_district_plans)
+        dataPoints.map((entry) => entry.num_district_plans)
       )
     ),
   ];
@@ -46,6 +46,15 @@ export default function MDSChart({ data, data_points, axis_labels } : ClusterSca
   const domain = parseDomain();
   const range = [100, 1000];
 
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
+      } 
+    }>;
+  }
+  
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const selectedPoint = payload[0].payload;
@@ -65,7 +74,7 @@ export default function MDSChart({ data, data_points, axis_labels } : ClusterSca
       margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
     >
       <CartesianGrid />
-      <XAxis type="number" dataKey="x" name={axis_labels[0]}>
+      <XAxis type="number" dataKey="x" name={axisLabels[0]}>
       <Label
         style={{
           textAnchor: "middle",
@@ -82,7 +91,7 @@ export default function MDSChart({ data, data_points, axis_labels } : ClusterSca
         yAxisId="left"
         type="number"
         dataKey="y"
-        name={axis_labels[1]}
+        name={axisLabels[1]}
         opacity="1"
         stroke="#7aa9ff"
       >
@@ -112,7 +121,7 @@ export default function MDSChart({ data, data_points, axis_labels } : ClusterSca
       />
       <Scatter
         yAxisId="left"
-        data={data_points}
+        data={dataPoints}
         fill="#bfd6ff"
         stroke="#037cff"
         opacity={4}

@@ -33,7 +33,7 @@ export default function EnsembleDetailTable() {
   return (
     <div>
       {ensDetails.length === 0 ? (
-        <Typography sx={{ mt: 12, fontSize : 18 }} align='center' variant="body1" color="text.secondary">
+        <Typography sx={{ mt: 12, fontSize: 18 }} align='center' variant="body1" color="text.secondary">
           Click "See Details" on any Ensemble to view details here
         </Typography>
       ) : (

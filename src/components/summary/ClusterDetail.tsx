@@ -16,7 +16,6 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
-  
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
   const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
@@ -37,6 +36,12 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
       try {
         const response = await fetchClusterDetails(currState, currClusterId);
         setTableData(response.data);
+        dispatch({
+          type: "SET_CLUSTER_DETAILS",
+          payload: {
+            clusterDetails: response.data,
+          }
+        })
       } catch(error) {
         console.log(error);
       }

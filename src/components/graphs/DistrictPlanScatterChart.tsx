@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import * as sampleData from "../SampleData";
 import AlertModal from "../AlertModal";
 import {
   XAxis,
@@ -19,9 +18,9 @@ import {
   Scatter,
   ZAxis,
 } from "recharts";
-import {  DistrictPlanPoints } from "../interfaces/AnalysisInterface";
-import {  GlobalContext } from "../../globalContext";
-import { district_summary_table } from "../types/TableTypes";
+import { DistrictPlanData, DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface";
+import { GlobalContext } from "../../globalContext";
+import { TooltipProps } from "recharts";
 
 interface DistrictPlanScatterPlotProps {
   axisLabels: Array<string>;
@@ -30,20 +29,17 @@ interface DistrictPlanScatterPlotProps {
 }
 
 export default function DistrictPlanScatterPlot({ axisLabels, availableData, unavailableData }: DistrictPlanScatterPlotProps) {
-  const { state, dispatch } = useContext(GlobalContext);
-  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
+  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<DistrictPlanData>>([]);
   const [modal, setModal] = useState<boolean>(false);
+  const { state, dispatch } = useContext(GlobalContext);
   
   function handleDistrictPlanSelection(point: any) {
-    const plan = {
-      district_plan: point.z,
-      opportunity_districts: 5,
-      democrat: "30%",
-      republican: "70%",
-      map_value: [35.5, -115],
-    };
-    if (!displayedDistrictPlans.some((item) => item.district_plan === plan.district_plan)) {
-      setDisplayedDistrictPlans([...displayedDistrictPlans, plan]);
+    const districtPlanId = point.district_plan_id;
+    const districtPlanDetails = state[state.length - 1].clusterDetails.find((row) => row.district_plan_id == districtPlanId); 
+    if (districtPlanDetails) {
+      if (!displayedDistrictPlans.some((item) => item.district_plan === districtPlanDetails.district_plan)) {
+        setDisplayedDistrictPlans([...displayedDistrictPlans, districtPlanDetails]);
+      }
     }
   }
 
@@ -58,6 +54,32 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
   function handleOpenModal(open: boolean) {
     setModal(open);
   }
+
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        district_plan: string; district_plan_id: string; availableData: boolean; x: number; y: number; 
+      } 
+    }>;
+  }
+
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const selectedPoint = payload[0].payload;
+      const xLabel = payload[0].name;
+      const yLabel = payload[1].name;
+
+      return (
+        <div className="custom-tooltip">
+          <p className="tooltip-text"><b>{"District Plan: "}</b>{selectedPoint.district_plan}</p>
+          <p className="tooltip-text"><b>{`${xLabel}: `}</b>{selectedPoint.x}</p>
+          <p className="tooltip-text"><b>{`${yLabel}: `}</b>{selectedPoint.y}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -84,26 +106,15 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
               {axisLabels[1]}
             </div>
           </div>
-          <ScatterChart
-            width={700}
-            height={350}
-            margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
-          >
+          <ScatterChart width={760} height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10 }} >
             <CartesianGrid strokeDasharray="3 3" />
             <ZAxis dataKey="z" type="number" name="District Plan" />
-            <XAxis
-              dataKey="x"
-              type="number"
-              name={axisLabels[0]}
-            />
-            <YAxis
-              dataKey="y"
-              type="number"
-              name={axisLabels[1]}
-            />
-            <Tooltip
-              cursor={{ strokeDasharray: "3 3" }}
-              contentStyle={{ fontSize: 18 }}
+            <XAxis dataKey="x" type="number" name={axisLabels[0]} />
+            <YAxis dataKey="y" type="number" name={axisLabels[1]} />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              cursor={{ strokeDasharray: "3 3" }} 
+              wrapperStyle={{ outline: "none" }} 
             />
             <Legend />
             <Scatter
@@ -124,17 +135,17 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
           style={{
             display: "flex",
             fontSize: "1.0rem",
-            width: "65%",
             margin: "2rem",
             fontWeight: "700",
-            justifyContent: "end",
+            justifyContent: "center",
+            textAlign: "center"
           }}
         >
           {axisLabels[0]}
         </div>
       </div>
       <TableContainer className="plan-table-container" component={Paper}>
-        <div style={{ width: "100%", maxHeight: 300, overflow: "auto" }}>
+        <div style={{ width: "100%", overflow: "auto" }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -145,17 +156,9 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
               </TableRow>
             </TableHead>
             {displayedDistrictPlans.length == 0 ? (
-              <>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  width="100rem"
-                ></TableCell>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  width="100rem"
-                ></TableCell>
+              <TableRow sx={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+                <TableCell component="th" scope="row" width="100rem"></TableCell>
+                <TableCell component="th" scope="row" width="100rem"></TableCell>
                 <div
                   style={{
                     fontSize: "1.2rem",
@@ -169,7 +172,7 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
                 >
                   No selected district plans
                 </div>
-              </>
+              </TableRow>
             ) : (
               <>
                 <TableBody>
@@ -184,8 +187,8 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
                       <TableCell align="center">
                         {row.opportunity_districts}
                       </TableCell>
-                      <TableCell align="center">{row.democrat}</TableCell>
-                      <TableCell align="center">{row.republican}</TableCell>
+                      <TableCell align="center">{row.avg_democrat}</TableCell>
+                      <TableCell align="center">{row.avg_republican}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

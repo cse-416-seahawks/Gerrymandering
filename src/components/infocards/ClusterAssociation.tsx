@@ -25,23 +25,12 @@ export default function ClusterAssociationInfoCard() {
     { ensemble: 5, num_clusters: 39, plans_needed: 268 },
   ];
 
-  const stateDetails = {
-    Nevada: "Nevada State Assembly 2022",
-    Texas: "Texas House Districts 2022",
-    Virginia: "Virginia House Districts 2022",
-  };
   const { state, dispatch } = React.useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
 
   useEffect(() => {
     let currentState = state[state.length - 1].currentState;
-    if (currentState === AvailableStates.Nevada) {
-      setDetails(stateDetails.Nevada);
-    } else if (currentState === AvailableStates.Virginia) {
-      setDetails(stateDetails.Virginia);
-    } else {
-      setDetails(stateDetails.Texas);
-    }
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
   }, [state[state.length - 1].currentState]);
   
   return (
@@ -59,17 +48,6 @@ export default function ClusterAssociationInfoCard() {
           {curDetails}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Stack direction="row" spacing={1}>
-          <Chip
-            label="Democratic Districts"
-            style={{ backgroundColor: "blue", color: "white" }}
-          />
-          <Chip
-            label="Republican Districts"
-            style={{ backgroundColor: "red", color: "white" }}
-            variant="outlined"
-          />
-        </Stack>
       </Box>
       <TableContainer component={Paper}>
         <Table size="small" sx={{ minWidth: 650 }}>

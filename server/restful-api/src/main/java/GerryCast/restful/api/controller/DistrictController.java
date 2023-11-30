@@ -1,30 +1,17 @@
 package GerryCast.restful.api.controller;
-
-import GerryCast.restful.api.model.District;
-import GerryCast.restful.api.model.TexasDistrict;
-import GerryCast.restful.api.repository.GeoJSONRepository;
-import GerryCast.restful.api.service.GeoJSONService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.*;
-
 import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
-
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,7 +19,7 @@ public class DistrictController {
     private final MongoDatabase db;
 
     @Autowired
-    public DistrictController(MongoDatabase db) {
+    public DistrictController(MongoDatabase db, Double[] stateMapCoordinates) {
         this.db = db;
     }
 
@@ -46,11 +33,21 @@ public class DistrictController {
         }
         return null;
     }
+
+    @GetMapping("/getMapCoordinatesData/")
+    public ResponseEntity<String> getMapCoordinatesData() {
+        MongoCollection<Document> stateCollection = db.getCollection("StatesData");
+
+        Document document = stateCollection.find().first();
+        Gson gson = new Gson();
+        String json = gson.toJson(document);
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
     
     @GetMapping("/getStateOutline/{state}")
     public ResponseEntity<String> getStateOutline(@PathVariable final String state) {
         MongoCollection<Document> stateCollection = getStateCollection(state);
-
+        
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
