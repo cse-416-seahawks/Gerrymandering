@@ -82,7 +82,6 @@ export async function fetchClusterSummaryGraphData(State: AvailableStates, ensem
 
 export async function fetchClusterDetails(state: AvailableStates, clusterId: string) {
   try {
-    console.log("pls",state, clusterId)
     const response = await axios.get(`http://localhost:4000/getClusterDetails/${state}/${clusterId}`);
     if (response.status == 200) {
       return response.data;

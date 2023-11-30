@@ -124,7 +124,7 @@ function TableData(props: TableDataProps) {
 
   return (
     <div className="table-container">
-      <Card sx={{ height: 840 }}>
+      <Card sx={{ height: '87vh' }}>
         <CardContent>
           <div className="navigation-container">
             <BackButton />
