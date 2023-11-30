@@ -11,15 +11,16 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import HomeIcon from "@mui/icons-material/Home";
+import MapIcon from "@mui/icons-material/Map";
 import { Breadcrumbs, Button, Link } from "@mui/material";
 
-export default function PrimarySearchAppBar() {
+export default function Navbar() {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(GlobalContext);
   const [isStateUnselected, setStateUnselected] = useState(
     state[state.length - 1].currentState === AvailableStates.Unselected
   );
+  const [header, setHeader] = useState("Select a state from the map");
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -44,7 +45,7 @@ export default function PrimarySearchAppBar() {
             sx={{ mr: 2 }}
             onClick={handleGoHome}
           >
-            <HomeIcon fontSize="large" />
+            <MapIcon fontSize="large" />
           </IconButton>
           <Typography
             component="div"
@@ -57,7 +58,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
 
           {isStateUnselected ? (
-            <div> Select a state from the map </div>
+            <div>{header}</div>
           ) : (
             <>
               <Breadcrumbs aria-label="breadcrumb">
@@ -71,8 +72,9 @@ export default function PrimarySearchAppBar() {
                     Cluster Analysis
                   </Link>
                 )}
-                {state[state.length - 1].step > 0 && state[state.length - 1].currentInfoCard !==
-                InfoCardType.distanceMeasure && (
+                {state[state.length - 1].step > 0 &&
+                  state[state.length - 1].currentInfoCard !==
+                    InfoCardType.distanceMeasure && (
                     <Link underline="none" color="white">
                       {state[state.length - 1].distanceMeasure}
                     </Link>
@@ -91,7 +93,16 @@ export default function PrimarySearchAppBar() {
             </>
           )}
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit">About</Button>
+
+          <Button
+            onClick={() => {
+              setHeader("");
+              navigate("/about");
+            }}
+            color="inherit"
+          >
+            About
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -1,48 +1,27 @@
+import { data } from 'jquery';
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
+import { DistrictPlanData } from '../interfaces/AnalysisInterface';
 
-export default function PartySplitChart() {
-  const data = [
-    {
-      name: 'Plan 1',
-      Republican: 6,
-      Democrat: 4,
-      amt: 2400,
-    },
-    {
-      name: 'Plan 2',
-      Republican: 8,
-      Democrat: 2,
-      amt: 2210,
-    },
-    {
-      name: 'Plan 3',
-      Republican: 3,
-      Democrat: 7,
-      amt: 2290,
-    },
-    {
-      name: 'Plan 4',
-      Republican: 5,
-      Democrat: 5,
-      amt: 2000,
-    },
-    {
-      name: 'Plan 5',
-      Republican: 4,
-      Democrat: 6,
-      amt: 2181,
-    },
-    {
-      name: 'Plan 6',
-      Republican: 1,
-      Democrat: 9,
-      amt: 2500,
-    },
-  ];
+interface PartySplitChartProps {
+  districtPlans : DistrictPlanData[]
+}
 
+export default function PartySplitChart( { districtPlans } : PartySplitChartProps) {
+
+  const parseSplits = (districtPlans : DistrictPlanData[]) => {
+    return districtPlans.map((district) => {
+        const splits = district.splits.split("-",2);
+        console.log(splits)
+        return {
+          name : `${district.district_plan}`,
+          Republican : Number(splits[0]),
+          Democrat : Number(splits[1])
+        }
+    })
+  }
   return (
-      <BarChart width={800} height={680} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5, }}>
+      <BarChart width={800} height={680} data={parseSplits(districtPlans)} margin={{ top: 5, right: 30, left: 20, bottom: 5, }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis>

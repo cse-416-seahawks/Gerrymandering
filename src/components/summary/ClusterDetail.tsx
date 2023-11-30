@@ -86,7 +86,7 @@ export default function ClusterDetail() {
           <ClusterDetailTable districtPlanData={tableData} />
         </TabPanel>
         <TabPanel value="3">
-          <PartySplitChart/>
+          <PartySplitChart districtPlans={tableData}/>
         </TabPanel>
       </TabContext>
     </>
