@@ -90,7 +90,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <ClusterDetailTable districtPlanData={tableData} districtChange={handleDistrictChange}/>
         </TabPanel>
         <TabPanel value="3">
-          <PartySplitChart/>
+          <PartySplitChart districtPlans={tableData}/>
         </TabPanel>
       </TabContext>
     </>
