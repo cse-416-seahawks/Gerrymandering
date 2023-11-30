@@ -17,11 +17,11 @@ import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
 interface ClusterScatterPlotProps {
     data : ClusterData[]
-    data_points : ClusterPoints[],
-    axis_labels : string[]
+    dataPoints : ClusterPoints[],
+    axisLabels : string[]
 }
 
-export default function ClusterScatterPlot({ data, data_points, axis_labels } : ClusterScatterPlotProps) {
+export default function ClusterScatterPlot({ data, dataPoints, axisLabels } : ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleStepChange(step: number) {
@@ -38,7 +38,7 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
     Math.max(
       Math.max.apply(
         null,
-        data_points.map((entry) => entry.num_district_plans)
+        dataPoints.map((entry) => entry.num_district_plans)
       )
     ),
   ];
@@ -74,43 +74,23 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
   };
 
   return (
-    <ScatterChart
-      width={760}
-      height={630}
-      margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
-    >
+    <ScatterChart width={760} height={630} margin={{ top: 20, right: 20, bottom: 40, left: 20 }} >
       <CartesianGrid />
-      <XAxis type="number" dataKey="x" name={axis_labels[0]}>
-      <Label
-        style={{
-          textAnchor: "middle",
-          fontSize: "0.5rem",
-          fill: "black",
-        }}
-        value={"African-American Population"}
-        position={"insideBottom"}
-        offset={-30}
-      />
+      <XAxis type="number" dataKey="x" name={axisLabels[0]}>
+        <Label 
+          style={{ textAnchor: "middle", fontSize: "0.5rem", fill: "black", }}
+          value={axisLabels[0]}
+          position={"insideBottom"}
+          offset={-30}
+        />
       </XAxis>
-      <YAxis
-        yAxisId="left"
-        type="number"
-        dataKey="y"
-        name={axis_labels[1]}
-        opacity="1"
-        stroke="#7aa9ff"
-      >
+      <YAxis yAxisId="left" type="number" dataKey="y" name={axisLabels[1]} opacity="1" stroke="#7aa9ff">
         <Label
-        style={{
-          textAnchor: "middle",
-          fontSize: "1rem",
-          fill: "black",
-
-        }}
-        position={"insideLeft"}
-        angle={270}
-        value={"Num. Districts - African American Pop. > 5 mil"}
-      />
+          style={{ textAnchor: "middle", fontSize: "1rem", fill: "black" }}
+          position={"insideLeft"}
+          angle={270}
+          value={axisLabels[1]}
+        />
       </YAxis>
       <ZAxis
         dataKey="num_district_plans"
@@ -126,7 +106,7 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
       />
       <Scatter
         yAxisId="left"
-        data={data_points}
+        data={dataPoints}
         fill="#bfd6ff"
         stroke="#037cff"
         opacity={4}

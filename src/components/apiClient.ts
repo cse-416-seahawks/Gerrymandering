@@ -3,7 +3,7 @@ import { AvailableStates } from "../globalContext";
 import { Feature, FeatureCollection } from "@turf/turf";
 
 
-function isFeatureCollection(data : any) : data is FeatureCollection {
+function isFeatureCollection(data: any): data is FeatureCollection {
   return data.type === 'FeatureCollection'
 }
 

@@ -21,7 +21,7 @@ export type ActionMap<M extends { [index: string]: any }> = {
 
 export interface EnsembleData {
   ensemble: number;
-  ensemble_id : string;
+  ensemble_id: string;
   num_clusters: number;
   avg_dist_clusters: number;
   num_dist_plans: number;
@@ -191,7 +191,7 @@ const mainReducer = (
         {
           mapData: state[state.length - 1].mapData,
           districtPlanTypes: state[state.length - 1].districtPlanTypes,
-          currentInfoCard : state[state.length - 1].currentInfoCard,
+          currentInfoCard: state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
           currentState: action.payload.currentState,

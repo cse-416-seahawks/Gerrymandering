@@ -23,12 +23,12 @@ import { useNavigate } from "react-router-dom";
 
 
 interface EnsemblesListProps {
-    ensembleData : Array<EnsembleData>,
-    handleStep : (step: number, ensemble: number, ensembleId: string) => void,
-    showToggle : boolean
+    ensembleData: Array<EnsembleData>,
+    handleStep: (step: number, ensemble: number, ensembleId: string) => void,
+    showToggle: boolean
 }
 
-export default function EnsemblesTable({ ensembleData, handleStep, showToggle } : EnsemblesListProps) {
+export default function EnsemblesTable({ ensembleData, handleStep, showToggle }: EnsemblesListProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const navigate = useNavigate();
   const [disMeasure, setDismeasure] = useState("Hamming Distance");
@@ -98,11 +98,11 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle } 
       </div>
       {spliceEnsemble(ensembleData, page).map((row) => (
         <Accordion defaultExpanded={false}>
-          <AccordionSummary sx={{pointerEvents : "none"}}>
+          <AccordionSummary sx={{pointerEvents: "none"}}>
             <Button
               variant="text"
               size="large"
-              sx={{pointerEvents : "auto"}}
+              sx={{pointerEvents: "auto"}}
               onClick={() =>{
                 handleStep(
                   1,
@@ -113,7 +113,7 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle } 
                   dispatch({
                     type: "CHANGE_INFO_CARD",
                     payload: {
-                      infoCardType : InfoCardType.distanceMeasure
+                      infoCardType: InfoCardType.distanceMeasure
                     }
                   })
                 }
@@ -126,14 +126,14 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle } 
               <Chip
                 label="See details"
                 variant="outlined"
-                sx={{pointerEvents : "auto"}}
+                sx={{pointerEvents: "auto"}}
                 onClick={(event) => {
                   event.stopPropagation();
                   handleSeeDetails(row);
                 }}
               />
               <Chip
-              sx={{pointerEvents : "auto"}}
+              sx={{pointerEvents: "auto"}}
                 label="Compare distance measures"
                 onClick={() =>{
 
@@ -144,9 +144,9 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle } 
                       .ensemble_id
                   )
                   dispatch({
-                    type : "CHANGE_INFO_CARD",
-                    payload : {
-                      infoCardType : InfoCardType.distanceMeasure
+                    type: "CHANGE_INFO_CARD",
+                    payload: {
+                      infoCardType: InfoCardType.distanceMeasure
                     }
                   })
                   navigate("/distances")

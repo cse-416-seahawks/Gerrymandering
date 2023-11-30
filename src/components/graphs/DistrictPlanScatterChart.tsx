@@ -106,27 +106,15 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
               {axisLabels[1]}
             </div>
           </div>
-          <ScatterChart
-            width={700}
-            height={350}
-            margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
-          >
+          <ScatterChart width={760} height={350} margin={{ top: 20, right: 20, bottom: 10, left: 10 }} >
             <CartesianGrid strokeDasharray="3 3" />
             <ZAxis dataKey="z" type="number" name="District Plan" />
-            <XAxis
-              dataKey="x"
-              type="number"
-              name={axisLabels[0]}
-            />
-            <YAxis
-              dataKey="y"
-              type="number"
-              name={axisLabels[1]}
-            />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ strokeDasharray: "3 3" }}
-              wrapperStyle={{ outline: "none" }}
+            <XAxis dataKey="x" type="number" name={axisLabels[0]} />
+            <YAxis dataKey="y" type="number" name={axisLabels[1]} />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              cursor={{ strokeDasharray: "3 3" }} 
+              wrapperStyle={{ outline: "none" }} 
             />
             <Legend />
             <Scatter
@@ -147,10 +135,10 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
           style={{
             display: "flex",
             fontSize: "1.0rem",
-            width: "65%",
             margin: "2rem",
             fontWeight: "700",
-            justifyContent: "end",
+            justifyContent: "center",
+            textAlign: "center"
           }}
         >
           {axisLabels[0]}
