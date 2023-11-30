@@ -164,7 +164,15 @@ public class DistrictController {
 
     @GetMapping("/getDistrictPlanGeoJSON/{state}/{districtPlanId}")
     public ResponseEntity<String> getDistrictPlanGeoJSON(@PathVariable final String state, @PathVariable final String districtPlanId) {
-        MongoCollection<Document> stateCollection = getStateCollection(state);
+        MongoCollection<Document> stateCollection = null;
+
+        if(state.equals("TEXAS")) {
+            stateCollection = db.getCollection("TexasPlans");
+        } else if (state.equals("VIRGINIA")) {
+            stateCollection = db.getCollection("VirginiaPlans");
+        } else if (state.equals("NEVADA")) {
+            stateCollection = db.getCollection("NevadaPlans");
+        }
         
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
