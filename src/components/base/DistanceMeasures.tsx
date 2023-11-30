@@ -10,8 +10,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DistanceMeasureInfo from "../summary/DistanceMeasureInfo";
 import { useNavigate } from "react-router-dom";
 
-function Distance() {
-  const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
+function DistanceMeasures() {
   const { state, dispatch } = useContext(GlobalContext);
   const navigate = useNavigate();
   let currentStep = state[state.length - 1].step;
@@ -40,11 +39,7 @@ function Distance() {
         <div className="StateMap-content">
           <header className="StateMap-header">
             <div className="State-map">
-              <StateMap
-                selectedState={state[state.length - 1].currentState}
-                centerCoordinates={[38.5, -116.5]}
-                selectedDistrict={selectedDistrict}
-              />
+              <StateMap/>
             </div>
             <div className="distance-table-container">
               <div className="navigation-container">
@@ -61,4 +56,4 @@ function Distance() {
   );
 }
 
-export default Distance;
+export default DistanceMeasures;
