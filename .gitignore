@@ -12,7 +12,7 @@
 /build
 
 # generated files
-/scripts/_generated_
+/scripts/dummy_data/_generated_
 
 # misc
 .DS_Store
