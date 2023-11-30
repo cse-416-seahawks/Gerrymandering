@@ -31,6 +31,10 @@ export interface StateMapData {
     zoom: number;
 }
 
+export interface StateDistrictPlanType {
+    [state: string]: string;
+  }
+
 export interface MapData {
     [state: string]: StateMapData;
 }

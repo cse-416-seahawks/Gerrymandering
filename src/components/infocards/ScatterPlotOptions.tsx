@@ -51,22 +51,11 @@ export default function ScatterPlotOptions() {
     setAge(event.target.value);
   };
 
-  const stateDetails = {
-    Nevada: "Nevada State Assembly 2022",
-    Texas: "Texas House Districts 2022",
-    Virginia: "Virginia House Districts 2022",
-  };
-
   useEffect(() => {
     let currentState = state[state.length - 1].currentState;
-    if (currentState === AvailableStates.Nevada) {
-      setDetails(stateDetails.Nevada);
-    } else if (currentState === AvailableStates.Virginia) {
-      setDetails(stateDetails.Virginia);
-    } else {
-      setDetails(stateDetails.Texas);
-    }
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
   }, [state[state.length - 1].currentState]);
+  
   return (
     <CardContent>
       <Typography

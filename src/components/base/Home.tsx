@@ -19,11 +19,10 @@ function Home() {
   useEffect(() => {
     async function getMapData() {
       const response = await fetchMapData();
-      console.log("ee", response)
       if (response) {
         dispatch({
           type: "SET_MAP_DATA",
-          payload: { mapData: response.stateMapData }
+          payload: { mapData: response.stateMapData, districtPlanTypes: response.stateDistrictPlanType }
         })
       }
     }

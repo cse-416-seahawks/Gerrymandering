@@ -17,12 +17,10 @@ import org.bson.Document;
 @CrossOrigin(origins = "http://localhost:3000")
 public class DistrictController {
     private final MongoDatabase db;
-    private final Double[] stateMapCoordinates;
 
     @Autowired
     public DistrictController(MongoDatabase db, Double[] stateMapCoordinates) {
         this.db = db;
-        this.stateMapCoordinates = stateMapCoordinates;
     }
 
     public MongoCollection<Document> getStateCollection(@PathVariable final String state) {
@@ -38,7 +36,7 @@ public class DistrictController {
 
     @GetMapping("/getMapCoordinatesData/")
     public ResponseEntity<String> getMapCoordinatesData() {
-        MongoCollection<Document> stateCollection = db.getCollection("MapData");
+        MongoCollection<Document> stateCollection = db.getCollection("StatesData");
 
         Document document = stateCollection.find().first();
         Gson gson = new Gson();

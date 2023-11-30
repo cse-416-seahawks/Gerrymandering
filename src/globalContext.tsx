@@ -6,7 +6,7 @@ import React, {
   useReducer,
 } from "react";
 import { DistrictPlanData } from "./components/interfaces/AnalysisInterface";
-import { MapData, StateMapData } from "./components/interfaces/MapInterface";
+import { MapData, StateMapData, StateDistrictPlanType } from "./components/interfaces/MapInterface";
 
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -61,6 +61,7 @@ export enum GlobalTypes {
 
 export type GlobalState = {
   mapData: MapData;
+  districtPlanTypes: StateDistrictPlanType,
   currentInfoCard: InfoCardType;
   distanceMeasure: string;
   currentState: AvailableStates;
@@ -77,7 +78,8 @@ export type GlobalState = {
 
 type GlobalStatePayload = {
   [GlobalTypes.SetMapData]: {
-    mapData: MapData
+    mapData: MapData,
+    districtPlanTypes: StateDistrictPlanType
   };
   [GlobalTypes.ChangeCard]: {
     infoCardType: InfoCardType
@@ -128,6 +130,7 @@ const mainReducer = (
         ...state,
         {
           mapData: action.payload.mapData,
+          districtPlanTypes: action.payload.districtPlanTypes,
           currentInfoCard: state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -147,6 +150,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard: action.payload.infoCardType,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -166,6 +170,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: action.payload.step,
@@ -185,6 +190,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -204,6 +210,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: action.payload.distanceMeasure,
           step: state[state.length - 1].step,
@@ -223,6 +230,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -242,6 +250,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -261,6 +270,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -285,6 +295,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -304,6 +315,7 @@ const mainReducer = (
         ...state,
         {
           mapData: state[state.length - 1].mapData,
+          districtPlanTypes: state[state.length - 1].districtPlanTypes,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -323,6 +335,7 @@ const mainReducer = (
           ...state,
           {
             mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
             currentInfoCard : state[state.length - 1].currentInfoCard,
             distanceMeasure: state[state.length - 1].distanceMeasure,
             step: state[state.length - 1].step,
@@ -345,6 +358,7 @@ const mainReducer = (
 const intialState: GlobalState[] = [
   {
     mapData: {},
+    districtPlanTypes: {},
     currentInfoCard : InfoCardType.ensembleInfo,
     distanceMeasure: "Hamming Distance",
     step: 0,
