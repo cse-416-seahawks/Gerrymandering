@@ -37,8 +37,8 @@ export default function PartySplitChart( { districtPlans } : PartySplitChartProp
       </YAxis>
       <Tooltip />
       <Legend />
-      <Bar dataKey="Democrat" fill="#4287f5"  />
-      <Bar dataKey="Republican" fill="#f54242"  />
+      <Bar dataKey="Democrat" stackId="a" fill="#4287f5"  />
+      <Bar dataKey="Republican" stackId="a" fill="#f54242"  />
     </BarChart>
   );
 }
