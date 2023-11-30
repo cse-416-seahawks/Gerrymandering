@@ -11,14 +11,37 @@ import {
   Legend,
   Label,
 } from "recharts";
+import { fetchAssociationData } from "../apiClient";
+import { GlobalContext } from "../../globalContext";
+
+interface AssociationData {
+  numDistrictPlans: number;
+  ensemble1: number;
+  ensemble2: number;
+  ensemble3: number;  
+  ensemble4: number;
+  ensemble5: number;
+}
 
 export default function ClusterAssociationGraph() {
+  const { state, dispatch } = useContext(GlobalContext);
+  const [ axisLabels, setAxisLabels ] = useState<Array<number>>([]);
+  const [ graphData, setGraphData ] = useState<Array<AssociationData>>([]);
 
-  let color;
-  function randomColor() {
-    color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    return color;
-  }
+  useEffect(() => {
+    async function getAssociationData() {
+      try {
+        const response = await fetchAssociationData(state[state.length - 1].currentState);
+        if (response) {
+          setAxisLabels([response.x_axis_label, response.y_axis_label]);
+          setGraphData(response.data);
+        }
+      } catch (error) {
+        throw error;
+      }
+    }
+    getAssociationData();
+  }, []);
 
   return (
     <div>
@@ -26,21 +49,21 @@ export default function ClusterAssociationGraph() {
         <b>Association of clusters with ensemble size</b>
       </Typography>
       <div className="graph-container">
-        <LineChart width={800} height={670} margin={{ top: 10, right: 10, bottom: 30, left: 10}} data={sampleData.ensembleData_2}>
+        <LineChart width={800} height={670} margin={{ top: 10, right: 10, bottom: 30, left: 10}} data={graphData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Num">
+          <XAxis dataKey="numDistrictPlans">
             <Label
               style={{
                 textAnchor: "middle",
                 fontSize: "1rem",
                 fill: "black",
               }}
-              value={"Number of District Plans"}
+              value={axisLabels[0]}
               position={"insideBottom"}
               offset={-50}
             />
           </XAxis>
-          <YAxis>
+          <YAxis domain={[0, 80]}>
             <Label
               style={{
                 textAnchor: "middle",
@@ -49,7 +72,7 @@ export default function ClusterAssociationGraph() {
               }}
               position={"insideLeft"}
               angle={270}
-              value={"Number of clusters"}
+              value={axisLabels[1]}
             />
           </YAxis>
           <Tooltip contentStyle={{ fontSize: 18 }} />
@@ -69,20 +92,20 @@ export default function ClusterAssociationGraph() {
           <Line
             type="monotone"
             dataKey="ensemble3"
-            stroke={randomColor()}
-            fill={color}
+            stroke="#BEBD7F"
+            fill="#BEBD7F"
           />
           <Line
             type="monotone"
             dataKey="ensemble4"
-            stroke={randomColor()}
-            fill={color}
+            stroke="#ba32b5"
+            fill="#ba32b5"
           />
           <Line
             type="monotone"
             dataKey="ensemble5"
-            stroke={randomColor()}
-            fill={color}
+            stroke="#354D73"
+            fill="#354D73"
           />
         </LineChart>
       </div>

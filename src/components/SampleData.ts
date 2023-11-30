@@ -13,21 +13,30 @@ function getRandomNumber(min: number, max: number) {
 
 
 // Ensemble data
-export const ensembleData_2: ensembleData[] = [];
-let a = Math.random() * 10;
-let b = Math.random() * 10;
-let c = Math.random() * 10;
-let d = Math.random() * 10;
-for (let i = 1; i <= 500; i++) {
-  ensembleData_2.push({
-    Num: i,
-    ensemble1: Math.log(i) * 10,
-    ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
-    ensemble3: Math.log(i) / Math.log(8) + b,
-    ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
-    ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
-  });
-}
+export const ensembleData_2 = [
+  {"Num": 1, "ensemble1": 9, "ensemble2": 6, "ensemble3": 3, "ensemble4": 9, "ensemble5": 5},
+  {"Num": 26, "ensemble1": 40, "ensemble2": 23, "ensemble3": 17, "ensemble4": 37, "ensemble5": 20},
+  {"Num": 51, "ensemble1": 40, "ensemble2": 30, "ensemble3": 30, "ensemble4": 42, "ensemble5": 28},
+  {"Num": 76, "ensemble1": 50, "ensemble2": 39, "ensemble3": 35, "ensemble4": 45, "ensemble5": 35},
+  {"Num": 101, "ensemble1": 52, "ensemble2": 40, "ensemble3": 40, "ensemble4": 47, "ensemble5": 37},
+  {"Num": 126, "ensemble1": 54, "ensemble2": 41, "ensemble3": 42, "ensemble4": 49, "ensemble5": 39},
+]
+
+// export const ensembleData_2: ensembleData[] = [];
+// let a = Math.random() * 10;
+// let b = Math.random() * 10;
+// let c = Math.random() * 10;
+// let d = Math.random() * 10;
+// for (let i = 1; i <= 500; i++) {
+//   ensembleData_2.push({
+//     Num: i,
+//     ensemble1: Math.log(i) * 10,
+//     ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
+//     ensemble3: Math.log(i) / Math.log(8) + b,
+//     ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
+//     ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
+//   });
+// }
 
 // Scatter plot data for cluster and district plan (dummy data)
 export const data01 = [

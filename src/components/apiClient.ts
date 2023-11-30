@@ -135,13 +135,13 @@ export async function fetchDistanceMeasureData(state: AvailableStates, ensembleI
   }
 }
 
-// export async function fetchAssociationData(state: AvailableStates) {
-//   try {
-//     const response = await axios.get(`http://localhost:4000/getAssociationData/${state}`);
-//     if (response.status == 200) {
-//       return response.data;
-//     }
-//   } catch(error) {
-//     throw error;
-//   }
-// }
+export async function fetchAssociationData(state: AvailableStates) {
+  try {
+    const response = await axios.get(`http://localhost:4000/getAssociationData/${state}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
