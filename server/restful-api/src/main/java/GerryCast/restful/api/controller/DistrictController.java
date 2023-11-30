@@ -35,11 +35,21 @@ public class DistrictController {
         }
         return null;
     }
+
+    @GetMapping("/getMapCoordinatesData/")
+    public ResponseEntity<String> getMapCoordinatesData() {
+        MongoCollection<Document> stateCollection = db.getCollection("MapData");
+
+        Document document = stateCollection.find().first();
+        Gson gson = new Gson();
+        String json = gson.toJson(document);
+        return new ResponseEntity<>(json, HttpStatus.OK);
+    }
     
     @GetMapping("/getStateOutline/{state}")
     public ResponseEntity<String> getStateOutline(@PathVariable final String state) {
         MongoCollection<Document> stateCollection = getStateCollection(state);
-
+        
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }

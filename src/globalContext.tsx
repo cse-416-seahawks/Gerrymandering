@@ -6,6 +6,7 @@ import React, {
   useReducer,
 } from "react";
 import { DistrictPlanData } from "./components/interfaces/AnalysisInterface";
+import { MapData, StateMapData } from "./components/interfaces/MapInterface";
 
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -25,6 +26,8 @@ export interface EnsembleData {
   avg_dist_clusters: number;
   num_dist_plans: number;
 }
+
+
 
 export enum InfoCardType {
   ensembleInfo = "Ensemble Info",
@@ -53,10 +56,12 @@ export enum GlobalTypes {
   AddEnsembleDetail = "ADD_ENS_DETAIL",
   UpdateEnsembleDetail = "UPDATE_ENS_DETAIL",
   SetClusterDetails = "SET_CLUSTER_DETAILS",
+  SetMapData = "SET_MAP_DATA",
 }
 
 export type GlobalState = {
-  currentInfoCard : InfoCardType;
+  mapData: MapData;
+  currentInfoCard: InfoCardType;
   distanceMeasure: string;
   currentState: AvailableStates;
   step: number;
@@ -71,6 +76,9 @@ export type GlobalState = {
 };
 
 type GlobalStatePayload = {
+  [GlobalTypes.SetMapData]: {
+    mapData: MapData
+  };
   [GlobalTypes.ChangeCard]: {
     infoCardType: InfoCardType
   };
@@ -115,11 +123,31 @@ const mainReducer = (
 ): GlobalState[] => {
   console.log("Action Type: ", action.type);
   switch (action.type) {
+    case GlobalTypes.SetMapData:
+      return [
+        ...state,
+        {
+          mapData: action.payload.mapData,
+          currentInfoCard: state[state.length - 1].currentInfoCard,
+          distanceMeasure: state[state.length - 1].distanceMeasure,
+          step: state[state.length - 1].step,
+          currentState: state[state.length - 1].currentState,
+          clusterAnalysis: state[state.length - 1].clusterAnalysis,
+          ensemble: state[state.length - 1].ensemble,
+          ensembleId: state[state.length - 1].ensembleId,
+          cluster: state[state.length - 1].cluster,
+          clusterId: state[state.length - 1].clusterId,
+          districtPlanIds: state[state.length - 1].districtPlanIds,
+          ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
+        },
+      ];
     case GlobalTypes.ChangeCard:
       return [
         ...state,
         {
-          currentInfoCard : action.payload.infoCardType,
+          mapData: state[state.length - 1].mapData,
+          currentInfoCard: action.payload.infoCardType,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
           currentState: state[state.length - 1].currentState,
@@ -137,6 +165,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: action.payload.step,
@@ -155,6 +184,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -173,6 +203,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: action.payload.distanceMeasure,
           step: state[state.length - 1].step,
@@ -191,6 +222,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -209,6 +241,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -227,6 +260,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -250,6 +284,7 @@ const mainReducer = (
       return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -268,6 +303,7 @@ const mainReducer = (
      return [
         ...state,
         {
+          mapData: state[state.length - 1].mapData,
           currentInfoCard : state[state.length - 1].currentInfoCard,
           distanceMeasure: state[state.length - 1].distanceMeasure,
           step: state[state.length - 1].step,
@@ -286,6 +322,7 @@ const mainReducer = (
       return [
           ...state,
           {
+            mapData: state[state.length - 1].mapData,
             currentInfoCard : state[state.length - 1].currentInfoCard,
             distanceMeasure: state[state.length - 1].distanceMeasure,
             step: state[state.length - 1].step,
@@ -307,6 +344,7 @@ const mainReducer = (
 
 const intialState: GlobalState[] = [
   {
+    mapData: {},
     currentInfoCard : InfoCardType.ensembleInfo,
     distanceMeasure: "Hamming Distance",
     step: 0,

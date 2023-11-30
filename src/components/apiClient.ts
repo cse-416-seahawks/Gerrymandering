@@ -11,9 +11,20 @@ function isFeatureArray(data: any): data is Feature[] {
   return Array.isArray(data);
 }
 
+export async function fetchMapData() {
+  try {
+    const response = await axios.get(`http://localhost:4000/getMapCoordinatesData/`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
+
 export async function fetchCurrDistrictPlan(State: AvailableStates): Promise<FeatureCollection> {
   try {
-    const response = await axios.get(`http://localhost:4000/getCurrentDistrictPlan/${State}`)
+    const response = await axios.get(`http://localhost:4000/getCurrentDistrictPlan/${State}`);
 
     if (isFeatureCollection(response.data[0])){
       return response.data[0];
