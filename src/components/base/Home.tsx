@@ -36,16 +36,13 @@ function Home() {
       <div className="Home-content">
       <Navbar />
       <div className="StateMap-content">
-          <header className="StateMap-header">
-            <div className="State-map"> 
-              <StateMap/>
-            </div>
-            <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
+        <header className="StateMap-header">
+          <div className="State-map"> 
+            <StateMap/>
+          </div>
+          <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
         </header>
-        
       </div>
-      
-      
       </div>
     </div>
   );
