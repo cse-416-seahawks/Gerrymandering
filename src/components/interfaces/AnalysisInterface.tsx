@@ -1,3 +1,12 @@
+export interface DistanceMeasureType {
+  distanceMeasure: string;
+  min: number;
+  first_quartile: number;
+  median: number;
+  third_quartile: number;
+  max: number;
+}
+
 export interface EnsembleData {
   ensemble: number;
   ensemble_id : string;

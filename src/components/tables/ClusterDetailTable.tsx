@@ -45,11 +45,10 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
     setPage(0);
   };
 
-  console.log(districtPlanData);
   return (
     <div>
-      <TableContainer className="plan-table-container" component={Paper}> 
-        <Table sx={{}}>
+      <TableContainer className="plan-table-container" component={Paper} sx={{maxHeight: "80vh"}}> 
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell align="left">District Plan</TableCell>
@@ -63,10 +62,7 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
               <TableRow key={row.district_plan}>
                 <TableCell component="th" scope="row">
                   {
-                    <button
-                      style={buttonStyle}
-                      // onClick={() => districtChange(row.district_plan, [-1,-1])}
-                    >
+                    <button style={buttonStyle}>
                       {row.district_plan}
                     </button>
                   }
@@ -86,7 +82,6 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                // ActionsComponent={TablePaginationActions}
               />
             </TableRow>
           </TableFooter>

@@ -1,39 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import Boxplot from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { GlobalContext } from "../../globalContext";
 
-export default function DistanceChart () {
-  const series = [
-    {
-      type: "boxPlot",
-      data: [
-        {
-          x: "Hamming Distance",
-          y: [54, 66, 69, 75, 88],
-        },
-        {
-          x: "Optimal Transport",
-          y: [43, 65, 69, 76, 81],
-        },
-        {
-          x: "Total Variation",
-          y: [31, 39, 45, 51, 59],
-        },
-        {
-          x: "Additional Measure",
-          y: [39, 46, 55, 65, 71],
-        },
-        {
-          x: "Additional Measure",
-          y: [39, 46, 55, 65, 71],
-        },
-        {
-          x: "Additional Measure",
-          y: [29, 31, 35, 39, 44],
-        },
-      ],
-    },
-  ];
+export default function DistanceChart() {
+  const {state, dispatch} = useContext(GlobalContext);
+  
+  function distanceGraphData() {
+    const tableData = state[state.length - 1].compareDistanceMeasuresData;
+    const graphData = [
+      {
+        type: "boxPlot",
+        data: tableData.map((measure) => ({
+          x: measure.distanceMeasure,
+          y: [measure.min, measure.first_quartile, measure.median, measure.third_quartile, measure.max],
+        })),
+      },
+    ];
+    return graphData;
+  }
   
   const options: ApexOptions = {
     chart: {
@@ -43,7 +28,7 @@ export default function DistanceChart () {
         show: false,
       },
     },
-    yaxis: { min: 25 },
+    yaxis: { min: 0 },
     title: {
       text: "Distance Measure Variation",
       align: "center",
@@ -62,5 +47,5 @@ export default function DistanceChart () {
     }
   };
 
-  return <Boxplot options={options} series={series} height={710} />;
+  return <Boxplot options={options} series={distanceGraphData()} height={710} />;
 };

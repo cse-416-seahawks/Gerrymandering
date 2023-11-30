@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext, InfoCardType } from "../../globalContext";
 import "../css/Distance.css";
 import "../css/StateMap.css";
@@ -9,9 +9,13 @@ import { Stack, IconButton, Stepper, Step, StepButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DistanceMeasureInfo from "../summary/DistanceMeasureInfo";
 import { useNavigate } from "react-router-dom";
+import { fetchDistanceMeasureData } from "../apiClient";
+import { DistanceMeasureType } from "../interfaces/AnalysisInterface";
+import DistanceChart from "../graphs/DistanceChart";
 
 function DistanceMeasures() {
   const { state, dispatch } = useContext(GlobalContext);
+  const [distanceMeasuresData, setDistanceMeasuresData] = useState<Array<DistanceMeasureType>>([]);
   const navigate = useNavigate();
   let currentStep = state[state.length - 1].step;
 
@@ -32,6 +36,26 @@ function DistanceMeasures() {
     return null;
   }
 
+  useEffect(() => {
+    async function getDistanceMeasureData() {
+      const currState = state[state.length - 1].currentState;
+      const ensembleId = state[state.length - 1].ensembleId;
+      try {
+        const response = await fetchDistanceMeasureData(currState, ensembleId);
+        if (response) {
+          dispatch({
+            type: "SET_DISTANCE_MEASURES_DATA",
+            payload: { compareDistanceMeasuresData: response.data }
+          })
+          setDistanceMeasuresData(response.data);
+        }
+      } catch (error) {
+        throw error;
+      }
+    }
+    getDistanceMeasureData();
+  }, [])
+
   return (
     <div className="Home">
       <div className="Home-content">
@@ -46,7 +70,7 @@ function DistanceMeasures() {
                 <BackButton />
               </div>
 
-              {currentStep === 1 && <DistanceMeasureInfo/>}
+              {currentStep === 1 && <DistanceChart/>}
 
             </div>
           </header>
