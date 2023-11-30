@@ -10,12 +10,6 @@ import { DistrictState } from "../interfaces/MapInterface";
 export default () => {
   const [nevadaDistrict, setNevadaDistrict] = useState<DistrictState["data"]>(null);
 
-  function getRandomHexCode(): string {
-    const colors = ["#FF0000", "#0000FF"];
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  }
-
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
@@ -34,7 +28,7 @@ export default () => {
           return (
             <Polygon
               pathOptions={{
-                fillColor: getRandomHexCode(),
+                fillColor: "#4287f5",
                 fillOpacity: 0.5,
                 weight: 2,
                 opacity: 1,

@@ -59,17 +59,6 @@ export default function ClusterInfoCard() {
           {curDetails}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Stack direction="row" spacing={1}>
-          <Chip
-            label="Democratic Districts"
-            style={{ backgroundColor: "blue", color: "white" }}
-          />
-          <Chip
-            label="Republican Districts"
-            style={{ backgroundColor: "red", color: "white" }}
-            variant="outlined"
-          />
-        </Stack>
       </Box>
       <Grid>
           <Typography sx={{ mt: 4, mb: 1 }} variant="subtitle1" component="div">
