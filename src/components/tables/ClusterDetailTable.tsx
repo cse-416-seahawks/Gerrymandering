@@ -39,14 +39,14 @@ export default function ClusterDetailTable({ districtPlanData, districtChange } 
                 </TableHead>
                 <TableBody>
                   {districtPlanData.map((row) => (
-                      <TableRow key={districtPlanData.indexOf(row)}>
+                      <TableRow key={row.district_plan}>
                         <TableCell component="th" scope="row">
                           {
                             <button
                               style={buttonStyle}
                               // onClick={() => districtChange(row.district_plan, [-1,-1])}
                             >
-                              {districtPlanData.indexOf(row) + 1}
+                              {row.district_plan}
                             </button>
                           }
                         </TableCell>

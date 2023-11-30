@@ -30,10 +30,12 @@ import org.bson.Document;
 @CrossOrigin(origins = "http://localhost:3000")
 public class DistrictController {
     private final MongoDatabase db;
+    private final Double[] stateMapCoordinates;
 
     @Autowired
-    public DistrictController(MongoDatabase db) {
+    public DistrictController(MongoDatabase db, Double[] stateMapCoordinates) {
         this.db = db;
+        this.stateMapCoordinates = stateMapCoordinates;
     }
 
     public MongoCollection<Document> getStateCollection(@PathVariable final String state) {

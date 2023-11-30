@@ -1,5 +1,13 @@
 import { TooltipProps } from "recharts";
 
+export interface EnsembleData {
+  ensemble: number;
+  ensemble_id : string;
+  num_clusters: number;
+  avg_dist_clusters: number;
+  num_dist_plans: number;
+}
+
 export interface ClusterData {
   cluster_number: number,
   cluster_id: string,
@@ -29,6 +37,7 @@ export interface ClusterPoints {
 
 export interface DistrictPlanData {
   district_plan_id: number;
+  district_plan: number;
   opportunity_districts: number;
   splits: string;
   avg_democrat: string;

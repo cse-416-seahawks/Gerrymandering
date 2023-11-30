@@ -23,9 +23,7 @@ import {
   district_summary_table,
 } from "../tables/TableTypes";
 import { DistrictPlanData, DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface";
-import {  GlobalContext } from "../../globalContext";
-import { Global } from "@emotion/react";
-import { fetchClusterDetailGraph } from "../apiClient";
+import { GlobalContext } from "../../globalContext";
 
 interface DistrictPlanScatterPlotProps {
   axisLabels: Array<string>;
@@ -34,20 +32,17 @@ interface DistrictPlanScatterPlotProps {
 }
 
 export default function DistrictPlanScatterPlot({ axisLabels, availableData, unavailableData }: DistrictPlanScatterPlotProps) {
-  const { state, dispatch } = useContext(GlobalContext);
-  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<district_summary_table>>([]);
+  const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<Array<DistrictPlanData>>([]);
   const [modal, setModal] = useState<boolean>(false);
+  const { state, dispatch } = useContext(GlobalContext);
   
   function handleDistrictPlanSelection(point: any) {
-    const plan = {
-      district_plan: point.z,
-      opportunity_districts: 5,
-      democrat: "30%",
-      republican: "70%",
-      map_value: [35.5, -115],
-    };
-    if (!displayedDistrictPlans.some((item) => item.district_plan === plan.district_plan)) {
-      setDisplayedDistrictPlans([...displayedDistrictPlans, plan]);
+    const districtPlanId = point.district_plan_id;
+    const districtPlanDetails = state[state.length - 1].clusterDetails.find((row) => row.district_plan_id == districtPlanId); 
+    if (districtPlanDetails) {
+      if (!displayedDistrictPlans.some((item) => item.district_plan === districtPlanDetails.district_plan)) {
+        setDisplayedDistrictPlans([...displayedDistrictPlans, districtPlanDetails]);
+      }
     }
   }
 
@@ -188,8 +183,8 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
                       <TableCell align="center">
                         {row.opportunity_districts}
                       </TableCell>
-                      <TableCell align="center">{row.democrat}</TableCell>
-                      <TableCell align="center">{row.republican}</TableCell>
+                      <TableCell align="center">{row.avg_democrat}</TableCell>
+                      <TableCell align="center">{row.avg_republican}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

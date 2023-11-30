@@ -5,6 +5,7 @@ import React, {
   useContext,
   useReducer,
 } from "react";
+import { DistrictPlanData } from "./components/interfaces/AnalysisInterface";
 
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -51,6 +52,7 @@ export enum GlobalTypes {
   SetCluster = "SET_CLUSTER",
   AddEnsembleDetail = "ADD_ENS_DETAIL",
   UpdateEnsembleDetail = "UPDATE_ENS_DETAIL",
+  SetClusterDetails = "SET_CLUSTER_DETAILS",
 }
 
 export type GlobalState = {
@@ -65,11 +67,12 @@ export type GlobalState = {
   clusterId: string;
   districtPlanIds: Array<string>;
   ensembleDetails: Array<EnsembleData>;
+  clusterDetails: Array<DistrictPlanData>;
 };
 
 type GlobalStatePayload = {
   [GlobalTypes.ChangeCard]: {
-    infoCardType : InfoCardType
+    infoCardType: InfoCardType
   };
   [GlobalTypes.ChangeState]: {
     currentState: AvailableStates;
@@ -97,6 +100,9 @@ type GlobalStatePayload = {
   };
   [GlobalTypes.UpdateEnsembleDetail]: {
     EnsembleData: EnsembleData[];
+  };
+  [GlobalTypes.SetClusterDetails]: {
+    clusterDetails: Array<DistrictPlanData>; 
   }
 };
 
@@ -124,6 +130,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.StepChange:
@@ -141,6 +148,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.ChangeState:
@@ -158,6 +166,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.DistanceMeasure:
@@ -175,6 +184,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.PageChange:
@@ -192,6 +202,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.SetEnsemble:
@@ -209,6 +220,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.SetCluster:
@@ -226,6 +238,7 @@ const mainReducer = (
           clusterId: action.payload.clusterId,
           districtPlanIds: action.payload.districtPlanIds,
           ensembleDetails: state[state.length - 1].ensembleDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.AddEnsembleDetail:
@@ -248,6 +261,7 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: newDetails,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
     case GlobalTypes.UpdateEnsembleDetail:
@@ -265,8 +279,27 @@ const mainReducer = (
           clusterId: state[state.length - 1].clusterId,
           districtPlanIds: state[state.length - 1].districtPlanIds,
           ensembleDetails: action.payload.EnsembleData,
+          clusterDetails: state[state.length - 1].clusterDetails,
         },
       ];
+    case GlobalTypes.SetClusterDetails:
+      return [
+          ...state,
+          {
+            currentInfoCard : state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            step: state[state.length - 1].step,
+            currentState: state[state.length - 1].currentState,
+            clusterAnalysis: state[state.length - 1].clusterAnalysis,
+            ensemble: state[state.length - 1].ensemble,
+            ensembleId: state[state.length - 1].ensembleId,
+            cluster: state[state.length - 1].cluster,
+            clusterId: state[state.length - 1].clusterId,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: action.payload.clusterDetails,
+          },
+        ];
     default:
       return state;
   }
@@ -285,6 +318,7 @@ const intialState: GlobalState[] = [
     clusterId: "",
     districtPlanIds: [],
     ensembleDetails: [],
+    clusterDetails: [],
   },
 ];
 

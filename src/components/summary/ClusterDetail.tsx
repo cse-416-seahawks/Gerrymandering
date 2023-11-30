@@ -10,7 +10,7 @@ import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
 import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
-import { DistrictPlanGraphData, DistrictPlanPoints, DistrictPlanData } from "../interfaces/AnalysisInterface"
+import { DistrictPlanData, DistrictPlanPoints } from "../interfaces/AnalysisInterface";
 
 export default ({ onDistrictSelection }: DistrictSelectionProps) => {
   const [currentTab, setCurrentTab] = useState("1");
@@ -37,6 +37,12 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
       try {
         const response = await fetchClusterDetails(currState, currClusterId);
         setTableData(response.data);
+        dispatch({
+          type: "SET_CLUSTER_DETAILS",
+          payload: {
+            clusterDetails: response.data,
+          }
+        })
       } catch(error) {
         console.log(error);
       }
