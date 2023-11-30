@@ -136,7 +136,6 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle }:
               sx={{pointerEvents: "auto"}}
                 label="Compare distance measures"
                 onClick={() =>{
-
                   handleStep(
                     1,
                     row.ensemble,
