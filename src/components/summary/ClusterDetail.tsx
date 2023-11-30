@@ -12,7 +12,7 @@ import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
 import { DistrictPlanGraphData, DistrictPlanPoints, DistrictPlanData } from "../interfaces/AnalysisInterface"
 import { DistrictSelectionProps } from "../types/TableTypes";
 
-export default ({ onDistrictSelection }: DistrictSelectionProps) => {
+export default function ClusterDetail() {
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
@@ -22,10 +22,6 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
-  }
-
-  function handleDistrictChange(district_num: number, coords: Array<number>) {
-    onDistrictSelection(district_num, coords);
   }
 
   useEffect(() => {
@@ -87,7 +83,7 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
           <DistrictPlanScatterPlot axisLabels={axisLabels} availableData={availableDataPoints} unavailableData={unavailableDataPoints}/>
         </TabPanel>
         <TabPanel value="2">
-          <ClusterDetailTable districtPlanData={tableData} districtChange={handleDistrictChange}/>
+          <ClusterDetailTable districtPlanData={tableData} />
         </TabPanel>
         <TabPanel value="3">
           <PartySplitChart/>

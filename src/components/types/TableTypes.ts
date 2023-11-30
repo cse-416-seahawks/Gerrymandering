@@ -1,19 +1,18 @@
 
 export type DistrictSelectionProps = {
-    onDistrictSelection: (
-      district_num: number,
-      coordinates: Array<number>
-    ) => void;
-  }
+  onDistrictSelection: (
+    district_num: number,
+    coordinates: Array<number>
+  ) => void;
+}
 
-  export type ClusterSelectionProps = {
-    onClusterSelection: (
-      clusterNum: number,
-      clusterId: string,
-      districtPlanIds: Array<string>
-    ) => void;
-  }
-
+export type ClusterSelectionProps = {
+  onClusterSelection: (
+    clusterNum: number,
+    clusterId: string,
+    districtPlanIds: Array<string>
+  ) => void;
+}
 
 export type ensembleData = {
   Num: number;

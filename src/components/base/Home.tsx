@@ -29,8 +29,6 @@ function Home() {
     getMapData();
   }, []);
 
-  
-
   return (
     <div className="Home">
       <div className="Home-content">
@@ -40,7 +38,7 @@ function Home() {
           <div className="State-map"> 
             <StateMap/>
           </div>
-          <TableData selectedState={state[state.length-1].currentState} onDistrictSelection={handleDistrictSelection}/>
+          <TableData selectedState={state[state.length-1].currentState}/>
         </header>
       </div>
       </div>

@@ -14,11 +14,10 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 
 interface ClusterDetailTableProps {
-  districtPlanData: Array<DistrictPlanData>,
-  districtChange: (district_num: number, coords: number[]) => void,
+  districtPlanData: Array<DistrictPlanData>
 }
 
-export default function ClusterDetailTable({ districtPlanData, districtChange } : ClusterDetailTableProps) {
+export default function ClusterDetailTable({ districtPlanData} : ClusterDetailTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(9);
   

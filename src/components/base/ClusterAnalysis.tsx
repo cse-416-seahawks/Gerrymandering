@@ -15,10 +15,6 @@ import { Card, CardContent } from "@mui/material";
 
 interface TableDataProps {
   selectedState: string;
-  onDistrictSelection: (
-    district_num: number,
-    coordinates: Array<number>
-  ) => void;
 }
 
 function TableData(props: TableDataProps) {
@@ -73,10 +69,6 @@ function TableData(props: TableDataProps) {
         step: step,
       },
     });
-  }
-
-  function handleDistrictChange(district_num: number, coords: Array<number>) {
-    props.onDistrictSelection(district_num, coords);
   }
 
   function handleClusterSelection(clusterData: ClusterData) {
@@ -160,7 +152,7 @@ function TableData(props: TableDataProps) {
           )}
           {/* Summary of selected cluster */}
           {currentStep == 2 && (
-            <DistrictPlanData onDistrictSelection={handleDistrictChange} />
+            <DistrictPlanData />
           )}
         </CardContent>
       </Card>
