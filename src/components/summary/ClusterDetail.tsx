@@ -16,7 +16,6 @@ export default ({ onDistrictSelection }: DistrictSelectionProps) => {
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
-  
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
   const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);

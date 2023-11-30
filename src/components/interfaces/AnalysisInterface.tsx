@@ -1,5 +1,3 @@
-import { TooltipProps } from "recharts";
-
 export interface EnsembleData {
   ensemble: number;
   ensemble_id : string;
@@ -58,13 +56,4 @@ export interface DistrictPlanPoints {
   availableData: boolean;
   x: number;
   y: number;
-}
-  
-export interface CustomTooltipProps extends TooltipProps<any, any> {
-  active?: boolean;
-  payload?: Array<{
-    name: string; payload: {
-      cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
-    } 
-  }>;
 }

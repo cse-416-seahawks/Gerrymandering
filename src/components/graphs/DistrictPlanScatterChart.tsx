@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import * as sampleData from "../SampleData";
 import AlertModal from "../AlertModal";
 import {
   XAxis,
@@ -19,11 +18,9 @@ import {
   Scatter,
   ZAxis,
 } from "recharts";
-import {
-  district_summary_table,
-} from "../tables/TableTypes";
 import { DistrictPlanData, DistrictPlanGraphData, DistrictPlanPoints } from "../interfaces/AnalysisInterface";
 import { GlobalContext } from "../../globalContext";
+import { TooltipProps } from "recharts";
 
 interface DistrictPlanScatterPlotProps {
   axisLabels: Array<string>;
@@ -57,6 +54,32 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
   function handleOpenModal(open: boolean) {
     setModal(open);
   }
+
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        district_plan: string; district_plan_id: string; availableData: boolean; x: number; y: number; 
+      } 
+    }>;
+  }
+
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const selectedPoint = payload[0].payload;
+      const xLabel = payload[0].name;
+      const yLabel = payload[1].name;
+
+      return (
+        <div className="custom-tooltip">
+          <p className="tooltip-text"><b>{"District Plan: "}</b>{selectedPoint.district_plan}</p>
+          <p className="tooltip-text"><b>{`${xLabel}: `}</b>{selectedPoint.x}</p>
+          <p className="tooltip-text"><b>{`${yLabel}: `}</b>{selectedPoint.y}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -101,8 +124,9 @@ export default function DistrictPlanScatterPlot({ axisLabels, availableData, una
               name={axisLabels[1]}
             />
             <Tooltip
+              content={<CustomTooltip />}
               cursor={{ strokeDasharray: "3 3" }}
-              contentStyle={{ fontSize: 18 }}
+              wrapperStyle={{ outline: "none" }}
             />
             <Legend />
             <Scatter

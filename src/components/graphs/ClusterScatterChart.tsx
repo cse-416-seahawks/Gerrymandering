@@ -13,7 +13,7 @@ import {
   Label,
 } from "recharts";
 import { GlobalContext } from "../../globalContext";
-import { ClusterData, ClusterPoints, CustomTooltipProps} from "../interfaces/AnalysisInterface";
+import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
 interface ClusterScatterPlotProps {
     data : ClusterData[]
@@ -45,6 +45,15 @@ export default function ClusterScatterPlot({ data, data_points, axis_labels } : 
 
   const domain = parseDomain();
   const range = [100, 1000];
+
+  interface CustomTooltipProps extends TooltipProps<any, any> {
+    active?: boolean;
+    payload?: Array<{
+      name: string; payload: {
+        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
+      } 
+    }>;
+  }
   
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
