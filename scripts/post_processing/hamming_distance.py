@@ -1,9 +1,5 @@
 import pandas as pd
 
-# pairwise matrix 
-# minimum cost bipartite graph
-# average area difference -> distance matrix 
-
 def compare_precincts(plan1Precincts, plan2Precincts):
     sharedPrecincts = [p1 for p1, p2 in zip(plan1Precincts, plan2Precincts) if p1 == p2]
     return len(sharedPrecincts)
@@ -18,7 +14,6 @@ def remove_duplicate_edges(graph, edge):
             graph[district].remove(edge)
     return graph
 
-
 districtPlan1 = pd.read_json("NVplan0.json")
 districtPlan2 = pd.read_json("NVplan1.json")
 
@@ -31,32 +26,25 @@ for i, district1 in enumerate(districtPlan1["features"]):
         numSharedPrecincts = compare_precincts(plan1Precincts, plan2Precincts)
         distanceMatrix[i][j] = numSharedPrecincts
 
-# Build hashmap with key: districtPlan2 index (district) and value: [all edges from districtPlan1]
-# Initialize graph with key being the district number in districtPlan2
+# Initialize graph with key being the district number in districtPlan1
 graph = {}
 for i, district in enumerate(districtPlan1["features"]):
-    # graph[district["properties"]["DISTRICT"]] = []
     graph[i] = []
-print(graph)
-print("\n")
 
 # Find all matches > 0 for each district in plan2 (finding its edges)
+# key: index (of district in plan 1) and value: [all edges from districtPlan2]
 for plan1district in range(len(distanceMatrix)):
     for plan2district in range(len(distanceMatrix[0])):
         sharedPrecinctCount = distanceMatrix[plan1district][plan2district]
         if sharedPrecinctCount > 0:
             graph[plan1district].append((plan2district, sharedPrecinctCount))
 
-# For all districts with one matching district (edge), assign that as a matching pair and remove from hashmap (plan1District, plan2District)
 matchedPairs = set() 
 
-# Matches one-to-one districts
 while True:
     matchingComplete = False
-
     for district, edges in graph.items():
         if len(edges) == 1:
-            # matchedPairs.add((find_district_num(edges[0][0], districtPlan1), find_district_num(district, districtPlan2)))
             matchedPairs.add((edges[0][0], district))
             remove_duplicate_edges(graph, edges[0]) # remove the pairs from other edges since we can only have one match
             graph[district] = []
