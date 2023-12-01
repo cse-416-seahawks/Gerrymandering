@@ -34,7 +34,7 @@ for i, district1 in enumerate(districtPlan1["features"]):
 # Build hashmap with key: districtPlan2 index (district) and value: [all edges from districtPlan1]
 # Initialize graph with key being the district number in districtPlan2
 graph = {}
-for i, district in enumerate(districtPlan2["features"]):
+for i, district in enumerate(districtPlan1["features"]):
     # graph[district["properties"]["DISTRICT"]] = []
     graph[i] = []
 print(graph)
@@ -45,7 +45,7 @@ for plan1district in range(len(distanceMatrix)):
     for plan2district in range(len(distanceMatrix[0])):
         sharedPrecinctCount = distanceMatrix[plan1district][plan2district]
         if sharedPrecinctCount > 0:
-            graph[plan2district].append((plan1district, sharedPrecinctCount))
+            graph[plan1district].append((plan2district, sharedPrecinctCount))
 
 # For all districts with one matching district (edge), assign that as a matching pair and remove from hashmap (plan1District, plan2District)
 matchedPairs = set() 
@@ -67,10 +67,6 @@ while True:
 
 for district in list(graph.keys()):
     if len(graph[district]) == 0: del graph[district]
-
-print(graph)
-print('\n')
-print(matchedPairs)
 
 
 
