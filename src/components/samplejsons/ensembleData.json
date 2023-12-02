@@ -1,0 +1,36 @@
+{
+  "State": "Nevada",
+  "type" : "ensembleData",
+  "data": [
+    {
+      "ensemble": 1,
+      "numClusters": 3,
+      "averageDistance" : 40.3,
+      "plansNeeded": 309
+    },
+    {
+      "ensemble": 2,
+      "numClusters": 4.3,
+      "averageDistance" : 38.5,
+      "plansNeeded": 425
+    },
+    {
+      "ensemble": 3,
+      "numClusters": 4.6,
+      "averageDistance" : 19.4,
+      "plansNeeded": 321
+    },
+    {
+      "ensemble": 4,
+      "numClusters": 5.3,
+      "averageDistance" : 21.7,
+      "plansNeeded": 251
+    },
+    {
+      "ensemble": 5,
+      "numClusters": 6.3,
+      "averageDistance" : 28.3,
+      "plansNeeded": 268
+    }
+  ]
+}

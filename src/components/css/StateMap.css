@@ -6,7 +6,7 @@
 .StateMap {
   position:relative;
   justify-content: flex-start;
-  height : 110%;
+  height : 90%;
   backdrop-filter: blur(0.1rem);
   border-width: 1px;
 }
@@ -28,16 +28,19 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
+  background-color: white;
 }
 
 .State-map{
+  height : 90%;
   z-index: 1;
+  margin-bottom: 1rem;
 }
 
 .stack-top{
   top:0;
   right:0;
-  position:absolute;
+  position: absolute;
 }
 
 .StateMap-content {

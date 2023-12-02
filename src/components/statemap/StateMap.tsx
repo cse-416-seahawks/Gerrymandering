@@ -1,24 +1,11 @@
 import React, {
-  Component,
-  Context,
   useEffect,
   useContext,
   useState,
-  createContext,
 } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import DistrictInfoCard from "../base/DistrictInfoCard";
-
 import { MapContainer, TileLayer, Polygon, useMapEvent, useMap } from "react-leaflet";
-
-// import MarkerClusterGroup from "react-leaflet-cluster";
-// import {MapLibreTileLayer} from "./MapLibreTileLayer.tsx";
-import { MongoClient, GridFSBucket } from "mongodb";
-import axios from "axios";
-import VirginiaMap from "./VirginiaMap";
-import TexasMap from "./TexasMap";
-import NevadaMap from "./NevadaMap";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -26,50 +13,16 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TexasDistricts from "../districts/TexasDistricts";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
-import { GlobalContext, States } from "../../globalContext";
-import StateChangeRadio from "./StateChange";
+import { GlobalContext, AvailableStates, GlobalProvider } from "../../globalContext";
+import ClusterSummary from "../summary/ClusterSummary";
+import MainInfoCard from "../infocards/MainInfoCard";
 
-interface GeoJSON {
-  type: string;
-  features: GeoJSONFeature[];
-}
-interface GeoJSONFeature {
-  type: string;
-  properties: any;
-  geometry: any;
-}
-
-interface StateData {
-  [key: string]: [number, number];
-}
-interface StateZoomData {
-  [key: string]: number;
-}
-const stateData: StateData = {
-  Nevada: [38.5, -116.5],
-  Texas: [31.5, -99.9],
-  Virginia: [37.9, -79.5],
-};
-const stateZoomData: StateZoomData = {
-  Nevada: 6,
-  Texas: 6,
-  Virginia: 7,
-};
-
-export default function StateMap(props: {
-  selectedState: string;
-  onStateSelection: (state: States) => void;
-  districtCoordinates: Array<number>;
-  selectedDistrict: number;
-}) {
-  const [centerCoordinates, setCenterCoordinates] = useState(
-    props.districtCoordinates
-  );
-  const [zoom, setZoom] = useState(stateZoomData["Nevada"]);
-  
+export default function StateMap() {
   const { state, dispatch } = useContext(GlobalContext);
-
-  let currentState = state[state.length - 1].currentState;
+  const currentStateMapData = state[state.length-1].mapData[state[state.length - 1].currentState];
+  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
+  const [zoom, setZoom] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const SetMapView = () => {
     const map = useMap();
@@ -79,77 +32,92 @@ export default function StateMap(props: {
      return null;
    }
 
-  useEffect(() => {
-    setCenterCoordinates(props.districtCoordinates);
-
-    if (props.selectedDistrict !== -1) setZoom(8);
-  }, [props.districtCoordinates]);
-
-  const handleStateChangeCoordinates = (newState : string) => {
-    let newCurrentState : States;
-    if(newState === States.Nevada)
-      newCurrentState = States.Nevada;
-    else if(newState === States.Texas)
-      newCurrentState = States.Texas;
+  const handleStateChangeCoordinates = (event : SelectChangeEvent) => {
+    const newState = event.target.value;
+    let newCurrentState : AvailableStates;
+    if(newState === AvailableStates.Nevada)
+      newCurrentState = AvailableStates.Nevada;
+    else if(newState === AvailableStates.Texas)
+      newCurrentState = AvailableStates.Texas;
     else
-      newCurrentState = States.Virginia;
+      newCurrentState = AvailableStates.Virginia;
+
     dispatch({
-      type : "CHANGE_OF_STATE",
+      type : "CHANGE_STATE",
       payload : {
         currentState : newCurrentState
       }
     })
-    setCenterCoordinates(stateData[newState]);
-    setZoom(stateZoomData[newState]);
+    dispatch({
+      type : "STEP_CHANGE",
+      payload : {
+        step : 0
+      }
+    })
+    dispatch({
+      type : "STATE_MAP",
+      payload : {
+        dismap : false
+      }
+    })
   };
 
-  {
-    console.log("current state coords", centerCoordinates);
-  }
-
-  const getMapNevada = () =>  {
-    return state[state.length - 1].dismap ? <NevadaDistricts/> : <NevadaMap/>
-  }
-
-  const getMapTexas = () =>  {
-    return state[state.length - 1].dismap ? <TexasDistricts/> : <TexasMap/>
-  }
-
-  const getMapVirginia = () =>  {
-    return state[state.length - 1].dismap ? <VirginiaDistricts/> : <VirginiaMap/>
-  }
+  useEffect(() => {
+    if (currentStateMapData) {
+      setCenterCoordinates(currentStateMapData.centerCoordinates);
+      setZoom(currentStateMapData.zoom);
+      setLoading(false);
+    }
+  }, [currentStateMapData])
 
   return (
-    <div className="StateMap">
-      <DistrictInfoCard currentState={currentState}/>
-      <>
-        <MapContainer
-          id="mapid"
-          center={[centerCoordinates[0], centerCoordinates[1]]}
-          zoom={6}
-          scrollWheelZoom={false}
-          className="State-map"
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {
-            getMapTexas()
-          }
+      <div className="StateMap">
+        { !loading && <>
+          <MapContainer
+            id="mapid"
+            center={[centerCoordinates[0], centerCoordinates[1]]}
+            zoom={6}
+            scrollWheelZoom={false}
+            className="State-map"
+            style={{height : "125%"}}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            
+            <NevadaDistricts/>
+            <TexasDistricts/>
+            <VirginiaDistricts/>
 
-          {
-            getMapNevada()
-          }
-
-          {
-            getMapVirginia()
-          }
-
-          <SetMapView />
-        </MapContainer>
-      </>
-      <StateChangeRadio onStateChangeMap={handleStateChangeCoordinates}/>
+            <SetMapView />
+          </MapContainer>
+        </>}
+        <div className="State-map stack-top">
+          <FormControl
+            variant="filled"
+            sx={{ m: 1, minWidth: 120 }}
+            style={{
+              backgroundColor: "white",
+              width: "150px",
+              boxShadow: "0 3px 10px rgb(0 0 0 / 0.3)",
+            }}
+          >
+            <InputLabel id="demo-simple-select-filled-label">State</InputLabel>
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              value={state[state.length - 1].currentState}
+              onChange={handleStateChangeCoordinates}
+              style={{ fontWeight: "bold", fontSize: "18px" }}
+            >
+              <MenuItem value={"NEVADA"}>Nevada</MenuItem>
+              <MenuItem value={"TEXAS"}>Texas</MenuItem>
+              <MenuItem value={"VIRGINIA"}>Virginia</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      <MainInfoCard/>
     </div>
   );
 }

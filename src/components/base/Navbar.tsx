@@ -1,65 +1,110 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import { NavbarOptions } from "./NavbarOptions";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
-import { padding } from "@mui/system";
-import seahawks from "../images/Seattle-Seahawks-Logo.png";
+import {
+  AvailableStates,
+  GlobalContext,
+  InfoCardType,
+} from "../../globalContext";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import MapIcon from "@mui/icons-material/Map";
+import { Breadcrumbs, Button, Link } from "@mui/material";
 
-function Navbar() {
-  const [sidebar, setSidebar] = useState(false);
+export default function Navbar() {
+  const navigate = useNavigate();
+  const { state, dispatch } = useContext(GlobalContext);
+  const [isStateUnselected, setStateUnselected] = useState(
+    state[state.length - 1].currentState === AvailableStates.Unselected
+  );
+  const [header, setHeader] = useState("Select a state from the map");
 
-  const showSidebar = () => setSidebar(!sidebar);
+  const handleGoHome = () => {
+    setStateUnselected(true);
+    dispatch({
+      type: "CHANGE_STATE",
+      payload: {
+        currentState: AvailableStates.Unselected,
+      },
+    });
+    navigate("/");
+  };
 
   return (
-    <>
-      <div className="navbar">
-        <div className="navbar-title">
-          <h1>GerryCast</h1>
-          <img id="seahawks-logo" src={seahawks} alt="Logo" />
-        </div>
-        {/* <Link to='#' className="menu-bars">
-            <FaIcons.FaBars onClick={showSidebar}/>
-          </Link> */}
-        <div id="space-between" />
-        <ul className="navbar-options">
-          {NavbarOptions.map((item, index) => {
-            return (
-              <li key={index} className={item.cName}>
-                <Link to={item.path} className="icon">
-                  {item.icon}
-                  <span>{item.title}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2 }}
+            onClick={handleGoHome}
+          >
+            <MapIcon fontSize="large" />
+          </IconButton>
+          <Typography
+            component="div"
+            fontWeight={"bold"}
+            fontSize={"1.5rem"}
+            sx={{ mr: 2, display: { xs: "none", sm: "block" } }}
+          >
+            GerryCast
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
 
-      {/* <nav className={sidebar? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items">
-            <li className="navbar-toggle nav-text" onClick={showSidebar}>
-              <Link to="#">
-                <AiIcons.AiOutlineClose/>
-              </Link>
-
-            </li>
-            {SideBarOptions.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path} className="icon">
-                    {item.icon}
-                    <span>{item.title}</span>
+          {isStateUnselected ? (
+            <div>{header}</div>
+          ) : (
+            <>
+              <Breadcrumbs aria-label="breadcrumb">
+                {state[state.length - 1].currentInfoCard ===
+                InfoCardType.distanceMeasure ? (
+                  <Link underline="none" color="white">
+                    Distance Measure Comparision
                   </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav> */}
-      <hr />
-    </>
+                ) : (
+                  <Link underline="none" color="white">
+                    Cluster Analysis
+                  </Link>
+                )}
+                {state[state.length - 1].step > 0 &&
+                  state[state.length - 1].currentInfoCard !==
+                    InfoCardType.distanceMeasure && (
+                    <Link underline="none" color="white">
+                      {state[state.length - 1].distanceMeasure}
+                    </Link>
+                  )}
+                {state[state.length - 1].step > 0 && (
+                  <Link underline="none" color="white">
+                    Ensemble {state[state.length - 1].ensemble}
+                  </Link>
+                )}
+                {state[state.length - 1].step > 1 && (
+                  <Link underline="none" color="white">
+                    Cluster {state[state.length - 1].cluster}
+                  </Link>
+                )}
+              </Breadcrumbs>
+            </>
+          )}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Button
+            onClick={() => {
+              setHeader("");
+              navigate("/about");
+            }}
+            color="inherit"
+          >
+            About
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
-
-export default Navbar;
