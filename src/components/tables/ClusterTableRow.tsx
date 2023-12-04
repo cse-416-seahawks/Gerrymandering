@@ -34,13 +34,13 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
     setEditing(true);
   };
 
-  const handleChangeName = (event: React.KeyboardEvent<HTMLDivElement>, clusterId: string) => {
+  async function handleChangeName(event: React.KeyboardEvent<HTMLDivElement>, clusterId: string) {
     if (event.key == "Enter") {
       const currState = state[state.length - 1].currentState;
-      const response = updateClusterName(currState, clusterId);
-      if (!response) {
-        console.log("cluster name not saved")
-      }
+      const ensembleId = state[state.length-1].ensembleId;
+      const distanceMeasure = state[state.length-1].distanceMeasure;
+      const response = await updateClusterName(currState, ensembleId, distanceMeasure, clusterId, clusterName);
+      console.log("POST",response)
     }
   };
 
