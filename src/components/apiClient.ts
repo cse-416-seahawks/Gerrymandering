@@ -80,6 +80,18 @@ export async function fetchClusterSummaryData(State: AvailableStates, ensembleId
   }
 }
 
+export async function updateClusterName(state: AvailableStates, clusterId: string) {
+  try {
+    console.log("trying post request")
+    const response = await axios.get(`http://localhost:4000/updateClusterName/${state}/${clusterId}`);
+    if (response.status == 200) {
+      console.log(response);
+    }
+  } catch(error) {
+    throw error;
+  }
+}
+
 export async function fetchClusterSummaryGraphData(State: AvailableStates, ensembleId: string, distanceMeasure: string) {
   try {
     const response = await axios.get(`http://localhost:4000/getClusterGraphData/${State}/${ensembleId}/${distanceMeasure}`);
