@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import com.google.gson.Gson;
@@ -138,6 +139,43 @@ public class DistrictController {
             String json = gson.toJson(document);
             return new ResponseEntity<>(json, HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/updateClusterName/{state}/{ensembleId}/{distanceMeasure}/{clusterId}/{newName}")
+    public ResponseEntity<String> updateClusterName(@PathVariable final String state, @PathVariable final String ensembleId, @PathVariable final String distanceMeasure, @PathVariable final String clusterId, @PathVariable final String newName) {
+        MongoCollection<Document> stateCollection = getStateCollection(state);
+
+        String dist = "Hamming Distance";
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
+        }
+
+        Document docFinder = new Document("type", "ClusterData").append("ensemble_id", ensembleId).append("distance_measure", dist);
+        Document document = stateCollection.find(docFinder).first();
+
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        }
+
+        Object dataObj = document.get("data");
+
+        if (dataObj == null) {
+            return new ResponseEntity<>("Data not found.", HttpStatus.NOT_FOUND);
+        }
+
+        List<Document> data = (List<Document>) dataObj;
+        for (Document d: data) {
+            if (d.get("cluster_id").equals(clusterId)) {
+                
+                d.put("name", newName);
+                stateCollection.replaceOne(docFinder, document);
+
+                Gson gson = new Gson();
+                String json = gson.toJson(document);
+                return new ResponseEntity<>(json, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("Unable to POST.", HttpStatus.OK);
     }
 
     @GetMapping("/getClusterDetails/{state}/{clusterId}")

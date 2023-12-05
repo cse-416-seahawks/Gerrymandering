@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -11,10 +11,10 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
 import { Button, TextField, Tooltip } from "@mui/material";
 import { GlobalContext } from "../../globalContext";
 import { ClusterData } from "../interfaces/AnalysisInterface";
+import { updateClusterName } from "../apiClient";
 
 interface ClusterTableRowProps {
   data: ClusterData;
@@ -28,9 +28,20 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
   const [editing, setEditing] = useState(false);
   const [clusterName, setName] = useState(data.name);
 
-  const { state, dispatch } = React.useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
+
   const handleEdit = () => {
     setEditing(true);
+  };
+
+  async function handleChangeName(event: React.KeyboardEvent<HTMLDivElement>, clusterId: string) {
+    if (event.key == "Enter") {
+      const currState = state[state.length - 1].currentState;
+      const ensembleId = state[state.length-1].ensembleId;
+      const distanceMeasure = state[state.length-1].distanceMeasure;
+      const response = await updateClusterName(currState, ensembleId, distanceMeasure, clusterId, clusterName);
+      console.log("POST",response)
+    }
   };
 
   const handleBlur = () => {
@@ -121,6 +132,7 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
                 variant="outlined"
                 defaultValue={clusterName}
                 onChange={handleChange}
+                onKeyDown={(event) => handleChangeName(event, data.cluster_id)}
                 onBlur={handleBlur}
               />
             </form>
