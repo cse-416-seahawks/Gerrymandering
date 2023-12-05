@@ -6,19 +6,24 @@ from gerrychain import Partition
 from scipy.optimize import linear_sum_assignment
 from networkx.linalg.graphmatrix import incidence_matrix
 
-class MDS :
-    
-    def __init__(self, plans):
-        self.plans = plans
-        self.pairwise_matrix = [[0] * len(plans) for _ in range(len(plans))]
-
 class Pair:
+    """A pair of isomorphic districting plans to compare."""
 
     def __init__(self,
                  partition_a: Partition,
                  partition_b: Partition,
                  indicator: str = 'node',
                  pop_col: str = None):
+        """
+        :param partition_a: The first GerryChain partition to compare.
+        :param partition_b: The second GerryChain partition to compare.
+        :param indicator: The name of the district indicator scheme to use.
+            Valid indicators are "node" (equal population assumed for
+            all nodes in the dual graph) and "population" (nodes are weighted
+            proportional to population).
+        :param pop_col: The name of the attribute specifying a node's
+            population. Required for the "population" indicator only.
+        """
         
         if indicator == 'population' and not pop_col:
             raise EmbeddingError('Cannot generate population-based indicators '
@@ -53,6 +58,15 @@ class Pair:
         self._assignment = None  # lazy-loaded
 
     def district_distance(self, a_label, b_label) -> np.float64:
+        """Calculates the 1-Wasserstein distance between districts.
+        Districts are compared across plans only, as districts within
+        a plan are disjoint by definition.
+        :param a_index: The label of the district to compare in the
+           first district (``partition_a``).
+        :param b_index: The label of the district to compare in the
+           second district (``partition_b``).
+        """
+
         a_idx = self.district_ordering[a_label]
         b_idx = self.district_ordering[b_label]
 
@@ -70,6 +84,7 @@ class Pair:
 
     @property
     def distance(self) -> np.float64:
+        """Calculates the 1-Wasserstein di stance between plans."""
         if self._pairwise_distances is None:
             self._pairwise_distances = self._get_pairwise_distances()
         if self._assignment is None:
@@ -87,6 +102,10 @@ class Pair:
         return total_dist
 
     def _get_pairwise_distances(self) -> np.ndarray:
+        """Generates all pairwise distances between districts.
+        For a pair of districting plans with :math:`n` districts each,
+        there are :math:`n^2` pairs.
+        """
         n_districts = len(self.partition_a)
         distances = np.zeros((n_districts, n_districts))
         for a_label, a_idx in self.district_ordering.items():
@@ -98,6 +117,12 @@ class Pair:
 
 def district_distance(a_indicator: np.ndarray, b_indicator: np.ndarray,
                       edge_incidence: np.ndarray) -> np.float64:
+    """Calculates the 1-Wasserstein distance between two districts.
+    :param a_indicator: The indicator vector of one district.
+    :param b_indicator: The indicator vector of the other district.
+    :param edge_incidence: The edge incidence matrix for the districts'
+        underlying graph.
+    """
     n_edges = edge_incidence.shape[1]
     edge_weights = cp.Variable(n_edges)
     diff = b_indicator - a_indicator
@@ -110,6 +135,16 @@ def district_distance(a_indicator: np.ndarray, b_indicator: np.ndarray,
 
 def indicators(partition: Partition, indicator_type: str, pop_col: str,
                node_ordering: Dict, district_ordering: Dict) -> np.ndarray:
+    """Generates indicator vectors for all districts in a partition."
+    :param partition: The partition to generate indicator vectors for.
+    :param indicator_type: The type of indicator to use.
+    :param pop_col: The node attribute with population counts.
+    :param node_ordering: A dictionary mapping NetworkX node labels to
+        indicator matrix column indices.
+    :param district_ordering: A dictionary mapping district labels to
+        indicator matrix row indices.
+    :returns: A matrix of indicator vectors (# of districts X # of nodes).
+    """
     n_districts = len(partition)
     n_nodes = len(partition.graph.nodes)
     indicator = np.zeros((n_districts, n_nodes))
@@ -142,6 +177,3 @@ class EmbeddingError(Exception):
 
 class IsomorphismError(Exception):
     """Raised if the graphs of a pair of partitions are not isomorphic."""
-    
-    
-# generate the pairwise distances first

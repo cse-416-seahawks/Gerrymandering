@@ -19,7 +19,7 @@ interface ClusterDetailTableProps {
 
 export default function ClusterDetailTable({ districtPlanData} : ClusterDetailTableProps) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(9);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   
   const buttonStyle = {
     padding: "10px 20px",
@@ -46,7 +46,7 @@ export default function ClusterDetailTable({ districtPlanData} : ClusterDetailTa
 
   return (
     <div>
-      <TableContainer className="plan-table-container" component={Paper} sx={{maxHeight: "80vh"}}> 
+      <TableContainer className="plan-table-container" component={Paper} sx={{maxHeight: "71vh"}}> 
         <Table>
           <TableHead>
             <TableRow>

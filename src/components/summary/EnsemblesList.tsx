@@ -9,7 +9,7 @@ import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { GlobalContext, EnsembleData, InfoCardType } from "../../globalContext";
 import { fetchStateEnsembles } from "../apiClient";
-import EnsemblesList from "../tables/EnsembleTable";
+import EnsemblesTable from "../tables/EnsembleTable";
 import ClusterAssociationGraph from "../graphs/ClusterAssociationChart";
 
 interface EnsembleProps {
@@ -93,7 +93,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <EnsemblesList
+          <EnsemblesTable
             ensembleData={ensembleData}
             handleStep={handleStep}
             showToggle={showToggle}

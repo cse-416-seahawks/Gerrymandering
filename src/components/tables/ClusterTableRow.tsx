@@ -46,7 +46,6 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
     // POST endpoint to save to database
-    console.log(data);
   };
 
   function handleStepChange(step: number, cluster: ClusterData) {

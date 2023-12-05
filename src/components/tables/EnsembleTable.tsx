@@ -101,7 +101,6 @@ export default function EnsemblesTable({ ensembleData, handleStep, showToggle }:
           <AccordionSummary sx={{pointerEvents: "none"}}>
             <Button
               variant="text"
-              size="large"
               sx={{pointerEvents: "auto"}}
               onClick={() =>{
                 handleStep(

@@ -38,7 +38,7 @@ export default function NevadaMap() {
       {nevadaOutline && (
         <Polygon
           pathOptions={{
-            fillColor: "#4287f5",
+            fillColor: "#002244",
             fillOpacity: 0.5,
             weight: 2,
             opacity: 1,

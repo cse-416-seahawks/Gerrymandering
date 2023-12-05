@@ -11,7 +11,7 @@ export default function PartySplitChart( { districtPlans } : PartySplitChartProp
 
   const parseSplits = (districtPlans : DistrictPlanData[]) => {
     return districtPlans.map((district) => {
-        const splits = district.splits.split("-",2);
+        const splits = district.splits;
         console.log(splits)
         return {
           name : `${district.district_plan}`,

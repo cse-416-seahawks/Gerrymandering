@@ -46,7 +46,7 @@ export interface DistrictPlanData {
   district_plan_id: number;
   district_plan: number;
   opportunity_districts: number;
-  splits: string;
+  splits: number[];
   avg_democrat: string;
   avg_republican: string;
 }
