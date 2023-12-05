@@ -1,10 +1,11 @@
 import os
-import pandas as pd
-from scipy.optimize import linear_sum_assignment
 from tqdm import tqdm
-from sklearn.manifold import MDS
-import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
+from scipy.optimize import linear_sum_assignment
+from sklearn.manifold import MDS
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 
 class Pair:
 
@@ -57,12 +58,19 @@ class Pair:
 
         distanceMatrix = [[0 for _ in districtPlan1["features"]] for _ in districtPlan2["features"]]
 
-        for i, district1 in enumerate(districtPlan1["features"]):
-            for j, district2 in enumerate(districtPlan2["features"]):
+        # upper triangle of main diagonal
+        for i in range(len(districtPlan1["features"])):
+            district1 = districtPlan1[i]
+            for j in range(i + 1, len(districtPlan2["features"])):
+                district2 = districtPlan2[j]
                 plan1Precincts = district1["properties"]["PRECINCTS"].split(",")
                 plan2Precincts = district2["properties"]["PRECINCTS"].split(",")
                 distanceBtwnPrecincts = self.compare_precincts(plan1Precincts, plan2Precincts)
                 distanceMatrix[i][j] = distanceBtwnPrecincts
+        # mirror to lower part of main diagonal
+        for i in range(len(districtPlan1["features"])):
+            for j in range(i + 1, len(districtPlan2["features"])):
+                distanceMatrix[j][i] = distanceMatrix[i][j]
 
         #### Hungarian algorithm - obtain perfect one-to-one matching of districts using minimum cost (lowest distance)
         matching = self.min_cost_matching(distanceMatrix)
@@ -103,7 +111,29 @@ if __name__ == "__main__":
     print(normalizedDistanceMatrix)
     
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
-    pos = mds.fit(normalizedDistanceMatrix).embedding_
+    pos = mds.fit(normalizedDistanceMatrix).embedding_  # apply mds on distance matrix
     plt.scatter(pos[:, 0], pos[:, 1])
     plt.title('MDS Visualization')
+    plt.show()
+
+    # Find k using elbow method with SSE (sum of squared errors)
+    sse = []
+    for k in range(1,11):   # test k values of 1 to 10
+        kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
+        kmeans.fit(pos)
+        sse.append(kmeans.inertia_) # closest cluster center in the sum of squared differences
+
+    # View elbow plot
+    plt.plot(range(1,11), sse, marker='o')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Sum of Squared Distances (SSE)')
+    plt.show()
+
+    # View K-Means plot of MDS
+    kmeans = KMeans(n_clusters=5, random_state=0, n_init='auto')
+    kmeans.fit(pos)
+
+    labels = kmeans.labels_
+    plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
+    plt.title('MDS with K-Means Clustering')
     plt.show()
