@@ -1,10 +1,12 @@
+import multiprocessing
 import os
-import pandas as pd
-from scipy.optimize import linear_sum_assignment
 from tqdm import tqdm
-from sklearn.manifold import MDS
-import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
+from scipy.optimize import linear_sum_assignment
+from sklearn.manifold import MDS
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 
 class Pair:
 
@@ -55,14 +57,16 @@ class Pair:
         districtPlan1 = self.plan1
         districtPlan2 = self.plan2
 
-        distanceMatrix = [[0 for _ in districtPlan1["features"]] for _ in districtPlan2["features"]]
+        distanceMatrix = [[-1 for _ in districtPlan1["features"]] for _ in districtPlan2["features"]]
 
         for i, district1 in enumerate(districtPlan1["features"]):
             for j, district2 in enumerate(districtPlan2["features"]):
-                plan1Precincts = district1["properties"]["PRECINCTS"].split(",")
-                plan2Precincts = district2["properties"]["PRECINCTS"].split(",")
-                distanceBtwnPrecincts = self.compare_precincts(plan1Precincts, plan2Precincts)
-                distanceMatrix[i][j] = distanceBtwnPrecincts
+                if distanceMatrix[i][j] == -1:
+                    plan1Precincts = district1["properties"]["PRECINCTS"].split(",")
+                    plan2Precincts = district2["properties"]["PRECINCTS"].split(",")
+                    distanceBtwnPrecincts = self.compare_precincts(plan1Precincts, plan2Precincts)
+                    distanceMatrix[i][j] = distanceBtwnPrecincts if distanceBtwnPrecincts > 0 else 0.1
+                    distanceMatrix[j][i] = distanceBtwnPrecincts if distanceBtwnPrecincts > 0 else 0.1
 
         #### Hungarian algorithm - obtain perfect one-to-one matching of districts using minimum cost (lowest distance)
         matching = self.min_cost_matching(distanceMatrix)
@@ -82,28 +86,69 @@ class Pair:
 
 
 if __name__ == "__main__":
+
     # Get a list of all files of plans
     districtPlans = [file for file in os.listdir('NVplans') if file.endswith('.json')]
 
     # initalize distance matrix of plans
-    distanceMatrix = [[0 for _ in districtPlans] for _ in districtPlans]
+    distanceMatrix = [[-1 for _ in districtPlans] for _ in districtPlans]
     
     for i, plan1 in tqdm(enumerate(districtPlans), total=len(districtPlans)):
         for j, plan2 in enumerate(districtPlans):
-            distPlan1 = pd.read_json(f'NVplans/{plan1}')
-            distPlan2 = pd.read_json(f'NVplans/{plan2}')
-            distance = Pair(distPlan1, distPlan2).calculate_hamming_distance()
-            distanceMatrix[i][j] = distance
+            if distanceMatrix[i][j] == -1:
+                distPlan1 = pd.read_json(f'NVplans/{plan1}')
+                distPlan2 = pd.read_json(f'NVplans/{plan2}')
+                distance = Pair(distPlan1, distPlan2).calculate_hamming_distance()
+                distanceMatrix[i][j] = distance
+                distanceMatrix[j][i] = distance
     
     # min-max normalization
     minDist = np.min(distanceMatrix)
     maxDist = np.max(distanceMatrix)
 
     normalizedDistanceMatrix = (distanceMatrix - minDist) / (maxDist - minDist)
-    print(normalizedDistanceMatrix)
+
+    df = pd.DataFrame(normalizedDistanceMatrix)
+    df.to_json('mem_distanceMatrix.json', orient='split', index=False)
+
+
     
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
     pos = mds.fit(normalizedDistanceMatrix).embedding_
     plt.scatter(pos[:, 0], pos[:, 1])
     plt.title('MDS Visualization')
     plt.show()
+    
+    # print(pos)
+    # df = pd.DataFrame(pos)
+    # df.to_json('mem_pos.json', orient='split', index=False)
+
+    # Find k using elbow method with SSE (sum of squared errors)
+    sse = []
+    for k in range(1,11):   # test k values of 1 to 10
+        kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
+        kmeans.fit(pos)
+        sse.append(kmeans.inertia_) # closest cluster center in the sum of squared differences
+
+    # View elbow plot
+    plt.plot(range(1,11), sse, marker='o')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Sum of Squared Distances (SSE)')
+    plt.show()
+
+    # View K-Means plot of MDS
+    kmeans = KMeans(n_clusters=5, random_state=0, n_init='auto')
+    kmeans.fit(pos)
+
+    labels = kmeans.labels_
+    plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
+    plt.title('MDS with K-Means Clustering')
+    plt.show()
+
+    # mds_data = pd.DataFrame({
+    #     'PLANID': [plan.PLANID for plan in partition_list],
+    #     'X_COORD': pos[:, 0],
+    #     'Y_COORD': pos[:, 1]
+    # })
+
+    # mds_data.to_json('hammingDistanceCoordinates.json', orient='records', lines=True)
