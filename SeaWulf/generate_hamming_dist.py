@@ -86,9 +86,13 @@ class Pair:
 
 
 if __name__ == "__main__":
+    folderOfPlans = 'NVplans20'
 
     # Get a list of all files of plans
-    districtPlans = [file for file in os.listdir('NVplans') if file.endswith('.json')]
+    unsortedDistrictPlans = [file for file in os.listdir(folderOfPlans) if file.endswith('.json')]
+
+    # Sorts plans by number in file (e.g. 'NVplan0')
+    districtPlans = sorted(unsortedDistrictPlans, key= lambda p:int(''.join(filter(str.isdigit, p))))
 
     # initalize distance matrix of plans
     distanceMatrix = [[-1 for _ in districtPlans] for _ in districtPlans]
@@ -96,8 +100,8 @@ if __name__ == "__main__":
     for i, plan1 in tqdm(enumerate(districtPlans), total=len(districtPlans)):
         for j, plan2 in enumerate(districtPlans):
             if distanceMatrix[i][j] == -1:
-                distPlan1 = pd.read_json(f'NVplans/{plan1}')
-                distPlan2 = pd.read_json(f'NVplans/{plan2}')
+                distPlan1 = pd.read_json(f'{folderOfPlans}/{plan1}')
+                distPlan2 = pd.read_json(f'{folderOfPlans}/{plan2}')
                 distance = Pair(distPlan1, distPlan2).calculate_hamming_distance()
                 distanceMatrix[i][j] = distance
                 distanceMatrix[j][i] = distance
@@ -117,7 +121,7 @@ if __name__ == "__main__":
     pos = mds.fit(normalizedDistanceMatrix).embedding_
     plt.scatter(pos[:, 0], pos[:, 1])
     plt.title('MDS Visualization')
-    plt.show()
+    # plt.show()
     
     # print(pos)
     # df = pd.DataFrame(pos)
@@ -134,21 +138,35 @@ if __name__ == "__main__":
     plt.plot(range(1,11), sse, marker='o')
     plt.xlabel('Number of Clusters (k)')
     plt.ylabel('Sum of Squared Distances (SSE)')
-    plt.show()
+    # plt.show()
 
     # View K-Means plot of MDS
     kmeans = KMeans(n_clusters=5, random_state=0, n_init='auto')
     kmeans.fit(pos)
 
+    print(pos)
+
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
-    plt.show()
+    # plt.show()
 
-    # mds_data = pd.DataFrame({
-    #     'PLANID': [plan.PLANID for plan in partition_list],
-    #     'X_COORD': pos[:, 0],
-    #     'Y_COORD': pos[:, 1]
-    # })
+    finalData = []
+    # Get points in each cluster
+    for cluster_num in np.unique(labels):
+        cluster_points = pos[labels == cluster_num]
+        cluster_indices = np.where(labels == cluster_num)[0]
 
-    # mds_data.to_json('hammingDistanceCoordinates.json', orient='records', lines=True)
+        cluster_data = {
+            'cluster': cluster_num,
+            'district_plans': [],
+            'data': [],
+        }
+        for planNum, pointCoords in zip(cluster_indices, cluster_points):
+            cluster_data['district_plans'].append(planNum)
+            cluster_data['data'].append(pointCoords.tolist())  # Convert NumPy array to list
+        finalData.append(cluster_data)
+
+    # Output
+    df = pd.DataFrame(finalData)
+    df.to_json('GeneratedClusters.json', orient='records')
