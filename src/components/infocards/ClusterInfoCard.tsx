@@ -79,7 +79,7 @@ export default function ClusterInfoCard() {
                   <ListItemText
                     primary={<Typography variant="subtitle1">Distance Measure</Typography>}
                   />
-                  <Typography color="blue" variant="subtitle1">{state[state.length - 1].distanceMeasure}</Typography>
+                  <Typography color="secondary" variant="subtitle1">{state[state.length - 1].distanceMeasure}</Typography>
                 </ListItem>
             </List>
           </Demo>

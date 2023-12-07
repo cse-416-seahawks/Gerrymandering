@@ -31,8 +31,8 @@ export default function ClusterTable({ clusters, onClusterSelection }: ClusterTa
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">District Plans</TableCell>
             <TableCell align="center">Avg Distance</TableCell>
-            <TableCell align="center">Avg Republican Voters</TableCell>
-            <TableCell align="center">Avg Democratic Voters</TableCell>
+            <TableCell align="center">Avg % of Republican Voters</TableCell>
+            <TableCell align="center">Avg % of Democratic Voters</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

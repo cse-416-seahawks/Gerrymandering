@@ -12,7 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MapIcon from "@mui/icons-material/Map";
-import { Breadcrumbs, Button, Link } from "@mui/material";
+import { Breadcrumbs, Button, Link, Tooltip } from "@mui/material";
 
 interface NavbarProps {
   aboutPage: boolean;
@@ -26,8 +26,8 @@ export default function Navbar({ aboutPage }: NavbarProps) {
   const [header, setHeader] = useState("Select a state from the map");
 
   useEffect(() => {
-    if (aboutPage) setHeader("About GerryCast")
-  },[])
+    if (aboutPage) setHeader("About GerryCast");
+  }, []);
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -44,16 +44,18 @@ export default function Navbar({ aboutPage }: NavbarProps) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={handleGoHome}
-          >
-            <MapIcon fontSize="large" />
-          </IconButton>
+          <Tooltip title="Select State from Map">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+              onClick={handleGoHome}
+            >
+              <MapIcon fontSize="large" />
+            </IconButton>
+          </Tooltip>
           <Typography
             component="div"
             fontWeight={"bold"}

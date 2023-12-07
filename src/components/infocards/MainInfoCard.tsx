@@ -10,6 +10,7 @@ import ClusterAssociationInfoCard from "./ClusterAssociation";
 import ScatterPlotOptions from "./ScatterPlotOptions";
 import DistanceMeasureCard from "./DistanceMeasureCard";
 import ClusterInfoCard from "./ClusterInfoCard";
+import DistrictPlansCard from "./DistrictPlansCard";
 
 export default function InfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -68,6 +69,17 @@ export default function InfoCard() {
           }}
         >
           <ClusterInfoCard />
+        </Card>
+      );
+      case InfoCardType.districtPlans:
+      return (
+        <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <DistrictPlansCard/>
         </Card>
       );
     default:

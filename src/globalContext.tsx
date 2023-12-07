@@ -47,7 +47,8 @@ export enum InfoCardType {
   distanceMeasure = "Distance Measure",
   clusterPlotOptions = "Cluster Scatter Plot Options",
   clusterSummary = "Cluster Summary",
-  clusterDetails = "Cluster Details"
+  clusterDetails = "Cluster Details",
+  districtPlans = "District Plans"
 }
 
 export enum AvailableStates {

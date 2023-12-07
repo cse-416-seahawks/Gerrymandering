@@ -1,28 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {
-  Stack,
-  Chip,
   FormControl,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
-  Theme,
-  useTheme,
   Slider,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  CardActions,
   Button,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
-import { AvailableStates, Demographics, GlobalContext } from "../../globalContext";
+import {
+  Demographics,
+  GlobalContext,
+} from "../../globalContext";
 import { useContext } from "react";
 
 const ITEM_HEIGHT = 48;
@@ -36,23 +31,31 @@ const MenuProps = {
   },
 };
 
-const x_axis = Object.values(Demographics)
+const x_axis = Object.values(Demographics);
 
 export default function ScatterPlotOptions() {
   const { state, dispatch } = useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
-  const theme = useTheme();
-  const [age, setAge] = React.useState("");
+  const [demographic, setDem] = React.useState(x_axis[0].toString());
+  const [alignment, setAlignment] = React.useState('greater');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const handleDemographicChange = (event: SelectChangeEvent) => {
+    setDem(event.target.value);
   };
 
   useEffect(() => {
     let currentState = state[state.length - 1].currentState;
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
   }, [state[state.length - 1].currentState]);
-  
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    console.log('changing')
+    setAlignment(newAlignment);
+  };
+
   return (
     <CardContent>
       <Typography
@@ -69,49 +72,37 @@ export default function ScatterPlotOptions() {
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
       </Box>
-      <Box sx={{display : "flex"}}> 
-      <Box sx={{ margin: "1rem" }}>
-        <FormControl sx={{ alignItems: "left", m: 1, minWidth: 250 }}>
-          <InputLabel>Demographic</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            defaultValue={x_axis[0]}
-            label="Demographic"
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ margin: "1rem" }}>
+          <FormControl sx={{ alignItems: "left", m: 1, minWidth: 250 }}>
+            <InputLabel>Demographic</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={demographic}
+              label="Demographic"
+              onChange={handleDemographicChange}
+            >
+              {x_axis.map((value) => {
+                return <MenuItem value={value}>{value}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ margin: "1.5rem" }}>
+          <ToggleButtonGroup
+            value={alignment}
+            exclusive
             onChange={handleChange}
           >
-            {x_axis.map((value) => {
-              return <MenuItem value={value}>{value}</MenuItem>;
-            })}
-          </Select>
-        </FormControl>
-        
-      </Box>
-      <Box sx={{flexGrow: 1}}/>
-        <Box sx={{margin: "2.5rem"}}>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
-              defaultValue={"greater-than"}
-            >
-              <FormControlLabel
-                value="greater-than"
-                control={<Radio />}
-                label="Greater"
-              />
-              <FormControlLabel
-                value="less-than"
-                control={<Radio />}
-                label="Less"
-              />
-            </RadioGroup>
-          </FormControl>
+            <ToggleButton value='greater'>Greater than</ToggleButton>
+            <ToggleButton value='less'>Less than</ToggleButton>
+          </ToggleButtonGroup>
         </Box>
       </Box>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ margin : "0.5rem", width: 650 }}>
+        <Box sx={{ margin: "0.5rem", width: 650 }}>
           <Typography align="left" id="input-slider" gutterBottom>
             Population Threshold (Millions)
           </Typography>
@@ -126,8 +117,7 @@ export default function ScatterPlotOptions() {
           />
         </Box>
       </Box>
-      <Button size="small">Plot</Button>
-      
+      <Button size="small">Plot Custom Scatter Plot</Button>
     </CardContent>
   );
 }

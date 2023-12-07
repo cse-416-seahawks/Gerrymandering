@@ -12,7 +12,7 @@ import {
   TooltipProps,
   Label,
 } from "recharts";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 
 interface ClusterScatterPlotProps {
@@ -25,6 +25,14 @@ export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatt
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleStepChange(step: number) {
+    if(step === 2){
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.districtPlans,
+        },
+      });
+    }
     dispatch({
       type: "STEP_CHANGE",
       payload: {

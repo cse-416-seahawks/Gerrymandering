@@ -12,7 +12,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, TextField, Tooltip } from "@mui/material";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterData } from "../interfaces/AnalysisInterface";
 import { updateClusterName } from "../apiClient";
 
@@ -68,6 +68,12 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
           cluster: cluster.cluster_number,
           clusterId: cluster.cluster_id,
           districtPlanIds: cluster.district_plans,
+        },
+      });
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.districtPlans,
         },
       });
     } else {
@@ -143,8 +149,8 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
 
         <TableCell align="center"> {data.num_dist_plans}</TableCell>
         <TableCell align="center"> {data.avg_distance} </TableCell>
-        <TableCell align="center"> {data.avg_rep} </TableCell>
-        <TableCell align="center"> {data.avg_dem} </TableCell>
+        <TableCell align="center"> {(parseFloat(data.avg_rep) * 100).toFixed(2)} %</TableCell>
+        <TableCell align="center"> {(parseFloat(data.avg_dem) * 100).toFixed(2)} %</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>

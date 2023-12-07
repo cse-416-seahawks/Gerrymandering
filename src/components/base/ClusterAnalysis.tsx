@@ -63,6 +63,15 @@ function TableData(props: TableDataProps) {
       });
     }
 
+    if(step === 2){
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.districtPlans,
+        },
+      });
+    }
+
     dispatch({
       type: "STEP_CHANGE",
       payload: {
