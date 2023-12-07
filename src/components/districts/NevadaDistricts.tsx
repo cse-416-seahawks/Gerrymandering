@@ -28,7 +28,7 @@ export default () => {
           return (
             <Polygon
               pathOptions={{
-                fillColor: "#4287f5",
+                fillColor: "#00388c",
                 fillOpacity: 0.5,
                 weight: 2,
                 opacity: 1,

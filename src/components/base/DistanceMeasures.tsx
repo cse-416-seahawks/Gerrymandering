@@ -59,7 +59,7 @@ function DistanceMeasures() {
   return (
     <div className="Home">
       <div className="Home-content">
-        <Navbar />
+        <Navbar aboutPage={false}/>
         <div className="StateMap-content">
           <header className="StateMap-header">
             <div className="State-map">

@@ -39,7 +39,7 @@ export default () => {
       {texasOutline && (
         <Polygon
           pathOptions={{
-            fillColor: "#002244",
+            fillColor: "#00388c",
             fillOpacity: 0.5,
             weight: 2,
             opacity: 1,

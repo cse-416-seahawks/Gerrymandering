@@ -10,7 +10,7 @@ export default function StateSelect(props: { centerCoordinates: Array<number>, z
   return (
     <div className="Home">
       <div className="Home-content">
-        <Navbar />
+        <Navbar aboutPage={false} />
           <Map centerCoordinates={usMapcenterCoordinates} zoom={usMapZoom}/>
       </div>
     </div>

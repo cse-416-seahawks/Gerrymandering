@@ -14,13 +14,20 @@ import Typography from "@mui/material/Typography";
 import MapIcon from "@mui/icons-material/Map";
 import { Breadcrumbs, Button, Link } from "@mui/material";
 
-export default function Navbar() {
+interface NavbarProps {
+  aboutPage: boolean;
+}
+export default function Navbar({ aboutPage }: NavbarProps) {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(GlobalContext);
   const [isStateUnselected, setStateUnselected] = useState(
     state[state.length - 1].currentState === AvailableStates.Unselected
   );
   const [header, setHeader] = useState("Select a state from the map");
+
+  useEffect(() => {
+    if (aboutPage) setHeader("About GerryCast")
+  },[])
 
   const handleGoHome = () => {
     setStateUnselected(true);
@@ -57,8 +64,8 @@ export default function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected ? (
-            <div>{header}</div>
+          {isStateUnselected || aboutPage ? (
+            <Typography>{header}</Typography>
           ) : (
             <>
               <Breadcrumbs aria-label="breadcrumb">
@@ -92,17 +99,23 @@ export default function Navbar() {
               </Breadcrumbs>
             </>
           )}
-          <Box sx={{ flexGrow: 1 }} />
 
-          <Button
-            onClick={() => {
-              setHeader("");
-              navigate("/about");
-            }}
-            color="inherit"
-          >
-            About
-          </Button>
+          {aboutPage ? (
+            <div></div>
+          ) : (
+            <>
+              <Box sx={{ flexGrow: 1 }} />{" "}
+              <Button
+                onClick={() => {
+                  setHeader("");
+                  navigate("/about");
+                }}
+                color="inherit"
+              >
+                About
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
