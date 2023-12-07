@@ -126,7 +126,7 @@ if __name__ == "__main__":
     silhouetteScores = []
 
     for k in kClusters:
-        kScore = find_silhouette_score(normalizedDistanceMatrix, k)
+        kScore = find_silhouette_score(k, normalizedDistanceMatrix)
         silhouetteScores.append(kScore)
     plt.plot(kClusters, silhouetteScores, marker='o')
     plt.xlabel('Number of Clusters (k)')
