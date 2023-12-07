@@ -3,10 +3,11 @@ import os
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.optimize import linear_sum_assignment
 from sklearn.manifold import MDS
 from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
+from sklearn.metrics import silhouette_score
 
 class Pair:
 
@@ -84,6 +85,10 @@ class Pair:
         
         return finalDistance
 
+def find_silhouette_score(k, data):
+    kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
+    labels = kmeans.fit_predict(data)
+    return silhouette_score(data, labels)
 
 if __name__ == "__main__":
     folderOfPlans = 'NVplans20'
@@ -112,39 +117,34 @@ if __name__ == "__main__":
 
     normalizedDistanceMatrix = (distanceMatrix - minDist) / (maxDist - minDist)
 
-    # df = pd.DataFrame(normalizedDistanceMatrix)
-    # df.to_json('mem_distanceMatrix.json', orient='split', index=False)
-    
+    # MDS Graph
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
     pos = mds.fit(normalizedDistanceMatrix).embedding_
-    plt.scatter(pos[:, 0], pos[:, 1])
-    plt.title('MDS Visualization')
-    # plt.show()
-    
-    # Find k using elbow method with SSE (sum of squared errors)
-    sse = []
-    for k in range(1,11):   # test k values of 1 to 10
-        kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
-        kmeans.fit(pos)
-        sse.append(kmeans.inertia_) # closest cluster center in the sum of squared differences
+   
+    # Find the most optimal k by obtaining the max silhouette score for each possible k
+    kClusters = range(2, 11) # must be at least 2 clusters
+    silhouetteScores = []
 
-    # View elbow plot
-    plt.plot(range(1,11), sse, marker='o')
+    for k in kClusters:
+        kScore = find_silhouette_score(normalizedDistanceMatrix, k)
+        silhouetteScores.append(kScore)
+    plt.plot(kClusters, silhouetteScores, marker='o')
     plt.xlabel('Number of Clusters (k)')
-    plt.ylabel('Sum of Squared Distances (SSE)')
+    plt.ylabel('Silhouette Score')
     # plt.show()
 
-    # View K-Means plot of MDS
-    kmeans = KMeans(n_clusters=5, random_state=0, n_init='auto')
-    kmeans.fit(pos)
+    optimalKClusters = kClusters[np.argmax(silhouetteScores)]
+    print(f"Most optimal number of clusters (k): {optimalKClusters}")
 
+    # View K-Means plot 
+    kmeans = KMeans(n_clusters=optimalKClusters, random_state=0, n_init='auto')
+    kmeans.fit(pos)
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
     # plt.show()
     
     flattenedDistanceMatrix = np.array(normalizedDistanceMatrix).flatten()
-
 
     clusters_in_ensemble = {
         "type": "ClusterData",
