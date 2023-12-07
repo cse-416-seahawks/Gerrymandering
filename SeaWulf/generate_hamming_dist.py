@@ -1,4 +1,4 @@
-import multiprocessing
+import json
 import os
 from tqdm import tqdm
 import pandas as pd
@@ -65,8 +65,8 @@ class Pair:
                     plan1Precincts = district1["properties"]["PRECINCTS"].split(",")
                     plan2Precincts = district2["properties"]["PRECINCTS"].split(",")
                     distanceBtwnPrecincts = self.compare_precincts(plan1Precincts, plan2Precincts)
-                    distanceMatrix[i][j] = distanceBtwnPrecincts if distanceBtwnPrecincts > 0 else 0.1
-                    distanceMatrix[j][i] = distanceBtwnPrecincts if distanceBtwnPrecincts > 0 else 0.1
+                    distanceMatrix[i][j] = distanceBtwnPrecincts # if distanceBtwnPrecincts > 0 else 0.1
+                    distanceMatrix[j][i] = distanceBtwnPrecincts # if distanceBtwnPrecincts > 0 else 0.1
 
         #### Hungarian algorithm - obtain perfect one-to-one matching of districts using minimum cost (lowest distance)
         matching = self.min_cost_matching(distanceMatrix)
@@ -105,17 +105,15 @@ if __name__ == "__main__":
                 distance = Pair(distPlan1, distPlan2).calculate_hamming_distance()
                 distanceMatrix[i][j] = distance
                 distanceMatrix[j][i] = distance
-    
+                
     # min-max normalization
     minDist = np.min(distanceMatrix)
     maxDist = np.max(distanceMatrix)
 
     normalizedDistanceMatrix = (distanceMatrix - minDist) / (maxDist - minDist)
 
-    df = pd.DataFrame(normalizedDistanceMatrix)
-    df.to_json('mem_distanceMatrix.json', orient='split', index=False)
-
-
+    # df = pd.DataFrame(normalizedDistanceMatrix)
+    # df.to_json('mem_distanceMatrix.json', orient='split', index=False)
     
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
     pos = mds.fit(normalizedDistanceMatrix).embedding_
@@ -123,10 +121,6 @@ if __name__ == "__main__":
     plt.title('MDS Visualization')
     # plt.show()
     
-    # print(pos)
-    # df = pd.DataFrame(pos)
-    # df.to_json('mem_pos.json', orient='split', index=False)
-
     # Find k using elbow method with SSE (sum of squared errors)
     sse = []
     for k in range(1,11):   # test k values of 1 to 10
@@ -144,29 +138,71 @@ if __name__ == "__main__":
     kmeans = KMeans(n_clusters=5, random_state=0, n_init='auto')
     kmeans.fit(pos)
 
-    print(pos)
-
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
     # plt.show()
+    
+    flattenedDistanceMatrix = np.array(normalizedDistanceMatrix).flatten()
 
-    finalData = []
+
+    clusters_in_ensemble = {
+        "type": "ClusterData",
+        "ensemble_id": "1",
+        "distance_measure": "Hamming Distance",
+        "data": []
+    }
+    ensemble_data = {
+        "type": "EnsembleData",
+        "ensemble_id": "1",
+        "distance_measure": "Hamming Distance",
+        "num_clusters": 0,
+        "avg_distance": float(round(np.mean(flattenedDistanceMatrix), 3)),
+    }
     # Get points in each cluster
     for cluster_num in np.unique(labels):
+
+        current_cluster = {
+            "cluster_number": len(clusters_in_ensemble["data"]) + 1,
+            "name": "cluster_placeholder",
+            "num_dist_plans": 0,
+            # avg_distance
+            # splits
+            # avg_rep
+            # avg_dem
+            # demographics
+            "district_plans": [],
+        }
+        ensemble_data['num_clusters'] += 1
         cluster_points = pos[labels == cluster_num]
         cluster_indices = np.where(labels == cluster_num)[0]
 
-        cluster_data = {
-            'cluster': cluster_num,
-            'district_plans': [],
-            'data': [],
-        }
+        cluster_of_plans = []
         for planNum, pointCoords in zip(cluster_indices, cluster_points):
-            cluster_data['district_plans'].append(planNum)
-            cluster_data['data'].append(pointCoords.tolist())  # Convert NumPy array to list
-        finalData.append(cluster_data)
+            planNum = int(planNum)
+            current_cluster["num_dist_plans"] += 1
+            cluster_of_plans.append(planNum)
+        current_cluster['district_plans'] = cluster_of_plans
+        clusters_in_ensemble["data"].append(current_cluster)
+    
+    dist_measure_data = {
+            "type": "DistanceMeasuresData",
+            "ensemble_id": "1",
+            "data": [
+                {
+                    "distanceMeasure": "Hamming Distance",
+                    "min": float(round(np.min(flattenedDistanceMatrix), 3)),
+                    "first_quartile": float(round(np.percentile(flattenedDistanceMatrix, 25), 3)),
+                    "third_quartile": float(round(np.percentile(flattenedDistanceMatrix, 75),3)),
+                    "max": float(round(np.max(flattenedDistanceMatrix),3)),
+                }
+            ]
+        }
 
-    # Output
-    df = pd.DataFrame(finalData)
-    df.to_json('GeneratedClusters.json', orient='records')
+    # Output to json
+    with open('EnsembleSummary.json', 'w') as file:
+        json.dump(ensemble_data, file, indent=2) 
+    with open('ClustersInEnsemble.json', 'w') as file:
+        json.dump(clusters_in_ensemble, file, indent=2) 
+    with open('DistanceMeasureData.json', 'w') as file:
+        json.dump(dist_measure_data, file, indent=2)
