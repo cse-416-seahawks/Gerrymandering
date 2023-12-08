@@ -9,6 +9,7 @@ from scipy.optimize import linear_sum_assignment
 from sklearn.manifold import MDS
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+from random import randint
 
 class Pair:
 
@@ -96,8 +97,10 @@ def create_folder_of_clusters(cluster_num, district_plans, files):
     new_directory = f'cluster{cluster_num}'
     os.mkdir(new_directory)
     for i in district_plans:
-        print(files[i])
         shutil.move(os.path.join(current_directory, files[i]), os.path.join(new_directory, files[i]))
+
+def generateUID():
+    return str(randint(100000, 999999))
 
 if __name__ == "__main__":
     current_directory = os.getcwd()
@@ -156,23 +159,24 @@ if __name__ == "__main__":
     
     flattenedDistanceMatrix = np.array(normalizedDistanceMatrix).flatten()
 
+    # Generate unique ID for current ensemble
+    ensemble_UID = generateUID()
+
     clusters_in_ensemble = {
         "type": "ClusterData",
-        "ensemble_id": "1",
+        "ensemble_id": ensemble_UID,
         "distance_measure": "Hamming Distance",
         "data": []
     }
     ensemble_data = {
         "type": "EnsembleData",
-        "ensemble_id": "1",
+        "ensemble_id": ensemble_UID,
         "distance_measure": "Hamming Distance",
         "num_clusters": 0,
         "avg_distance": float(round(np.mean(flattenedDistanceMatrix), 3)),
     }
     # Get points in each cluster
     for cluster_num in np.unique(labels):
-        # Make new directory to move all district plans to cluster folder
-
         current_cluster = {
             "cluster_number": len(clusters_in_ensemble["data"]) + 1,
             "name": "cluster_placeholder",
@@ -189,13 +193,13 @@ if __name__ == "__main__":
             planNum = int(planNum)
             current_cluster["num_dist_plans"] += 1
             cluster_of_plans.append(planNum)
-        current_cluster['district_plans'] = cluster_of_plans
+        current_cluster['district_plans'] = [str(i) for i in cluster_of_plans]
         clusters_in_ensemble["data"].append(current_cluster)
         create_folder_of_clusters(cluster_num+1, cluster_of_plans, districtPlans)
     
     dist_measure_data = {
             "type": "DistanceMeasuresData",
-            "ensemble_id": "1",
+            "ensemble_id": ensemble_UID,
             "data": [
                 {
                     "distanceMeasure": "Hamming Distance",
