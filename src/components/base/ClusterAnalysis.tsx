@@ -58,7 +58,7 @@ function TableData(props: TableDataProps) {
       dispatch({
         type: "CHANGE_INFO_CARD",
         payload: {
-          infoCardType: InfoCardType.clusterSummary,
+          infoCardType: InfoCardType.ensembleSummary,
         },
       });
     }

@@ -141,10 +141,7 @@ export default function About() {
           </CardActions>
         </Card>
         <Card sx={{ margin: "1rem", width: "50vw" }}>
-            <CardMedia
-              component="img"
-              image="/images/cluster.jpeg"
-            />
+          
         </Card>
       </Box>
     </Box>

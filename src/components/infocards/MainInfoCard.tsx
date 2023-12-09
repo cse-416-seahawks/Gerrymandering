@@ -9,8 +9,9 @@ import EnsembleInfoCard from "./EnsembleInfoCard";
 import ClusterAssociationInfoCard from "./ClusterAssociation";
 import ScatterPlotOptions from "./ScatterPlotOptions";
 import DistanceMeasureCard from "./DistanceMeasureCard";
-import ClusterInfoCard from "./ClusterInfoCard";
+import EnsembleSummary from "./EnsembleSummary";
 import DistrictPlansCard from "./DistrictPlansCard";
+import ClusterSummaryCard from "./ClusterSummaryCard";
 
 export default function InfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -60,7 +61,7 @@ export default function InfoCard() {
           <DistanceMeasureCard />
         </Card>
       );
-    case InfoCardType.clusterSummary:
+    case InfoCardType.ensembleSummary:
       return (
         <Card
           sx={{
@@ -68,7 +69,7 @@ export default function InfoCard() {
             minHeight: "35vh",
           }}
         >
-          <ClusterInfoCard />
+          <EnsembleSummary />
         </Card>
       );
       case InfoCardType.districtPlans:
@@ -82,6 +83,17 @@ export default function InfoCard() {
           <DistrictPlansCard/>
         </Card>
       );
+      case InfoCardType.clusterSummary:
+        return (
+          <Card
+          sx={{
+            minWidth: 275,
+            minHeight: "35vh",
+          }}
+        >
+          <ClusterSummaryCard />
+        </Card>
+        );
     default:
       return (
         <Card
