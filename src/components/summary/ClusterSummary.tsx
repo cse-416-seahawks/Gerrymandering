@@ -22,8 +22,6 @@ interface ClusterSummaryProps {
 export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
-  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
-  const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
   const { state, dispatch } = useContext(GlobalContext);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
@@ -48,19 +46,6 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
       }
     }
     getClusterData();
-
-    async function getClusterSummaryGraphData() {
-      try {
-        const response = await fetchClusterSummaryGraphData(currState, ensembleId, distanceMeasure);
-        if (response) {
-          setAxisLabels([response.x_axis_label, response.y_axis_label]);
-          setDataPoints(response.data);
-        }
-      } catch(error) {
-        throw error;
-      }
-    }
-    getClusterSummaryGraphData();
 
   }, [state[state.length-1].ensemble]);
 
@@ -111,10 +96,10 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
           <ClusterTable clusters={clusterData} onClusterSelection={setClusterSelection}/>
         </TabPanel>
         <TabPanel value="2">
-          <MDSChart data={clusterData} dataPoints={dataPoints} axisLabels={axisLabels} />
+          <MDSChart data={clusterData} />
         </TabPanel>
         <TabPanel value="3">
-          <ClusterScatterPlot data={clusterData} dataPoints={dataPoints} axisLabels={axisLabels}/>
+          <ClusterScatterPlot data={clusterData}/>
         </TabPanel>
       </TabContext>
     </Box>
