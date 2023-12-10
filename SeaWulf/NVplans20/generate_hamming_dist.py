@@ -261,13 +261,13 @@ if __name__ == "__main__":
         }
 
     # Output to json
-    with open('EnsembleSummary.json', 'w') as file:
+    with open('EnsembleSummaryData.json', 'w') as file:
         json.dump(ensemble_data, file, indent=2) 
-    with open('ClustersInEnsemble.json', 'w') as file:
+    with open('ClustersEnsembleData.json', 'w') as file:
         json.dump(clusters_in_ensemble, file, indent=2) 
-    with open('DistanceMeasureData.json', 'w') as file:
+    with open('DistanceMeasuresData.json', 'w') as file:
         json.dump(dist_measure_data, file, indent=2)
-    with open('MDSClusterData.json', 'w') as file:
+    with open('MDSPlotOfClusters.json', 'w') as file:
         json.dump(mds_graph_data, file, indent=2)
     with open('DistrictPlanClusterPoints.json', 'w') as file:
         json.dump(pointsInCluster, file, indent=2)
