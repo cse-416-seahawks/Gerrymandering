@@ -14,15 +14,35 @@ import {
 } from "recharts";
 import { GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
+import { fetchMDSClusterGraphData } from "../apiClient";
 
 interface ClusterScatterPlotProps {
     data: ClusterData[]
-    dataPoints: ClusterPoints[],
-    axisLabels: string[]
 }
 
-export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatterPlotProps) {
+export default function MDSChart({ data } : ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
+  const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
+  const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
+
+  useEffect(() => {
+    const currState = state[state.length-1].currentState;
+    const ensembleId = state[state.length-1].ensembleId;
+    const distanceMeasure = state[state.length-1].distanceMeasure;
+
+    async function getClusterSummaryGraphData() {
+      try {
+        const response = await fetchMDSClusterGraphData(currState, ensembleId, distanceMeasure);
+        if (response) {
+          setAxisLabels([response.x_axis_label, response.y_axis_label]);
+          setDataPoints(response.data);
+        }
+      } catch(error) {
+        throw error;
+      }
+    }
+    getClusterSummaryGraphData();
+  }, [state[state.length - 1].ensemble])
 
   function handleStepChange(step: number) {
     if(step === 2){
@@ -69,6 +89,7 @@ export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatt
       return (
         <div className="custom-tooltip">
           <p className="tooltip-text"><b>{"Cluster: "}</b>{selectedPoint.cluster_num}</p>
+          <p className="tooltip-text"><b>{"# District Plans: "}</b>{selectedPoint.num_district_plans}</p>
         </div>
       );
     }
@@ -89,7 +110,7 @@ export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatt
           fontSize: "0.5rem",
           fill: "black",
         }}
-        value={"Coordinate 1"}
+        value={axisLabels[0]}
         position={"insideBottom"}
         offset={-30}
         
@@ -112,7 +133,7 @@ export default function MDSChart({ data, dataPoints, axisLabels } : ClusterScatt
         }}
         position={"insideLeft"}
         angle={270}
-        value={"Coordinate 2"}
+        value={axisLabels[1]}
       />
       </YAxis>
       <ZAxis
