@@ -9,19 +9,17 @@ import {
   TableHead,
   Typography,
   CardContent,
-  CardActions,
-  Button,
-  Box,
 } from "@mui/material";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 import { GlobalContext } from "../../globalContext";
+import { fetchClusterDetails } from "../apiClient";
 
 export default function DistrictPlansCard() {
   const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<
     Array<DistrictPlanData>
   >([
     {
-      district_plan_id: 0,
+      district_plan_id: "000000",
       district_plan: 0,
       opportunity_districts: 15,
       splits: [5, 5],
@@ -29,25 +27,10 @@ export default function DistrictPlansCard() {
       avg_republican: "0.70",
     },
   ]);
+
+  const [allDistrictPlans, setAll] = useState<Array<DistrictPlanData>>([]);
+
   const { state, dispatch } = useContext(GlobalContext);
-  function handleDistrictPlanSelection(point: any) {
-    const districtPlanId = point.district_plan_id;
-    const districtPlanDetails = state[state.length - 1].clusterDetails.find(
-      (row) => row.district_plan_id == districtPlanId
-    );
-    if (districtPlanDetails) {
-      if (
-        !displayedDistrictPlans.some(
-          (item) => item.district_plan === districtPlanDetails.district_plan
-        )
-      ) {
-        setDisplayedDistrictPlans([
-          ...displayedDistrictPlans,
-          districtPlanDetails,
-        ]);
-      }
-    }
-  }
 
   function removeSelectedDistrictPlan(districtPlanNum: number) {
     const selected = displayedDistrictPlans.map((item) => {
@@ -58,6 +41,39 @@ export default function DistrictPlansCard() {
     );
     setDisplayedDistrictPlans(newSelected);
   }
+
+  useEffect(() => {
+    const currState = state[state.length - 1].currentState;
+    const currClusterId = state[state.length - 1].clusterId;
+
+    async function getClusterDetail() {
+      try {
+        const response = await fetchClusterDetails(currState, currClusterId);
+        setAll(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getClusterDetail();
+  }, []);
+
+  useEffect(() => {
+    let newDisplayedPlans = allDistrictPlans.filter((districtPlan) =>
+      state[state.length - 1].districtPlanIds.includes(
+        districtPlan.district_plan_id
+      )
+    );
+    newDisplayedPlans.unshift({
+      district_plan_id: "000000",
+      district_plan: 0,
+      opportunity_districts: 15,
+      splits: [5, 5],
+      avg_democrat: "0.30",
+      avg_republican: "0.70",
+    });
+    setDisplayedDistrictPlans(newDisplayedPlans);
+  }, [state]);
+
   return (
     <CardContent>
       <TableContainer className="plan-table-container" component={Paper}>
@@ -85,7 +101,7 @@ export default function DistrictPlansCard() {
                         2022 District Plan
                       </Typography>
                     ) : (
-                      row.district_plan
+                      row.district_plan + 1
                     )}
                   </TableCell>
                   <TableCell align="center">

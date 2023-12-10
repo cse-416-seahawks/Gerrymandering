@@ -3,7 +3,7 @@ import { GlobalContext, InfoCardType } from "../../globalContext";
 import "../css/Distance.css";
 import "../css/StateMap.css";
 import "../../App.css";
-import StateMap from "../statemap/StateMap";
+import StateMap from "../state-map/StateMap";
 import Navbar from "./Navbar";
 import { Stack, IconButton, Stepper, Step, StepButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -26,7 +26,7 @@ function DistanceMeasures() {
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/cluster-analysis")}
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>

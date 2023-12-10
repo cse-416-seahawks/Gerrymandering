@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TileLayer, MapContainer, useMap } from "react-leaflet";
-import NevadaMap from "../statemap/NevadaMap";
-import TexasMap from "../statemap/TexasMap";
-import VirginiaMap from "../statemap/VirginiaMap";
+import NevadaMap from "../state-map/NevadaMap";
+import TexasMap from "../state-map/TexasMap";
+import VirginiaMap from "../state-map/VirginiaMap";
 import 'leaflet/dist/leaflet.css'
 import "../../App.css";
   

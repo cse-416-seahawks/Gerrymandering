@@ -2,41 +2,40 @@ import React, { useContext, useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { Polygon } from "react-leaflet";
-import { AvailableStates, GlobalContext } from "../../globalContext";
 import { fetchStateOutline } from "../apiClient";
+import { GlobalContext, AvailableStates } from "../../globalContext";
+import { Polygon } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { MapState } from "../interfaces/MapInterface";
 
-export default () => {
-  const [texasOutline, setData] = useState<MapState["data"]>(null);
+export default function NevadaMap() {
+  const [nevadaOutline, setData] = useState<MapState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   const handleClick = () => {
     dispatch({
-      type : "CHANGE_STATE",
-      payload : {
-        currentState : AvailableStates.Texas
+      type: "CHANGE_STATE",
+      payload: {
+        currentState : AvailableStates.Nevada
       }
-    })
-    navigate("/home");
+    });
+    navigate("/cluster-analysis");
   }
 
   useEffect(() => {
     async function fetchOutlineAsync() {
       try {
-        const result = await fetchStateOutline(AvailableStates.Texas);
+        const result = await fetchStateOutline(AvailableStates.Nevada);
         setData(result);
-      } catch (error) {}
+      } catch (error) { console.log(error); }
     }
-
     fetchOutlineAsync();
   }, []);
 
   return (
     <>
-      {texasOutline && (
+      {nevadaOutline && (
         <Polygon
           pathOptions={{
             fillColor: "#00388c",
@@ -45,7 +44,7 @@ export default () => {
             opacity: 1,
             color: "white",
           }}
-          positions={texasOutline.features[0].geometry.coordinates[0].map(
+          positions={nevadaOutline.features[0].geometry.coordinates[0].map(
             (items: number[]) => {
               const coordinates: LatLngTuple = [items[1], items[0]];
               return coordinates;

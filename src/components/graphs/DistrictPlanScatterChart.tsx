@@ -1,12 +1,5 @@
 import React, { FC, useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import AlertModal from "../AlertModal";
 import {
   XAxis,
@@ -20,10 +13,9 @@ import {
 } from "recharts";
 import {
   DistrictPlanData,
-  DistrictPlanGraphData,
   DistrictPlanPoints,
 } from "../interfaces/AnalysisInterface";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, GlobalTypes } from "../../globalContext";
 import { TooltipProps } from "recharts";
 import { Button } from "@mui/material";
 
@@ -46,21 +38,15 @@ export default function DistrictPlanScatterPlot({
 
   function handleDistrictPlanSelection(point: any) {
     const districtPlanId = point.district_plan_id;
-    const districtPlanDetails = state[state.length - 1].clusterDetails.find(
-      (row) => row.district_plan_id == districtPlanId
-    );
-    if (districtPlanDetails) {
-      if (
-        !displayedDistrictPlans.some(
-          (item) => item.district_plan === districtPlanDetails.district_plan
-        )
-      ) {
-        setDisplayedDistrictPlans([
-          ...displayedDistrictPlans,
-          districtPlanDetails,
-        ]);
-      }
+    if(!state[state.length - 1].districtPlanIds.includes(districtPlanId)){
+      dispatch({
+        type : GlobalTypes.AddDistrictPlan,
+        payload  :{
+          planId : districtPlanId
+        }
+      })
     }
+    
   }
 
   function removeSelectedDistrictPlan(districtPlanNum: number) {

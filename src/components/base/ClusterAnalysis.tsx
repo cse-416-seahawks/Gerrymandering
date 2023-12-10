@@ -12,12 +12,13 @@ import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
 import { ClusterData } from "../interfaces/AnalysisInterface";
 import { Card, CardContent } from "@mui/material";
+import ClusterDetail from "../summary/ClusterDetail";
 
 interface TableDataProps {
   selectedState: string;
 }
 
-function TableData(props: TableDataProps) {
+export default function ClusterAnalysis(props: TableDataProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [ensemble, setEnsemble] = useState(0);
   const [cluster, setCluster] = useState(0);
@@ -88,7 +89,7 @@ function TableData(props: TableDataProps) {
       payload: {
         cluster: clusterData.cluster_number,
         clusterId: clusterData.cluster_id,
-        districtPlanIds: clusterData.district_plans,
+        clusterPlanIds: clusterData.district_plans,
       },
     });
 
@@ -161,7 +162,7 @@ function TableData(props: TableDataProps) {
           )}
           {/* Summary of selected cluster */}
           {currentStep == 2 && (
-            <DistrictPlanData />
+            <ClusterDetail />
           )}
         </CardContent>
       </Card>
@@ -169,4 +170,3 @@ function TableData(props: TableDataProps) {
   );
 }
 
-export default TableData;
