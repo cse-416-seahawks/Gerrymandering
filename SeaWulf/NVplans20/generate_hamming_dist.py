@@ -155,21 +155,28 @@ if __name__ == "__main__":
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
-    plt.show()
+    # plt.show()
+
+    # Get district plan points in each cluster
+    pointsInCluster = {}
+    for i, point in enumerate(pos):
+        cluster_num = int(labels[i]) + 1
+        if not cluster_num in pointsInCluster:
+            pointsInCluster[cluster_num] = []
+        pointsInCluster[cluster_num].append((round(point[0],3), round(point[1],3)))
+        
 
     # Get centroids and number of points in each cluster
     centroids = []
     cluster_sizes = []
-
     for i in range(optimalKClusters):
         cluster_points = pos[labels == i]
         centroid = np.mean(cluster_points, axis=0)
         centroids.append(centroid)
         cluster_sizes.append(len(cluster_points))
 
-    # Print centroids and cluster sizes
-    for i in range(optimalKClusters):
-        print(f"Cluster {i + 1} - Centroid: {centroids[i]} - x: {centroids[i][0]} - y: {centroids[i][1]}, Number of points: {cluster_sizes[i]}")
+    # for i in range(optimalKClusters):
+    #     print(f"Cluster {i + 1}, Centroid: {centroids[i]} - x: {centroids[i][0]} - y: {centroids[i][1]}, # of district plans: {cluster_sizes[i]}")
 
     
     flattenedDistanceMatrix = np.array(normalizedDistanceMatrix).flatten()
@@ -205,16 +212,16 @@ if __name__ == "__main__":
     }
     # Get points in each cluster
     for cluster_num in np.unique(labels):
-        print(cluster_num)
+        clusterNum = int(cluster_num) + 1
         current_cluster = {
-            "cluster_number": len(clusters_in_ensemble["data"]) + 1,
+            "cluster_number": clusterNum,
             "name": "cluster_placeholder",
             "num_dist_plans": 0,
             # avg_distance, splits, rep_percentage, dem_percentage, demographics
             "district_plans": [],
         }
         cluster_graph_data = {
-            "cluster_num": len(mds_graph_data["data"]) + 1,
+            "cluster_num": clusterNum,
             "x": float(round(centroids[cluster_num][0], 3)),
             "y": float(round(centroids[cluster_num][1], 3)),
             "num_district_plans": 0,
@@ -262,3 +269,5 @@ if __name__ == "__main__":
         json.dump(dist_measure_data, file, indent=2)
     with open('MDSClusterData.json', 'w') as file:
         json.dump(mds_graph_data, file, indent=2)
+    with open('DistrictPlanClusterPoints.json', 'w') as file:
+        json.dump(pointsInCluster, file, indent=2)
