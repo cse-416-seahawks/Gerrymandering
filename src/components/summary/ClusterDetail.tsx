@@ -4,12 +4,16 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
-import { GlobalContext } from "../../globalContext";
+import { GlobalContext, InfoCardType } from "../../globalContext";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
 import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
-import { DistrictPlanGraphData, DistrictPlanPoints, DistrictPlanData } from "../interfaces/AnalysisInterface"
+import {
+  DistrictPlanGraphData,
+  DistrictPlanPoints,
+  DistrictPlanData,
+} from "../interfaces/AnalysisInterface";
 import { DistrictSelectionProps } from "../types/TableTypes";
 
 export default function ClusterDetail() {
@@ -17,8 +21,12 @@ export default function ClusterDetail() {
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
-  const [availableDataPoints, setAvailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
-  const [unavailableDataPoints, setUnavailableDataPoints] = useState<Array<DistrictPlanPoints>>([]);
+  const [availableDataPoints, setAvailableDataPoints] = useState<
+    Array<DistrictPlanPoints>
+  >([]);
+  const [unavailableDataPoints, setUnavailableDataPoints] = useState<
+    Array<DistrictPlanPoints>
+  >([]);
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
@@ -36,9 +44,9 @@ export default function ClusterDetail() {
           type: "SET_CLUSTER_DETAILS",
           payload: {
             clusterDetails: response.data,
-          }
-        })
-      } catch(error) {
+          },
+        });
+      } catch (error) {
         console.log(error);
       }
     }
@@ -46,16 +54,45 @@ export default function ClusterDetail() {
 
     async function getClusterDetailGraph() {
       try {
-        const response = await fetchClusterDetailGraph(currState, currClusterId);
+        const response = await fetchClusterDetailGraph(
+          currState,
+          currClusterId
+        );
         setAxisLabels([response.x_axis_label, response.y_axis_label]);
-        setAvailableDataPoints(response.data.filter((points: DistrictPlanPoints) => points.availableData));
-        setUnavailableDataPoints(response.data.filter((points: DistrictPlanPoints) => !points.availableData));
-      } catch(error) {
+        setAvailableDataPoints(
+          response.data.filter(
+            (points: DistrictPlanPoints) => points.availableData
+          )
+        );
+        setUnavailableDataPoints(
+          response.data.filter(
+            (points: DistrictPlanPoints) => !points.availableData
+          )
+        );
+      } catch (error) {
         console.log(error);
       }
     }
     getClusterDetailGraph();
   }, []);
+
+  function handleSummaryCard(): void {
+    dispatch({
+      type: "CHANGE_INFO_CARD",
+      payload: {
+        infoCardType: InfoCardType.clusterSummary,
+      },
+    });
+  }
+
+  function handlePlanCard(): void {
+    dispatch({
+      type: "CHANGE_INFO_CARD",
+      payload: {
+        infoCardType: InfoCardType.districtPlans,
+      },
+    });
+  }
 
   return (
     <>
@@ -66,30 +103,31 @@ export default function ClusterDetail() {
               value="1"
               label="Graph View"
               sx={{ textTransform: "none" }}
+              onClick={handlePlanCard}
             />
             <Tab
               value="2"
               label="Table View"
               sx={{ textTransform: "none" }}
+              onClick={handleSummaryCard}
             />
-              <Tab
-              value="3"
-              label="Party Split"
-              sx={{ textTransform: "none" }}
-            />
+            <Tab value="3" label="Party Split" sx={{ textTransform: "none" }} />
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <DistrictPlanScatterPlot axisLabels={axisLabels} availableData={availableDataPoints} unavailableData={unavailableDataPoints}/>
+          <DistrictPlanScatterPlot
+            axisLabels={axisLabels}
+            availableData={availableDataPoints}
+            unavailableData={unavailableDataPoints}
+          />
         </TabPanel>
         <TabPanel value="2">
           <ClusterDetailTable districtPlanData={tableData} />
         </TabPanel>
         <TabPanel value="3">
-          <PartySplitChart districtPlans={tableData}/>
+          <PartySplitChart districtPlans={tableData} />
         </TabPanel>
       </TabContext>
     </>
   );
 }
-  

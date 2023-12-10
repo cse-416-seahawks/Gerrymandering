@@ -43,7 +43,7 @@ export interface ClusterPoints {
 }
 
 export interface DistrictPlanData {
-  district_plan_id: number;
+  district_plan_id: string;
   district_plan: number;
   opportunity_districts: number;
   splits: number[];

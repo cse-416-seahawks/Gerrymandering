@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext, GlobalProvider, AvailableStates } from "../../globalContext";
 import "../../App.css";
-import StateMap from "../statemap/StateMap";
+import StateMap from "../state-map/StateMap";
 import Navbar from "./Navbar";
 import TableData from "./ClusterAnalysis";
 import { fetchMapData } from "../apiClient";
+import ClusterAnalysis from "./ClusterAnalysis";
 
 function Home() {
   const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
@@ -38,7 +39,7 @@ function Home() {
           <div className="State-map"> 
             <StateMap/>
           </div>
-          <TableData selectedState={state[state.length-1].currentState}/>
+          <ClusterAnalysis selectedState={state[state.length-1].currentState}/>
         </header>
       </div>
       </div>

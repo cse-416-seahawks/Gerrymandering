@@ -136,16 +136,16 @@ export async function fetchClusterDetailGraph(state: AvailableStates, clusterId:
   }
 }
 
-// export async function fetchDistrictPlan(state: AvailableStates, districtPlanId: string) {
-//   try {
-//     const response = await axios.get(`http://localhost:4000/getDistrictPlanGeoJSON/${state}/${districtPlanId}`);
-//     if (response.status == 200) {
-//       return response.data;
-//     }
-//   } catch(error) {
-//     throw error;
-//   }
-// }
+export async function fetchDistrictPlan(state: AvailableStates, districtPlanId: string) {
+  try {
+    const response = await axios.get(`http://localhost:4000/getDistrictPlanGeoJSON/${state}/${districtPlanId}`);
+    if (response.status == 200) {
+      return response.data;
+    }
+  } catch(error) {
+    throw error;
+  }
+}
 
 export async function fetchDistanceMeasureData(state: AvailableStates, ensembleId: string) {
   try {

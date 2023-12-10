@@ -7,6 +7,7 @@ import { GlobalProvider } from "./globalContext";
 import About from "./components/base/About";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { purple, green } from "@mui/material/colors";
+import PlanComparison from "./components/base/PlanComparision";
 
 function App() {
   const usMapCoordinates: Array<number> = [34.5, -95.5];
@@ -25,7 +26,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="about" element={<About />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/cluster-analysis" element={<Home />} />
           <Route
             path="/"
             element={
@@ -36,6 +37,7 @@ function App() {
             }
           />
           <Route path="/distances" element={<DistanceMeasures />} />
+          <Route path="/plan-comparison" element={<PlanComparison/>}/>
         </Routes>
       </ThemeProvider>
     </GlobalProvider>
