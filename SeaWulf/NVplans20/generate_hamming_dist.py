@@ -112,6 +112,11 @@ if __name__ == "__main__":
     # Sorts plans by number in file (e.g. 'NVplan0')
     districtPlans = sorted(unsortedDistrictPlans, key= lambda p:int(''.join(filter(str.isdigit, p))))
 
+    # Create ID for each district plan
+    planIDMappings = {}
+    for i, plan in enumerate(districtPlans):
+        planIDMappings[i] = generateUID()
+
     # initalize distance matrix of plans
     distanceMatrix = [[-1 for _ in districtPlans] for _ in districtPlans]
     
@@ -133,7 +138,7 @@ if __name__ == "__main__":
     # MDS Graph
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
     pos = mds.fit(normalizedDistanceMatrix).embedding_
-   
+
     # Find the most optimal k by obtaining the max silhouette score for each possible k
     kClusters = range(2, 11) # must be at least 2 clusters
     silhouetteScores = []
@@ -163,8 +168,12 @@ if __name__ == "__main__":
         cluster_num = int(labels[i]) + 1
         if not cluster_num in pointsInCluster:
             pointsInCluster[cluster_num] = []
-        pointsInCluster[cluster_num].append((round(point[0],3), round(point[1],3)))
-        
+        pointsInCluster[cluster_num].append({
+            "district_plan_id": planIDMappings[i],
+            "district_plan": str(i),
+            "x":round(point[0],3),
+            "y": round(point[1],3)
+        })
 
     # Get centroids and number of points in each cluster
     centroids = []
@@ -232,14 +241,16 @@ if __name__ == "__main__":
         cluster_indices = np.where(labels == cluster_num)[0]
 
         cluster_of_plans = []
+        dist_plan_ids = []
         for planNum, pointCoords in zip(cluster_indices, cluster_points):
             planNum = int(planNum)
             current_cluster["num_dist_plans"] += 1
             cluster_of_plans.append(planNum)
+            dist_plan_ids.append(planIDMappings[planNum])
 
-        dist_plans = [str(i) for i in cluster_of_plans]
-        current_cluster['district_plans'] = dist_plans
-        cluster_graph_data['num_district_plans'] = len(dist_plans)
+        # dist_plans = [str(i) for i in cluster_of_plans]
+        current_cluster['district_plans'] = dist_plan_ids
+        cluster_graph_data['num_district_plans'] = len(dist_plan_ids)
 
         clusters_in_ensemble["data"].append(current_cluster)
         mds_graph_data["data"].append(cluster_graph_data)
