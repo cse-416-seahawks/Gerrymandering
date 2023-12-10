@@ -102,7 +102,7 @@ export default function MDSChart({ data } : ClusterScatterPlotProps) {
           fontSize: "0.5rem",
           fill: "black",
         }}
-        value={"Coordinate 1"}
+        value={axisLabels[0]}
         position={"insideBottom"}
         offset={-30}
         
@@ -125,7 +125,7 @@ export default function MDSChart({ data } : ClusterScatterPlotProps) {
         }}
         position={"insideLeft"}
         angle={270}
-        value={"Coordinate 2"}
+        value={axisLabels[1]}
       />
       </YAxis>
       <ZAxis

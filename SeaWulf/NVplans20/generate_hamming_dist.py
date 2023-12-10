@@ -141,9 +141,9 @@ if __name__ == "__main__":
     for k in kClusters:
         kScore = find_silhouette_score(k, normalizedDistanceMatrix)
         silhouetteScores.append(kScore)
-    plt.plot(kClusters, silhouetteScores, marker='o')
-    plt.xlabel('Number of Clusters (k)')
-    plt.ylabel('Silhouette Score')
+    # plt.plot(kClusters, silhouetteScores, marker='o')
+    # plt.xlabel('Number of Clusters (k)')
+    # plt.ylabel('Silhouette Score')
     # plt.show()
 
     optimalKClusters = kClusters[np.argmax(silhouetteScores)]
@@ -155,12 +155,38 @@ if __name__ == "__main__":
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
-    # plt.show()
+    plt.show()
+
+    # Get centroids and number of points in each cluster
+    centroids = []
+    cluster_sizes = []
+
+    for i in range(optimalKClusters):
+        cluster_points = pos[labels == i]
+        centroid = np.mean(cluster_points, axis=0)
+        centroids.append(centroid)
+        cluster_sizes.append(len(cluster_points))
+
+    # Print centroids and cluster sizes
+    for i in range(optimalKClusters):
+        print(f"Cluster {i + 1} - Centroid: {centroids[i]} - x: {centroids[i][0]} - y: {centroids[i][1]}, Number of points: {cluster_sizes[i]}")
+
     
     flattenedDistanceMatrix = np.array(normalizedDistanceMatrix).flatten()
 
     # Generate unique ID for current ensemble
     ensemble_UID = generateUID()
+
+    ensemble_data = {
+        "type": "EnsembleData",
+        "ensemble_id": ensemble_UID,
+        "num_district_plans": len(unsortedDistrictPlans),
+        "data": {
+            "distance_measure": "Hamming Distance",
+            "num_clusters": 0,
+            "avg_distance": float(round(np.mean(flattenedDistanceMatrix), 3)),
+        }
+    }
 
     clusters_in_ensemble = {
         "type": "ClusterData",
@@ -168,15 +194,18 @@ if __name__ == "__main__":
         "distance_measure": "Hamming Distance",
         "data": []
     }
-    ensemble_data = {
-        "type": "EnsembleData",
+
+    mds_graph_data = {
+        "type": "MDSPlotOfClusters",
         "ensemble_id": ensemble_UID,
         "distance_measure": "Hamming Distance",
-        "num_clusters": 0,
-        "avg_distance": float(round(np.mean(flattenedDistanceMatrix), 3)),
+        "x_axis_label": "Dimension 1",
+        "y_axis_label": "Dimension 2",
+        "data": []
     }
     # Get points in each cluster
     for cluster_num in np.unique(labels):
+        print(cluster_num)
         current_cluster = {
             "cluster_number": len(clusters_in_ensemble["data"]) + 1,
             "name": "cluster_placeholder",
@@ -184,7 +213,14 @@ if __name__ == "__main__":
             # avg_distance, splits, rep_percentage, dem_percentage, demographics
             "district_plans": [],
         }
-        ensemble_data['num_clusters'] += 1
+        cluster_graph_data = {
+            "cluster_num": len(mds_graph_data["data"]) + 1,
+            "x": float(round(centroids[cluster_num][0], 3)),
+            "y": float(round(centroids[cluster_num][1], 3)),
+            "num_district_plans": 0,
+            "cluster_id": generateUID()
+        }
+        ensemble_data['data']['num_clusters'] += 1
         cluster_points = pos[labels == cluster_num]
         cluster_indices = np.where(labels == cluster_num)[0]
 
@@ -193,8 +229,14 @@ if __name__ == "__main__":
             planNum = int(planNum)
             current_cluster["num_dist_plans"] += 1
             cluster_of_plans.append(planNum)
-        current_cluster['district_plans'] = [str(i) for i in cluster_of_plans]
+
+        dist_plans = [str(i) for i in cluster_of_plans]
+        current_cluster['district_plans'] = dist_plans
+        cluster_graph_data['num_district_plans'] = len(dist_plans)
+
         clusters_in_ensemble["data"].append(current_cluster)
+        mds_graph_data["data"].append(cluster_graph_data)
+
         create_folder_of_clusters(cluster_num+1, cluster_of_plans, districtPlans)
     
     dist_measure_data = {
@@ -218,3 +260,5 @@ if __name__ == "__main__":
         json.dump(clusters_in_ensemble, file, indent=2) 
     with open('DistanceMeasureData.json', 'w') as file:
         json.dump(dist_measure_data, file, indent=2)
+    with open('MDSClusterData.json', 'w') as file:
+        json.dump(mds_graph_data, file, indent=2)
