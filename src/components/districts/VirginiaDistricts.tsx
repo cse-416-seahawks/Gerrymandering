@@ -7,12 +7,13 @@ import { Polygon } from "react-leaflet";
 import { fetchCurrDistrictPlan } from "../apiClient";
 import { AvailableStates } from "../../globalContext";
 interface DistrictState {
-  data: any | null; 
+  data: any | null;
 }
 
-export default function VirginiaDistricts () {
-  const [virginiaHouse, setVirginiaHouse] = useState<DistrictState["data"]>(null);
-  
+export default function VirginiaDistricts(props: { opacity: number }) {
+  const [virginiaHouse, setVirginiaHouse] =
+    useState<DistrictState["data"]>(null);
+
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
@@ -25,20 +26,28 @@ export default function VirginiaDistricts () {
 
   return (
     <>
-      {virginiaHouse && (
+      {virginiaHouse &&
         virginiaHouse.features.map((district: any) => {
           return (
             <Polygon
               pathOptions={{
                 fillColor: "#00388c",
-                fillOpacity: 0.5,
+                fillOpacity: props.opacity,
                 weight: 2,
-                opacity: 1,
+                opacity: props.opacity,
                 color: "white",
               }}
-              positions={district.geometry.coordinates[0].map(
-                (items: LatLngTuple[]) => [items[1], items[0]] as LatLngTuple[]
-              )}
+              positions={
+                district.geometry.type === "MultiPolygon"
+                  ? district.geometry.coordinates.map((polygon: any) =>
+                      polygon.map((ring: any) =>
+                        ring.map((coord: any) => [coord[1], coord[0]])
+                      )
+                    )
+                  : district.geometry.coordinates.map((ring: any) =>
+                      ring.map((coord: any) => [coord[1], coord[0]])
+                    )
+              }
               eventHandlers={{
                 mouseover: (e) => {
                   const layer = e.target;
@@ -59,8 +68,7 @@ export default function VirginiaDistricts () {
               }}
             />
           );
-        })
-      )}
+        })}
     </>
   );
-};
+}

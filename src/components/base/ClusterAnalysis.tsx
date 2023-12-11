@@ -24,7 +24,7 @@ export default function ClusterAnalysis(props: TableDataProps) {
   const [cluster, setCluster] = useState(0);
   let currentStep = state[state.length - 1].step;
 
-  const [completed, setCompleted] = useState<{ [k: number]: boolean; }>({});
+  const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
 
   const steps = [
     "Select an Ensemble",
@@ -37,68 +37,89 @@ export default function ClusterAnalysis(props: TableDataProps) {
     handleStepChange(0, 0, "0");
   }, [props.selectedState]);
 
-  function handleStepChange(step: number, ensemble: number, ensembleId: string) {
+  function handleStepChange(
+    step: number,
+    ensemble: number,
+    ensembleId: string
+  ) {
     if (step === 0 && state[state.length - 1].step !== 0) {
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.ensembleInfo,
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.ensembleInfo,
+          },
         },
-      });
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     }
     if (step === 1) {
       setEnsemble(ensemble);
-      dispatch({
-        type: "SET_ENSEMBLE",
-        payload: {
-          ensemble: ensemble,
-          ensembleId: ensembleId,
+      dispatch([
+        {
+          type: "SET_ENSEMBLE",
+          payload: {
+            ensemble: ensemble,
+            ensembleId: ensembleId,
+          },
         },
-      });
-
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.ensembleSummary,
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.ensembleSummary,
+          },
         },
-      });
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     }
 
-    if(step === 2){
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.districtPlans,
+    if (step === 2) {
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.districtPlans,
+          },
         },
-      });
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     }
-
-    dispatch({
-      type: "STEP_CHANGE",
-      payload: {
-        step: step,
-      },
-    });
   }
 
   function handleClusterSelection(clusterData: ClusterData) {
     setCluster(clusterData.cluster_number);
-    
-    dispatch({
-      type: "SET_CLUSTER",
-      payload: {
-        cluster: clusterData.cluster_number,
-        clusterId: clusterData.cluster_id,
-        clusterPlanIds: clusterData.district_plans,
-      },
-    });
 
-    dispatch({
-      type: "CHANGE_INFO_CARD",
-      payload: {
-        infoCardType: InfoCardType.clusterDetails,
+    dispatch([
+      {
+        type: "SET_CLUSTER",
+        payload: {
+          cluster: clusterData.cluster_number,
+          clusterId: clusterData.cluster_id,
+          clusterPlanIds: clusterData.district_plans,
+        },
       },
-    });
+      {
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.clusterDetails,
+        },
+      },
+    ]);
   }
 
   function BackButton() {
@@ -126,7 +147,7 @@ export default function ClusterAnalysis(props: TableDataProps) {
 
   return (
     <div className="table-container">
-      <Card sx={{ height: '87vh' }}>
+      <Card sx={{ height: "87vh" }}>
         <CardContent>
           <div className="navigation-container">
             <BackButton />
@@ -161,12 +182,9 @@ export default function ClusterAnalysis(props: TableDataProps) {
             <ClusterSummary onClusterSelection={handleClusterSelection} />
           )}
           {/* Summary of selected cluster */}
-          {currentStep == 2 && (
-            <ClusterDetail />
-          )}
+          {currentStep == 2 && <ClusterDetail />}
         </CardContent>
       </Card>
     </div>
   );
 }
-

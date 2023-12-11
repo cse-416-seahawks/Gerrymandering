@@ -213,7 +213,7 @@ public class DistrictController {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        Document docFinder = new Document("type", "DistrictPlanGeoJSON").append("planId", districtPlanId);
+        Document docFinder = new Document("type", "FeatureCollection").append("planId", districtPlanId);
         Document document = stateCollection.find(docFinder).first();
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);

@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   GlobalContext,
-  GlobalProvider,
-  AvailableStates,
 } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../state-map/StateMap";
@@ -23,17 +21,15 @@ import PlanDetails from "../plan-compare/PlanDetails";
 import PlanSelection from "../plan-compare/PlanSelection";
 
 export default function PlanComparison() {
-  const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
-  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([
-    38.5, -116.5,
-  ]);
   const { state, dispatch } = useContext(GlobalContext);
   const currentStateMapData =
     state[state.length - 1].mapData[state[state.length - 1].currentState];
+  const [value, setValue] = React.useState(0);
 
-  function valuetext(value: number) {
-    return `${value}°C`;
-  }
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number);
+  };
+
   return (
     <div className="Home">
       <div className="Home-content">
@@ -49,6 +45,7 @@ export default function PlanComparison() {
               }}
             >
               <CompareMap
+                sliderValue={value}
                 centerCoordinates={currentStateMapData.centerCoordinates}
                 zoom={currentStateMapData.zoom}
               />
@@ -56,13 +53,13 @@ export default function PlanComparison() {
                 <Typography>Plan 1</Typography>
                 <Slider
                   sx={{ width: "80%" }}
-                  aria-label="Temperature"
-                  defaultValue={30}
-                  getAriaValueText={valuetext}
-                  step={10}
+                  aria-label="Plan Opacity"
+                  onChange={handleSliderChange}
+                  defaultValue={0}
+                  step={0.1}
                   marks
-                  min={10}
-                  max={110}
+                  min={0}
+                  max={1}
                 />
                 <Typography>Plan 2</Typography>
               </Box>

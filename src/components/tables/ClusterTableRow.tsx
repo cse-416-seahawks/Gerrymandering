@@ -18,12 +18,13 @@ import { updateClusterName } from "../apiClient";
 
 interface ClusterTableRowProps {
   data: ClusterData;
-  onClusterSelection: (
-    cluster: ClusterData,
-  ) => void;
+  onClusterSelection: (cluster: ClusterData) => void;
 }
 
-export default function ClusterTableRow({ data, onClusterSelection }: ClusterTableRowProps) {
+export default function ClusterTableRow({
+  data,
+  onClusterSelection,
+}: ClusterTableRowProps) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [clusterName, setName] = useState(data.name);
@@ -34,15 +35,24 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
     setEditing(true);
   };
 
-  async function handleChangeName(event: React.KeyboardEvent<HTMLDivElement>, clusterId: string) {
+  async function handleChangeName(
+    event: React.KeyboardEvent<HTMLDivElement>,
+    clusterId: string
+  ) {
     if (event.key == "Enter") {
       const currState = state[state.length - 1].currentState;
-      const ensembleId = state[state.length-1].ensembleId;
-      const distanceMeasure = state[state.length-1].distanceMeasure;
-      const response = await updateClusterName(currState, ensembleId, distanceMeasure, clusterId, clusterName);
-      console.log("POST",response)
+      const ensembleId = state[state.length - 1].ensembleId;
+      const distanceMeasure = state[state.length - 1].distanceMeasure;
+      const response = await updateClusterName(
+        currState,
+        ensembleId,
+        distanceMeasure,
+        clusterId,
+        clusterName
+      );
+      console.log("POST", response);
     }
-  };
+  }
 
   const handleBlur = () => {
     setEditing(false);
@@ -60,36 +70,48 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
   };
 
   function handleStepChange(step: number, cluster: ClusterData) {
-    if (step === 2) { // Display selected cluster summary of district plans
+    if (step === 2) {
+      // Display selected cluster summary of district plans
       onClusterSelection(cluster);
-      dispatch({
-        type: "SET_CLUSTER",
-        payload: {
-          cluster: cluster.cluster_number,
-          clusterId: cluster.cluster_id,
-          clusterPlanIds: cluster.district_plans,
+      dispatch([
+        {
+          type: "SET_CLUSTER",
+          payload: {
+            cluster: cluster.cluster_number,
+            clusterId: cluster.cluster_id,
+            clusterPlanIds: cluster.district_plans,
+          },
         },
-      });
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.districtPlans,
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.districtPlans,
+          },
         },
-      });
+        ,
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     } else {
-      dispatch({
-        type: "STATE_MAP",
-        payload: {
-          dismap: false,
+      dispatch([
+        {
+          type: "STATE_MAP",
+          payload: {
+            dismap: false,
+          },
         },
-      });
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     }
-    dispatch({
-      type: "STEP_CHANGE",
-      payload: {
-        step: step,
-      },
-    });
   }
 
   return (
@@ -149,8 +171,14 @@ export default function ClusterTableRow({ data, onClusterSelection }: ClusterTab
 
         <TableCell align="center"> {data.num_dist_plans}</TableCell>
         <TableCell align="center"> {data.avg_distance} </TableCell>
-        <TableCell align="center"> {(parseFloat(data.avg_rep) * 100).toFixed(2)} %</TableCell>
-        <TableCell align="center"> {(parseFloat(data.avg_dem) * 100).toFixed(2)} %</TableCell>
+        <TableCell align="center">
+          {" "}
+          {(parseFloat(data.avg_rep) * 100).toFixed(2)} %
+        </TableCell>
+        <TableCell align="center">
+          {" "}
+          {(parseFloat(data.avg_dem) * 100).toFixed(2)} %
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>

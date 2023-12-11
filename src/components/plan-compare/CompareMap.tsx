@@ -9,10 +9,14 @@ import { GlobalContext, AvailableStates } from "../../globalContext";
 import NevadaDistricts from "../districts/NevadaDistricts";
 import VirginiaDistricts from "../districts/VirginiaDistricts";
 import TexasDistricts from "../districts/TexasDistricts";
+import { DistrictState } from "../interfaces/MapInterface";
+import DistrictPlan from "../districts/DistrictPlan";
+import { fetchDistrictPlan } from "../apiClient";
 
 export default function Map(props: {
   centerCoordinates: Array<number>;
   zoom: number;
+  sliderValue : number;
 }) {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.centerCoordinates
@@ -23,14 +27,16 @@ export default function Map(props: {
     state[state.length - 1].currentState
   );
 
-  const CurrentDistrictPlan = () => {
+  const [comparePlan, setCompareplan] = useState<string>();
+
+  const CurrentDistrictPlan = (props : {opacity : number}) => {
     switch (curPlan) {
       case AvailableStates.Nevada:
-        return <NevadaDistricts />;
+        return <NevadaDistricts opacity={props.opacity}/>;
       case AvailableStates.Virginia:
-        return <VirginiaDistricts />;
+        return <VirginiaDistricts opacity={props.opacity} />;
       case AvailableStates.Texas:
-        return <TexasDistricts />;
+        return <TexasDistricts opacity={props.opacity}/>;
       default:
         return <div></div>;
     }
@@ -62,7 +68,8 @@ export default function Map(props: {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <CurrentDistrictPlan />
+        <CurrentDistrictPlan opacity={1 - props.sliderValue}/>
+        <DistrictPlan opacity={props.sliderValue} planId={"123456"} />
         <SetMapView />
       </MapContainer>
     </div>

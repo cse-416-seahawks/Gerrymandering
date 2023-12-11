@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
-import type { LatLngTuple } from "leaflet";
+import type { LatLngTuple, LeafletMouseEvent } from "leaflet";
 import { fetchStateOutline } from "../apiClient";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 import { Polygon } from "react-leaflet";
@@ -13,7 +13,7 @@ export default function NevadaMap() {
   const { state, dispatch } = useContext(GlobalContext);
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = (event: LeafletMouseEvent) => {
     dispatch({
       type: "CHANGE_STATE",
       payload: {

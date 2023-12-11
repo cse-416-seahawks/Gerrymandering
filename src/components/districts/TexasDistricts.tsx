@@ -7,7 +7,9 @@ import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
 import { DistrictState } from "../interfaces/MapInterface";
 
-export default () => {
+export default (props : {
+  opacity : number
+}) => {
   const [TexasDistricts, setTexasDistrict] = useState<DistrictState["data"]>(null);
 
   useEffect(() => {
@@ -27,18 +29,22 @@ export default () => {
         <Polygon
           pathOptions={{
             fillColor: "#00388c",
-            fillOpacity: 0.5,
+            fillOpacity: props.opacity,
             weight: 2,
-            opacity: 1,
+            opacity: props.opacity,
             color: "white",
           }}
-          positions={district.geometry.coordinates[0].map(
-            (items: number[][]) =>
-              items.map((items: number[]) => {
-                const coordinates: LatLngTuple = [items[1], items[0]];
-                return coordinates;
-              })
-          )}
+          positions={
+            district.geometry.type === "MultiPolygon"
+              ? district.geometry.coordinates.map((polygon: any) =>
+                  polygon.map((ring: any) =>
+                    ring.map((coord: any) => [coord[1], coord[0]])
+                  )
+                )
+              : district.geometry.coordinates.map((ring: any) =>
+                  ring.map((coord: any) => [coord[1], coord[0]])
+                )
+          }
           eventHandlers={{
             mouseover: (e) => {
               const layer = e.target;

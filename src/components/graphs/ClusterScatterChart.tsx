@@ -17,50 +17,54 @@ import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { fetchClusterSummaryGraphData } from "../apiClient";
 
 interface ClusterScatterPlotProps {
-    data : ClusterData[]
+  data: ClusterData[];
 }
 
-export default function ClusterScatterPlot({ data } : ClusterScatterPlotProps) {
+export default function ClusterScatterPlot({ data }: ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
 
   useEffect(() => {
-    const currState = state[state.length-1].currentState;
-    const ensembleId = state[state.length-1].ensembleId;
-    const distanceMeasure = state[state.length-1].distanceMeasure;
+    const currState = state[state.length - 1].currentState;
+    const ensembleId = state[state.length - 1].ensembleId;
+    const distanceMeasure = state[state.length - 1].distanceMeasure;
 
     async function getClusterSummaryGraphData() {
       try {
-        const response = await fetchClusterSummaryGraphData(currState, ensembleId, distanceMeasure);
+        const response = await fetchClusterSummaryGraphData(
+          currState,
+          ensembleId,
+          distanceMeasure
+        );
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
         }
-      } catch(error) {
+      } catch (error) {
         throw error;
       }
     }
     getClusterSummaryGraphData();
-  }, [state[state.length - 1].ensemble])
+  }, [state[state.length - 1].ensemble]);
 
   function handleStepChange(step: number) {
- 
-    if(step === 2){
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.districtPlans,
+    if (step === 2) {
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.districtPlans,
+          },
         },
-      });
+        {
+          type: "STEP_CHANGE",
+          payload: {
+            step: step,
+          },
+        },
+      ]);
     }
-    
-    dispatch({
-      type: "STEP_CHANGE",
-      payload: {
-        step: step
-      }
-    })
   }
 
   const parseDomain = () => [
@@ -79,12 +83,17 @@ export default function ClusterScatterPlot({ data } : ClusterScatterPlotProps) {
   interface CustomTooltipProps extends TooltipProps<any, any> {
     active?: boolean;
     payload?: Array<{
-      name: string; payload: {
-        cluster_num: number; num_district_plans: number; x: number; y: number; id: string 
-      } 
+      name: string;
+      payload: {
+        cluster_num: number;
+        num_district_plans: number;
+        x: number;
+        y: number;
+        id: string;
+      };
     }>;
   }
-  
+
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const selectedPoint = payload[0].payload;
@@ -93,10 +102,22 @@ export default function ClusterScatterPlot({ data } : ClusterScatterPlotProps) {
       const zLabel = payload[2].name;
       return (
         <div className="custom-tooltip">
-          <p className="tooltip-text"><b>{"Cluster: "}</b>{selectedPoint.cluster_num}</p>
-          <p className="tooltip-text"><b>{`${xLabel}: `}</b>{selectedPoint.x}</p>
-          <p className="tooltip-text"><b>{`${yLabel}: `}</b>{selectedPoint.y}</p>
-          <p className="tooltip-text"><b>{`${zLabel}: `}</b>{selectedPoint.num_district_plans}</p>
+          <p className="tooltip-text">
+            <b>{"Cluster: "}</b>
+            {selectedPoint.cluster_num}
+          </p>
+          <p className="tooltip-text">
+            <b>{`${xLabel}: `}</b>
+            {selectedPoint.x}
+          </p>
+          <p className="tooltip-text">
+            <b>{`${yLabel}: `}</b>
+            {selectedPoint.y}
+          </p>
+          <p className="tooltip-text">
+            <b>{`${zLabel}: `}</b>
+            {selectedPoint.num_district_plans}
+          </p>
         </div>
       );
     }
@@ -104,17 +125,28 @@ export default function ClusterScatterPlot({ data } : ClusterScatterPlotProps) {
   };
 
   return (
-    <ScatterChart width={760} height={630} margin={{ top: 20, right: 20, bottom: 40, left: 20 }} >
+    <ScatterChart
+      width={760}
+      height={630}
+      margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
+    >
       <CartesianGrid />
       <XAxis type="number" dataKey="x" name={axisLabels[0]}>
-        <Label 
-          style={{ textAnchor: "middle", fontSize: "0.5rem", fill: "black", }}
+        <Label
+          style={{ textAnchor: "middle", fontSize: "0.5rem", fill: "black" }}
           value={axisLabels[0]}
           position={"insideBottom"}
           offset={-30}
         />
       </XAxis>
-      <YAxis yAxisId="left" type="number" dataKey="y" name={axisLabels[1]} opacity="1" stroke="#7aa9ff">
+      <YAxis
+        yAxisId="left"
+        type="number"
+        dataKey="y"
+        name={axisLabels[1]}
+        opacity="1"
+        stroke="#7aa9ff"
+      >
         <Label
           style={{ textAnchor: "middle", fontSize: "1rem", fill: "black" }}
           position={"insideLeft"}
@@ -140,7 +172,7 @@ export default function ClusterScatterPlot({ data } : ClusterScatterPlotProps) {
         fill="#bfd6ff"
         stroke="#037cff"
         opacity={4}
-        onClick={ () => handleStepChange(2) }
+        onClick={() => handleStepChange(2)}
       />
     </ScatterChart>
   );

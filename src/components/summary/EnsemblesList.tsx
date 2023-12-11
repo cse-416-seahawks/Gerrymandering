@@ -1,13 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../css/TableData.css";
-import {
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
-import { GlobalContext, EnsembleData, InfoCardType } from "../../globalContext";
+import {
+  GlobalContext,
+  EnsembleData,
+  InfoCardType,
+  AvailableStates,
+} from "../../globalContext";
 import { fetchStateEnsembles } from "../apiClient";
 import EnsemblesTable from "../tables/EnsembleTable";
 import ClusterAssociationGraph from "../graphs/ClusterAssociationChart";
@@ -32,28 +34,29 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
 
     async function fetchStateEnsemble() {
       try {
-        const response = await fetchStateEnsembles(currState);
-        const ensembles: Array<EnsembleData> = [];
-        for (var row of response.ensembles) {
-          const ensemble_table = row.data.find( (item: any) => item.distance_measure == distanceMeasure);
-          ensembles.push({
-            ensemble: response.ensembles.indexOf(row) + 1,
-            ensemble_id: row.ensemble_id,
-            num_clusters: ensemble_table.num_clusters,
-            num_dist_plans: row.num_district_plans,
-            avg_dist_clusters: ensemble_table.avg_distance,
-          });
+        if (currState !== AvailableStates.Unselected) {
+          const response = await fetchStateEnsembles(currState);
+          const ensembles: Array<EnsembleData> = [];
+          for (var row of response.ensembles) {
+            const ensemble_table = row.data.find(
+              (item: any) => item.distance_measure == distanceMeasure
+            );
+            ensembles.push({
+              ensemble: response.ensembles.indexOf(row) + 1,
+              ensemble_id: row.ensemble_id,
+              num_clusters: ensemble_table.num_clusters,
+              num_dist_plans: row.num_district_plans,
+              avg_dist_clusters: ensemble_table.avg_distance,
+            });
+          }
+          setEnsembleData(ensembles);
         }
-        setEnsembleData(ensembles);
       } catch (error) {
         throw error;
       }
     }
     fetchStateEnsemble();
-  }, [
-    state[state.length - 1].currentState,
-    state[state.length - 1].distanceMeasure,
-  ]);
+  }, [state]);
 
   const handleEnsembleInfoCard = () => {
     dispatch({

@@ -18,7 +18,6 @@ import VirginiaDistricts from "../districts/VirginiaDistricts";
 import {
   GlobalContext,
   AvailableStates,
-  GlobalProvider,
 } from "../../globalContext";
 import MainInfoCard from "../infocards/MainInfoCard";
 import { DistrictState } from "../interfaces/MapInterface";
@@ -32,29 +31,6 @@ export default function StateMap() {
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
   const [zoom, setZoom] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [districtPlans, setDistrictPlans] = useState<Array<DistrictState>>([]);
-
-  useEffect(() => {
-    async function fetchDistrictPlanAsync() {
-      try {
-        let currentState = state[state.length - 1].currentState;
-        let planIds = state[state.length - 1].districtPlanIds;
-        if (planIds.length > 0) {
-          const result = await fetchDistrictPlan(
-            currentState,
-            planIds[planIds.length - 1]
-          );
-          let newDistrictPlans = districtPlans;
-          newDistrictPlans.push(result);
-          setDistrictPlans(newDistrictPlans);
-        }
-      } catch (error) {
-        throw error;
-      }
-    }
-    fetchDistrictPlanAsync();
-  }, [state]);
-
 
   const SetMapView = () => {
     const map = useMap();
@@ -72,25 +48,21 @@ export default function StateMap() {
     else if (newState === AvailableStates.Texas)
       newCurrentState = AvailableStates.Texas;
     else newCurrentState = AvailableStates.Virginia;
-
-    dispatch({
-      type: "CHANGE_STATE",
-      payload: {
-        currentState: newCurrentState,
+    
+    dispatch([
+      {
+        type: "CHANGE_STATE",
+        payload: {
+          currentState: newCurrentState,
+        },
       },
-    });
-    dispatch({
-      type: "STEP_CHANGE",
-      payload: {
-        step: 0,
+      {
+        type: "STEP_CHANGE",
+        payload: {
+          step: 0,
+        },
       },
-    });
-    dispatch({
-      type: "STATE_MAP",
-      payload: {
-        dismap: false,
-      },
-    });
+    ]);
   };
 
   useEffect(() => {
@@ -118,14 +90,9 @@ export default function StateMap() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            <NevadaDistricts />
-            <TexasDistricts />
-            <VirginiaDistricts />
-            {
-              districtPlans.map((districtPlan) => (
-                <DistrictPlan geoDataFrame={districtPlan.data} />
-              ))
-            }
+            <NevadaDistricts opacity={0.7} />
+            <TexasDistricts opacity={0.7} />
+            <VirginiaDistricts opacity={0.7} />
 
             <SetMapView />
           </MapContainer>
