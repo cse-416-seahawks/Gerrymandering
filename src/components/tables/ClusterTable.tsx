@@ -37,7 +37,7 @@ export default function ClusterTable({ clusters, onClusterSelection }: ClusterTa
         </TableHead>
         <TableBody>
           {clusters.map((cluster) => (
-            <ClusterTableRow key={cluster.name} data={cluster} onClusterSelection={setSelectedCluster}/>
+            <ClusterTableRow key={cluster.cluster_number} data={cluster} onClusterSelection={setSelectedCluster}/>
           ))}
         </TableBody>
       </Table>

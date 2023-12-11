@@ -73,7 +73,7 @@ export default function PlanComparison() {
                 margin: 1,
               }}
             >
-              <PlanSelection />
+              <PlanSelection districtPlanData={state[state.length - 1].clusterDetails}/>
             </Card>
           </Grid>
           <Grid item xs={6}>

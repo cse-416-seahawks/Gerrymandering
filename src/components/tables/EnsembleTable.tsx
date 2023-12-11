@@ -95,7 +95,7 @@ export default function EnsemblesTable({
         </div>
       </div>
       {spliceEnsemble(ensembleData, page).map((row) => (
-        <Accordion defaultExpanded={false}>
+        <Accordion key={row.ensemble} defaultExpanded={false}>
           <AccordionSummary sx={{ pointerEvents: "none" }}>
             <Button
               variant="text"

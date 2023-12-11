@@ -14,19 +14,14 @@ export default React.memo((props: { opacity: number }) => {
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        if (nevadaDistrict === null) {
-          console.log("fetching...");
-          const result = await fetchCurrDistrictPlan(AvailableStates.Nevada);
-          setNevadaDistrict(result);
-          console.log('rendered!', result);
-        }
+        const result = await fetchCurrDistrictPlan(AvailableStates.Nevada);
+        setNevadaDistrict(result);
       } catch (error) {
         throw error;
       }
     }
-    fetchDistrictPlanAsync();
-  }, []);
-  console.log("rendering Nevada");
+    if (!nevadaDistrict) fetchDistrictPlanAsync();
+  }, [nevadaDistrict]);
   return (
     <>
       {nevadaDistrict &&
@@ -35,7 +30,7 @@ export default React.memo((props: { opacity: number }) => {
             <Polygon
               pathOptions={{
                 fillColor: "#00388c",
-                fillOpacity: 0.7,
+                fillOpacity: props.opacity,
                 weight: 2,
                 opacity: props.opacity,
                 color: "white",
@@ -55,7 +50,7 @@ export default React.memo((props: { opacity: number }) => {
                 mouseover: (e) => {
                   const layer = e.target;
                   layer.setStyle({
-                    fillOpacity: 0.7,
+                    fillOpacity: 1,
                     weight: 2,
                     color: "white",
                   });

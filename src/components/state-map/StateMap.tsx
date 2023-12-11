@@ -48,7 +48,7 @@ export default function StateMap() {
     else if (newState === AvailableStates.Texas)
       newCurrentState = AvailableStates.Texas;
     else newCurrentState = AvailableStates.Virginia;
-    
+    console.log('changing state');
     dispatch([
       {
         type: "CHANGE_STATE",

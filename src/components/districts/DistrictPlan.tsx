@@ -65,10 +65,10 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
             <Polygon
               pathOptions={{
                 fillColor: districtColor,
-                fillOpacity: 0.7,
+                fillOpacity: opacity,
                 weight: 2,
                 opacity: opacity,
-                color: "blue",
+                color: "black",
               }}
               positions={
                 district.geometry.type === "MultiPolygon"
@@ -85,9 +85,9 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
                 mouseover: (e) => {
                   const layer = e.target;
                   layer.setStyle({
-                    fillOpacity: opacity > 0.1 ? opacity - 0.1 : 0,
+                    fillOpacity: opacity > 0 ? 1 : 0,
                     weight: 2,
-                    color: "blue",
+                    color: "black",
                   });
                 },
                 mouseout: (e) => {
@@ -95,7 +95,7 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
                   layer.setStyle({
                     fillOpacity: opacity,
                     weight: 2,
-                    color: "blue",
+                    color: "black",
                   });
                 },
               }}

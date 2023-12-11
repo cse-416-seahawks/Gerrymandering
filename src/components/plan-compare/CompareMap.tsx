@@ -27,8 +27,6 @@ export default function Map(props: {
     state[state.length - 1].currentState
   );
 
-  const [comparePlan, setCompareplan] = useState<string>();
-
   const CurrentDistrictPlan = (props : {opacity : number}) => {
     switch (curPlan) {
       case AvailableStates.Nevada:
@@ -64,10 +62,6 @@ export default function Map(props: {
         className="State-map"
         style={{ width: "100%", height: "45vh" }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
         <CurrentDistrictPlan opacity={1 - props.sliderValue}/>
         <DistrictPlan opacity={props.sliderValue} planId={"123456"} />
         <SetMapView />
