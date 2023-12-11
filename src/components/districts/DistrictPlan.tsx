@@ -15,13 +15,16 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
   const [plan, setPlan] = useState<DistrictState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
   const [districtColor, setColor] = useState(getRandomHexColor());
+  const [isCurPlan, setIsCurPlan] = useState(planId === "000000");
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
+        console.log('fetching ',state[state.length - 1].currentState, ' Plan #', planId)
         const result = await fetchDistrictPlan(
           state[state.length - 1].currentState,
           planId
         );
+        console.log('fetched', planId)
         if (result) {
           setPlan(result);
         }
@@ -64,11 +67,11 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
           return (
             <Polygon
               pathOptions={{
-                fillColor: districtColor,
+                fillColor: isCurPlan ? "#00388c" : districtColor,
                 fillOpacity: opacity,
                 weight: 2,
                 opacity: opacity,
-                color: "black",
+                color: isCurPlan ? "white" : "black",
               }}
               positions={
                 district.geometry.type === "MultiPolygon"
@@ -81,24 +84,6 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
                       ring.map((coord: any) => [coord[1], coord[0]])
                     )
               }
-              eventHandlers={{
-                mouseover: (e) => {
-                  const layer = e.target;
-                  layer.setStyle({
-                    fillOpacity: opacity > 0 ? 1 : 0,
-                    weight: 2,
-                    color: "black",
-                  });
-                },
-                mouseout: (e) => {
-                  const layer = e.target;
-                  layer.setStyle({
-                    fillOpacity: opacity,
-                    weight: 2,
-                    color: "black",
-                  });
-                },
-              }}
             />
           );
         })}

@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
 import { Polygon, GeoJSON } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
-import { fetchCurrDistrictPlan } from "../apiClient";
+import { fetchCurrDistrictPlan, fetchDistrictPlan } from "../apiClient";
 import { DistrictState } from "../interfaces/MapInterface";
 
 export default React.memo((props: { opacity: number }) => {
@@ -14,14 +14,16 @@ export default React.memo((props: { opacity: number }) => {
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchCurrDistrictPlan(AvailableStates.Nevada);
+        const result = await fetchDistrictPlan(AvailableStates.Nevada, "000000");
         setNevadaDistrict(result);
       } catch (error) {
         throw error;
       }
     }
-    if (!nevadaDistrict) fetchDistrictPlanAsync();
-  }, [nevadaDistrict]);
+    if (!nevadaDistrict) {
+      fetchDistrictPlanAsync();
+    }
+  }, []);
   return (
     <>
       {nevadaDistrict &&

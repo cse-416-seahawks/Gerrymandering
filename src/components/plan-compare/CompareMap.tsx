@@ -62,7 +62,7 @@ export default function Map(props: {
         className="State-map"
         style={{ width: "100%", height: "45vh" }}
       >
-        <CurrentDistrictPlan opacity={1 - props.sliderValue}/>
+        <DistrictPlan opacity={1 - props.sliderValue} planId={"000000"} />
         <DistrictPlan opacity={props.sliderValue} planId={"123456"} />
         <SetMapView />
       </MapContainer>
