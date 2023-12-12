@@ -1,100 +1,26 @@
 import json
 import os
 import shutil
-from tqdm import tqdm
+#from tqdm import tqdm
 import pandas as pd
 import numpy as np
+import multiprocessing
 import matplotlib.pyplot as plt
 from scipy.optimize import linear_sum_assignment
 from sklearn.manifold import MDS
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from random import randint
+from calc_hamming import HammingPair
 
-class Pair:
-
-    def __init__(self, plan1, plan2):
-        self.plan1 = plan1
-        self.plan2 = plan2
-
-    def compare_precincts(self, district1Precincts, district2Precincts):
-        # find list of precincts that is smaller in size
-        if len(district1Precincts) < len(district2Precincts):
-            lowerPrecincts = district1Precincts
-            higherPrecincts = district2Precincts
-        else:
-            lowerPrecincts = district2Precincts
-            higherPrecincts = district1Precincts
-
-        # length difference between the two lists
-        precinctNumDifference = len(higherPrecincts) - len(lowerPrecincts)
-
-        # extend to be of equal length lists that aren't matches
-        lowerPrecincts.extend([-1] * precinctNumDifference)
-
-        # find non-matches in the list of precincts
-        sharedPrecincts = [p1 for p1, p2 in zip(lowerPrecincts, higherPrecincts) if p1 == p2]
-
-        numDifferentPrecincts = len(lowerPrecincts) - len(sharedPrecincts) # non-shared precincts
-        return numDifferentPrecincts
-
-    def find_district_num(self, index, plan):
-        district = plan["features"][index]
-        return district["properties"]["DISTRICT"]
-
-    def remove_duplicate_edges(self, graph, edge):
-        for district, edges in graph.items():
-            if edge in edges:
-                graph[district].remove(edge)
-        return graph
-
-    def min_cost_matching(self, cost_matrix):
-        # Apply the Hungarian algorithm
-        row_indices, col_indices = linear_sum_assignment(cost_matrix)
-
-        # Return the optimal assignment
-        matching = [(row_indices[i], col_indices[i]) for i in range(len(row_indices))]
-        return matching
-
-    def calculate_hamming_distance(self):
-        districtPlan1 = self.plan1
-        districtPlan2 = self.plan2
-
-        distanceMatrix = [[-1 for _ in districtPlan1["features"]] for _ in districtPlan2["features"]]
-
-        for i, district1 in enumerate(districtPlan1["features"]):
-            for j, district2 in enumerate(districtPlan2["features"]):
-                if distanceMatrix[i][j] == -1:
-                    plan1Precincts = district1["properties"]["PRECINCTS"].split(",")
-                    plan2Precincts = district2["properties"]["PRECINCTS"].split(",")
-                    distanceBtwnPrecincts = self.compare_precincts(plan1Precincts, plan2Precincts)
-                    distanceMatrix[i][j] = distanceBtwnPrecincts # if distanceBtwnPrecincts > 0 else 0.1
-                    distanceMatrix[j][i] = distanceBtwnPrecincts # if distanceBtwnPrecincts > 0 else 0.1
-
-        #### Hungarian algorithm - obtain perfect one-to-one matching of districts using minimum cost (lowest distance)
-        matching = self.min_cost_matching(distanceMatrix)
-
-        # Print the matching
-        # for pair in matching:
-        #     print(f"Node in set 1: {pair[0]}, Node in set 2: {pair[1]}, Weight between set: {distanceMatrix[pair[0]][pair[1]]}")
-
-        # Sum all weights
-        finalDistance = 0
-        for pair in matching:
-            matchingDistrict1 = pair[0]
-            matchingDistrict2 = pair[1]
-            finalDistance += distanceMatrix[matchingDistrict1][matchingDistrict2]
-        
-        return finalDistance
-
-def find_silhouette_score(k, data):
-    kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
-    labels = kmeans.fit_predict(data)
-    return silhouette_score(data, labels)
+# def find_silhouette_score(k, data):
+#     kmeans = KMeans(n_clusters=k)
+#     labels = kmeans.fit_predict(data)
+#     return silhouette_score(data, labels)
 
 def create_folder_of_clusters(cluster_num, district_plans, files):
     current_directory = os.getcwd()
-    new_directory = f'cluster{cluster_num}'
+    new_directory = "cluster" + str(cluster_num)
     os.mkdir(new_directory)
     for i in district_plans:
         shutil.move(os.path.join(current_directory, files[i]), os.path.join(new_directory, files[i]))
@@ -102,32 +28,63 @@ def create_folder_of_clusters(cluster_num, district_plans, files):
 def generateUID():
     return str(randint(100000, 999999))
 
+    # Returns a tuple of 3 items to index distance matrix
+def calculate_hamming_distance(i,j, plan1, plan2, planIDMappings, distanceMatrix):
+    if distanceMatrix[i][j] == -1:
+        try:
+            jsonplan1 = pd.read_json(plan1)
+        except ValueError as e:
+            print(f"Error reading JSON for plan", planIDMappings[i][1])
+        
+        try:
+            jsonplan2 = pd.read_json(plan2)
+        except ValueError as e:
+            print(f"Error reading JSON for plan", planIDMappings[j][1])
+        return [i,j,HammingPair(jsonplan1, jsonplan2).calculate_hamming_distance()]
+
+
 if __name__ == "__main__":
     current_directory = os.getcwd()
     # folderOfPlans = 'NVplans20'
 
     # Get a list of all files of plans
-    unsortedDistrictPlans = [file for file in os.listdir(current_directory) if file.endswith('.json')]
-
+    districtPlans = [file for file in os.listdir(current_directory) if file.endswith('.json')]
+    # print(unsortedDistrictPlans)
     # Sorts plans by number in file (e.g. 'NVplan0')
-    districtPlans = sorted(unsortedDistrictPlans, key= lambda p:int(''.join(filter(str.isdigit, p))))
+    # districtPlans = sorted(unsortedDistrictPlans, key= lambda p:int(''.join(filter(str.isdigit, p))))
 
     # Create ID for each district plan
     planIDMappings = {}
     for i, plan in enumerate(districtPlans):
-        planIDMappings[i] = generateUID()
+        planIDMappings[i] = (generateUID(), ''.join(filter(str.isdigit, plan)), i)
 
     # initalize distance matrix of plans
     distanceMatrix = [[-1 for _ in districtPlans] for _ in districtPlans]
-    
-    for i, plan1 in tqdm(enumerate(districtPlans), total=len(districtPlans)):
-        for j, plan2 in enumerate(districtPlans):
-            if distanceMatrix[i][j] == -1:
-                distPlan1 = pd.read_json(f'{plan1}') #f'{folderOfPlans}/{plan2}
-                distPlan2 = pd.read_json(f'{plan2}')
-                distance = Pair(distPlan1, distPlan2).calculate_hamming_distance()
-                distanceMatrix[i][j] = distance
-                distanceMatrix[j][i] = distance
+
+
+    # Multiprocessing  
+    num_plans = len(districtPlans)
+
+    args_list = [(i, j, districtPlans[planIDMappings[i][2]],districtPlans[planIDMappings[j][2]], planIDMappings, distanceMatrix)
+                 for i in range(num_plans) for j in range(i + 1, num_plans)]
+
+    with multiprocessing.Pool() as pool:
+        distances = pool.starmap(calculate_hamming_distance, args_list)
+
+    for i, j, distance in distances:
+            distanceMatrix[i][j] = distance
+            distanceMatrix[j][i] = distance
+
+
+            
+    # for i, plan1 in enumerate(districtPlans):
+    #     for j, plan2 in enumerate(districtPlans):
+    #         if distanceMatrix[i][j] == -1:
+    #             distPlan1 = pd.read_json(plan1) #f'{folderOfPlans}/{plan2}
+    #             distPlan2 = pd.read_json(plan2)
+    #             distance = HammingPair(distPlan1, distPlan2).calculate_hamming_distance()
+    #             distanceMatrix[i][j] = distance
+    #             distanceMatrix[j][i] = distance
                 
     # min-max normalization
     minDist = np.min(distanceMatrix)
@@ -135,17 +92,35 @@ if __name__ == "__main__":
 
     normalizedDistanceMatrix = (distanceMatrix - minDist) / (maxDist - minDist)
 
+    print(normalizedDistanceMatrix)
+
     # MDS Graph
     mds = MDS(n_components=2, random_state=0, dissimilarity='precomputed')
     pos = mds.fit(normalizedDistanceMatrix).embedding_
 
+    # Find k using elbow method with SSE (sum of squared errors)
+    sse = []
+    for k in range(1,11):   # test k values of 1 to 10
+        kmeans = KMeans(n_clusters=k, random_state=0, n_init='auto')
+        kmeans.fit(pos)
+        sse.append(kmeans.inertia_) # closest cluster center in the sum of squared differences
+
+    # View elbow plot
+    plt.plot(range(1,11), sse, marker='o')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Sum of Squared Distances (SSE)')
+    plt.show()
+
+
     # Find the most optimal k by obtaining the max silhouette score for each possible k
-    kClusters = range(2, 11) # must be at least 2 clusters
+    kClusters = range(4, 11) # must be at least 2 clusters
     silhouetteScores = []
 
     for k in kClusters:
-        kScore = find_silhouette_score(k, normalizedDistanceMatrix)
-        silhouetteScores.append(kScore)
+        kmeans = KMeans(n_clusters=k)
+        kmeans.fit(normalizedDistanceMatrix)
+        cluster_silhouette = silhouette_score(normalizedDistanceMatrix, kmeans.labels_)
+        silhouetteScores.append(cluster_silhouette)
     # plt.plot(kClusters, silhouetteScores, marker='o')
     # plt.xlabel('Number of Clusters (k)')
     # plt.ylabel('Silhouette Score')
@@ -160,7 +135,7 @@ if __name__ == "__main__":
     labels = kmeans.labels_
     plt.scatter(pos[:, 0], pos[:, 1], c=labels, cmap='viridis')
     plt.title('MDS with K-Means Clustering')
-    # plt.show()
+    #plt.show()
 
     # Get district plan points in each cluster
     pointsInCluster = {}
@@ -169,8 +144,8 @@ if __name__ == "__main__":
         if not cluster_num in pointsInCluster:
             pointsInCluster[cluster_num] = []
         pointsInCluster[cluster_num].append({
-            "district_plan_id": planIDMappings[i],
-            "district_plan": str(i),
+            "district_plan_id": planIDMappings[i][0],
+            "district_plan": str(planIDMappings[i][1]),
             "x":round(point[0],3),
             "y": round(point[1],3)
         })
@@ -196,7 +171,7 @@ if __name__ == "__main__":
     ensemble_data = {
         "type": "EnsembleData",
         "ensemble_id": ensemble_UID,
-        "num_district_plans": len(unsortedDistrictPlans),
+        "num_district_plans": len(districtPlans),
         "data": {
             "distance_measure": "Hamming Distance",
             "num_clusters": 0,
@@ -246,7 +221,7 @@ if __name__ == "__main__":
             planNum = int(planNum)
             current_cluster["num_dist_plans"] += 1
             cluster_of_plans.append(planNum)
-            dist_plan_ids.append(planIDMappings[planNum])
+            dist_plan_ids.append(planIDMappings[planNum][0])
 
         # dist_plans = [str(i) for i in cluster_of_plans]
         current_cluster['district_plans'] = dist_plan_ids
