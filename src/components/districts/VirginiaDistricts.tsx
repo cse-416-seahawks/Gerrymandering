@@ -27,9 +27,10 @@ export default function VirginiaDistricts(props: { opacity: number }) {
   return (
     <>
       {virginiaHouse &&
-        virginiaHouse.features.map((district: any) => {
+        virginiaHouse.features.map((district: any,index : number) => {
           return (
             <Polygon
+              key={index}
               pathOptions={{
                 fillColor: "#00388c",
                 fillOpacity: props.opacity,

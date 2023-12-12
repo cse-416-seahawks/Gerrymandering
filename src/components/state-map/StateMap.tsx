@@ -18,6 +18,8 @@ import VirginiaDistricts from "../districts/VirginiaDistricts";
 import {
   GlobalContext,
   AvailableStates,
+  GlobalTypes,
+  InfoCardType,
 } from "../../globalContext";
 import MainInfoCard from "../infocards/MainInfoCard";
 import { DistrictState } from "../interfaces/MapInterface";
@@ -45,23 +47,14 @@ export default function StateMap({currentState} : StateMapProps) {
     return null;
   };
 
-  const handleStateChangeCoordinates = (event: SelectChangeEvent) => {
-    // const newState = event.target.value;
-    // let newCurrentState: AvailableStates;
-    // if (newState === AvailableStates.Nevada)
-    //   newCurrentState = AvailableStates.Nevada;
-    // else if (newState === AvailableStates.Texas)
-    //   newCurrentState = AvailableStates.Texas;
-    // else newCurrentState = AvailableStates.Virginia;
+  const handleStateChange = (event: SelectChangeEvent) => {
+    dispatch({
+      type : GlobalTypes.ChangeCard,
+      payload : {
+        infoCardType : InfoCardType.ensembleInfo
+      }
+    })
     navigate(`/cluster-analysis/state/${event.target.value}`);
-    // dispatch(
-    //   {
-    //     type: "CHANGE_STATE",
-    //     payload: {
-    //       currentState: newCurrentState,
-    //     },
-    //   },
-    // );
   };
 
   useEffect(() => {
@@ -112,7 +105,7 @@ export default function StateMap({currentState} : StateMapProps) {
             labelId="demo-simple-select-filled-label"
             id="demo-simple-select-filled"
             value={currentState}
-            onChange={handleStateChangeCoordinates}
+            onChange={handleStateChange}
             style={{ fontWeight: "bold", fontSize: "18px" }}
           >
             <MenuItem value={"NEVADA"}>Nevada</MenuItem>

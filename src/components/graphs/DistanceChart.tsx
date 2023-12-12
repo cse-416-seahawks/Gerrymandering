@@ -24,6 +24,7 @@ export default function DistanceChart() {
     chart: {
       type: "boxPlot",
       height: 800,
+      width : 600,
       toolbar: {
         show: false,
       },

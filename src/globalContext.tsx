@@ -65,11 +65,8 @@ export enum AvailableStates {
 
 export enum GlobalTypes {
   ChangeCard = "CHANGE_INFO_CARD",
-  ChangeState = "CHANGE_STATE",
   DistanceMeasure = "DISTANCE_MEASURE",
   SetDistanceMeasuresData = "SET_DISTANCE_MEASURES_DATA",
-  StepChange = "STEP_CHANGE",
-  PageChange = "PAGE_CHANGE",
   SetEnsemble = "SET_ENSEMBLE",
   SetCluster = "SET_CLUSTER",
   AddEnsembleDetail = "ADD_ENS_DETAIL",
@@ -87,12 +84,8 @@ export type GlobalState = {
   currentInfoCard: InfoCardType;
   distanceMeasure: string;
   compareDistanceMeasuresData: Array<DistanceMeasureType>;
-  currentState: AvailableStates;
-  step: number;
   ensemble: number;
-  ensembleId: string;
   cluster: number;
-  clusterId: string;
   clusterPlanIds: Array<string>;
   districtPlanIds: Array<string>;
   ensembleDetails: Array<EnsembleData>;
@@ -107,28 +100,17 @@ type GlobalStatePayload = {
   [GlobalTypes.ChangeCard]: {
     infoCardType: InfoCardType;
   };
-  [GlobalTypes.ChangeState]: {
-    currentState: AvailableStates;
-  };
   [GlobalTypes.DistanceMeasure]: {
     distanceMeasure: string;
   };
   [GlobalTypes.SetDistanceMeasuresData]: {
     compareDistanceMeasuresData: Array<DistanceMeasureType>;
   };
-  [GlobalTypes.StepChange]: {
-    step: number;
-  };
-  [GlobalTypes.PageChange]: {
-    clusterAnalysis: boolean;
-  };
   [GlobalTypes.SetEnsemble]: {
     ensemble: number;
-    ensembleId: string;
   };
   [GlobalTypes.SetCluster]: {
     cluster: number;
-    clusterId: string;
     clusterPlanIds: Array<string>;
   };
   [GlobalTypes.AddEnsembleDetail]: {
@@ -170,12 +152,12 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
+              
+             
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
+              
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
+              
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -192,56 +174,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.StepChange:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              step: action.payload.step,
-              currentState: state[state.length - 1].currentState,
-              ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
-              cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.ChangeState:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: action.payload.currentState,
-              ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
-              cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -258,12 +192,8 @@ const mainReducer = (
               distanceMeasure: action.payload.distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -280,12 +210,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 action.payload.compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -302,12 +228,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: action.payload.ensemble,
-              ensembleId: action.payload.ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -324,12 +246,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: action.payload.cluster,
-              clusterId: action.payload.clusterId,
               clusterPlanIds: action.payload.clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -352,12 +270,12 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
+              
+             
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
+              
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
+              
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: newDetails,
@@ -374,12 +292,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: action.payload.EnsembleData,
@@ -396,12 +310,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -420,12 +330,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: newPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -444,12 +350,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              step: state[state.length - 1].step,
-              currentState: state[state.length - 1].currentState,
               ensemble: state[state.length - 1].ensemble,
-              ensembleId: state[state.length - 1].ensembleId,
               cluster: state[state.length - 1].cluster,
-              clusterId: state[state.length - 1].clusterId,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: newPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -485,12 +387,8 @@ const intialState: GlobalState[] = [
     currentInfoCard: InfoCardType.ensembleInfo,
     distanceMeasure: "Hamming Distance",
     compareDistanceMeasuresData: [],
-    step: 0,
-    currentState: AvailableStates.Unselected,
     ensemble: 0,
-    ensembleId: "",
     cluster: 0,
-    clusterId: "",
     clusterPlanIds: [],
     districtPlanIds: [],
     ensembleDetails: [],

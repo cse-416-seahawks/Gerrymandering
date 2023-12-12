@@ -11,8 +11,9 @@ import {
   CardContent,
 } from "@mui/material";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
-import { GlobalContext } from "../../globalContext";
+import { AvailableStates, GlobalContext } from "../../globalContext";
 import { fetchClusterDetails } from "../apiClient";
+import { useParams } from "react-router-dom";
 
 export default function DistrictPlansCard() {
   const [displayedDistrictPlans, setDisplayedDistrictPlans] = useState<
@@ -31,6 +32,8 @@ export default function DistrictPlansCard() {
   const [allDistrictPlans, setAll] = useState<Array<DistrictPlanData>>([]);
 
   const { state, dispatch } = useContext(GlobalContext);
+  const { stateName, clusterId } = useParams<{stateName : AvailableStates, clusterId : string }>();
+  const currentState = stateName || AvailableStates.Unselected;
 
   function removeSelectedDistrictPlan(districtPlanNum: number) {
     const selected = displayedDistrictPlans.map((item) => {
@@ -43,12 +46,11 @@ export default function DistrictPlansCard() {
   }
 
   useEffect(() => {
-    const currState = state[state.length - 1].currentState;
-    const currClusterId = state[state.length - 1].clusterId;
 
     async function getClusterDetail() {
       try {
-        const response = await fetchClusterDetails(currState, currClusterId);
+        let currentClusterId = clusterId || "000000";
+        const response = await fetchClusterDetails(currentState, currentClusterId);
         setAll(response.data);
       } catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { GlobalContext, AvailableStates } from "../../globalContext";
+import { GlobalContext, AvailableStates, GlobalTypes } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../state-map/StateMap";
 import Navbar from "./Navbar";
@@ -18,7 +18,7 @@ function Home() {
       const response = await fetchMapData();
       if (response) {
         dispatch({
-          type: "SET_MAP_DATA",
+          type: GlobalTypes.SetMapData,
           payload: {
             mapData: response.stateMapData,
             districtPlanTypes: response.stateDistrictPlanType,

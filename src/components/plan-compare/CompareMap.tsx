@@ -12,6 +12,7 @@ import TexasDistricts from "../districts/TexasDistricts";
 import { DistrictState } from "../interfaces/MapInterface";
 import DistrictPlan from "../districts/DistrictPlan";
 import { fetchDistrictPlan } from "../apiClient";
+import { useParams } from "react-router-dom";
 
 export default function Map(props: {
   centerCoordinates: Array<number>;
@@ -23,12 +24,15 @@ export default function Map(props: {
   );
   const [zoom, setZoom] = useState(props.zoom);
   const { state, dispatch } = useContext(GlobalContext);
-  const [curPlan, setCurplan] = useState<AvailableStates>(
-    state[state.length - 1].currentState
-  );
+  const [opacity1, setOpacity1] = useState(1);
+  const [opacity2, setOpacity2] = useState(0);
+
+  const { stateName, planId } = useParams<{stateName : AvailableStates, planId : string }>();
+
+  const currentState = stateName || AvailableStates.Unselected;
 
   const CurrentDistrictPlan = (props: { opacity: number }) => {
-    switch (curPlan) {
+    switch (currentState) {
       case AvailableStates.Nevada:
         return <NevadaDistricts opacity={props.opacity} />;
       case AvailableStates.Virginia:
@@ -41,8 +45,20 @@ export default function Map(props: {
   };
 
   useEffect(() => {
-    setCurplan(state[state.length - 1].currentState);
-  }, [state]);
+  let opacity1: number;
+  let opacity2: number;
+
+  if (props.sliderValue < 0.5) {
+    opacity1 = 1;
+    opacity2 = 2 * props.sliderValue;
+  } else {
+    opacity1 = 2 * (1 - props.sliderValue);
+    opacity2 = 1;
+  }
+  setOpacity1(opacity1);
+  setOpacity2(opacity2);
+  },[props.sliderValue])
+
 
   const SetMapView = () => {
     const map = useMap();
@@ -66,8 +82,8 @@ export default function Map(props: {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <DistrictPlan opacity={1 - props.sliderValue} planId={"000000"} />
-        <DistrictPlan opacity={props.sliderValue} planId={"123456"} />
+        <DistrictPlan opacity={opacity1} strokeColor={"#000080"} color={"#00388c"} planId={"000000"} />
+        <DistrictPlan opacity={opacity2} strokeColor={"#FFFF00"} color={"#00388c"} planId={planId || "-1"} />
         <SetMapView />
       </MapContainer>
     </div>

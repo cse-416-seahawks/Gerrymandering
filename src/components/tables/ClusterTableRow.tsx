@@ -15,6 +15,7 @@ import { Button, TextField, Tooltip } from "@mui/material";
 import {
   AvailableStates,
   GlobalContext,
+  GlobalTypes,
   InfoCardType,
 } from "../../globalContext";
 import { ClusterData } from "../interfaces/AnalysisInterface";
@@ -49,27 +50,34 @@ export default function ClusterTableRow({
     clusterId: string
   ) {
     if (event.key == "Enter") {
-      const currState = state[state.length - 1].currentState;
       const distanceMeasure = state[state.length - 1].distanceMeasure;
       const response = await updateClusterName(
-        currState,
+        currentState,
         ensembleId,
         distanceMeasure,
         clusterId,
         clusterName
       );
-      console.log("POST", response);
     }
   }
 
-  const handleSelectCluster = (clusterId : string) => {
-    dispatch(
+  const handleSelectCluster = (clusterId : string, clusterNum : number, planIds : string[]) => {
+    dispatch([
       {
-        type: "CHANGE_INFO_CARD",
+        type: GlobalTypes.ChangeCard,
         payload: {
           infoCardType: InfoCardType.districtPlans,
         },
       },
+      {
+        type: GlobalTypes.SetCluster,
+        payload: {
+          cluster : clusterNum,
+          clusterPlanIds : planIds
+        },
+      },
+
+    ]
     );
     const currentPathname = window.location.pathname;
     navigate(`${currentPathname}/cluster/${clusterId}`);
@@ -114,7 +122,7 @@ export default function ClusterTableRow({
             variant="text"
             size="medium"
             onClick={() => {
-              handleSelectCluster(data.cluster_id);
+              handleSelectCluster(data.cluster_id, data.cluster_number, data.district_plans);
             }}
           >
             {data.cluster_number}

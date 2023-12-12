@@ -14,7 +14,10 @@ export default React.memo((props: { opacity: number }) => {
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistrictPlan(AvailableStates.Nevada, "000000");
+        const result = await fetchDistrictPlan(
+          AvailableStates.Nevada,
+          "000000"
+        );
         setNevadaDistrict(result);
       } catch (error) {
         throw error;
@@ -27,9 +30,10 @@ export default React.memo((props: { opacity: number }) => {
   return (
     <>
       {nevadaDistrict &&
-        nevadaDistrict.features.map((district: any) => {
+        nevadaDistrict.features.map((district: any, index: number) => {
           return (
             <Polygon
+              key={index}
               pathOptions={{
                 fillColor: "#00388c",
                 fillOpacity: props.opacity,

@@ -15,10 +15,12 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import {
+  AvailableStates,
   Demographics,
   GlobalContext,
 } from "../../globalContext";
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -34,25 +36,25 @@ const MenuProps = {
 const x_axis = Object.values(Demographics);
 
 export default function ScatterPlotOptions() {
+  const { stateName } = useParams<{stateName : AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
   const { state, dispatch } = useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
+  const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
   const [demographic, setDem] = React.useState(x_axis[0].toString());
   const [alignment, setAlignment] = React.useState('greater');
+
+  
 
   const handleDemographicChange = (event: SelectChangeEvent) => {
     setDem(event.target.value);
   };
 
-  useEffect(() => {
-    let currentState = state[state.length - 1].currentState;
-    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, [state[state.length - 1].currentState]);
+
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
-    console.log('changing')
     setAlignment(newAlignment);
   };
 

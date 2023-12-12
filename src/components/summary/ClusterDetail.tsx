@@ -10,11 +10,9 @@ import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
 import { fetchClusterDetailGraph, fetchClusterDetails } from "../apiClient";
 import {
-  DistrictPlanGraphData,
   DistrictPlanPoints,
   DistrictPlanData,
 } from "../interfaces/AnalysisInterface";
-import { DistrictSelectionProps } from "../types/TableTypes";
 
 interface ClusterDetailProps{
   currentState : AvailableStates,

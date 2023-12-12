@@ -18,19 +18,18 @@ import { useContext } from "react";
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import MapIcon from '@mui/icons-material/Map';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import { useParams } from "react-router-dom";
 
 export default function ClusterInfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
+  const { stateName } = useParams<{stateName : AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
+  const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
 
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
 
-  useEffect(() => {
-    let currentState = state[state.length - 1].currentState;
-    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, [state[state.length - 1].currentState]);
       
   return (
     <CardContent>

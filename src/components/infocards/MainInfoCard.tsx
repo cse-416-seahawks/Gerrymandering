@@ -22,7 +22,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <EnsembleInfoCard />
@@ -33,7 +33,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <ClusterAssociationInfoCard />
@@ -44,7 +44,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <ScatterPlotOptions />
@@ -55,7 +55,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <DistanceMeasureCard />
@@ -66,7 +66,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <EnsembleSummary />
@@ -77,7 +77,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <DistrictPlansCard/>
@@ -88,7 +88,7 @@ export default function InfoCard() {
           <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <ClusterSummaryCard />
@@ -99,7 +99,7 @@ export default function InfoCard() {
         <Card
           sx={{
             minWidth: 275,
-            minHeight: "35vh",
+            height: "35vh",
           }}
         >
           <EnsembleInfoCard />

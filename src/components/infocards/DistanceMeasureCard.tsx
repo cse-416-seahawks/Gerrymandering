@@ -5,15 +5,14 @@ import Typography from "@mui/material/Typography";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
 import DistanceTable from "../tables/DistanceTable";
+import { useParams } from "react-router-dom";
 
 export default function DistanceMeasureCard() {
   const { state, dispatch } = useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
+  const { stateName } = useParams<{stateName : AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
+  const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
 
-  useEffect(() => {
-    let currentState = state[state.length - 1].currentState;
-    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, [state[state.length - 1].currentState]);
   
   return (
     <CardContent>

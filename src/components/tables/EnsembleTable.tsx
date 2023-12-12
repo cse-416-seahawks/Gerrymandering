@@ -18,8 +18,14 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import { EnsembleData, GlobalContext, InfoCardType } from "../../globalContext";
-import { useNavigate } from "react-router-dom";
+import {
+  AvailableStates,
+  EnsembleData,
+  GlobalContext,
+  GlobalTypes,
+  InfoCardType,
+} from "../../globalContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface EnsemblesListProps {
   ensembleData: Array<EnsembleData>;
@@ -31,9 +37,12 @@ export default function EnsemblesTable({
   showToggle,
 }: EnsemblesListProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const navigate = useNavigate();
   const [disMeasure, setDismeasure] = useState("Hamming Distance");
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
+  const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
+
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -41,20 +50,24 @@ export default function EnsemblesTable({
     setPage(value);
   };
 
-
-  const handleClick = (ensembleId : string) => {
-    dispatch(
+  const handleClick = (ensembleId: string, ensembleNum : number) => {
+    dispatch([
       {
-        type: "CHANGE_INFO_CARD",
+        type: GlobalTypes.ChangeCard,
         payload: {
           infoCardType: InfoCardType.ensembleSummary,
         },
       },
-    );
+      {
+        type: GlobalTypes.SetEnsemble,
+        payload: {
+          ensemble : ensembleNum
+        },
+      },
+    ]);
     const currentPathname = window.location.pathname;
-    navigate(`${currentPathname}/ensemble/${ensembleId}`)
-
-  }
+    navigate(`${currentPathname}/ensemble/${ensembleId}`);
+  };
 
   const handleSeeDetails = (Ensemble: EnsembleData) => {
     dispatch({
@@ -114,20 +127,7 @@ export default function EnsemblesTable({
               variant="text"
               sx={{ pointerEvents: "auto" }}
               onClick={() => {
-                handleClick(row.ensemble_id)
-                // handleStep(
-                //   1,
-                //   row.ensemble,
-                //   ensembleData[row.ensemble - 1].ensemble_id
-                // );
-                if (!showToggle) {
-                  dispatch({
-                    type: "CHANGE_INFO_CARD",
-                    payload: {
-                      infoCardType: InfoCardType.distanceMeasure,
-                    },
-                  });
-                }
+                handleClick(row.ensemble_id, row.ensemble);
               }}
             >
               Ensemble {row.ensemble}
@@ -147,28 +147,16 @@ export default function EnsemblesTable({
                 sx={{ pointerEvents: "auto" }}
                 label="Compare distance measures"
                 onClick={() => {
-                  dispatch([
-                    {
-                      type: "DISTANCE_MEASURE",
-                      payload: {
-                        distanceMeasure: disMeasure,
-                      },
-                    },
-                    {
-                      type: "CHANGE_INFO_CARD",
-                      payload: {
-                        infoCardType: InfoCardType.distanceMeasure,
-                      },
-                    },
-                  ]);
-                  // handleStep(
-                  //   1,
-                  //   row.ensemble,
-                  //   ensembleData[row.ensemble - 1].ensemble_id
-                  // );
-
-                  // TODO: ADD PARAMS TO DISTANCES
-                  navigate("/distances");
+                  dispatch({
+                    type: GlobalTypes.ChangeCard,
+                    payload: {
+                      infoCardType : InfoCardType.distanceMeasure,
+                    }
+                  });
+                  navigate(
+                    `/distances/state/${currentState}/ensemble/${row.ensemble_id}`
+                  );
+                  
                 }}
               />
             </Stack>

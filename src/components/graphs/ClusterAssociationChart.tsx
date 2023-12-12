@@ -12,7 +12,8 @@ import {
   Label,
 } from "recharts";
 import { fetchAssociationData } from "../apiClient";
-import { GlobalContext } from "../../globalContext";
+import { AvailableStates, GlobalContext } from "../../globalContext";
+import { useParams } from "react-router-dom";
 
 interface AssociationData {
   numDistrictPlans: number;
@@ -27,11 +28,13 @@ export default function ClusterAssociationGraph() {
   const { state, dispatch } = useContext(GlobalContext);
   const [ axisLabels, setAxisLabels ] = useState<Array<number>>([]);
   const [ graphData, setGraphData ] = useState<Array<AssociationData>>([]);
+  const { stateName } = useParams<{stateName : AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
 
   useEffect(() => {
     async function getAssociationData() {
       try {
-        const response = await fetchAssociationData(state[state.length - 1].currentState);
+        const response = await fetchAssociationData(currentState);
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setGraphData(response.data);

@@ -55,6 +55,8 @@ const Ensembles: React.FC<EnsembleProps> = ({ currState, showToggle }) => {
     fetchStateEnsemble();
   }, []);
 
+  
+
   const handleEnsembleInfoCard = () => {
     dispatch({
       type: "CHANGE_INFO_CARD",

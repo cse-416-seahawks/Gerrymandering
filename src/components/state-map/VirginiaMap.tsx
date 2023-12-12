@@ -19,12 +19,6 @@ export default function VirginiaMap() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    dispatch({
-      type : GlobalTypes.ChangeState,
-      payload : {
-        currentState : AvailableStates.Virginia
-      }
-    })
     navigate("/cluster-analysis/state/VIRGINIA");
   }
 

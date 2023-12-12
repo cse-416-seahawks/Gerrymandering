@@ -18,20 +18,21 @@ import {
 import { ensemble_summary_table } from "../types/TableTypes";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface PlanSelectionProps {
   districtPlanData : Array<DistrictPlanData>;
 }
 export default function PlanSelection({ districtPlanData } : PlanSelectionProps) {
-
   const { state, dispatch } = React.useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
+  const { stateName } = useParams<{stateName : AvailableStates }>();
+
+  const currentState = stateName || AvailableStates.Unselected;
 
   useEffect(() => {
-    let currentState = state[state.length - 1].currentState;
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, [state[state.length - 1].currentState]);
+  }, []);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);

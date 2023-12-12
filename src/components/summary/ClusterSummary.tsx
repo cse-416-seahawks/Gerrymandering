@@ -27,6 +27,7 @@ export default function ClusterSummary({currentState, onClusterSelection, ensemb
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
   const { state, dispatch } = useContext(GlobalContext);
+  
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
@@ -37,12 +38,10 @@ export default function ClusterSummary({currentState, onClusterSelection, ensemb
   }
 
   useEffect(() => {
-    const currState = state[state.length-1].currentState;
     const distanceMeasure = state[state.length-1].distanceMeasure;
-
     async function getClusterData() {
       try {
-        const response = await fetchClusterSummaryData(currState, ensembleId, distanceMeasure);
+        const response = await fetchClusterSummaryData(currentState, ensembleId, distanceMeasure);
         if (response) setClusterData(response.data);
       } catch(error) {
         throw error;

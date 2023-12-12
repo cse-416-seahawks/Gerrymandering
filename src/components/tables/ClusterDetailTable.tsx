@@ -12,7 +12,8 @@ import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import NavigationIcon from "@mui/icons-material/Navigation";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { AvailableStates } from "../../globalContext";
 
 interface ClusterDetailTableProps {
   districtPlanData: Array<DistrictPlanData>;
@@ -23,6 +24,8 @@ export default function ClusterDetailTable({
 }: ClusterDetailTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
+  const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
   const navigate = useNavigate();
 
   const buttonStyle = {
@@ -57,8 +60,7 @@ export default function ClusterDetailTable({
   }
 
   const handleCompare = (planId : string) => {
-
-    navigate('/plan-comparison')
+    navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`)
   }
 
   return (

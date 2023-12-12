@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
+  AvailableStates,
   GlobalContext,
 } from "../../globalContext";
 import "../../App.css";
@@ -19,11 +20,14 @@ import {
 import EnactedPlanDetails from "../plan-compare/EnactedPlanDetails";
 import PlanDetails from "../plan-compare/PlanDetails";
 import PlanSelection from "../plan-compare/PlanSelection";
+import { useParams } from "react-router-dom";
 
 export default function PlanComparison() {
   const { state, dispatch } = useContext(GlobalContext);
+  const { stateName, planId } = useParams<{stateName : AvailableStates, planId : string }>();
+  const currentState = stateName || AvailableStates.Unselected;
   const currentStateMapData =
-    state[state.length - 1].mapData[state[state.length - 1].currentState];
+    state[state.length - 1].mapData[currentState];
   const [value, setValue] = React.useState(0);
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {

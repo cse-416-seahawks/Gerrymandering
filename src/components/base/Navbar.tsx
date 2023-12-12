@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../css/Navbar.css";
 import {
   AvailableStates,
@@ -20,23 +20,15 @@ interface NavbarProps {
 export default function Navbar({ aboutPage }: NavbarProps) {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(GlobalContext);
-  const [isStateUnselected, setStateUnselected] = useState(
-    state[state.length - 1].currentState === AvailableStates.Unselected
-  );
   const [header, setHeader] = useState("Select a state from the map");
+  const { stateName } = useParams();
+  const currentPathname = window.location.pathname;
 
   useEffect(() => {
     if (aboutPage) setHeader("About GerryCast");
   }, []);
 
   const handleGoHome = () => {
-    setStateUnselected(true);
-    dispatch({
-      type: "CHANGE_STATE",
-      payload: {
-        currentState: AvailableStates.Unselected,
-      },
-    });
     navigate("/");
   };
 
@@ -66,7 +58,7 @@ export default function Navbar({ aboutPage }: NavbarProps) {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          {isStateUnselected || aboutPage ? (
+          {!stateName || aboutPage ? (
             <Typography>{header}</Typography>
           ) : (
             <>
@@ -81,19 +73,19 @@ export default function Navbar({ aboutPage }: NavbarProps) {
                     Cluster Analysis
                   </Link>
                 )}
-                {state[state.length - 1].step > 0 &&
+                {currentPathname.includes("/distance/") &&
                   state[state.length - 1].currentInfoCard !==
                     InfoCardType.distanceMeasure && (
                     <Link underline="none" color="white">
                       {state[state.length - 1].distanceMeasure}
                     </Link>
                   )}
-                {state[state.length - 1].step > 0 && (
+                {currentPathname.includes("/ensemble/") && (
                   <Link underline="none" color="white">
                     Ensemble {state[state.length - 1].ensemble}
                   </Link>
                 )}
-                {state[state.length - 1].step > 1 && (
+                {currentPathname.includes("/cluster/") && (
                   <Link underline="none" color="white">
                     Cluster {state[state.length - 1].cluster}
                   </Link>

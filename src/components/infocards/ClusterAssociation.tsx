@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { ensemble_summary_table } from "../types/TableTypes";
 import { GlobalContext, AvailableStates } from "../../globalContext";
+import { useParams } from "react-router-dom";
 
 export default function ClusterAssociationInfoCard() {
   const Data3: ensemble_summary_table[] = [
@@ -26,13 +27,12 @@ export default function ClusterAssociationInfoCard() {
   ];
 
   const { state, dispatch } = React.useContext(GlobalContext);
-  const [curDetails, setDetails] = React.useState("");
+  const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const currentState = stateName || AvailableStates.Unselected;
+  const [curDetails, setDetails] = React.useState(
+    state[state.length - 1].districtPlanTypes[currentState]
+  );
 
-  useEffect(() => {
-    let currentState = state[state.length - 1].currentState;
-    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, [state[state.length - 1].currentState]);
-  
   return (
     <CardContent>
       <Typography
@@ -43,7 +43,13 @@ export default function ClusterAssociationInfoCard() {
       >
         Current District Plan
       </Typography>
-      <Box sx={{ display: "flex", marginBottom : "2rem", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          marginBottom: "2rem",
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h5" component="div">
           {curDetails}
         </Typography>

@@ -5,26 +5,30 @@ import type { LatLngTuple } from "leaflet";
 import { Polygon } from "react-leaflet";
 import { DistrictState } from "../interfaces/MapInterface";
 import { fetchDistrictPlan } from "../apiClient";
-import { GlobalContext } from "../../globalContext";
+import { AvailableStates, GlobalContext } from "../../globalContext";
+import { useParams } from "react-router-dom";
 
 interface DistrictPlanProps {
   planId: string;
-  opacity : number;
+  opacity: number;
+  color : string;
+  strokeColor : string;
 }
-export default ({ planId, opacity }: DistrictPlanProps) => {
+export default ({ planId, opacity, color, strokeColor }: DistrictPlanProps) => {
   const [plan, setPlan] = useState<DistrictState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
-  const [districtColor, setColor] = useState(getRandomHexColor());
   const [isCurPlan, setIsCurPlan] = useState(planId === "000000");
+  const { stateName } = useParams<{stateName : AvailableStates}>();
+
+  const currentState = stateName || AvailableStates.Unselected;
+  
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        console.log('fetching ',state[state.length - 1].currentState, ' Plan #', planId)
         const result = await fetchDistrictPlan(
-          state[state.length - 1].currentState,
+          currentState,
           planId
         );
-        console.log('fetched', planId)
         if (result) {
           setPlan(result);
         }
@@ -35,43 +39,19 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
     fetchDistrictPlanAsync();
   }, []);
 
-  function getRandomHexColor(): string {
-    // Brightness threshold (adjust as needed)
-    const brightnessThreshold = 150;
-
-    // Generate random RGB values
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-
-    // Calculate brightness using the formula: 0.299*R + 0.587*G + 0.114*B
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-
-    // Check if the brightness is above the threshold
-    if (brightness > brightnessThreshold) {
-      // If too bright, generate a new color recursively
-      return getRandomHexColor();
-    }
-
-    // Convert RGB to hex
-    const hexColor = `#${((1 << 24) | (r << 16) | (g << 8) | b)
-      .toString(16)
-      .slice(1)}`;
-
-    return hexColor;
-  }
   return (
     <>
       {plan &&
-        plan.features.map((district: any) => {
+        plan.features.map((district: any, index: number) => {
           return (
             <Polygon
+              key={index}
               pathOptions={{
-                fillColor: isCurPlan ? "#00388c" : districtColor,
-                fillOpacity: 0.3,
+                fillColor: color,
+                fillOpacity: 0,
                 weight: 2,
                 opacity: opacity,
-                color: isCurPlan ? "#000080" : "#FFFF00",
+                color: strokeColor,
               }}
               positions={
                 district.geometry.type === "MultiPolygon"
