@@ -63,7 +63,8 @@ function DistanceMeasures() {
         <div className="StateMap-content">
           <header className="StateMap-header">
             <div className="State-map">
-              <StateMap/>
+              {/* TODO : ADD DYNAMIC ROUTE FOR DISTANCE MEASURES */}
+              {/* <StateMap/> */}
             </div>
             <div className="distance-table-container">
               <div className="navigation-container">

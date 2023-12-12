@@ -20,13 +20,11 @@ function App() {
       },
     },
   });
-  
+
   return (
     <GlobalProvider>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="about" element={<About />} />
-          <Route path="/cluster-analysis" element={<Home />} />
           <Route
             path="/"
             element={
@@ -36,8 +34,18 @@ function App() {
               />
             }
           />
+          <Route path="/about" element={<About />} />
+          <Route path="/cluster-analysis/state/:stateName/" element={<Home />} />
+          <Route
+            path="/cluster-analysis/state/:stateName/ensemble/:ensembleId/"
+            element={<Home />}
+          />
+          <Route
+            path="/cluster-analysis/state/:stateName/ensemble/:ensembleId/cluster/:clusterId"
+            element={<Home />}
+          />
           <Route path="/distances" element={<DistanceMeasures />} />
-          <Route path="/plan-comparison" element={<PlanComparison/>}/>
+          <Route path="/plan-comparison" element={<PlanComparison />} />
         </Routes>
       </ThemeProvider>
     </GlobalProvider>

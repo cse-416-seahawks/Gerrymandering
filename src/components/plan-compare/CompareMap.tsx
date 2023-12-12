@@ -16,7 +16,7 @@ import { fetchDistrictPlan } from "../apiClient";
 export default function Map(props: {
   centerCoordinates: Array<number>;
   zoom: number;
-  sliderValue : number;
+  sliderValue: number;
 }) {
   const [centerCoordinates, setCenterCoordinates] = useState(
     props.centerCoordinates
@@ -27,14 +27,14 @@ export default function Map(props: {
     state[state.length - 1].currentState
   );
 
-  const CurrentDistrictPlan = (props : {opacity : number}) => {
+  const CurrentDistrictPlan = (props: { opacity: number }) => {
     switch (curPlan) {
       case AvailableStates.Nevada:
-        return <NevadaDistricts opacity={props.opacity}/>;
+        return <NevadaDistricts opacity={props.opacity} />;
       case AvailableStates.Virginia:
         return <VirginiaDistricts opacity={props.opacity} />;
       case AvailableStates.Texas:
-        return <TexasDistricts opacity={props.opacity}/>;
+        return <TexasDistricts opacity={props.opacity} />;
       default:
         return <div></div>;
     }
@@ -62,6 +62,10 @@ export default function Map(props: {
         className="State-map"
         style={{ width: "100%", height: "45vh" }}
       >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
         <DistrictPlan opacity={1 - props.sliderValue} planId={"000000"} />
         <DistrictPlan opacity={props.sliderValue} planId={"123456"} />
         <SetMapView />

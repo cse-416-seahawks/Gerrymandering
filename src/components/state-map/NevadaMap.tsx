@@ -20,7 +20,7 @@ export default function NevadaMap() {
         currentState : AvailableStates.Nevada
       }
     });
-    navigate("/cluster-analysis");
+    navigate("/cluster-analysis/state/NEVADA");
   }
 
   useEffect(() => {

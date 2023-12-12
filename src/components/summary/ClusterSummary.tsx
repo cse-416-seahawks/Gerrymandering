@@ -4,22 +4,26 @@ import { Tabs, Tab } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
-import { GlobalContext, InfoCardType } from "../../globalContext";
+import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
 import { fetchClusterSummaryData, fetchClusterSummaryGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
 import ClusterScatterPlot from "../graphs/ClusterScatterChart";
 import MDSChart from "../graphs/MDSChart";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
+import { useLocation } from "react-router-dom";
 
 
 interface ClusterSummaryProps {
+  currentState : AvailableStates,
+  ensembleId : string,
   onClusterSelection: (
     cluster: ClusterData,
   ) => void;
 }
 
-export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps) {
+export default function ClusterSummary({currentState, onClusterSelection, ensembleId}: ClusterSummaryProps) {
+  const location = useLocation();
   const [currentTab, setCurrentTab] = useState("1");
   const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
   const { state, dispatch } = useContext(GlobalContext);
@@ -34,7 +38,6 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
 
   useEffect(() => {
     const currState = state[state.length-1].currentState;
-    const ensembleId = state[state.length-1].ensembleId;
     const distanceMeasure = state[state.length-1].distanceMeasure;
 
     async function getClusterData() {
@@ -67,6 +70,8 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
     })
   }
 
+  
+
   return (
     <Box>
       <TabContext value={currentTab}>
@@ -93,13 +98,13 @@ export default function ClusterSummary({onClusterSelection}: ClusterSummaryProps
           </Tabs>
         </Box>
         <TabPanel value="1">
-          <ClusterTable clusters={clusterData} onClusterSelection={setClusterSelection}/>
+          <ClusterTable currentState={currentState} ensembleId={ensembleId} clusters={clusterData} onClusterSelection={setClusterSelection}/>
         </TabPanel>
         <TabPanel value="2">
-          <MDSChart data={clusterData} />
+          <MDSChart currentState={currentState} ensembleId={ensembleId} data={clusterData} />
         </TabPanel>
         <TabPanel value="3">
-          <ClusterScatterPlot data={clusterData}/>
+          <ClusterScatterPlot currentState={currentState} ensembleId={ensembleId} data={clusterData}/>
         </TabPanel>
       </TabContext>
     </Box>

@@ -6,25 +6,41 @@ import StepButton from "@mui/material/StepButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import { GlobalContext, InfoCardType } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  InfoCardType,
+} from "../../globalContext";
 import EnsemblesList from "../summary/EnsemblesList";
-import DistrictPlanData from "../summary/ClusterDetail";
 import ClusterSummary from "../summary/ClusterSummary";
 import { ClusterData } from "../interfaces/AnalysisInterface";
 import { Card, CardContent } from "@mui/material";
 import ClusterDetail from "../summary/ClusterDetail";
+import { useNavigate } from "react-router-dom";
 
-interface TableDataProps {
-  selectedState: string;
+interface ClusterAnalysisProps {
+  selectedState: AvailableStates;
+  ensembleId?: string;
+  clusterId?: string;
 }
 
-export default function ClusterAnalysis(props: TableDataProps) {
+export default function ClusterAnalysis({
+  selectedState,
+  ensembleId,
+  clusterId,
+}: ClusterAnalysisProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [ensemble, setEnsemble] = useState(0);
   const [cluster, setCluster] = useState(0);
-  let currentStep = state[state.length - 1].step;
-
+  const navigate = useNavigate();
   const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
+
+  let step = 0;
+  if (ensembleId && clusterId) {
+    step = 2;
+  } else if (ensembleId) {
+    step = 1;
+  }
 
   const steps = [
     "Select an Ensemble",
@@ -33,72 +49,33 @@ export default function ClusterAnalysis(props: TableDataProps) {
   ];
 
   // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble'
-  useEffect(() => {
-    handleStepChange(0, 0, "0");
-  }, [props.selectedState]);
 
   function handleStepChange(
-    step: number,
-    ensemble: number,
-    ensembleId: string
+    newStep: number,
   ) {
-    if (step === 0 && state[state.length - 1].step !== 0) {
-      dispatch([
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.ensembleInfo,
-          },
+    if (newStep === 0 && step !== 0) {
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.ensembleInfo,
         },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
+      });
+    } else if (newStep === 1) {
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.ensembleSummary,
         },
-      ]);
+      });
+    } else if (newStep === 2) {
+      dispatch({
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.districtPlans,
+        },
+      });
     }
-    if (step === 1) {
-      setEnsemble(ensemble);
-      dispatch([
-        {
-          type: "SET_ENSEMBLE",
-          payload: {
-            ensemble: ensemble,
-            ensembleId: ensembleId,
-          },
-        },
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.ensembleSummary,
-          },
-        },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    }
-
-    if (step === 2) {
-      dispatch([
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.districtPlans,
-          },
-        },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    }
+    navigate(0 - (step - newStep));
   }
 
   function handleClusterSelection(clusterData: ClusterData) {
@@ -123,7 +100,7 @@ export default function ClusterAnalysis(props: TableDataProps) {
   }
 
   function BackButton() {
-    if (currentStep > 0) {
+    if (step > 0) {
       return (
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton
@@ -131,9 +108,7 @@ export default function ClusterAnalysis(props: TableDataProps) {
             size="large"
             onClick={() =>
               handleStepChange(
-                currentStep - 1,
-                ensemble,
-                state[state.length - 1].ensembleId
+                step - 1,
               )
             }
           >
@@ -152,7 +127,7 @@ export default function ClusterAnalysis(props: TableDataProps) {
           <div className="navigation-container">
             <BackButton />
             <div className="stepper-container">
-              <Stepper activeStep={currentStep}>
+              <Stepper activeStep={step}>
                 {steps.map((label, index) => (
                   <Step key={label} completed={completed[index]}>
                     <StepButton
@@ -160,8 +135,6 @@ export default function ClusterAnalysis(props: TableDataProps) {
                       onClick={() =>
                         handleStepChange(
                           index,
-                          ensemble,
-                          state[state.length - 1].ensembleId
                         )
                       }
                     >
@@ -172,17 +145,24 @@ export default function ClusterAnalysis(props: TableDataProps) {
               </Stepper>
             </div>
           </div>
+          {!ensembleId && !clusterId && (
+            <EnsemblesList currState={selectedState} showToggle={true} />
+          )}
 
-          {/* State Ensemble Details */}
-          {currentStep == 0 && (
-            <EnsemblesList showToggle={true} handleStep={handleStepChange} />
+          {ensembleId && !clusterId && (
+            <ClusterSummary
+              currentState={selectedState}
+              ensembleId={ensembleId}
+              onClusterSelection={handleClusterSelection}
+            />
           )}
-          {/* Summary of clusters in selected ensemble */}
-          {currentStep == 1 && (
-            <ClusterSummary onClusterSelection={handleClusterSelection} />
+          {ensembleId && clusterId && (
+            <ClusterDetail
+              currentState={selectedState}
+              ensembleId={ensembleId}
+              clusterId={clusterId}
+            />
           )}
-          {/* Summary of selected cluster */}
-          {currentStep == 2 && <ClusterDetail />}
         </CardContent>
       </Card>
     </div>

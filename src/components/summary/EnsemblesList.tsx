@@ -14,10 +14,10 @@ import ClusterAssociationGraph from "../graphs/ClusterAssociationChart";
 
 interface EnsembleProps {
   showToggle: boolean;
-  handleStep: (step: number, ensemble: number, ensembleId: string) => void;
+  currState : AvailableStates
 }
 
-const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
+const Ensembles: React.FC<EnsembleProps> = ({ currState, showToggle }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const [currentTab, setCurrentTab] = useState("1");
   const [ensembleData, setEnsembleData] = useState<Array<EnsembleData>>([]);
@@ -27,7 +27,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
   }
 
   useEffect(() => {
-    const currState = state[state.length - 1].currentState;
+    // const currState = state[state.length - 1].currentState;
     const distanceMeasure = state[state.length - 1].distanceMeasure;
 
     async function fetchStateEnsemble() {
@@ -53,10 +53,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
       }
     }
     fetchStateEnsemble();
-  }, [
-    state[state.length - 1].currentState,
-    state[state.length - 1].distanceMeasure,
-  ]);
+  }, []);
 
   const handleEnsembleInfoCard = () => {
     dispatch({
@@ -98,7 +95,6 @@ const Ensembles: React.FC<EnsembleProps> = ({ showToggle, handleStep }) => {
         <TabPanel value="1">
           <EnsemblesTable
             ensembleData={ensembleData}
-            handleStep={handleStep}
             showToggle={showToggle}
           />
           <br />

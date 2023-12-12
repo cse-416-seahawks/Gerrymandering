@@ -12,24 +12,33 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, TextField, Tooltip } from "@mui/material";
-import { GlobalContext, InfoCardType } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  InfoCardType,
+} from "../../globalContext";
 import { ClusterData } from "../interfaces/AnalysisInterface";
 import { updateClusterName } from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 interface ClusterTableRowProps {
   data: ClusterData;
+  currentState: AvailableStates;
+  ensembleId: string;
   onClusterSelection: (cluster: ClusterData) => void;
 }
 
 export default function ClusterTableRow({
   data,
+  currentState,
+  ensembleId,
   onClusterSelection,
 }: ClusterTableRowProps) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [clusterName, setName] = useState(data.name);
-
   const { state, dispatch } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const handleEdit = () => {
     setEditing(true);
@@ -41,7 +50,6 @@ export default function ClusterTableRow({
   ) {
     if (event.key == "Enter") {
       const currState = state[state.length - 1].currentState;
-      const ensembleId = state[state.length - 1].ensembleId;
       const distanceMeasure = state[state.length - 1].distanceMeasure;
       const response = await updateClusterName(
         currState,
@@ -52,6 +60,19 @@ export default function ClusterTableRow({
       );
       console.log("POST", response);
     }
+  }
+
+  const handleSelectCluster = (clusterId : string) => {
+    dispatch(
+      {
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.districtPlans,
+        },
+      },
+    );
+    const currentPathname = window.location.pathname;
+    navigate(`${currentPathname}/cluster/${clusterId}`);
   }
 
   const handleBlur = () => {
@@ -69,50 +90,6 @@ export default function ClusterTableRow({
     // POST endpoint to save to database
   };
 
-  function handleStepChange(step: number, cluster: ClusterData) {
-    if (step === 2) {
-      // Display selected cluster summary of district plans
-      onClusterSelection(cluster);
-      dispatch([
-        {
-          type: "SET_CLUSTER",
-          payload: {
-            cluster: cluster.cluster_number,
-            clusterId: cluster.cluster_id,
-            clusterPlanIds: cluster.district_plans,
-          },
-        },
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.districtPlans,
-          },
-        },
-        ,
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    } else {
-      dispatch([
-        {
-          type: "STATE_MAP",
-          payload: {
-            dismap: false,
-          },
-        },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    }
-  }
 
   return (
     <React.Fragment>
@@ -136,7 +113,9 @@ export default function ClusterTableRow({
           <Button
             variant="text"
             size="medium"
-            onClick={() => handleStepChange(2, data)}
+            onClick={() => {
+              handleSelectCluster(data.cluster_id);
+            }}
           >
             {data.cluster_number}
           </Button>

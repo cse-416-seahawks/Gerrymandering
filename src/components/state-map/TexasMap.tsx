@@ -20,7 +20,7 @@ export default () => {
         currentState : AvailableStates.Texas
       }
     })
-    navigate("/cluster-analysis");
+    navigate("/cluster-analysis/state/TEXAS");
   }
 
   useEffect(() => {

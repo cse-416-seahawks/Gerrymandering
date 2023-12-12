@@ -68,10 +68,10 @@ export default ({ planId, opacity }: DistrictPlanProps) => {
             <Polygon
               pathOptions={{
                 fillColor: isCurPlan ? "#00388c" : districtColor,
-                fillOpacity: opacity,
+                fillOpacity: 0.3,
                 weight: 2,
                 opacity: opacity,
-                color: isCurPlan ? "white" : "black",
+                color: isCurPlan ? "#000080" : "#FFFF00",
               }}
               positions={
                 district.geometry.type === "MultiPolygon"

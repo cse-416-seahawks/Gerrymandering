@@ -12,28 +12,28 @@ import {
   TooltipProps,
   Label,
 } from "recharts";
-import { GlobalContext, InfoCardType } from "../../globalContext";
+import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { fetchClusterSummaryGraphData } from "../apiClient";
 
 interface ClusterScatterPlotProps {
+  currentState : AvailableStates,
+  ensembleId : string,
   data: ClusterData[];
 }
 
-export default function ClusterScatterPlot({ data }: ClusterScatterPlotProps) {
+export default function ClusterScatterPlot({ currentState, ensembleId, data }: ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
 
   useEffect(() => {
-    const currState = state[state.length - 1].currentState;
-    const ensembleId = state[state.length - 1].ensembleId;
     const distanceMeasure = state[state.length - 1].distanceMeasure;
 
     async function getClusterSummaryGraphData() {
       try {
         const response = await fetchClusterSummaryGraphData(
-          currState,
+          currentState,
           ensembleId,
           distanceMeasure
         );

@@ -23,11 +23,16 @@ import MainInfoCard from "../infocards/MainInfoCard";
 import { DistrictState } from "../interfaces/MapInterface";
 import DistrictPlan from "../districts/DistrictPlan";
 import { fetchDistrictPlan } from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
-export default function StateMap() {
+interface StateMapProps {
+  currentState : AvailableStates;
+}
+export default function StateMap({currentState} : StateMapProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const currentStateMapData =
-    state[state.length - 1].mapData[state[state.length - 1].currentState];
+    state[state.length - 1].mapData[currentState];
+  const navigate = useNavigate();
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
   const [zoom, setZoom] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,28 +46,22 @@ export default function StateMap() {
   };
 
   const handleStateChangeCoordinates = (event: SelectChangeEvent) => {
-    const newState = event.target.value;
-    let newCurrentState: AvailableStates;
-    if (newState === AvailableStates.Nevada)
-      newCurrentState = AvailableStates.Nevada;
-    else if (newState === AvailableStates.Texas)
-      newCurrentState = AvailableStates.Texas;
-    else newCurrentState = AvailableStates.Virginia;
-    console.log('changing state');
-    dispatch([
-      {
-        type: "CHANGE_STATE",
-        payload: {
-          currentState: newCurrentState,
-        },
-      },
-      {
-        type: "STEP_CHANGE",
-        payload: {
-          step: 0,
-        },
-      },
-    ]);
+    // const newState = event.target.value;
+    // let newCurrentState: AvailableStates;
+    // if (newState === AvailableStates.Nevada)
+    //   newCurrentState = AvailableStates.Nevada;
+    // else if (newState === AvailableStates.Texas)
+    //   newCurrentState = AvailableStates.Texas;
+    // else newCurrentState = AvailableStates.Virginia;
+    navigate(`/cluster-analysis/state/${event.target.value}`);
+    // dispatch(
+    //   {
+    //     type: "CHANGE_STATE",
+    //     payload: {
+    //       currentState: newCurrentState,
+    //     },
+    //   },
+    // );
   };
 
   useEffect(() => {
@@ -112,7 +111,7 @@ export default function StateMap() {
           <Select
             labelId="demo-simple-select-filled-label"
             id="demo-simple-select-filled"
-            value={state[state.length - 1].currentState}
+            value={currentState}
             onChange={handleStateChangeCoordinates}
             style={{ fontWeight: "bold", fontSize: "18px" }}
           >

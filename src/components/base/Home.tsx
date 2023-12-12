@@ -6,16 +6,12 @@ import Navbar from "./Navbar";
 import TableData from "./ClusterAnalysis";
 import { fetchMapData } from "../apiClient";
 import ClusterAnalysis from "./ClusterAnalysis";
+import {  useParams } from "react-router-dom";
 
 function Home() {
-  const [selectedDistrict, setSelectedDistrict] = useState<number>(0);
-  const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([38.5, -116.5]);
-  const {state, dispatch} = useContext(GlobalContext);
-  
-  const handleDistrictSelection = (district_num: number, coordinates: Array<number>) => {
-    setSelectedDistrict(district_num);
-    setCenterCoordinates(coordinates);
-  }
+  const { stateName, ensembleId, clusterId } = useParams<{ stateName : AvailableStates, ensembleId : string, clusterId : string}>();
+  const { state, dispatch } = useContext(GlobalContext);
+
 
   useEffect(() => {
     async function getMapData() {
@@ -23,25 +19,42 @@ function Home() {
       if (response) {
         dispatch({
           type: "SET_MAP_DATA",
-          payload: { mapData: response.stateMapData, districtPlanTypes: response.stateDistrictPlanType }
-        })
+          payload: {
+            mapData: response.stateMapData,
+            districtPlanTypes: response.stateDistrictPlanType,
+          },
+        });
       }
     }
     getMapData();
   }, []);
 
+  const currentState = stateName || AvailableStates.Unselected;
+
+  const renderClusterAnalysis = () => {
+    if(ensembleId && clusterId){
+      return <ClusterAnalysis selectedState={currentState} ensembleId={ensembleId} clusterId={clusterId}/>
+    }
+    else if(ensembleId){
+      return <ClusterAnalysis selectedState={currentState} ensembleId={ensembleId}/>
+    }
+    else{
+      return <ClusterAnalysis selectedState={currentState}/>
+    }
+  }
+
   return (
     <div className="Home">
       <div className="Home-content">
-      <Navbar aboutPage={false}/>
-      <div className="StateMap-content">
-        <header className="StateMap-header">
-          <div className="State-map"> 
-            <StateMap/>
-          </div>
-          <ClusterAnalysis selectedState={state[state.length-1].currentState}/>
-        </header>
-      </div>
+        <Navbar aboutPage={false} />
+        <div className="StateMap-content">
+          <header className="StateMap-header">
+            <div className="State-map">
+              <StateMap currentState={currentState} />
+            </div>
+            { renderClusterAnalysis() }
+          </header>
+        </div>
       </div>
     </div>
   );

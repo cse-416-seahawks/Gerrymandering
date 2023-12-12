@@ -8,15 +8,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ClusterTableRow from "./ClusterTableRow";
 import { ClusterData } from "../interfaces/AnalysisInterface";
+import { AvailableStates } from "../../globalContext";
 
 interface ClusterTableProps {
+  currentState : AvailableStates,
+  ensembleId : string,
   clusters: ClusterData[];
   onClusterSelection: (
     cluster: ClusterData,
   ) => void;
 }
 
-export default function ClusterTable({ clusters, onClusterSelection }: ClusterTableProps) {
+export default function ClusterTable({ currentState, ensembleId, clusters, onClusterSelection }: ClusterTableProps) {
   function setSelectedCluster(cluster: ClusterData) {
     onClusterSelection(cluster);
   }
@@ -37,7 +40,7 @@ export default function ClusterTable({ clusters, onClusterSelection }: ClusterTa
         </TableHead>
         <TableBody>
           {clusters.map((cluster) => (
-            <ClusterTableRow key={cluster.cluster_number} data={cluster} onClusterSelection={setSelectedCluster}/>
+            <ClusterTableRow currentState={currentState} ensembleId={ensembleId} key={cluster.cluster_number} data={cluster} onClusterSelection={setSelectedCluster}/>
           ))}
         </TableBody>
       </Table>

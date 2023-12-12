@@ -4,7 +4,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
-import { GlobalContext, InfoCardType } from "../../globalContext";
+import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
@@ -16,7 +16,12 @@ import {
 } from "../interfaces/AnalysisInterface";
 import { DistrictSelectionProps } from "../types/TableTypes";
 
-export default function ClusterDetail() {
+interface ClusterDetailProps{
+  currentState : AvailableStates,
+  ensembleId : string,
+  clusterId : string
+}
+export default function ClusterDetail({ currentState, ensembleId, clusterId } : ClusterDetailProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
@@ -33,12 +38,10 @@ export default function ClusterDetail() {
   }
 
   useEffect(() => {
-    const currState = state[state.length - 1].currentState;
-    const currClusterId = state[state.length - 1].clusterId;
 
     async function getClusterDetail() {
       try {
-        const response = await fetchClusterDetails(currState, currClusterId);
+        const response = await fetchClusterDetails(currentState, clusterId);
         setTableData(response.data);
         dispatch({
           type: "SET_CLUSTER_DETAILS",
@@ -55,8 +58,8 @@ export default function ClusterDetail() {
     async function getClusterDetailGraph() {
       try {
         const response = await fetchClusterDetailGraph(
-          currState,
-          currClusterId
+          currentState,
+          clusterId
         );
         setAxisLabels([response.x_axis_label, response.y_axis_label]);
         setAvailableDataPoints(

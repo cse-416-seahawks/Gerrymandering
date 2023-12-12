@@ -25,7 +25,7 @@ export default function VirginiaMap() {
         currentState : AvailableStates.Virginia
       }
     })
-    navigate("/cluster-analysis");
+    navigate("/cluster-analysis/state/VIRGINIA");
   }
 
   useEffect(() => {

@@ -23,13 +23,11 @@ import { useNavigate } from "react-router-dom";
 
 interface EnsemblesListProps {
   ensembleData: Array<EnsembleData>;
-  handleStep: (step: number, ensemble: number, ensembleId: string) => void;
   showToggle: boolean;
 }
 
 export default function EnsemblesTable({
   ensembleData,
-  handleStep,
   showToggle,
 }: EnsemblesListProps) {
   const { state, dispatch } = useContext(GlobalContext);
@@ -42,6 +40,21 @@ export default function EnsemblesTable({
   ) => {
     setPage(value);
   };
+
+
+  const handleClick = (ensembleId : string) => {
+    dispatch(
+      {
+        type: "CHANGE_INFO_CARD",
+        payload: {
+          infoCardType: InfoCardType.ensembleSummary,
+        },
+      },
+    );
+    const currentPathname = window.location.pathname;
+    navigate(`${currentPathname}/ensemble/${ensembleId}`)
+
+  }
 
   const handleSeeDetails = (Ensemble: EnsembleData) => {
     dispatch({
@@ -101,11 +114,12 @@ export default function EnsemblesTable({
               variant="text"
               sx={{ pointerEvents: "auto" }}
               onClick={() => {
-                handleStep(
-                  1,
-                  row.ensemble,
-                  ensembleData[row.ensemble - 1].ensemble_id
-                );
+                handleClick(row.ensemble_id)
+                // handleStep(
+                //   1,
+                //   row.ensemble,
+                //   ensembleData[row.ensemble - 1].ensemble_id
+                // );
                 if (!showToggle) {
                   dispatch({
                     type: "CHANGE_INFO_CARD",
@@ -147,11 +161,13 @@ export default function EnsemblesTable({
                       },
                     },
                   ]);
-                  handleStep(
-                    1,
-                    row.ensemble,
-                    ensembleData[row.ensemble - 1].ensemble_id
-                  );
+                  // handleStep(
+                  //   1,
+                  //   row.ensemble,
+                  //   ensembleData[row.ensemble - 1].ensemble_id
+                  // );
+
+                  // TODO: ADD PARAMS TO DISTANCES
                   navigate("/distances");
                 }}
               />
