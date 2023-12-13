@@ -26,6 +26,7 @@ import { DistrictState } from "../interfaces/MapInterface";
 import DistrictPlan from "../districts/DistrictPlan";
 import { fetchDistrictPlan } from "../apiClient";
 import { useNavigate } from "react-router-dom";
+import { clearCache } from "../cacheUtil";
 
 interface StateMapProps {
   currentState : AvailableStates;
@@ -54,6 +55,8 @@ export default function StateMap({currentState} : StateMapProps) {
         infoCardType : InfoCardType.ensembleInfo
       }
     })
+    // clear cache for state change
+    clearCache();
     navigate(`/cluster-analysis/state/${event.target.value}`);
   };
 

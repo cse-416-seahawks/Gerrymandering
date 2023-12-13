@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { AvailableStates } from "../globalContext";
 import { Feature, FeatureCollection } from "@turf/turf";
-// Define a cache object
-const cache: { [key: string]: any } = {};
+import { getFromCache, updateCache } from "./cacheUtil";
 
 function isFeatureCollection(data: any): data is FeatureCollection {
   return data.type === "FeatureCollection";
@@ -13,32 +12,27 @@ function isFeatureArray(data: any): data is Feature[] {
 }
 
 async function fetchData(url: string): Promise<any> {
-  const cachedData = cache[url];
-  // Check if data is already in the cache
-  if (cachedData) {
-    console.log("Data retrieved from cache for key:", url);
-    return cache[url];
-  }
-
   // If not in the cache, fetch the data
-  console.log("Fetching data for key:", url);
   const response = await axios.get(url);
+  console.log("fetched!", response);
 
-  // Assuming the response.data is the actual data you want to cache
-  const { data } = response;
+  if (response.status == 200) {
+    const { data } = response;
 
-  // Store the fetched data in the cache
-  cache[url] = data;
+    // Store the fetched data in the cache
 
-  return data;
+    return data;
+  } else {
+    console.log("failed to retrieve data");
+    return null;
+  }
 }
 
 export async function fetchMapData(): Promise<any> {
   const url = `http://localhost:4000/getMapCoordinatesData/`;
 
   try {
-    const response = await fetchData(url);
-    return response;
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -48,17 +42,28 @@ export async function fetchCurrDistrictPlan(
   State: AvailableStates
 ): Promise<FeatureCollection> {
   const url = `http://localhost:4000/getCurrentDistrictPlan/${State}`;
-
+  console.log('requested district plan')
   try {
+    const cachedData = getFromCache(url);
+    // Check if data is already in the cache
+    console.log("cached data ? ", cachedData);
+    if (cachedData) {
+      console.log("Data retrieved from cache for key:", url);
+      return cachedData;
+    }
     const data = await fetchData(url);
-
-    if (isFeatureCollection(data)) {
-      return data;
+    if (isFeatureCollection(data[0])) {
+      console.log("caching...");
+      updateCache(url, data[0]);
+      return data[0];
     } else if (isFeatureArray(data)) {
+      console.log("returned a feature array");
       const newCollection: FeatureCollection = {
         type: "FeatureCollection",
         features: data,
       };
+      console.log("caching...");
+      updateCache(url, newCollection);
       return newCollection;
     } else {
       const newCollection: FeatureCollection = {
@@ -89,11 +94,7 @@ export async function fetchStateOutline(
 export async function fetchStateEnsembles(State: AvailableStates) {
   const url = `http://localhost:4000/getStateEnsembles/${State}`;
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      console.log(response);
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -107,10 +108,7 @@ export async function fetchClusterSummaryData(
   const url = `http://localhost:4000/getClusterSummaryData/${State}/${ensembleId}/${distanceMeasure}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -144,10 +142,7 @@ export async function fetchClusterSummaryGraphData(
   const url = `http://localhost:4000/getClusterGraphData/${State}/${ensembleId}/${distanceMeasure}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -161,10 +156,7 @@ export async function fetchMDSClusterGraphData(
   const url = `http://localhost:4000/getMDSClusterGraphData/${State}/${ensembleId}/${distanceMeasure}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -177,10 +169,7 @@ export async function fetchClusterDetails(
   const url = `http://localhost:4000/getClusterDetails/${state}/${clusterId}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -193,10 +182,7 @@ export async function fetchClusterDetailGraph(
   const url = `http://localhost:4000/getDistrictPlanGraphData/${state}/${clusterId}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -207,12 +193,14 @@ export async function fetchDistrictPlan(
   districtPlanId: string
 ) {
   const url = `http://localhost:4000/getDistrictPlanGeoJSON/${state}/${districtPlanId}`;
-
+  const cachedData = getFromCache(url);
+  if (cachedData) {
+    return cachedData;
+  }
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    const data = await fetchData(url);
+    updateCache(url, data);
+    return data;
   } catch (error) {
     throw error;
   }
@@ -225,10 +213,7 @@ export async function fetchDistanceMeasureData(
   const url = `http://localhost:4000/getDistanceMeasureData/${state}/${ensembleId}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }
@@ -238,10 +223,7 @@ export async function fetchAssociationData(state: AvailableStates) {
   const url = `http://localhost:4000/getAssociationData/${state}`;
 
   try {
-    const response = await fetchData(url);
-    if (response.status == 200) {
-      return response;
-    }
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }

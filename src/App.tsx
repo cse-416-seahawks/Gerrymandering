@@ -8,7 +8,6 @@ import About from "./components/base/About";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { purple, green } from "@mui/material/colors";
 import PlanComparison from "./components/base/PlanComparision";
-import { CacheProvider } from "./Cache";
 
 function App() {
   const usMapCoordinates: Array<number> = [34.5, -95.5];
@@ -23,7 +22,6 @@ function App() {
   });
 
   return (
-    <CacheProvider>
       <GlobalProvider>
         <ThemeProvider theme={theme}>
           <Routes>
@@ -60,7 +58,6 @@ function App() {
           </Routes>
         </ThemeProvider>
       </GlobalProvider>
-    </CacheProvider>
   );
 }
 

@@ -15,6 +15,7 @@ export default (props: { opacity: number }) => {
     async function fetchDistrictPlanAsync() {
       try {
         const result = await fetchCurrDistrictPlan(AvailableStates.Texas);
+        console.log('texas districts', result);
         setTexasDistrict(result);
       } catch (error) {}
     }

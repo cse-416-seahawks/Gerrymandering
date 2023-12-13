@@ -7,10 +7,12 @@ import TableData from "./ClusterAnalysis";
 import { fetchMapData } from "../apiClient";
 import ClusterAnalysis from "./ClusterAnalysis";
 import {  useParams } from "react-router-dom";
+import { clearCache } from "../cacheUtil";
 
 function Home() {
   const { stateName, ensembleId, clusterId } = useParams<{ stateName : AvailableStates, ensembleId : string, clusterId : string}>();
   const { state, dispatch } = useContext(GlobalContext);
+  
 
 
   useEffect(() => {
