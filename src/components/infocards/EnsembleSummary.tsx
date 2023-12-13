@@ -19,16 +19,38 @@ import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import MapIcon from '@mui/icons-material/Map';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import { useParams } from "react-router-dom";
+import { fetchClusterSummaryData } from "../apiClient";
+import { ClusterData } from "../interfaces/AnalysisInterface";
 
 export default function ClusterInfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
-  const { stateName } = useParams<{stateName : AvailableStates }>();
+  const { stateName, ensembleId } = useParams<{stateName : AvailableStates, ensembleId : string }>();
+  const [clusterData, setClusterData] = useState<Array<ClusterData>>([]);
   const currentState = stateName || AvailableStates.Unselected;
+  const currentEnsembleId = ensembleId || "0000";
   const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
 
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
+
+  useEffect(() => {
+    const distanceMeasure = state[state.length-1].distanceMeasure;
+    async function getClusterData() {
+      try {
+        const response = await fetchClusterSummaryData(currentState, currentEnsembleId, distanceMeasure);
+        if (response) setClusterData(response.data);
+      } catch(error) {
+        throw error;
+      }
+    }
+    getClusterData();
+
+  }, [state[state.length-1].ensemble]);
+
+  const getNumPlans = (clusters : ClusterData[] ) => {
+
+  }
 
       
   return (
@@ -48,7 +70,7 @@ export default function ClusterInfoCard() {
         <Box sx={{ flexGrow: 1 }} />
       </Box>
       <Grid>
-          <Typography sx={{ mt: 4, mb: 1 }} variant="subtitle1" component="div">
+          <Typography sx={{ mt: 4, mb: 1 }} variant="h6" component="div">
             Ensemble {state[state.length - 1].ensemble} Summary
           </Typography>
           <Demo>
@@ -60,7 +82,7 @@ export default function ClusterInfoCard() {
                 <ListItemText
                   primary={<Typography variant="subtitle1">Total Number of Clusters</Typography>}
                 />
-                <Typography variant="subtitle1">6 Clusters</Typography>
+                <Typography variant="subtitle1">{clusterData.length} Clusters</Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
@@ -69,7 +91,7 @@ export default function ClusterInfoCard() {
                   <ListItemText
                     primary={<Typography variant="subtitle1">Total Number of District Plans</Typography>}
                   />
-                  <Typography variant="subtitle1">112 Plans</Typography>
+                  <Typography variant="subtitle1"> {clusterData.reduce((acc, cluster) => acc + cluster.district_plans.length, 0)} Plans</Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
