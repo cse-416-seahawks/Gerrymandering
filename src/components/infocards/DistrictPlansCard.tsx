@@ -74,7 +74,7 @@ export default function DistrictPlansCard() {
       avg_republican: "0.70",
     });
     setDisplayedDistrictPlans(newDisplayedPlans);
-  }, [state]);
+  }, [state[state.length - 1].districtPlanIds]);
 
   return (
     <CardContent>

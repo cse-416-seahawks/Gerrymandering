@@ -49,7 +49,7 @@ function DistanceMeasures() {
       }
     }
     getDistanceMeasureData();
-  }, []);
+  }, [stateName,ensembleId]);
 
   function BackButton() {
     return (

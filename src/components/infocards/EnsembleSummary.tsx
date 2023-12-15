@@ -48,10 +48,6 @@ export default function ClusterInfoCard() {
 
   }, [state[state.length-1].ensemble]);
 
-  const getNumPlans = (clusters : ClusterData[] ) => {
-
-  }
-
       
   return (
     <CardContent>

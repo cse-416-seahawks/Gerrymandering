@@ -31,6 +31,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ currState, showToggle }) => {
     const distanceMeasure = state[state.length - 1].distanceMeasure;
 
     async function fetchStateEnsemble() {
+      console.log("fetching ensembles for state",currState);
       try {
         if(currState !== AvailableStates.Unselected) {
           const response = await fetchStateEnsembles(currState);
@@ -53,7 +54,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ currState, showToggle }) => {
       }
     }
     fetchStateEnsemble();
-  }, []);
+  }, [currState]);
 
   
 

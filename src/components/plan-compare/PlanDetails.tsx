@@ -24,7 +24,7 @@ export default function PlanDetails({} : PlanDetailsProps) {
 
   useEffect(() => {
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, []);
+  }, [stateName]);
   
   return (
     <CardContent>

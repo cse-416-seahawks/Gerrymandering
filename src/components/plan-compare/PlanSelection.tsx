@@ -32,7 +32,7 @@ export default function PlanSelection({ districtPlanData } : PlanSelectionProps)
 
   useEffect(() => {
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, []);
+  }, [stateName]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);

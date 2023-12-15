@@ -48,7 +48,7 @@ export default ({ planId, opacity, color, strokeColor }: DistrictPlanProps) => {
               key={index}
               pathOptions={{
                 fillColor: color,
-                fillOpacity: 0,
+                fillOpacity: 0.3,
                 weight: 2,
                 opacity: opacity,
                 color: strokeColor,

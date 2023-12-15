@@ -44,7 +44,7 @@ export default function ClusterAssociationGraph() {
       }
     }
     getAssociationData();
-  }, []);
+  }, [stateName]);
 
   return (
     <div>

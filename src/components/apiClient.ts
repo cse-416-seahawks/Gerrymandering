@@ -19,8 +19,6 @@ async function fetchData(url: string): Promise<any> {
   if (response.status == 200) {
     const { data } = response;
 
-    // Store the fetched data in the cache
-
     return data;
   } else {
     console.log("failed to retrieve data");
@@ -193,14 +191,8 @@ export async function fetchDistrictPlan(
   districtPlanId: string
 ) {
   const url = `http://localhost:4000/getDistrictPlanGeoJSON/${state}/${districtPlanId}`;
-  const cachedData = getFromCache(url);
-  if (cachedData) {
-    return cachedData;
-  }
   try {
-    const data = await fetchData(url);
-    updateCache(url, data);
-    return data;
+    return await fetchData(url);
   } catch (error) {
     throw error;
   }

@@ -20,7 +20,7 @@ export default function EnactedPlanDetails() {
 
   useEffect(() => {
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
-  }, []);
+  }, [stateName]);
   
   return (
     <CardContent>
