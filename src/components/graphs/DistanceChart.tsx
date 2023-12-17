@@ -8,16 +8,15 @@ export default function DistanceChart() {
   
   function distanceGraphData() {
     const tableData = state[state.length - 1].compareDistanceMeasuresData;
-    const graphData = [
-      {
-        type: "boxPlot",
-        data: tableData.map((measure) => ({
-          x: measure.distanceMeasure,
-          y: [measure.min, measure.first_quartile, measure.median, measure.third_quartile, measure.max],
-        })),
-      },
-    ];
-    return graphData;
+    return  [
+          {
+            type: "boxPlot",
+            data: tableData.map((measure) => ({
+              x: measure.distanceMeasure,
+              y: [measure.min, measure.first_quartile, measure.median, measure.third_quartile, measure.max],
+            })),
+          },
+        ];
   }
   
   const options: ApexOptions = {
@@ -29,7 +28,7 @@ export default function DistanceChart() {
         show: false,
       },
     },
-    yaxis: { min: 0 },
+    yaxis: { min: 0, max : 1 },
     title: {
       text: "Distance Measure Variation",
       align: "center",

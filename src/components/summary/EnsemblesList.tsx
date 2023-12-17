@@ -36,6 +36,7 @@ const Ensembles: React.FC<EnsembleProps> = ({ currState, showToggle }) => {
         if (currState !== AvailableStates.Unselected) {
           const response = await fetchStateEnsembles(currState);
           const ensembles: Array<EnsembleData> = [];
+          console.log('ensembles', response);
           for (var row of response.ensembles) {
             const ensemble_table = row.data.find(
               (item: any) => item.distance_measure === distanceMeasure

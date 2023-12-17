@@ -14,9 +14,11 @@ import {
 } from "recharts";
 
 import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
+import BubbleChart from "react-apexcharts"
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { fetchClusterSummaryGraphData } from "../apiClient";
-import { ScatterPointItem } from "recharts/types/cartesian/Scatter";
+import { ApexOptions } from "apexcharts";
+
 
 interface ClusterScatterPlotProps {
   currentState : AvailableStates,
@@ -30,7 +32,7 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
   const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
 
   useEffect(() => {
-    const distanceMeasure = state[state.length - 1].distanceMeasure;
+    const {distanceMeasure} = state[state.length - 1];
 
     async function getClusterSummaryGraphData() {
       try {
@@ -55,18 +57,29 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
       console.log('Clicked Point:', clickedPoint);
   };
 
-  const parseDomain = () => [
-    500,
-    Math.max(
-      Math.max.apply(
-        null,
-        dataPoints.map((entry) => entry.num_district_plans)
-      )
-    ),
-  ];
+  const clusterGraphData = (dataPoints : ClusterPoints[]) => {
+    return dataPoints.map((cluster) => ({
+      name : `Cluster ${cluster.cluster_num}`,
+      data : [{
+        x : cluster.x,
+        y : cluster.y,
+        z : cluster.num_district_plans
+      }]
+    }))
+  }
 
-  const domain = parseDomain();
-  const range = [100, 1000];
+  // const parseDomain = () => [
+  //   500,
+  //   Math.max(
+  //     Math.max.apply(
+  //       null,
+  //       dataPoints.map((entry) => entry.num_district_plans)
+  //     )
+  //   ),
+  // ];
+
+  // const domain = parseDomain();
+  // const range = [100, 1000];
 
   interface CustomTooltipProps extends TooltipProps<any, any> {
     active?: boolean;
@@ -81,6 +94,33 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
       };
     }>;
   }
+
+  const options: ApexOptions ={
+    chart: {
+        height: 350,
+        type: 'bubble',
+        toolbar: {
+          show: false,
+        },
+    },
+    dataLabels: {
+        enabled: false
+    },
+    fill: {
+        opacity: 0.8
+    },
+    title: {
+        text: 'Simple Bubble Chart'
+    },
+    xaxis: {
+        tickAmount: 0.1,
+        type: 'category',
+    },
+    yaxis: {
+        max: 70
+    }
+  }
+
 
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -113,55 +153,6 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
   };
 
   return (
-    <ScatterChart
-      width={760}
-      height={630}
-      margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
-    >
-      <CartesianGrid />
-      <XAxis type="number" dataKey="x" name={axisLabels[0]}>
-        <Label
-          style={{ textAnchor: "middle", fontSize: "0.5rem", fill: "black" }}
-          value={axisLabels[0]}
-          position={"insideBottom"}
-          offset={-30}
-        />
-      </XAxis>
-      <YAxis
-        yAxisId="left"
-        type="number"
-        dataKey="y"
-        name={axisLabels[1]}
-        opacity="1"
-        stroke="#7aa9ff"
-      >
-        <Label
-          style={{ textAnchor: "middle", fontSize: "1rem", fill: "black" }}
-          position={"insideLeft"}
-          angle={270}
-          value={axisLabels[1]}
-        />
-      </YAxis>
-      <ZAxis
-        dataKey="num_district_plans"
-        name="# District Plans"
-        domain={domain}
-        range={range}
-      />
-      <Tooltip
-        content={<CustomTooltip />}
-        cursor={{ strokeDasharray: "3 3" }}
-        wrapperStyle={{ outline: "none" }}
-        contentStyle={{ fontSize: 18 }}
-      />
-      <Scatter
-        yAxisId="left"
-        data={dataPoints}
-        fill="#bfd6ff"
-        stroke="#037cff"
-        opacity={4}
-        onClick={handleClick as any}
-      />
-    </ScatterChart>
+    <BubbleChart options={options} series={clusterGraphData(dataPoints)}/>
   );
 }

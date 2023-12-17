@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import {
   AvailableStates,
   GlobalContext,
+  GlobalTypes,
   InfoCardType,
 } from "../../globalContext";
 import "../css/Distance.css";
@@ -37,9 +38,11 @@ function DistanceMeasures() {
           currentState,
           currentEnsembleId
         );
+
+        console.log("Distance measure data", response);
         if (response) {
           dispatch({
-            type: "SET_DISTANCE_MEASURES_DATA",
+            type: GlobalTypes.SetDistanceMeasuresData,
             payload: { compareDistanceMeasuresData: response.data },
           });
           setDistanceMeasuresData(response.data);

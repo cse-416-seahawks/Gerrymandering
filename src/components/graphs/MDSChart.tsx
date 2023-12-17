@@ -12,20 +12,31 @@ import {
   TooltipProps,
   Label,
 } from "recharts";
-import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  GlobalTypes,
+  InfoCardType,
+} from "../../globalContext";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { fetchMDSClusterGraphData } from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 interface ClusterScatterPlotProps {
-  currentState : AvailableStates
-  ensembleId : string,
+  currentState: AvailableStates;
+  ensembleId: string;
   data: ClusterData[];
 }
 
-export default function MDSChart({ currentState, data, ensembleId }: ClusterScatterPlotProps) {
+export default function MDSChart({
+  currentState,
+  data,
+  ensembleId,
+}: ClusterScatterPlotProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const distanceMeasure = state[state.length - 1].distanceMeasure;
@@ -40,6 +51,7 @@ export default function MDSChart({ currentState, data, ensembleId }: ClusterScat
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
+          console.log("cluster data", data);
         }
       } catch (error) {
         throw error;
@@ -47,32 +59,6 @@ export default function MDSChart({ currentState, data, ensembleId }: ClusterScat
     }
     getClusterSummaryGraphData();
   }, [state[state.length - 1].ensemble]);
-
-  function handleStepChange(step: number) {
-    if (step === 2) {
-      dispatch([
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.districtPlans,
-          },
-        },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    } else {
-      dispatch({
-        type: "STEP_CHANGE",
-        payload: {
-          step: step,
-        },
-      });
-    }
-  }
 
   const parseDomain = () => [
     500,
@@ -99,6 +85,29 @@ export default function MDSChart({ currentState, data, ensembleId }: ClusterScat
         id: string;
       };
     }>;
+  }
+
+  const selectCluster = (clusterNum : number) => {
+    const selectedCluster = data.find((cluster) => cluster.cluster_number === clusterNum);
+    if (selectedCluster) {
+      dispatch([
+        {
+          type: GlobalTypes.ChangeCard,
+          payload: {
+            infoCardType: InfoCardType.clusterSummary,
+          },
+        },
+        {
+          type: GlobalTypes.SetCluster,
+          payload: {
+            cluster: clusterNum,
+            clusterPlanIds: selectedCluster.district_plans,
+          },
+        },
+      ]);
+      const currentPathname = window.location.pathname;
+      navigate(`${currentPathname}/cluster/${selectedCluster.cluster_id}`);
+    }
   }
 
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
@@ -170,14 +179,18 @@ export default function MDSChart({ currentState, data, ensembleId }: ClusterScat
         wrapperStyle={{ outline: "none" }}
         contentStyle={{ fontSize: 18 }}
       />
-      <Scatter
-        yAxisId="left"
-        data={dataPoints}
-        fill="#bfd6ff"
-        stroke="#037cff"
-        opacity={4}
-        onClick={() => handleStepChange(2)}
-      />
+      {dataPoints.map((cluster) => (
+        <Scatter
+          yAxisId="left"
+          data={[cluster]}
+          fill="#bfd6ff"
+          stroke="#037cff"
+          opacity={4}
+          onClick={() => {
+            selectCluster(cluster.cluster_num)
+          }}
+        />
+      ))}
     </ScatterChart>
   );
 }
