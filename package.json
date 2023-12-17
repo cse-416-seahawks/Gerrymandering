@@ -77,10 +77,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "*",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
-    "@babel/plugin-proposal-private-property-in-object" : "*",
     "@mui/material": "^5.14.16",
     "@types/d3": "^7.4.1",
     "@types/jquery": "^3.5.20",

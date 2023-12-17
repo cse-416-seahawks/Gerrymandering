@@ -13,11 +13,12 @@ interface DistrictPlanProps {
   opacity: number;
   color : string;
   strokeColor : string;
+  transparent? : boolean
 }
-export default ({ planId, opacity, color, strokeColor }: DistrictPlanProps) => {
+export default ({ planId, opacity, color, strokeColor, transparent }: DistrictPlanProps) => {
   const [plan, setPlan] = useState<DistrictState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
-  const [isCurPlan, setIsCurPlan] = useState(planId === "000000");
+  const [isCurPlan, setIsCurPlan] = useState(planId === "ORIGINAL");
   const { stateName } = useParams<{stateName : AvailableStates}>();
 
   const currentState = stateName || AvailableStates.Unselected;
@@ -47,8 +48,8 @@ export default ({ planId, opacity, color, strokeColor }: DistrictPlanProps) => {
             <Polygon
               key={index}
               pathOptions={{
-                fillColor: color,
-                fillOpacity: 0.3,
+                fillColor: transparent ? "transparent" : color,
+                fillOpacity: transparent ? 0.0 : 0.5,
                 weight: 2,
                 opacity: opacity,
                 color: strokeColor,

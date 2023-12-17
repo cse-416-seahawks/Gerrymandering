@@ -2,25 +2,30 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../css/StateMap.css";
 import "leaflet/dist/leaflet.css";
 import type { LatLngTuple } from "leaflet";
-import { fetchCurrDistrictPlan } from "../apiClient";
 import { Polygon } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
 import { DistrictState } from "../interfaces/MapInterface";
+import { fetchCurrDistrictPlan } from "../apiClient";
+import { useParams } from "react-router-dom";
+import { updateCache } from "../cacheUtil";
 
 export default (props: { opacity: number }) => {
   const [TexasDistricts, setTexasDistrict] =
     useState<DistrictState["data"]>(null);
+  const { stateName } = useParams<{stateName : AvailableStates}>();
 
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
         const result = await fetchCurrDistrictPlan(AvailableStates.Texas);
-        console.log('texas districts', result);
         setTexasDistrict(result);
-      } catch (error) {}
+        updateCache("http://localhost:4000/getCurrentDistrictPlan/TEXAS", result);
+      } catch (error) {
+
+      }
     }
     fetchDistrictPlanAsync();
-  }, []);
+  }, [stateName]);
 
   const districtMap = useMemo(() => {
     return (

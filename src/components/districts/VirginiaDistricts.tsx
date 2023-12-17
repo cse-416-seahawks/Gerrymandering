@@ -6,6 +6,7 @@ import type { LatLngTuple } from "leaflet";
 import { Polygon } from "react-leaflet";
 import { fetchCurrDistrictPlan } from "../apiClient";
 import { AvailableStates } from "../../globalContext";
+import { updateCache } from "../cacheUtil";
 interface DistrictState {
   data: any | null;
 }
@@ -19,6 +20,7 @@ export default function VirginiaDistricts(props: { opacity: number }) {
       try {
         const result = await fetchCurrDistrictPlan(AvailableStates.Virginia);
         setVirginiaHouse(result);
+        updateCache("http://localhost:4000/getCurrentDistrictPlan/VIRGINIA", result);
       } catch (error) {}
     }
     fetchDistrictPlanAsync();

@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
+import PolylineIcon from "@mui/icons-material/Polyline";
 import { Button, TextField, Tooltip } from "@mui/material";
 import {
   AvailableStates,
@@ -61,27 +62,29 @@ export default function ClusterTableRow({
     }
   }
 
-  const handleSelectCluster = (clusterId : string, clusterNum : number, planIds : string[]) => {
+  const handleSelectCluster = (
+    clusterId: string,
+    clusterNum: number,
+    planIds: string[]
+  ) => {
     dispatch([
       {
         type: GlobalTypes.ChangeCard,
         payload: {
-          infoCardType: InfoCardType.districtPlans,
+          infoCardType: InfoCardType.clusterSummary,
         },
       },
       {
         type: GlobalTypes.SetCluster,
         payload: {
-          cluster : clusterNum,
-          clusterPlanIds : planIds
+          cluster: clusterNum,
+          clusterPlanIds: planIds,
         },
       },
-
-    ]
-    );
+    ]);
     const currentPathname = window.location.pathname;
     navigate(`${currentPathname}/cluster/${clusterId}`);
-  }
+  };
 
   const handleBlur = () => {
     setEditing(false);
@@ -97,7 +100,6 @@ export default function ClusterTableRow({
     setName(event.target.value);
     // POST endpoint to save to database
   };
-
 
   return (
     <React.Fragment>
@@ -122,7 +124,11 @@ export default function ClusterTableRow({
             variant="text"
             size="medium"
             onClick={() => {
-              handleSelectCluster(data.cluster_id, data.cluster_number, data.district_plans);
+              handleSelectCluster(
+                data.cluster_id,
+                data.cluster_number,
+                data.district_plans
+              );
             }}
           >
             {data.cluster_number}
@@ -159,11 +165,9 @@ export default function ClusterTableRow({
         <TableCell align="center"> {data.num_dist_plans}</TableCell>
         <TableCell align="center"> {data.avg_distance} </TableCell>
         <TableCell align="center">
-          {" "}
           {(parseFloat(data.avg_rep) * 100).toFixed(2)} %
         </TableCell>
         <TableCell align="center">
-          {" "}
           {(parseFloat(data.avg_dem) * 100).toFixed(2)} %
         </TableCell>
       </TableRow>
@@ -187,11 +191,13 @@ export default function ClusterTableRow({
                 <TableBody>
                   <TableRow>
                     <TableCell component="th" scope="demographics">
-                      {data.demographics.caucasian}
+                      {data.demographics.white}
                     </TableCell>
-                    <TableCell>{data.demographics.african_american}</TableCell>
                     <TableCell align="left">
-                      {data.demographics.asian_american}
+                      {data.demographics.black}
+                    </TableCell>
+                    <TableCell align="left">
+                      {data.demographics.asian}
                     </TableCell>
                     <TableCell align="left">
                       {data.demographics.hispanic}

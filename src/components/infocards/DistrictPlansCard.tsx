@@ -20,7 +20,7 @@ export default function DistrictPlansCard() {
     Array<DistrictPlanData>
   >([
     {
-      district_plan_id: "000000",
+      district_plan_id: "ORIGINAL",
       district_plan: 0,
       opportunity_districts: 15,
       splits: [5, 5],
@@ -49,7 +49,7 @@ export default function DistrictPlansCard() {
 
     async function getClusterDetail() {
       try {
-        let currentClusterId = clusterId || "000000";
+        let currentClusterId = clusterId || "ORIGINAL";
         const response = await fetchClusterDetails(currentState, currentClusterId);
         setAll(response.data);
       } catch (error) {
@@ -66,7 +66,7 @@ export default function DistrictPlansCard() {
       )
     );
     newDisplayedPlans.unshift({
-      district_plan_id: "000000",
+      district_plan_id: "ORIGINAL",
       district_plan: 0,
       opportunity_districts: 15,
       splits: [5, 5],
@@ -74,7 +74,7 @@ export default function DistrictPlansCard() {
       avg_republican: "0.70",
     });
     setDisplayedDistrictPlans(newDisplayedPlans);
-  }, [state[state.length - 1].districtPlanIds]);
+  }, [state]);
 
   return (
     <CardContent>

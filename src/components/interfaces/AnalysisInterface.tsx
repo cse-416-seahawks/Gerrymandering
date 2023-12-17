@@ -28,9 +28,9 @@ export interface ClusterData {
 }
   
 export interface ClusterDemographicData {
-  caucasian: number,
-  african_american: number,
-  asian_american: number,
+  white: number,
+  black: number,
+  asian: number,
   hispanic: number,
   other: number,
 }

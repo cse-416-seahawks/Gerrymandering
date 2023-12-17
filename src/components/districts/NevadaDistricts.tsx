@@ -6,6 +6,7 @@ import { Polygon, GeoJSON } from "react-leaflet";
 import { AvailableStates } from "../../globalContext";
 import { fetchCurrDistrictPlan, fetchDistrictPlan } from "../apiClient";
 import { DistrictState } from "../interfaces/MapInterface";
+import { updateCache } from "../cacheUtil";
 
 export default React.memo((props: { opacity: number }) => {
   const [nevadaDistrict, setNevadaDistrict] =
@@ -14,11 +15,11 @@ export default React.memo((props: { opacity: number }) => {
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchDistrictPlan(
+        const result = await fetchCurrDistrictPlan(
           AvailableStates.Nevada,
-          "000000"
         );
         setNevadaDistrict(result);
+        updateCache("http://localhost:4000/getCurrentDistrictPlan/NEVADA", result);
       } catch (error) {
         throw error;
       }

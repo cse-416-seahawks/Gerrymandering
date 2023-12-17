@@ -82,7 +82,7 @@ export default function Map(props: {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <DistrictPlan opacity={opacity1} strokeColor={"#000080"} color={"#00388c"} planId={"000000"} />
+        <DistrictPlan opacity={opacity1} strokeColor={"#000080"} color={"#00388c"} planId={"ORIGINAL"} />
         <DistrictPlan opacity={opacity2} strokeColor={"#FFFF00"} color={"#00388c"} planId={planId || "-1"} />
         <SetMapView />
       </MapContainer>

@@ -1,25 +1,28 @@
+import * as turf from '@turf/turf';
 const localStorageKey = 'myAppCache';
 let cache: { [key: string]: any } = {};
 
-// Initialize the cache from local storage
-const cachedDataFromLocalStorage = localStorage.getItem(localStorageKey);
-if (cachedDataFromLocalStorage) {
-  try {
-    cache = JSON.parse(cachedDataFromLocalStorage);
-  } catch (error) {
-    console.error('Error parsing cached data from local storage:', error);
-  }
-}
+// // Initialize the cache from local storage
+// const cachedDataFromLocalStorage = localStorage.getItem(localStorageKey);
+// if (cachedDataFromLocalStorage) {
+//   try {
+//     cache = JSON.parse(cachedDataFromLocalStorage);
+//   } catch (error) {
+//     console.error('Error parsing cached data from local storage:', error);
+//   }
+// }
 
 export const updateCache = (key: string, value: any) => {
-  cache[key] = value;
-
-  // Save the updated cache to local storage
-  localStorage.setItem(localStorageKey, JSON.stringify(cache));
+  ('caching...')
+  localStorage.setItem(key, JSON.stringify(value));
 };
 
 export const getFromCache = (key: string) => {
-  return cache[key];
+  const item = localStorage.getItem(key);
+  if (!item) {
+    return null;
+  }
+  return JSON.parse(item);
 };
 
 export const clearCache = () => {

@@ -20,6 +20,7 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import {
   AvailableStates,
+  DistanceMeasure,
   EnsembleData,
   GlobalContext,
   GlobalTypes,
@@ -37,7 +38,7 @@ export default function EnsemblesTable({
   showToggle,
 }: EnsemblesListProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const [disMeasure, setDismeasure] = useState("Hamming Distance");
+  const [disMeasure, setDismeasure] = useState(state[state.length - 1].distanceMeasure);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { stateName } = useParams<{ stateName: AvailableStates }>();
@@ -50,7 +51,7 @@ export default function EnsemblesTable({
     setPage(value);
   };
 
-  const handleClick = (ensembleId: string, ensembleNum : number) => {
+  const handleClick = (ensembleId: string, ensembleNum: number) => {
     dispatch([
       {
         type: GlobalTypes.ChangeCard,
@@ -61,7 +62,7 @@ export default function EnsemblesTable({
       {
         type: GlobalTypes.SetEnsemble,
         payload: {
-          ensemble : ensembleNum
+          ensemble: ensembleNum,
         },
       },
     ]);
@@ -79,8 +80,22 @@ export default function EnsemblesTable({
   };
 
   const handleUpdateDistanceMeasure = (event: SelectChangeEvent) => {
-    setDismeasure(event.target.value);
+    dispatch({
+      type : GlobalTypes.DistanceMeasure,
+      payload : {
+        distanceMeasure : event.target.value
+      }
+    })
+    setDismeasure(disMeasureToString(event.target.value) || DistanceMeasure.HammingDistance);
   };
+
+  const disMeasureToString = (str : string) => {
+    switch(str){
+      case "Hamming Distance" : return DistanceMeasure.HammingDistance
+      case "Optimal Transport" : return DistanceMeasure.OptimalTransport
+      default : return undefined;
+    }
+  }
 
   const spliceEnsemble = (ensembleData: Array<EnsembleData>, page: number) => {
     return ensembleData.slice((page - 1) * 9, page * 9);
@@ -110,11 +125,10 @@ export default function EnsemblesTable({
                 label="Distance Measure"
                 onChange={handleUpdateDistanceMeasure}
               >
-                <MenuItem value={"Hamming Distance"}>Hamming Distance</MenuItem>
-                <MenuItem value={"Optimal Transport"}>
+                <MenuItem value={DistanceMeasure.HammingDistance}>Hamming Distance</MenuItem>
+                <MenuItem value={DistanceMeasure.OptimalTransport}>
                   Optimal Transport
                 </MenuItem>
-                <MenuItem value={"Total Variation"}>Total Variation</MenuItem>
               </Select>
             </FormControl>
           )}
@@ -150,13 +164,12 @@ export default function EnsemblesTable({
                   dispatch({
                     type: GlobalTypes.ChangeCard,
                     payload: {
-                      infoCardType : InfoCardType.distanceMeasure,
-                    }
+                      infoCardType: InfoCardType.distanceMeasure,
+                    },
                   });
                   navigate(
                     `/distances/state/${currentState}/ensemble/${row.ensemble_id}`
                   );
-                  
                 }}
               />
             </Stack>

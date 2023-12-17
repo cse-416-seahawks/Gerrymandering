@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  AvailableStates,
-  GlobalContext,
-} from "../../globalContext";
+import { AvailableStates, GlobalContext } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../state-map/StateMap";
 import Navbar from "./Navbar";
@@ -24,12 +21,33 @@ import { useParams } from "react-router-dom";
 
 export default function PlanComparison() {
   const { state, dispatch } = useContext(GlobalContext);
-  const { stateName, planId } = useParams<{stateName : AvailableStates, planId : string }>();
+  const { stateName, planId } = useParams<{
+    stateName: AvailableStates;
+    planId: string;
+  }>();
   const currentState = stateName || AvailableStates.Unselected;
-  const currentStateMapData =
-    state[state.length - 1].mapData[currentState];
+  const currentStateMapData = state[state.length - 1].mapData[currentState];
   const [value, setValue] = React.useState(0);
 
+
+  const details = [
+    {
+      "Republican Districts": 21,
+      "Democratic Districts": 22,
+    },
+    {
+      "Average % Republican Voters": 51,
+      "Average % of Democratic Voters": 54,
+    },
+    {
+      "Caucasian Population": 0.3,
+      "African American Population": 0.1,
+    },
+    {
+      Hispanic: 0.3,
+      Other: 0.1,
+    },
+  ];
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number);
   };
@@ -77,7 +95,9 @@ export default function PlanComparison() {
                 margin: 1,
               }}
             >
-              <PlanSelection districtPlanData={state[state.length - 1].clusterDetails}/>
+              <PlanSelection
+                districtPlanData={state[state.length - 1].clusterDetails}
+              />
             </Card>
           </Grid>
           <Grid item xs={6}>

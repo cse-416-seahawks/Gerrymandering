@@ -14,14 +14,12 @@ function isFeatureArray(data: any): data is Feature[] {
 async function fetchData(url: string): Promise<any> {
   // If not in the cache, fetch the data
   const response = await axios.get(url);
-  console.log("fetched!", response);
 
   if (response.status == 200) {
     const { data } = response;
 
     return data;
   } else {
-    console.log("failed to retrieve data");
     return null;
   }
 }
@@ -40,28 +38,20 @@ export async function fetchCurrDistrictPlan(
   State: AvailableStates
 ): Promise<FeatureCollection> {
   const url = `http://localhost:4000/getCurrentDistrictPlan/${State}`;
-  console.log('requested district plan')
   try {
     const cachedData = getFromCache(url);
     // Check if data is already in the cache
-    console.log("cached data ? ", cachedData);
     if (cachedData) {
-      console.log("Data retrieved from cache for key:", url);
       return cachedData;
     }
     const data = await fetchData(url);
-    if (isFeatureCollection(data[0])) {
-      console.log("caching...");
-      updateCache(url, data[0]);
-      return data[0];
+    if (isFeatureCollection(data)) {
+      return data;
     } else if (isFeatureArray(data)) {
-      console.log("returned a feature array");
       const newCollection: FeatureCollection = {
         type: "FeatureCollection",
         features: data,
       };
-      console.log("caching...");
-      updateCache(url, newCollection);
       return newCollection;
     } else {
       const newCollection: FeatureCollection = {
@@ -122,10 +112,8 @@ export async function updateClusterName(
   const url = `http://localhost:4000/updateClusterName/${state}/${ensembleId}/${distanceMeasure}/${clusterId}/${newClusterName}`;
 
   try {
-    console.log("trying post request");
     const response = await axios.post(url);
     if (response.status == 200) {
-      console.log(response);
     }
   } catch (error) {
     throw error;
@@ -152,6 +140,19 @@ export async function fetchMDSClusterGraphData(
   distanceMeasure: string
 ) {
   const url = `http://localhost:4000/getMDSClusterGraphData/${State}/${ensembleId}/${distanceMeasure}`;
+
+  try {
+    return await fetchData(url);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function fetchClusterSplits(
+  State: AvailableStates,
+  clusterId: string
+) {
+  const url = `http://localhost:4000/getClusterSplits/${State}/${clusterId}`;
 
   try {
     return await fetchData(url);

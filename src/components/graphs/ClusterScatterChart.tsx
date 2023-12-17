@@ -12,9 +12,11 @@ import {
   TooltipProps,
   Label,
 } from "recharts";
+
 import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { fetchClusterSummaryGraphData } from "../apiClient";
+import { ScatterPointItem } from "recharts/types/cartesian/Scatter";
 
 interface ClusterScatterPlotProps {
   currentState : AvailableStates,
@@ -48,24 +50,10 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
     getClusterSummaryGraphData();
   }, [state[state.length - 1].ensemble]);
 
-  function handleStepChange(step: number) {
-    if (step === 2) {
-      dispatch([
-        {
-          type: "CHANGE_INFO_CARD",
-          payload: {
-            infoCardType: InfoCardType.districtPlans,
-          },
-        },
-        {
-          type: "STEP_CHANGE",
-          payload: {
-            step: step,
-          },
-        },
-      ]);
-    }
-  }
+  const handleClick = (point: ClusterPoints, event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      const clickedPoint = point
+      console.log('Clicked Point:', clickedPoint);
+  };
 
   const parseDomain = () => [
     500,
@@ -172,7 +160,7 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
         fill="#bfd6ff"
         stroke="#037cff"
         opacity={4}
-        onClick={() => handleStepChange(2)}
+        onClick={handleClick as any}
       />
     </ScatterChart>
   );

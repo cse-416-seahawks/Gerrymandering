@@ -18,6 +18,9 @@ export default function EnsembleInfoCard() {
   const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
 
 
+  useEffect(() => {
+    setDetails(state[state.length - 1].districtPlanTypes[stateName || AvailableStates.Unselected]);
+  },[state])
   
   return (
     <CardContent>

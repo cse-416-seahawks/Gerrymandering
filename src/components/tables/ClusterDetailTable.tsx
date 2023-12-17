@@ -81,10 +81,10 @@ export default function ClusterDetailTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {spliceTableData().map((row) => (
+            {spliceTableData().map((row, index) => (
               <TableRow key={row.district_plan}>
                 <TableCell component="th" scope="row">
-                  {<button style={buttonStyle}>{row.district_plan}</button>}
+                  {<button style={buttonStyle}>{index + 1}</button>}
                 </TableCell>
                 <TableCell align="center">
                   {row.opportunity_districts}

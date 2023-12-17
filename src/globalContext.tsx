@@ -78,11 +78,16 @@ export enum GlobalTypes {
   RemoveDistrictPlan = "REMOVE_DISTRICT_PLAN",
 }
 
+export enum DistanceMeasure {
+  HammingDistance = "Hamming Distance",
+  OptimalTransport = "Optimal Transport"
+}
+
 export type GlobalState = {
   mapData: MapData;
   districtPlanTypes: StateDistrictPlanType;
   currentInfoCard: InfoCardType;
-  distanceMeasure: string;
+  distanceMeasure: DistanceMeasure;
   compareDistanceMeasuresData: Array<DistanceMeasureType>;
   ensemble: number;
   cluster: number;
@@ -101,7 +106,7 @@ type GlobalStatePayload = {
     infoCardType: InfoCardType;
   };
   [GlobalTypes.DistanceMeasure]: {
-    distanceMeasure: string;
+    distanceMeasure: DistanceMeasure;
   };
   [GlobalTypes.SetDistanceMeasuresData]: {
     compareDistanceMeasuresData: Array<DistanceMeasureType>;
@@ -152,12 +157,8 @@ const mainReducer = (
               distanceMeasure: state[state.length - 1].distanceMeasure,
               compareDistanceMeasuresData:
                 state[state.length - 1].compareDistanceMeasuresData,
-              
-             
               ensemble: state[state.length - 1].ensemble,
-              
               cluster: state[state.length - 1].cluster,
-              
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
               ensembleDetails: state[state.length - 1].ensembleDetails,
@@ -196,7 +197,7 @@ const mainReducer = (
               cluster: state[state.length - 1].cluster,
               clusterPlanIds: state[state.length - 1].clusterPlanIds,
               districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
+              ensembleDetails: [],
               clusterDetails: state[state.length - 1].clusterDetails,
             },
           ];
@@ -256,11 +257,14 @@ const mainReducer = (
           ];
         case GlobalTypes.AddEnsembleDetail:
           let newDetails = state[state.length - 1].ensembleDetails;
-          if (newDetails.length > 3) {
-            newDetails.shift();
-          }
-          if (!newDetails.includes(action.payload.EnsembleData))
+          
+          if (!newDetails.some(existingData => JSON.stringify(existingData) === JSON.stringify(action.payload.EnsembleData))) {
+            console.log(action.payload.EnsembleData)
             newDetails.push(action.payload.EnsembleData);
+          }
+            if (newDetails.length > 3) {
+              newDetails.shift();
+            }
           return [
             ...state,
             {
@@ -385,7 +389,7 @@ const intialState: GlobalState[] = [
     mapData: {},
     districtPlanTypes: {},
     currentInfoCard: InfoCardType.ensembleInfo,
-    distanceMeasure: "Hamming Distance",
+    distanceMeasure: DistanceMeasure.HammingDistance,
     compareDistanceMeasuresData: [],
     ensemble: 0,
     cluster: 0,

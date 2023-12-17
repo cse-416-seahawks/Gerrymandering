@@ -59,6 +59,8 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
           currentState,
           clusterId
         );
+
+        console.log('district plan graph', response);
         setAxisLabels([response.x_axis_label, response.y_axis_label]);
         setAvailableDataPoints(
           response.data.filter(
@@ -100,33 +102,40 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
           <Tabs value={currentTab} onChange={handleTabChange}>
-            <Tab
+          <Tab
               value="1"
-              label="Graph View"
-              sx={{ textTransform: "none" }}
-              onClick={handlePlanCard}
-            />
-            <Tab
-              value="2"
               label="Table View"
               sx={{ textTransform: "none" }}
               onClick={handleSummaryCard}
             />
+            <Tab
+              value="2"
+              label="Graph View"
+              sx={{ textTransform: "none" }}
+              onClick={handlePlanCard}
+            />
             <Tab value="3" label="Party Split" sx={{ textTransform: "none" }} />
+            <Tab value="4" label="Typical Plan" sx={{ textTransform: "none" }} />
           </Tabs>
         </Box>
+        
         <TabPanel value="1">
+          <ClusterDetailTable districtPlanData={tableData} />
+        </TabPanel>
+        <TabPanel value="2">
           <DistrictPlanScatterPlot
             axisLabels={axisLabels}
             availableData={availableDataPoints}
             unavailableData={unavailableDataPoints}
           />
         </TabPanel>
-        <TabPanel value="2">
-          <ClusterDetailTable districtPlanData={tableData} />
+        <TabPanel value="3">
+          <PartySplitChart districtPlans={tableData} />
         </TabPanel>
         <TabPanel value="3">
           <PartySplitChart districtPlans={tableData} />
+        </TabPanel>
+        <TabPanel value="4">
         </TabPanel>
       </TabContext>
     </>

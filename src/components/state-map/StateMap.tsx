@@ -29,12 +29,13 @@ import { useNavigate } from "react-router-dom";
 import { clearCache } from "../cacheUtil";
 
 interface StateMapProps {
-  currentState : AvailableStates;
+  currentState: AvailableStates;
 }
-export default function StateMap({currentState} : StateMapProps) {
+export default function StateMap({ currentState }: StateMapProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const currentStateMapData =
-    state[state.length - 1].mapData[currentState];
+  const currentStateMapData = state[state.length - 1].mapData[currentState];
+  const [colors, setColors] = useState<string[]>(Array.from({ length: 10 }, () => generateBrightHexColor()))
+  const [planIds, setPlanIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
   const [zoom, setZoom] = useState<number>(0);
@@ -48,17 +49,34 @@ export default function StateMap({currentState} : StateMapProps) {
     return null;
   };
 
+
   const handleStateChange = (event: SelectChangeEvent) => {
     dispatch({
-      type : GlobalTypes.ChangeCard,
-      payload : {
-        infoCardType : InfoCardType.ensembleInfo
-      }
-    })
+      type: GlobalTypes.ChangeCard,
+      payload: {
+        infoCardType: InfoCardType.ensembleInfo,
+      },
+    });
     // clear cache for state change
     clearCache();
     navigate(`/cluster-analysis/state/${event.target.value}`);
   };
+
+  function generateBrightHexColor() {
+    // Generate random RGB values
+    const red = Math.floor(Math.random() * 200) + 55; // Adjust range as needed
+    const green = Math.floor(Math.random() * 200) + 55;
+    const blue = Math.floor(Math.random() * 200) + 55;
+  
+    // Convert RGB to hex
+    const hexColor = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`;
+  
+    return hexColor;
+  }
+
+  useEffect(() => {
+    setPlanIds(state[state.length - 1].districtPlanIds);
+  }, [state[state.length - 1].districtPlanIds]);
 
   useEffect(() => {
     if (currentStateMapData) {
@@ -85,6 +103,15 @@ export default function StateMap({currentState} : StateMapProps) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
+            {planIds.map((planId, index) => (
+              <DistrictPlan
+                transparent
+                planId={planId}
+                opacity={0.5}
+                color={"ADD8E6"}
+                strokeColor={colors[index]}
+              />
+            ))}
             <NevadaDistricts opacity={0.7} />
             <TexasDistricts opacity={0.7} />
             <VirginiaDistricts opacity={0.7} />

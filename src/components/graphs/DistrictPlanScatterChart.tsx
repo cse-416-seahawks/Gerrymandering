@@ -39,7 +39,7 @@ export default function DistrictPlanScatterPlot({
 
   function handleDistrictPlanSelection(point: any) {
     const districtPlanId = point.district_plan_id;
-    if (!state[state.length - 1].districtPlanIds.includes(districtPlanId)) {
+    if (!(state[state.length - 1].districtPlanIds.includes(districtPlanId))) {
       dispatch({
         type: GlobalTypes.AddDistrictPlan,
         payload: {
@@ -131,21 +131,10 @@ export default function DistrictPlanScatterPlot({
           Dimension 2
         </Typography>
       </Grid>
-      {/* <div
-              style={{
-                fontWeight: "700",
-                rotate : "90",
-                textAlign: "center",
-                fontSize: "1.0rem",
-                height: "100px",
-                width: "60px",
-              }}
-            >
-              Dimension 2
-            </div> */}
+
 
       <Grid item xs={11}>
-        <ScatterChart width={700} height={590} margin={{ right: 50 }}>
+        <ScatterChart width={720} height={590} margin={{ right: 50 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <ZAxis dataKey="z" type="number" name="District Plan" />
           <XAxis dataKey="x" type="number" name={axisLabels[0]}></XAxis>
