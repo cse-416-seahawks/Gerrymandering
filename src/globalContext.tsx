@@ -24,6 +24,20 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
+export const colors = [
+  '#FF5733', // Orange
+  '#33FF57', // Green
+  '#5733FF', // Blue
+  '#FF33A6', // Pink
+  '#FFD133', // Yellow
+  '#33A6FF', // Sky Blue
+  '#FF3362', // Red
+  '#A6FF33', // Neon Yellow-Green
+  '#FF33D1', // Purple
+  '#FFA633', // Amber
+  '#33FF99', // Mint Green
+];
+
 export interface EnsembleData {
   ensemble: number;
   ensemble_id: string;
@@ -359,7 +373,9 @@ const mainReducer = (
         ];
       case GlobalTypes.AddDistrictPlan:
         let newPlanIds = state[state.length - 1].districtPlanIds;
-        newPlanIds.push(action.payload.planId);
+        if (!newPlanIds.includes(action.payload.planId)) {
+          newPlanIds.push(action.payload.planId);
+        }
         return [
           ...state,
           {

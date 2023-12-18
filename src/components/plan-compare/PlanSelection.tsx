@@ -121,7 +121,7 @@ export default function PlanSelection({
             </TableRow>
           </TableHead>
           <TableBody>
-            {spliceTableData().map((row) => {
+            {spliceTableData().map((row, index) => {
               const style =
                 state[state.length - 1].comparedPlan.district_plan_id ===
                 row.district_plan_id
@@ -135,7 +135,7 @@ export default function PlanSelection({
                         onClick={() => handleSelectPlan(row)}
                         style={style}
                       >
-                        {row.district_plan}
+                        {index + 1}
                       </button>
                     }
                   </TableCell>

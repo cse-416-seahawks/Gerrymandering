@@ -18,6 +18,7 @@ import {
   AvailableStates,
   GlobalContext,
   GlobalTypes,
+  colors,
 } from "../../globalContext";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { fetchClusterDetails } from "../apiClient";
@@ -43,6 +44,7 @@ export default function DistrictPlansCard() {
     stateName: AvailableStates;
     clusterId: string;
   }>();
+  const [curColors, setColors] = useState<string[]>([]);
   const [plansPerPage, setPlansPerPage] = useState(4);
   const [page, setPage] = useState(0);
   const currentState = stateName || AvailableStates.Unselected;
@@ -58,7 +60,10 @@ export default function DistrictPlansCard() {
     setPage(0);
   };
 
-  const visiblePlans = displayedDistrictPlans.slice(page * plansPerPage, page * plansPerPage + plansPerPage);
+  const visiblePlans = displayedDistrictPlans.slice(
+    page * plansPerPage,
+    page * plansPerPage + plansPerPage
+  );
 
   function removeSelectedDistrictPlan(districtPlanNum: number) {
     const selected = displayedDistrictPlans.map((item) => {
@@ -100,6 +105,8 @@ export default function DistrictPlansCard() {
       avg_democrat: "0.30",
       avg_republican: "0.70",
     });
+    const newColors = colors.slice(0,displayedDistrictPlans.length).reverse();
+    setColors(newColors);
     setDisplayedDistrictPlans(newDisplayedPlans);
   }, [state, allDistrictPlans]);
 
@@ -129,7 +136,10 @@ export default function DistrictPlansCard() {
     <CardContent>
       <TableContainer className="plan-table-container" component={Paper}>
         <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
-          <Table size="small" style={{ width: "100%", height: "100%", overflow: "auto" }}>
+          <Table
+            size="small"
+            style={{ width: "100%", height: "100%", overflow: "auto" }}
+          >
             <TableHead>
               <TableRow>
                 <TableCell align="center">District Plan</TableCell>
@@ -140,7 +150,7 @@ export default function DistrictPlansCard() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {visiblePlans.map((row) => (
+              {visiblePlans.map((row, index) => (
                 <TableRow
                   key={row.district_plan}
                   onDoubleClick={() =>
@@ -153,7 +163,7 @@ export default function DistrictPlansCard() {
                         2022 District Plan
                       </Typography>
                     ) : (
-                      row.district_plan + 1
+                      <Typography fontWeight="bold" color={curColors[index - 1]}>{row.district_plan + 1}</Typography>
                     )}
                   </TableCell>
                   <TableCell align="center">

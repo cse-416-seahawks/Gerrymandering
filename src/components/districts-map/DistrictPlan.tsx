@@ -33,7 +33,6 @@ export default ({
       try {
         let result;
         if (planId == "ORIGINAL") {
-          console.log("true");
           result = await fetchCurrDistrictPlan(currentState);
         } else {
           result = await fetchDistrictPlan(currentState, planId);

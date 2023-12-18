@@ -64,8 +64,6 @@ export default function PartySplitChart({
     value: value,
   }));
 
-  console.log("frequency array", frequencyArray);
-
   const parseSplits = (party_splits: PartySplitData) => {
     return party_splits.splits.map((split) => {
       return {

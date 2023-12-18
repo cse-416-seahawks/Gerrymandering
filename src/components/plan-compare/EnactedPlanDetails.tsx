@@ -101,8 +101,9 @@ export default function EnactedPlanDetails() {
             Plan 2
           </Typography>
           <Typography align="left" variant="h5" component="div">
-            Nevada District Plan{" "}
-            {state[state.length - 1].comparedPlan.district_plan}
+            {currentState.charAt(0).toUpperCase() +
+              currentState.slice(1).toLowerCase()}{" "}
+            District Plan {state[state.length - 1].comparedPlan.district_plan}
           </Typography>
           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">

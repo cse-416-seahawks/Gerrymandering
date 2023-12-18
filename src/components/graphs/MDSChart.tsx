@@ -70,7 +70,7 @@ export default function MDSChart({
   ];
 
   const domain = parseDomain();
-  const range = [100, 1000];
+  const range = [100, 5000];
 
   interface CustomTooltipProps extends TooltipProps<any, any> {
     active?: boolean;

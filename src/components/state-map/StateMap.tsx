@@ -20,6 +20,7 @@ import {
   AvailableStates,
   GlobalTypes,
   InfoCardType,
+  colors,
 } from "../../globalContext";
 import MainInfoCard from "../infocards/MainInfoCard";
 import { DistrictState } from "../interfaces/MapInterface";
@@ -34,18 +35,6 @@ interface StateMapProps {
 export default function StateMap({ currentState }: StateMapProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const currentStateMapData = state[state.length - 1].mapData[currentState];
-  const [colors, setColors] = useState<string[]>([
-    '#FF5733', // Orange
-    '#33FF57', // Green
-    '#5733FF', // Blue
-    '#FF33A6', // Pink
-    '#33FFC7', // Turquoise
-    '#FFD133', // Yellow
-    '#33A6FF', // Sky Blue
-    '#FF3362', // Red
-    '#A6FF33', // Lime Green
-    '#FF33D1'  // Purple
-  ]);
   const [planIds, setPlanIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
@@ -60,7 +49,6 @@ export default function StateMap({ currentState }: StateMapProps) {
     return null;
   };
 
-
   const handleStateChange = (event: SelectChangeEvent) => {
     dispatch({
       type: GlobalTypes.ChangeCard,
@@ -74,15 +62,15 @@ export default function StateMap({ currentState }: StateMapProps) {
   };
 
   function generateNeonColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-  
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+
     for (let i = 0; i < 6; i++) {
       // To make it bright, favor values close to F (hexadecimal)
       const value = Math.floor(Math.random() * 6) + 10;
       color += letters[value];
     }
-  
+
     return color;
   }
 
@@ -115,15 +103,18 @@ export default function StateMap({ currentState }: StateMapProps) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {planIds.map((planId, index) => (
-              <DistrictPlan
-                transparent
-                planId={planId}
-                opacity={0.5}
-                color={"ADD8E6"}
-                strokeColor={colors[index]}
-              />
-            ))}
+            {planIds.map((planId, index) => {
+              console.log(planIds);
+              return (
+                <DistrictPlan
+                  transparent
+                  planId={planId}
+                  opacity={0.5}
+                  color={"ADD8E6"}
+                  strokeColor={colors[index]}
+                />
+              );
+            })}
             <NevadaDistricts opacity={0.7} />
             <TexasDistricts opacity={0.7} />
             <VirginiaDistricts opacity={0.7} />
