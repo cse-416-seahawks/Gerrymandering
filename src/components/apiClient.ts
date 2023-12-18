@@ -199,6 +199,18 @@ export async function fetchDistrictPlan(
   }
 }
 
+export async function fetchTypicalPlan(
+  state: AvailableStates,
+  clusterId : string
+) {
+  const url = `http://localhost:4000/getTypicalPlan/${state}/${clusterId}`;
+  try {
+    return await fetchData(url);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function fetchDistanceMeasureData(
   state: AvailableStates,
   ensembleId: string

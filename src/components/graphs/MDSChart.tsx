@@ -51,7 +51,6 @@ export default function MDSChart({
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setDataPoints(response.data);
-          console.log("cluster data", data);
         }
       } catch (error) {
         throw error;

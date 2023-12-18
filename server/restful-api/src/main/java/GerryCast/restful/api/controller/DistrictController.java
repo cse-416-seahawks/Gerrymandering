@@ -81,20 +81,6 @@ public class DistrictController {
             stateCollection = db.getCollection("TexasPlans");
         } else if (state.equals("VIRGINIA")) {
             stateCollection = db.getCollection("VirginiaPlans");
-            FindIterable<Document> documents = stateCollection.find();
-
-            List<Document> dList = new ArrayList<>();
-
-            for (Document d : documents) {
-                dList.add(d);
-            }
-            if (dList.isEmpty()) {
-                return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
-            }
-
-            Gson gson = new Gson();
-            String json = gson.toJson(dList);
-            return new ResponseEntity<>(json, HttpStatus.OK);
         } else if (state.equals("NEVADA")) {
             stateCollection = db.getCollection("NevadaPlans");
         }
@@ -232,7 +218,35 @@ public class DistrictController {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        Document docFinder = new Document("type", "FeatureCollection").append("planId", districtPlanId);
+        Document docFinder = new Document("type", "FeatureCollection").append("features", new Document("$elemMatch", new Document("properties.PLANID", districtPlanId)));
+        Document document = stateCollection.find(docFinder).first();
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getTypicalPlan/{state}/{clusterId}")
+    public ResponseEntity<String> getTypicalPlan(@PathVariable final String state,
+            @PathVariable final String clusterId) {
+        MongoCollection<Document> stateCollection = null;
+
+        if (state.equals("TEXAS")) {
+            stateCollection = db.getCollection("TexasPlans");
+        } else if (state.equals("VIRGINIA")) {
+            stateCollection = db.getCollection("VirginiaPlans");
+        } else if (state.equals("NEVADA")) {
+            stateCollection = db.getCollection("NevadaPlans");
+        }
+
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
+        }
+
+        Document docFinder = new Document("type", "FeatureCollection").append("cluster_id", clusterId);
         Document document = stateCollection.find(docFinder).first();
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);

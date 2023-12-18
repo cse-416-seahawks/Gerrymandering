@@ -38,8 +38,6 @@ function DistanceMeasures() {
           currentState,
           currentEnsembleId
         );
-
-        console.log("Distance measure data", response);
         if (response) {
           dispatch({
             type: GlobalTypes.SetDistanceMeasuresData,

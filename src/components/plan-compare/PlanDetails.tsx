@@ -15,8 +15,10 @@ import { useContext } from "react";
 import EnsembleDetailTable from "../tables/EnsembleDetailTable";
 import { useParams } from "react-router-dom";
 
-interface PlanDetailsProps {}
-export default function PlanDetails({}: PlanDetailsProps) {
+interface PlanDetailsProps {
+  planId : string
+}
+export default function PlanDetails({ planId }: PlanDetailsProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
 

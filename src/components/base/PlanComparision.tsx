@@ -30,24 +30,7 @@ export default function PlanComparison() {
   const [value, setValue] = React.useState(0);
 
 
-  const details = [
-    {
-      "Republican Districts": 21,
-      "Democratic Districts": 22,
-    },
-    {
-      "Average % Republican Voters": 51,
-      "Average % of Democratic Voters": 54,
-    },
-    {
-      "Caucasian Population": 0.3,
-      "African American Population": 0.1,
-    },
-    {
-      Hispanic: 0.3,
-      Other: 0.1,
-    },
-  ];
+
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number);
   };
@@ -119,7 +102,7 @@ export default function PlanComparison() {
                 margin: 1,
               }}
             >
-              <PlanDetails />
+              <PlanDetails planId={planId || "ORIGINAL"}/>
             </Card>
           </Grid>
         </Grid>

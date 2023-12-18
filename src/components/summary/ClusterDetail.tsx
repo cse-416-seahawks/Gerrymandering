@@ -4,7 +4,11 @@ import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import Box from "@mui/material/Box";
 import { Tabs, Tab } from "@mui/material";
-import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  InfoCardType,
+} from "../../globalContext";
 import DistrictPlanScatterPlot from "../graphs/DistrictPlanScatterChart";
 import ClusterDetailTable from "../tables/ClusterDetailTable";
 import PartySplitChart from "../graphs/PartySplitChart";
@@ -13,13 +17,19 @@ import {
   DistrictPlanPoints,
   DistrictPlanData,
 } from "../interfaces/AnalysisInterface";
+import TypicalPlan from "../districts-map/TypicalPlan";
+import SplitFreqChart from "../graphs/SplitFreqChart";
 
-interface ClusterDetailProps{
-  currentState : AvailableStates,
-  ensembleId : string,
-  clusterId : string
+interface ClusterDetailProps {
+  currentState: AvailableStates;
+  ensembleId: string;
+  clusterId: string;
 }
-export default function ClusterDetail({ currentState, ensembleId, clusterId } : ClusterDetailProps) {
+export default function ClusterDetail({
+  currentState,
+  ensembleId,
+  clusterId,
+}: ClusterDetailProps) {
   const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
@@ -36,7 +46,6 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
   }
 
   useEffect(() => {
-
     async function getClusterDetail() {
       try {
         const response = await fetchClusterDetails(currentState, clusterId);
@@ -55,12 +64,7 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
 
     async function getClusterDetailGraph() {
       try {
-        const response = await fetchClusterDetailGraph(
-          currentState,
-          clusterId
-        );
-
-        console.log('district plan graph', response);
+        const response = await fetchClusterDetailGraph(currentState, clusterId);
         setAxisLabels([response.x_axis_label, response.y_axis_label]);
         setAvailableDataPoints(
           response.data.filter(
@@ -102,7 +106,7 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
       <TabContext value={currentTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider", width: "95%" }}>
           <Tabs value={currentTab} onChange={handleTabChange}>
-          <Tab
+            <Tab
               value="1"
               label="Table View"
               sx={{ textTransform: "none" }}
@@ -114,11 +118,20 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
               sx={{ textTransform: "none" }}
               onClick={handlePlanCard}
             />
-            <Tab value="3" label="Party Split" sx={{ textTransform: "none" }} />
-            <Tab value="4" label="Typical Plan" sx={{ textTransform: "none" }} />
+            <Tab
+              value="3"
+              label="Party Split"
+              sx={{ textTransform: "none" }}
+              onClick={handleSummaryCard}
+            />
+            <Tab
+              value="4"
+              label="Typical Plan"
+              sx={{ textTransform: "none" }}
+            />
           </Tabs>
         </Box>
-        
+
         <TabPanel value="1">
           <ClusterDetailTable districtPlanData={tableData} />
         </TabPanel>
@@ -130,12 +143,15 @@ export default function ClusterDetail({ currentState, ensembleId, clusterId } : 
           />
         </TabPanel>
         <TabPanel value="3">
-          <PartySplitChart districtPlans={tableData} />
-        </TabPanel>
-        <TabPanel value="3">
+          <SplitFreqChart districtPlans={tableData} />
           <PartySplitChart districtPlans={tableData} />
         </TabPanel>
         <TabPanel value="4">
+          <TypicalPlan
+            clusterId={clusterId}
+            color={"A9A9A9"}
+            strokeColor={"FFFFFF"}
+          />
         </TabPanel>
       </TabContext>
     </>

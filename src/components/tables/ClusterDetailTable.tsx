@@ -14,17 +14,31 @@ import TablePagination from "@mui/material/TablePagination";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { useNavigate, useParams } from "react-router-dom";
 import { AvailableStates } from "../../globalContext";
+import { fetchClusterSplits } from "../apiClient";
 
 interface ClusterDetailTableProps {
   districtPlanData: Array<DistrictPlanData>;
+}
+
+interface Split {
+  district_plan: string;
+  splits: [number, number];
+}
+
+interface PartySplitData {
+  type: string;
+  clusterId: string;
+  num_districts: number;
+  splits: Split[];
 }
 
 export default function ClusterDetailTable({
   districtPlanData,
 }: ClusterDetailTableProps) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
-  const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const { stateName, ensembleId, clusterId } = useParams<{ stateName: AvailableStates, ensembleId : string, clusterId : string }>();
+  const [splitData, setSplitData] = useState<PartySplitData | null>(null);
   const currentState = stateName || AvailableStates.Unselected;
   const navigate = useNavigate();
 
@@ -63,6 +77,22 @@ export default function ClusterDetailTable({
     navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`)
   }
 
+  useEffect(() => {
+    const currentState = stateName || AvailableStates.Unselected;
+    const curClusterId = clusterId || "";
+    async function getClusterSplitData() {
+      try {
+        const response = await fetchClusterSplits(currentState, curClusterId);
+        if (response) {
+          setSplitData(response);
+        }
+      } catch (error) {
+        throw error;
+      }
+    }
+    getClusterSplitData();
+  }, []);
+
   return (
     <div>
       <TableContainer
@@ -75,8 +105,8 @@ export default function ClusterDetailTable({
             <TableRow>
               <TableCell align="left">District Plan</TableCell>
               <TableCell align="center"># Opportunity Districts</TableCell>
-              <TableCell align="center">Avg Republican %</TableCell>
               <TableCell align="center">Avg Democratic %</TableCell>
+              <TableCell align="center">Avg Republican %</TableCell>
               <TableCell align="center">Compare with Enacted</TableCell>
             </TableRow>
           </TableHead>
@@ -84,13 +114,13 @@ export default function ClusterDetailTable({
             {spliceTableData().map((row, index) => (
               <TableRow key={row.district_plan}>
                 <TableCell component="th" scope="row">
-                  {<button style={buttonStyle}>{index + 1}</button>}
+                  {<button style={buttonStyle}>{index + 1 + (rowsPerPage * page)}</button>}
                 </TableCell>
                 <TableCell align="center">
                   {row.opportunity_districts}
                 </TableCell>
-                <TableCell align="center">{row.avg_democrat}</TableCell>
-                <TableCell align="center">{row.avg_republican}</TableCell>
+                <TableCell align="center">{(parseFloat(row.avg_democrat) * 100).toFixed(2)} %</TableCell>
+                <TableCell align="center">{(parseFloat(row.avg_republican) * 100).toFixed(2)} %</TableCell>
                 <TableCell align="center">
                   <Fab variant="extended" size="small" onClick={() => handleCompare(row.district_plan_id)} color="primary">
                     Compare

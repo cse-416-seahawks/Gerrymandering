@@ -54,7 +54,6 @@ export default function ClusterScatterPlot({ currentState, ensembleId, data }: C
 
   const handleClick = (point: ClusterPoints, event: React.MouseEvent<HTMLElement, MouseEvent>) => {
       const clickedPoint = point
-      console.log('Clicked Point:', clickedPoint);
   };
 
   const clusterGraphData = (dataPoints : ClusterPoints[]) => {

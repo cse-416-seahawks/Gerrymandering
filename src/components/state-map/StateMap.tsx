@@ -12,9 +12,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TexasDistricts from "../districts/TexasDistricts";
-import NevadaDistricts from "../districts/NevadaDistricts";
-import VirginiaDistricts from "../districts/VirginiaDistricts";
+import TexasDistricts from "../districts-map/TexasDistricts";
+import NevadaDistricts from "../districts-map/NevadaDistricts";
+import VirginiaDistricts from "../districts-map/VirginiaDistricts";
 import {
   GlobalContext,
   AvailableStates,
@@ -23,7 +23,7 @@ import {
 } from "../../globalContext";
 import MainInfoCard from "../infocards/MainInfoCard";
 import { DistrictState } from "../interfaces/MapInterface";
-import DistrictPlan from "../districts/DistrictPlan";
+import DistrictPlan from "../districts-map/DistrictPlan";
 import { fetchDistrictPlan } from "../apiClient";
 import { useNavigate } from "react-router-dom";
 import { clearCache } from "../cacheUtil";
@@ -34,7 +34,18 @@ interface StateMapProps {
 export default function StateMap({ currentState }: StateMapProps) {
   const { state, dispatch } = useContext(GlobalContext);
   const currentStateMapData = state[state.length - 1].mapData[currentState];
-  const [colors, setColors] = useState<string[]>(Array.from({ length: 10 }, () => generateBrightHexColor()))
+  const [colors, setColors] = useState<string[]>([
+    '#FF5733', // Orange
+    '#33FF57', // Green
+    '#5733FF', // Blue
+    '#FF33A6', // Pink
+    '#33FFC7', // Turquoise
+    '#FFD133', // Yellow
+    '#33A6FF', // Sky Blue
+    '#FF3362', // Red
+    '#A6FF33', // Lime Green
+    '#FF33D1'  // Purple
+  ]);
   const [planIds, setPlanIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
@@ -62,16 +73,17 @@ export default function StateMap({ currentState }: StateMapProps) {
     navigate(`/cluster-analysis/state/${event.target.value}`);
   };
 
-  function generateBrightHexColor() {
-    // Generate random RGB values
-    const red = Math.floor(Math.random() * 200) + 55; // Adjust range as needed
-    const green = Math.floor(Math.random() * 200) + 55;
-    const blue = Math.floor(Math.random() * 200) + 55;
+  function generateNeonColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
   
-    // Convert RGB to hex
-    const hexColor = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`;
+    for (let i = 0; i < 6; i++) {
+      // To make it bright, favor values close to F (hexadecimal)
+      const value = Math.floor(Math.random() * 6) + 10;
+      color += letters[value];
+    }
   
-    return hexColor;
+    return color;
   }
 
   useEffect(() => {

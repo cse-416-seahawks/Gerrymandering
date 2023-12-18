@@ -259,7 +259,6 @@ const mainReducer = (
           let newDetails = state[state.length - 1].ensembleDetails;
           
           if (!newDetails.some(existingData => JSON.stringify(existingData) === JSON.stringify(action.payload.EnsembleData))) {
-            console.log(action.payload.EnsembleData)
             newDetails.push(action.payload.EnsembleData);
           }
             if (newDetails.length > 3) {

@@ -6,11 +6,11 @@ import VirginiaMap from "../state-map/VirginiaMap";
 import "leaflet/dist/leaflet.css";
 import "../../App.css";
 import { GlobalContext, AvailableStates } from "../../globalContext";
-import NevadaDistricts from "../districts/NevadaDistricts";
-import VirginiaDistricts from "../districts/VirginiaDistricts";
-import TexasDistricts from "../districts/TexasDistricts";
+import NevadaDistricts from "../districts-map/NevadaDistricts";
+import VirginiaDistricts from "../districts-map/VirginiaDistricts";
+import TexasDistricts from "../districts-map/TexasDistricts";
 import { DistrictState } from "../interfaces/MapInterface";
-import DistrictPlan from "../districts/DistrictPlan";
+import DistrictPlan from "../districts-map/DistrictPlan";
 import { fetchDistrictPlan } from "../apiClient";
 import { useParams } from "react-router-dom";
 
