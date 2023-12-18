@@ -36,28 +36,15 @@ export default function MDSChart({
   const { state, dispatch } = useContext(GlobalContext);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [dataPoints, setDataPoints] = useState<Array<ClusterPoints>>([]);
+  const [customPoints, setCustomPoints] = useState<Array<ClusterPoints>>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const distanceMeasure = state[state.length - 1].distanceMeasure;
+  const statePopulation = {
+    "NEVADA" : 10000000,
+    "TEXAS" : 10000000,
+    "VIRGINIA" : 10000000
 
-    async function getClusterSummaryGraphData() {
-      try {
-        const response = await fetchMDSClusterGraphData(
-          currentState,
-          ensembleId,
-          distanceMeasure
-        );
-        if (response) {
-          setAxisLabels([response.x_axis_label, response.y_axis_label]);
-          setDataPoints(response.data);
-        }
-      } catch (error) {
-        throw error;
-      }
-    }
-    getClusterSummaryGraphData();
-  }, [state[state.length - 1].ensemble]);
+  }
 
   const parseDomain = () => [
     500,
@@ -93,7 +80,7 @@ export default function MDSChart({
         {
           type: GlobalTypes.ChangeCard,
           payload: {
-            infoCardType: InfoCardType.districtPlans,
+            infoCardType: InfoCardType.clusterSummary,
           },
         },
         {

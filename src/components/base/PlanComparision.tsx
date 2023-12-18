@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import EnactedPlanDetails from "../plan-compare/EnactedPlanDetails";
-import PlanDetails from "../plan-compare/PlanDetails";
 import PlanSelection from "../plan-compare/PlanSelection";
 import { useParams } from "react-router-dom";
 
@@ -29,8 +28,6 @@ export default function PlanComparison() {
   const currentStateMapData = state[state.length - 1].mapData[currentState];
   const [value, setValue] = React.useState(0);
 
-
-
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number);
   };
@@ -39,13 +36,14 @@ export default function PlanComparison() {
     <div className="Home">
       <div className="Home-content">
         <Navbar aboutPage={false} />
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
+        <Box display="flex" justifyContent="space-between">
+          <Box display="flex" flexDirection="column">
             <Card
               sx={{
-                minWidth: 275,
+                width: "45vw",
                 maxHeight: "50vh",
-                margin: 1,
+                margin: 1.5,
+                marginLeft: 5,
                 padding: 2,
               }}
             >
@@ -69,32 +67,32 @@ export default function PlanComparison() {
                 <Typography>Plan 2</Typography>
               </Box>
             </Card>
-          </Grid>
-          <Grid item xs={6}>
             <Card
               sx={{
-                minWidth: 275,
-                minHeight: "53.2vh",
-                margin: 1,
-              }}
-            >
-              <PlanSelection
-                districtPlanData={state[state.length - 1].clusterDetails}
-              />
-            </Card>
-          </Grid>
-          <Grid item xs={6}>
-            <Card
-              sx={{
-                minWidth: 275,
+                width: "47vw",
                 minHeight: "35vh",
-                margin: 1,
+                margin: 1.5,
+                marginLeft: 5,
               }}
             >
               <EnactedPlanDetails />
             </Card>
-          </Grid>
-          <Grid item xs={6}>
+          </Box>
+          <Card
+            sx={{
+              width: "45vw",
+              minHeight: "53.2vh",
+              margin: 1.5,
+              marginRight : 4
+            }}
+          >
+            <PlanSelection
+              districtPlanData={state[state.length - 1].clusterDetails}
+            />
+          </Card>
+        </Box>
+
+        {/* <Grid item xs={6}>
             <Card
               sx={{
                 minWidth: 275,
@@ -104,8 +102,7 @@ export default function PlanComparison() {
             >
               <PlanDetails planId={planId || "ORIGINAL"}/>
             </Card>
-          </Grid>
-        </Grid>
+          </Grid> */}
       </div>
     </div>
   );

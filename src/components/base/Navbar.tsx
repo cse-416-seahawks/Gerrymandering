@@ -4,6 +4,7 @@ import "../css/Navbar.css";
 import {
   AvailableStates,
   GlobalContext,
+  GlobalTypes,
   InfoCardType,
 } from "../../globalContext";
 import AppBar from "@mui/material/AppBar";
@@ -29,6 +30,12 @@ export default function Navbar({ aboutPage }: NavbarProps) {
   }, []);
 
   const handleGoHome = () => {
+    dispatch({
+      type: GlobalTypes.ResetPage,
+      payload: {
+        clean: true,
+      },
+    });
     navigate("/");
   };
 
@@ -57,7 +64,6 @@ export default function Navbar({ aboutPage }: NavbarProps) {
             GerryCast
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-
           {!stateName || aboutPage ? (
             <Typography>{header}</Typography>
           ) : (
@@ -93,12 +99,11 @@ export default function Navbar({ aboutPage }: NavbarProps) {
               </Breadcrumbs>
             </>
           )}
-
+          <Box sx={{ flexGrow: 1 }} />{" "}
           {aboutPage ? (
             <div></div>
           ) : (
             <>
-              <Box sx={{ flexGrow: 1 }} />{" "}
               <Button
                 onClick={() => {
                   setHeader("");

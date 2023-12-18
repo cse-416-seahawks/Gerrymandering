@@ -76,11 +76,14 @@ export enum GlobalTypes {
   SetMapData = "SET_MAP_DATA",
   AddDistrictPlan = "ADD_DISTRICT_PLAN",
   RemoveDistrictPlan = "REMOVE_DISTRICT_PLAN",
+  SetComparedPlan = "SET_COMPARED_PLAN",
+  SetPlotOptions = "SET_PLOT_OPTIONS",
+  ResetPage = "RESET_PAGE",
 }
 
 export enum DistanceMeasure {
   HammingDistance = "Hamming Distance",
-  OptimalTransport = "Optimal Transport"
+  OptimalTransport = "Optimal Transport",
 }
 
 export type GlobalState = {
@@ -95,6 +98,8 @@ export type GlobalState = {
   districtPlanIds: Array<string>;
   ensembleDetails: Array<EnsembleData>;
   clusterDetails: Array<DistrictPlanData>;
+  comparedPlan: DistrictPlanData;
+  plotOptions: GraphOptions;
 };
 
 type GlobalStatePayload = {
@@ -133,6 +138,15 @@ type GlobalStatePayload = {
   [GlobalTypes.RemoveDistrictPlan]: {
     planId: string;
   };
+  [GlobalTypes.SetComparedPlan]: {
+    comparedPlan: DistrictPlanData;
+  };
+  [GlobalTypes.SetPlotOptions]: {
+    plotOptions: GraphOptions;
+  };
+  [GlobalTypes.ResetPage]: {
+    clean: boolean;
+  };
 };
 
 export type GlobalStateActions =
@@ -145,225 +159,297 @@ const mainReducer = (
 ): GlobalState[] => {
   const isArray = Array.isArray(action);
 
-  const handleSingleAction = (action: ActionMap<GlobalStatePayload>[keyof ActionMap<GlobalStatePayload>]) => {
-      switch (action.type) {
-        case GlobalTypes.SetMapData:
-          return [
-            ...state,
-            {
-              mapData: action.payload.mapData,
-              districtPlanTypes: action.payload.districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
+  const handleSingleAction = (
+    action: ActionMap<GlobalStatePayload>[keyof ActionMap<GlobalStatePayload>]
+  ) => {
+    switch (action.type) {
+      case GlobalTypes.SetMapData:
+        return [
+          ...state,
+          {
+            mapData: action.payload.mapData,
+            districtPlanTypes: action.payload.districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.ChangeCard:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: action.payload.infoCardType,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.DistanceMeasure:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: action.payload.distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: [],
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.SetDistanceMeasuresData:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              action.payload.compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.SetEnsemble:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: action.payload.ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.SetCluster:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: action.payload.cluster,
+            clusterPlanIds: action.payload.clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.AddEnsembleDetail:
+        let newDetails = state[state.length - 1].ensembleDetails;
+
+        if (
+          !newDetails.some(
+            (existingData) =>
+              JSON.stringify(existingData) ===
+              JSON.stringify(action.payload.EnsembleData)
+          )
+        ) {
+          newDetails.push(action.payload.EnsembleData);
+        }
+        if (newDetails.length > 3) {
+          newDetails.shift();
+        }
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: newDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.UpdateEnsembleDetail:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: action.payload.EnsembleData,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.SetClusterDetails:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: action.payload.clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.AddDistrictPlan:
+        let newPlanIds = state[state.length - 1].districtPlanIds;
+        newPlanIds.push(action.payload.planId);
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: newPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.RemoveDistrictPlan:
+        let updatedPlanIds = state[state.length - 1].districtPlanIds;
+        updatedPlanIds = updatedPlanIds.filter(
+          (planId) => planId !== action.payload.planId
+        );
+        console.log(updatedPlanIds);
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: updatedPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.SetComparedPlan:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: action.payload.comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+          },
+        ];
+      case GlobalTypes.ResetPage:
+        return [
+          ...state,
+          {
+            mapData: {},
+            districtPlanTypes: {},
+            currentInfoCard: InfoCardType.ensembleInfo,
+            distanceMeasure: DistanceMeasure.HammingDistance,
+            compareDistanceMeasuresData: [],
+            ensemble: 0,
+            cluster: 0,
+            clusterPlanIds: [],
+            districtPlanIds: [],
+            ensembleDetails: [],
+            clusterDetails: [],
+            comparedPlan: {} as DistrictPlanData,
+            plotOptions: {
+              demographic: Demographics.AfroAmerican,
+              population: 5,
+              comparison: true,
             },
-          ];
-        case GlobalTypes.ChangeCard:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: action.payload.infoCardType,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.DistanceMeasure:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: action.payload.distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: [],
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.SetDistanceMeasuresData:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                action.payload.compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.SetEnsemble:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: action.payload.ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.SetCluster:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: action.payload.cluster,
-              clusterPlanIds: action.payload.clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.AddEnsembleDetail:
-          let newDetails = state[state.length - 1].ensembleDetails;
-          
-          if (!newDetails.some(existingData => JSON.stringify(existingData) === JSON.stringify(action.payload.EnsembleData))) {
-            newDetails.push(action.payload.EnsembleData);
-          }
-            if (newDetails.length > 3) {
-              newDetails.shift();
-            }
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              
-             
-              ensemble: state[state.length - 1].ensemble,
-              
-              cluster: state[state.length - 1].cluster,
-              
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: newDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.UpdateEnsembleDetail:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: action.payload.EnsembleData,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.SetClusterDetails:
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: state[state.length - 1].districtPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: action.payload.clusterDetails,
-            },
-          ];
-        case GlobalTypes.AddDistrictPlan:
-          let newPlanIds = state[state.length - 1].districtPlanIds;
-          newPlanIds.push(action.payload.planId);
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: newPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        case GlobalTypes.RemoveDistrictPlan:
-          newPlanIds = state[state.length - 1].districtPlanIds;
-          newPlanIds.filter((planId) => planId !== action.payload.planId);
-          return [
-            ...state,
-            {
-              mapData: state[state.length - 1].mapData,
-              districtPlanTypes: state[state.length - 1].districtPlanTypes,
-              currentInfoCard: state[state.length - 1].currentInfoCard,
-              distanceMeasure: state[state.length - 1].distanceMeasure,
-              compareDistanceMeasuresData:
-                state[state.length - 1].compareDistanceMeasuresData,
-              ensemble: state[state.length - 1].ensemble,
-              cluster: state[state.length - 1].cluster,
-              clusterPlanIds: state[state.length - 1].clusterPlanIds,
-              districtPlanIds: newPlanIds,
-              ensembleDetails: state[state.length - 1].ensembleDetails,
-              clusterDetails: state[state.length - 1].clusterDetails,
-            },
-          ];
-        default:
-          return state;
-      }
+          },
+        ];
+      default:
+        return state;
+    }
   };
 
   const handleMultipleActions = (actions: GlobalStateActions[]) => {
@@ -396,6 +482,12 @@ const intialState: GlobalState[] = [
     districtPlanIds: [],
     ensembleDetails: [],
     clusterDetails: [],
+    comparedPlan: {} as DistrictPlanData,
+    plotOptions: {
+      demographic: Demographics.AfroAmerican,
+      population: 5,
+      comparison: true,
+    },
   },
 ];
 

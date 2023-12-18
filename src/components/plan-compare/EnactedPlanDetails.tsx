@@ -13,17 +13,19 @@ import {
   Table,
   TableCell,
   TableRow,
+  Grid,
 } from "@mui/material";
 import { AvailableStates, GlobalContext } from "../../globalContext";
 import { useContext } from "react";
-import EnsembleDetailTable from "../tables/EnsembleDetailTable";
 import { useParams } from "react-router-dom";
-import { style } from "d3";
-
+interface DetailsItem {
+  [key: string]: number | string; // Assuming values can be either number or string
+}
 export default function EnactedPlanDetails() {
   const { state, dispatch } = useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
   const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const [mainDetails, setMainDetails] = useState<DetailsItem[]>([]);
 
   const currentState = stateName || AvailableStates.Unselected;
 
@@ -36,54 +38,88 @@ export default function EnactedPlanDetails() {
     bgcolor: "background.paper",
   };
 
-  const details = [
+  const curPlanDetails: DetailsItem[] = [
     {
-      "Republican Districts": 21,
-      "Democratic Districts": 22,
-    },
-    {
-      "Average % Republican Voters": 51,
-      "Average % of Democratic Voters": 54,
-    },
-    {
-      "Caucasian Population": 0.3,
-      "African American Population": 0.1,
-    },
-    {
-      "Hispanic": 0.3,
-      "Other": 0.1,
+      "% Republican Voters": 0.469,
+      "% of Democratic Voters": 0.531,
+
+      "Opportunity Districts": 16,
     },
   ];
 
+  useEffect(() => {
+    const details: DetailsItem[] = [
+      {
+        "Average % Republican Voters":
+          state[state.length - 1].comparedPlan.avg_republican,
+        "Average % of Democratic Voters":
+          state[state.length - 1].comparedPlan.avg_democrat,
+        "Opportunity Districts":
+          state[state.length - 1].comparedPlan.opportunity_districts,
+      },
+    ];
+    setMainDetails(details);
+  }, [state]);
+
   return (
     <CardContent>
-      <Typography
-        align="left"
-        sx={{ fontSize: 14 }}
-        color="text.secondary"
-        gutterBottom
-      >
-        Plan 1
-      </Typography>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h5" component="div">
-          {curDetails}
-        </Typography>
-      </Box>
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          {details.map((detail, index) => (
-            <TableRow key={index}>
-              {Object.entries(detail).map(([key, value]) => (
-                <React.Fragment key={key}>
-                  <TableCell>{key}</TableCell>
-                  <TableCell>{value}</TableCell>
-                </React.Fragment>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography
+            align="left"
+            sx={{ fontSize: 14 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Plan 1
+          </Typography>
+          <Typography align="left" variant="h5" component="div">
+            {curDetails}
+          </Typography>
+          <TableContainer>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              {mainDetails.map((detail, index) => (
+                <TableRow key={index}>
+                  {Object.entries(detail).map(([key, value]) => (
+                    <React.Fragment key={key}>
+                      <TableCell>{key}</TableCell>
+                      <TableCell>{value}</TableCell>
+                    </React.Fragment>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </Table>
-      </TableContainer>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            align="left"
+            sx={{ fontSize: 14 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Plan 2
+          </Typography>
+          <Typography align="left" variant="h5" component="div">
+            Nevada District Plan{" "}
+            {state[state.length - 1].comparedPlan.district_plan}
+          </Typography>
+          <TableContainer>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              {mainDetails.map((detail, index) => (
+                <TableRow key={index}>
+                  {Object.entries(detail).map(([key, value]) => (
+                    <React.Fragment key={key}>
+                      <TableCell>{key}</TableCell>
+                      <TableCell>{value}</TableCell>
+                    </React.Fragment>
+                  ))}
+                </TableRow>
+              ))}
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
     </CardContent>
   );
 }

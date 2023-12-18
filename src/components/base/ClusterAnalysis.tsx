@@ -159,7 +159,6 @@ export default function ClusterAnalysis({
           {ensembleId && clusterId && (
             <ClusterDetail
               currentState={selectedState}
-              ensembleId={ensembleId}
               clusterId={clusterId}
             />
           )}

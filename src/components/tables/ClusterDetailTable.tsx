@@ -13,7 +13,7 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { useNavigate, useParams } from "react-router-dom";
-import { AvailableStates } from "../../globalContext";
+import { AvailableStates, GlobalContext, GlobalTypes } from "../../globalContext";
 import { fetchClusterSplits } from "../apiClient";
 
 interface ClusterDetailTableProps {
@@ -37,6 +37,7 @@ export default function ClusterDetailTable({
 }: ClusterDetailTableProps) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
+  const { state, dispatch } = useContext(GlobalContext);
   const { stateName, ensembleId, clusterId } = useParams<{ stateName: AvailableStates, ensembleId : string, clusterId : string }>();
   const [splitData, setSplitData] = useState<PartySplitData | null>(null);
   const currentState = stateName || AvailableStates.Unselected;
@@ -74,6 +75,12 @@ export default function ClusterDetailTable({
   }
 
   const handleCompare = (planId : string) => {
+    dispatch({
+      type : GlobalTypes.SetComparedPlan,
+      payload : {
+        comparedPlan : districtPlanData.find((plan) => plan.district_plan_id === planId)
+      }
+    })
     navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`)
   }
 

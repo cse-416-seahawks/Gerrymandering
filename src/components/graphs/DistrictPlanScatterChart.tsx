@@ -39,7 +39,7 @@ export default function DistrictPlanScatterPlot({
 
   function handleDistrictPlanSelection(point: any) {
     const districtPlanId = point.district_plan_id;
-    if (!(state[state.length - 1].districtPlanIds.includes(districtPlanId))) {
+    if (!state[state.length - 1].districtPlanIds.includes(districtPlanId)) {
       dispatch({
         type: GlobalTypes.AddDistrictPlan,
         payload: {
@@ -47,16 +47,6 @@ export default function DistrictPlanScatterPlot({
         },
       });
     }
-  }
-
-  function removeSelectedDistrictPlan(districtPlanNum: number) {
-    const selected = displayedDistrictPlans.map((item) => {
-      return item;
-    });
-    const newSelected = selected.filter(
-      (item) => item.district_plan !== districtPlanNum
-    );
-    setDisplayedDistrictPlans(newSelected);
   }
 
   function handleOpenModal(open: boolean) {
@@ -103,6 +93,15 @@ export default function DistrictPlanScatterPlot({
     return null;
   };
 
+  function handleViewAllPlans(): void {
+    dispatch(availableData.map((data) => ({
+      type : GlobalTypes.AddDistrictPlan,
+      payload : {
+        planId : data.district_plan_id
+      }
+    })))
+  }
+
   return (
     <Grid
       container
@@ -112,12 +111,21 @@ export default function DistrictPlanScatterPlot({
         alignItems: "center",
       }}
     >
+      <Grid
+        xs={12}
+        style={{
+          height: "10%",
+          marginBottom : 6
+        }}
+      >
+        <Button onClick={() => handleViewAllPlans()}>View All Plans</Button>
+      </Grid>
       <AlertModal openCallBack={handleOpenModal} isOpen={modal} />
       <Grid
         item
         xs={1}
         style={{
-          height : "10%"
+          height: "10%",
         }}
       >
         <Typography
@@ -131,7 +139,6 @@ export default function DistrictPlanScatterPlot({
           Dimension 2
         </Typography>
       </Grid>
-
 
       <Grid item xs={11}>
         <ScatterChart width={720} height={590} margin={{ right: 50 }}>
@@ -169,6 +176,7 @@ export default function DistrictPlanScatterPlot({
           Dimension 1
         </Typography>
       </Grid>
+
       {/* <div
           style={{
             display: "flex",

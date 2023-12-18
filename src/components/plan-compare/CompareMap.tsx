@@ -31,19 +31,6 @@ export default function Map(props: {
 
   const currentState = stateName || AvailableStates.Unselected;
 
-  const CurrentDistrictPlan = (props: { opacity: number }) => {
-    switch (currentState) {
-      case AvailableStates.Nevada:
-        return <NevadaDistricts opacity={props.opacity} />;
-      case AvailableStates.Virginia:
-        return <VirginiaDistricts opacity={props.opacity} />;
-      case AvailableStates.Texas:
-        return <TexasDistricts opacity={props.opacity} />;
-      default:
-        return <div></div>;
-    }
-  };
-
   useEffect(() => {
   let opacity1: number;
   let opacity2: number;

@@ -22,16 +22,15 @@ import SplitFreqChart from "../graphs/SplitFreqChart";
 
 interface ClusterDetailProps {
   currentState: AvailableStates;
-  ensembleId: string;
   clusterId: string;
 }
 export default function ClusterDetail({
   currentState,
-  ensembleId,
   clusterId,
 }: ClusterDetailProps) {
-  const [currentTab, setCurrentTab] = useState("1");
   const { state, dispatch } = useContext(GlobalContext);
+  const [currentTab, setCurrentTab] = useState(state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary ? "1" : "2");
+  
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [availableDataPoints, setAvailableDataPoints] = useState<

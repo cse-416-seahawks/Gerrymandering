@@ -16,18 +16,19 @@ import {
   Typography,
 } from "@mui/material";
 import { ensemble_summary_table } from "../types/TableTypes";
-import { GlobalContext, AvailableStates } from "../../globalContext";
+import { GlobalContext, AvailableStates, GlobalTypes } from "../../globalContext";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface PlanSelectionProps {
-  districtPlanData : Array<DistrictPlanData>;
+  districtPlanData: Array<DistrictPlanData>;
 }
-export default function PlanSelection({ districtPlanData } : PlanSelectionProps) {
+export default function PlanSelection({
+  districtPlanData,
+}: PlanSelectionProps) {
   const { state, dispatch } = React.useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
-  const { stateName } = useParams<{stateName : AvailableStates }>();
-
+  const { stateName } = useParams<{ stateName: AvailableStates }>();
   const currentState = stateName || AvailableStates.Unselected;
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function PlanSelection({ districtPlanData } : PlanSelectionProps)
   }, [stateName]);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   const navigate = useNavigate();
 
   const buttonStyle = {
@@ -48,11 +49,33 @@ export default function PlanSelection({ districtPlanData } : PlanSelectionProps)
     transition: "background-color 0.3s ease",
   };
 
+  const buttonStyleSelected = {
+    padding: "10px 20px",
+    fontSize: "16px",
+    border: "none",
+    color : "white",
+    borderRadius: "5px",
+    backgroundColor : "#000080",
+    cursor: "pointer",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    transition: "background-color 0.3s ease",
+  };
+
   function spliceTableData() {
     return districtPlanData.slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage
     );
+  }
+
+  function handleSelectPlan(districtPlan : DistrictPlanData) {
+    dispatch({
+      type : GlobalTypes.SetComparedPlan,
+      payload : {
+        comparedPlan : districtPlan
+      }
+    })
+    navigate(`/plan-comparison/state/${currentState}/district-plan/${districtPlan.district_plan_id}`);
   }
 
   function handleChangePage(
@@ -86,7 +109,7 @@ export default function PlanSelection({ districtPlanData } : PlanSelectionProps)
       <TableContainer
         className="plan-table-container"
         component={Paper}
-        sx={{ maxHeight: "71vh" }}
+        sx={{ maxHeight: "72vh", width : "40vw", marginLeft : "2rem" }}
       >
         <Table>
           <TableHead>
@@ -98,18 +121,32 @@ export default function PlanSelection({ districtPlanData } : PlanSelectionProps)
             </TableRow>
           </TableHead>
           <TableBody>
-            {spliceTableData().map((row) => (
-              <TableRow key={row.district_plan}>
-                <TableCell component="th" scope="row">
-                  {<button style={buttonStyle}>{row.district_plan}</button>}
-                </TableCell>
-                <TableCell align="center">
-                  {row.opportunity_districts}
-                </TableCell>
-                <TableCell align="center">{row.avg_democrat}</TableCell>
-                <TableCell align="center">{row.avg_republican}</TableCell>
-              </TableRow>
-            ))}
+            {spliceTableData().map((row) => {
+              const style =
+                state[state.length - 1].comparedPlan.district_plan_id ===
+                row.district_plan_id
+                  ? buttonStyleSelected
+                  : buttonStyle;
+              return (
+                <TableRow key={row.district_plan}>
+                  <TableCell component="th" scope="row">
+                    {
+                      <button
+                        onClick={() => handleSelectPlan(row)}
+                        style={style}
+                      >
+                        {row.district_plan}
+                      </button>
+                    }
+                  </TableCell>
+                  <TableCell align="center">
+                    {row.opportunity_districts}
+                  </TableCell>
+                  <TableCell align="center">{row.avg_democrat}</TableCell>
+                  <TableCell align="center">{row.avg_republican}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>

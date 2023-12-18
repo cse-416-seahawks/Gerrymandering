@@ -8,7 +8,7 @@ import { AvailableStates, GlobalContext, InfoCardType } from "../../globalContex
 import { fetchClusterSummaryData, fetchClusterSummaryGraphData } from "../apiClient";
 import '../css/ClusterTable.css';
 import ClusterTable from "../tables/ClusterTable";
-import ClusterScatterPlot from "../graphs/ClusterScatterChart";
+import ClusterScatterPlot from "../graphs/CustomScatterChart";
 import MDSChart from "../graphs/MDSChart";
 import { ClusterData, ClusterPoints } from "../interfaces/AnalysisInterface";
 import { useLocation } from "react-router-dom";
