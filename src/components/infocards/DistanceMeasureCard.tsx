@@ -14,6 +14,10 @@ export default function DistanceMeasureCard() {
   const [curDetails, setDetails] = React.useState(state[state.length - 1].districtPlanTypes[currentState]);
 
   
+  useEffect(() => {
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
+  },[stateName]);
+  
   return (
     <CardContent>
       <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom : "1rem" }}>

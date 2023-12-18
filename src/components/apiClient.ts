@@ -79,6 +79,20 @@ export async function fetchStateOutline(
   }
 }
 
+export async function fetchStateSummary(
+  State: AvailableStates
+): Promise<any> {
+  const url = `http://localhost:4000/getStateSummaryData/${State}`;
+
+  try {
+    return await fetchData(url);
+  } catch (error) {
+    console.error("Error fetching data");
+    throw error;
+  }
+}
+
+
 export async function fetchStateEnsembles(State: AvailableStates) {
   const url = `http://localhost:4000/getStateEnsembles/${State}`;
   try {

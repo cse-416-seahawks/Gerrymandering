@@ -34,6 +34,11 @@ export default function ClusterInfoCard() {
     backgroundColor: theme.palette.background.paper,
   }));
 
+
+  useEffect(() => {
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
+  },[stateName]);
+
   useEffect(() => {
     const distanceMeasure = state[state.length-1].distanceMeasure;
     async function getClusterData() {

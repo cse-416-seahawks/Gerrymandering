@@ -75,6 +75,7 @@ export default function DistrictPlansCard() {
     setDisplayedDistrictPlans(newSelected);
   }
 
+
   useEffect(() => {
     async function getClusterDetail() {
       try {
@@ -92,7 +93,6 @@ export default function DistrictPlansCard() {
   }, []);
 
   useEffect(() => {
-    console.log("updating plans");
     const latestState = state[state.length - 1];
     let newDisplayedPlans = allDistrictPlans.filter((districtPlan) =>
       latestState.districtPlanIds.includes(districtPlan.district_plan_id)
@@ -129,7 +129,6 @@ export default function DistrictPlansCard() {
         (plan) => plan.district_plan_id !== district_plan_id
       )
     );
-    console.log("after removal", state[state.length - 1].districtPlanIds);
   }
 
   return (

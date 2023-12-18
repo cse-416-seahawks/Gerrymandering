@@ -49,6 +49,10 @@ export default function ScatterPlotOptions() {
     setDem(event.target.value);
   };
 
+  useEffect(() => {
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
+  },[stateName]);
+
 
 
   const handleChange = (

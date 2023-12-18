@@ -400,7 +400,6 @@ const mainReducer = (
         updatedPlanIds = updatedPlanIds.filter(
           (planId) => planId !== action.payload.planId
         );
-        console.log(updatedPlanIds);
         return [
           ...state,
           {

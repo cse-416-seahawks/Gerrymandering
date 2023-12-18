@@ -285,6 +285,33 @@ public class DistrictController {
         }
     }
 
+    @GetMapping("/getStateSummaryData/{state}")
+    public ResponseEntity<String> getStateSummaryData(@PathVariable final String state) {
+        MongoCollection<Document> stateCollection = null;
+
+        if (state.equals("TEXAS")) {
+            stateCollection = db.getCollection("Texas");
+        } else if (state.equals("VIRGINIA")) {
+            stateCollection = db.getCollection("Virginia");
+        } else if (state.equals("NEVADA")) {
+            stateCollection = db.getCollection("Nevada");
+        }
+
+        if (stateCollection == null) {
+            return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
+        }
+
+        Document docFinder = new Document("type", "StateSummaryData").append("State", state);
+        Document document = stateCollection.find(docFinder).first();
+        if (document == null) {
+            return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
+        } else {
+            Gson gson = new Gson();
+            String json = gson.toJson(document);
+            return new ResponseEntity<>(json, HttpStatus.OK);
+        }
+    }
+
     @GetMapping("/getMDSClusterGraphData/{state}/{ensembleId}/{distanceMeasure}")
     public ResponseEntity<String> getMDSClusterGraphData(@PathVariable final String state,
             @PathVariable final String ensembleId, @PathVariable final String distanceMeasure) {

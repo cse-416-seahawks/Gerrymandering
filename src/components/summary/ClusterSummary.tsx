@@ -88,12 +88,12 @@ export default function ClusterSummary({currentState, onClusterSelection, ensemb
               sx={{ textTransform: "none" }}
               onClick={handleSummaryCard}
             />
-            <Tab
+            {/* <Tab
               value="3"
               label="Custom Graph"
               sx={{ textTransform: "none" }}
               onClick={handlePlotOptions}
-            />
+            /> */}
           </Tabs>
         </Box>
         <TabPanel value="1">
@@ -102,9 +102,9 @@ export default function ClusterSummary({currentState, onClusterSelection, ensemb
         <TabPanel value="2">
           <MDSChart currentState={currentState} ensembleId={ensembleId} data={clusterData} />
         </TabPanel>
-        <TabPanel value="3">
+        {/* <TabPanel value="3">
           <ClusterScatterPlot currentState={currentState} ensembleId={ensembleId} data={clusterData}/>
-        </TabPanel>
+        </TabPanel> */}
       </TabContext>
     </Box>
   );

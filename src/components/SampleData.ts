@@ -22,23 +22,6 @@ export const ensembleData_2 = [
   {"Num": 126, "ensemble1": 54, "ensemble2": 41, "ensemble3": 42, "ensemble4": 49, "ensemble5": 39},
 ]
 
-// export const ensembleData_2: ensembleData[] = [];
-// let a = Math.random() * 10;
-// let b = Math.random() * 10;
-// let c = Math.random() * 10;
-// let d = Math.random() * 10;
-// for (let i = 1; i <= 500; i++) {
-//   ensembleData_2.push({
-//     Num: i,
-//     ensemble1: Math.log(i) * 10,
-//     ensemble2: (Math.log(i) / Math.log(9)) * 10 + a,
-//     ensemble3: Math.log(i) / Math.log(8) + b,
-//     ensemble4: (Math.log(i) / Math.log(7)) * 10 + c,
-//     ensemble5: (Math.log(i) * 10) / Math.log(6) + d,
-//   });
-// }
-
-// Scatter plot data for cluster and district plan (dummy data)
 export const data01 = [
   { x: 100, y: 60, z: 1 },
   { x: 120, y: 30, z: 2 },

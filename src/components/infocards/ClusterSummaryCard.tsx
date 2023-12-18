@@ -24,8 +24,13 @@ export default function ClusterInfoCard() {
     state[state.length - 1].districtPlanTypes[currentState]
   );
 
+
   useEffect(() => {
-    const distanceMeasure = state[state.length - 1].distanceMeasure;
+    setDetails(state[state.length - 1].districtPlanTypes[currentState]);
+  },[stateName]);
+
+  useEffect(() => {
+    const {distanceMeasure} = state[state.length - 1];
     const curEnsemble = ensembleId || "";
     const curCluster = clusterId || "";
     async function getClusterData() {

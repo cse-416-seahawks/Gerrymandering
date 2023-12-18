@@ -13,7 +13,11 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { useNavigate, useParams } from "react-router-dom";
-import { AvailableStates, GlobalContext, GlobalTypes } from "../../globalContext";
+import {
+  AvailableStates,
+  GlobalContext,
+  GlobalTypes,
+} from "../../globalContext";
 import { fetchClusterSplits } from "../apiClient";
 
 interface ClusterDetailTableProps {
@@ -38,7 +42,11 @@ export default function ClusterDetailTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
   const { state, dispatch } = useContext(GlobalContext);
-  const { stateName, ensembleId, clusterId } = useParams<{ stateName: AvailableStates, ensembleId : string, clusterId : string }>();
+  const { stateName, ensembleId, clusterId } = useParams<{
+    stateName: AvailableStates;
+    ensembleId: string;
+    clusterId: string;
+  }>();
   const [splitData, setSplitData] = useState<PartySplitData | null>(null);
   const currentState = stateName || AvailableStates.Unselected;
   const navigate = useNavigate();
@@ -74,15 +82,17 @@ export default function ClusterDetailTable({
     setPage(0);
   }
 
-  const handleCompare = (planId : string) => {
+  const handleCompare = (planId: string) => {
     dispatch({
-      type : GlobalTypes.SetComparedPlan,
-      payload : {
-        comparedPlan : districtPlanData.find((plan) => plan.district_plan_id === planId)
-      }
-    })
-    navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`)
-  }
+      type: GlobalTypes.SetComparedPlan,
+      payload: {
+        comparedPlan: districtPlanData.find(
+          (plan) => plan.district_plan_id === planId
+        ),
+      },
+    });
+    navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`);
+  };
 
   useEffect(() => {
     const currentState = stateName || AvailableStates.Unselected;
@@ -114,27 +124,43 @@ export default function ClusterDetailTable({
               <TableCell align="center"># Opportunity Districts</TableCell>
               <TableCell align="center">Avg Democratic %</TableCell>
               <TableCell align="center">Avg Republican %</TableCell>
+              <TableCell align="center">Dem/Rep Split</TableCell>
               <TableCell align="center">Compare with Enacted</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {spliceTableData().map((row, index) => (
-              <TableRow key={row.district_plan}>
-                <TableCell component="th" scope="row">
-                  {<button style={buttonStyle}>{index + 1 + (rowsPerPage * page)}</button>}
-                </TableCell>
-                <TableCell align="center">
-                  {row.opportunity_districts}
-                </TableCell>
-                <TableCell align="center">{(parseFloat(row.avg_democrat) * 100).toFixed(2)} %</TableCell>
-                <TableCell align="center">{(parseFloat(row.avg_republican) * 100).toFixed(2)} %</TableCell>
-                <TableCell align="center">
-                  <Fab variant="extended" size="small" onClick={() => handleCompare(row.district_plan_id)} color="primary">
-                    Compare
-                  </Fab>
-                </TableCell>
-              </TableRow>
-            ))}
+            {spliceTableData().map((row, index) => {
+
+              const curSplit = splitData?.splits[index]
+
+              return (
+                <TableRow key={row.district_plan}>
+                  <TableCell component="th" scope="row">
+                    {<button style={buttonStyle}>{row.district_plan}</button>}
+                  </TableCell>
+                  <TableCell align="center">
+                    {row.opportunity_districts}
+                  </TableCell>
+                  <TableCell align="center">
+                    {(parseFloat(row.avg_democrat) * 100).toFixed(2)} %
+                  </TableCell>
+                  <TableCell align="center">
+                    {(parseFloat(row.avg_republican) * 100).toFixed(2)} %
+                  </TableCell>
+                  <TableCell align="center">{curSplit ? curSplit?.splits.join(",") : ""}</TableCell>
+                  <TableCell align="center">
+                    <Fab
+                      variant="extended"
+                      size="small"
+                      onClick={() => handleCompare(row.district_plan_id)}
+                      color="primary"
+                    >
+                      Compare
+                    </Fab>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>

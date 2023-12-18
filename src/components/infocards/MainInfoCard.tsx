@@ -5,13 +5,13 @@ import {
   InfoCardType,
 } from "../../globalContext";
 import { useContext } from "react";
-import EnsembleInfoCard from "./EnsembleInfoCard";
 import ClusterAssociationInfoCard from "./ClusterAssociation";
 import ScatterPlotOptions from "./ScatterPlotOptions";
 import DistanceMeasureCard from "./DistanceMeasureCard";
 import EnsembleSummary from "./EnsembleSummary";
 import DistrictPlansCard from "./DistrictPlansCard";
 import ClusterSummaryCard from "./ClusterSummaryCard";
+import StateSummaryCard from "./StateSummaryCard";
 
 export default function InfoCard() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -25,7 +25,7 @@ export default function InfoCard() {
             height: "35vh",
           }}
         >
-          <EnsembleInfoCard />
+          <StateSummaryCard />
         </Card>
       );
     case InfoCardType.associationDetail:
@@ -96,13 +96,7 @@ export default function InfoCard() {
         );
     default:
       return (
-        <Card
-          sx={{
-            minWidth: 275,
-            height: "35vh",
-          }}
-        >
-          <EnsembleInfoCard />
+        <Card>
         </Card>
       );
   }

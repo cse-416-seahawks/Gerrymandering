@@ -104,7 +104,6 @@ export default function StateMap({ currentState }: StateMapProps) {
             />
 
             {planIds.map((planId, index) => {
-              console.log(planIds);
               return (
                 <DistrictPlan
                   transparent
@@ -115,9 +114,9 @@ export default function StateMap({ currentState }: StateMapProps) {
                 />
               );
             })}
-            <NevadaDistricts opacity={0.7} />
-            <TexasDistricts opacity={0.7} />
-            <VirginiaDistricts opacity={0.7} />
+            <NevadaDistricts opacity={0.5} />
+            <TexasDistricts opacity={0.5} />
+            <VirginiaDistricts opacity={0.5} />
 
             <SetMapView />
           </MapContainer>

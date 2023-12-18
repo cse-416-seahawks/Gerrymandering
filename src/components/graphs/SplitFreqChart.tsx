@@ -4,7 +4,7 @@ import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 import { fetchClusterSplits } from "../apiClient";
 import { AvailableStates } from "../../globalContext";
 import { useParams } from "react-router-dom";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Chip, CircularProgress, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 interface PartySplitChartProps {
@@ -75,22 +75,26 @@ export default function PartySplitChart({
   };
   return splitData !== null ? (
     <Box display="flex" justifyContent="center">
-        <Typography align="center" variant="h6">Split Frequency</Typography>
-    <PieChart
-      series={[
-        {
-          data: frequencyArray.map((split, index) => ({
-            id: index,
-            value: split.value,
-            label: `[${split.name}]`,
-          })),
-          highlightScope: { faded: "global", highlighted: "item" },
-          faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-        },
-      ]}
-      width={600}
-      height={300}
-    />
+      <Typography align="center" variant="h6">
+        Split Frequency  
+      </Typography>
+      
+
+      <PieChart
+        series={[
+          {
+            data: frequencyArray.map((split, index) => ({
+              id: index,
+              value: split.value,
+              label: `[${split.name}]`,
+            })),
+            highlightScope: { faded: "global", highlighted: "item" },
+            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+          },
+        ]}
+        width={600}
+        height={300}
+      />
     </Box>
   ) : (
     <CircularProgress />
