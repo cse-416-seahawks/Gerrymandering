@@ -111,14 +111,29 @@ export default function ClusterTableRow({
   };
 
   function handleShowTypicalPlan(
-    cluster_id: string
+    cluster_id: string,
+    cluster_num : number,
+    planIds: string[]
   ): void {
-    dispatch({
+    dispatch([{
       type: GlobalTypes.ShowTypicalPlan,
       payload: {
         cluster_id: cluster_id,
       },
-    });
+    },
+    {
+      type : GlobalTypes.SetCluster,
+      payload : {
+        cluster : cluster_num,
+        clusterPlanIds : planIds
+      }
+    },
+    {
+      type: GlobalTypes.ChangeCard,
+      payload: {
+        infoCardType : InfoCardType.districtPlans
+      },
+    }]);
 
     const currentPathname = window.location.pathname;
     navigate(`${currentPathname}/cluster/${cluster_id}`);
@@ -207,7 +222,7 @@ export default function ClusterTableRow({
           <Tooltip title="View Typical Plan">
             <IconButton
               
-              onClick={() => handleShowTypicalPlan(data.cluster_id)}
+              onClick={() => handleShowTypicalPlan(data.cluster_id, data.cluster_number, data.district_plans)}
             >
               <AddLocationIcon />
             </IconButton>

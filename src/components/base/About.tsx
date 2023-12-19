@@ -26,10 +26,10 @@ export default function About() {
       </Typography>
       <Grid container spacing={0.3}>
         <Grid item xs={3}>
-          <Card sx={{ margin: "1rem" }}>
+          <Card sx={{ margin: "1rem", backgroundSize : 'cover' }}>
             <CardMedia
               sx={{ height: 250 }}
-              image="/static/images/cards/contemplative-reptile.jpg"
+              image={process.env.PUBLIC_URL + "/images/safwan.jpg"}
               title="green iguana"
             />
             <CardContent>
@@ -48,8 +48,8 @@ export default function About() {
         <Grid item xs={3}>
           <Card sx={{ margin: "1rem" }}>
             <CardMedia
-              sx={{ height: 250 }}
-              image="/static/images/cards/contemplative-reptile.jpg"
+              sx={{ height: 250, objectFit: "contain" }}
+              image={process.env.PUBLIC_URL + "/images/michelle.jpg"}
               title="green iguana"
             />
             <CardContent>
@@ -69,7 +69,7 @@ export default function About() {
           <Card sx={{ margin: "1rem" }}>
             <CardMedia
               sx={{ height: 250 }}
-              image="/static/images/cards/contemplative-reptile.jpg"
+              image={process.env.PUBLIC_URL + "/images/leila.jpeg"}
               title="green iguana"
             />
             <CardContent>
@@ -89,7 +89,7 @@ export default function About() {
           <Card sx={{ margin: "1rem" }}>
             <CardMedia
               sx={{ height: 250 }}
-              image="/static/images/cards/contemplative-reptile.jpg"
+              image={process.env.PUBLIC_URL + "/images/ailun.jpeg"}
               title="green iguana"
             />
             <CardContent>
@@ -141,7 +141,15 @@ export default function About() {
           </CardActions>
         </Card>
         <Card sx={{ margin: "1rem", width: "50vw" }}>
-          
+          <CardContent>
+            <CardMedia
+              sx={{ height: 200, width : 600, alignContent : "center" }}
+              image={
+                process.env.PUBLIC_URL + "/images/Seattle-Seahawks-Logo.png"
+              }
+              title="green iguana"
+            />
+          </CardContent>
         </Card>
       </Box>
     </Box>

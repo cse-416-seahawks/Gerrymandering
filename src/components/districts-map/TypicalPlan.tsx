@@ -44,7 +44,7 @@ export default ({ clusterId, strokeColor, transparent }: DistrictPlanProps) => {
             <Polygon
               key={index}
               pathOptions={{
-                fillColor: transparent ? "transparent" : "#FFA500",
+                fillColor: transparent ? "transparent" : "#4307f5",
                 fillOpacity: transparent ? 0.0 : 0.5,
                 weight: 2,
                 opacity: 0.5,

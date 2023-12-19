@@ -19,7 +19,7 @@ import {
 } from "../interfaces/AnalysisInterface";
 import TypicalPlan from "../districts-map/TypicalPlan";
 import SplitFreqChart from "../graphs/SplitFreqChart";
-import { MapContainer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 interface ClusterDetailProps {
   currentState: AvailableStates;
@@ -31,18 +31,17 @@ export default function ClusterDetail({
 }: ClusterDetailProps) {
   const { state, dispatch } = useContext(GlobalContext);
 
-
   const [currentTab, setCurrentTab] = useState(getCurrentTab());
 
   function getCurrentTab() {
-    if(state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary){
-      return "1"
-    }
-    else if (state[state.length - 1].typicalPlan){
-      return "4"
-    }
-    else{
-      return "2"
+    if (
+      state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary
+    ) {
+      return "1";
+    } else if (state[state.length - 1].typicalPlan) {
+      return "4";
+    } else {
+      return "2";
     }
   }
 
@@ -55,7 +54,7 @@ export default function ClusterDetail({
     Array<DistrictPlanPoints>
   >([]);
   const { centerCoordinates, zoom } =
-  state[state.length - 1].mapData[currentState];
+    state[state.length - 1].mapData[currentState];
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
@@ -152,6 +151,7 @@ export default function ClusterDetail({
               value="4"
               label="Typical Plan"
               sx={{ textTransform: "none" }}
+              onClick={handlePlanCard}
             />
           </Tabs>
         </Box>
@@ -179,6 +179,10 @@ export default function ClusterDetail({
             className="State-map"
             style={{ width: "100%", height: "70vh" }}
           >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
             <TypicalPlan clusterId={clusterId} />
             <SetMapView />
           </MapContainer>

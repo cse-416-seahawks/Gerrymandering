@@ -141,7 +141,7 @@ export default function DistrictPlanScatterPlot({
       </Grid>
 
       <Grid item xs={11}>
-        <ScatterChart width={720} height={590} margin={{ right: 50 }}>
+        <ScatterChart width={720} height={590} margin={{ left : 11, right: 60 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <ZAxis dataKey="z" type="number" name="District Plan" />
           <XAxis dataKey="x" type="number" name={axisLabels[0]}></XAxis>
