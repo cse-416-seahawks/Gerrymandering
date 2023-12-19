@@ -76,7 +76,7 @@ export default function PartySplitChart({
   return (
     splitData !== (null) ?  (
       <Box>
-        <Typography variant="h6" align="left">Splits Across Districts</Typography>
+        <Typography fontSize="1.2rem" variant="h6" align="left">Splits Visual</Typography>
       <BarChart
         width={800}
         height={300}

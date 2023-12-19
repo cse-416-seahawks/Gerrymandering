@@ -11,31 +11,26 @@ import { Box, CircularProgress, Grid } from "@mui/material";
 
 interface DistrictPlanProps {
   clusterId: string;
-  color: string;
-  strokeColor: string;
+  strokeColor?: string;
   transparent?: boolean;
 }
-export default ({
-  clusterId,
-  color,
-  strokeColor,
-  transparent,
-}: DistrictPlanProps) => {
+export default ({ clusterId, strokeColor, transparent }: DistrictPlanProps) => {
   const [plan, setPlan] = useState<DistrictState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
   const { stateName } = useParams<{ stateName: AvailableStates }>();
 
   const currentState = stateName || AvailableStates.Unselected;
 
-  const { centerCoordinates, zoom } =
-    state[state.length - 1].mapData[currentState];
-
   useEffect(() => {
     async function fetchDistrictPlanAsync() {
       try {
-        const result = await fetchTypicalPlan(currentState, clusterId);
-        if (result) {
-          setPlan(result);
+        if (clusterId) {
+          console.log('awaiting...')
+          const result = await fetchTypicalPlan(currentState, clusterId);
+          console.log("typical plan for ", clusterId, " result - ", result);
+          if (result) {
+            setPlan(result);
+          }
         }
       } catch (error) {
         throw error;
@@ -44,66 +39,48 @@ export default ({
     fetchDistrictPlanAsync();
   }, []);
 
-  const SetMapView = () => {
-    const map = useMap();
-    useEffect(() => {
-      map.setView([centerCoordinates[0], centerCoordinates[1]], zoom);
-    }, [centerCoordinates[0], centerCoordinates[1]]);
-    return null;
-  };
-
   return (
     <>
-      <MapContainer
-        id="mapid"
-        center={[centerCoordinates[0], centerCoordinates[1]]}
-        zoom={zoom}
-        scrollWheelZoom={false}
-        className="State-map"
-        style={{ width: "100%", height: "70vh" }}
-      >
-        {plan ? (
-          plan.features.map((district: any, index: number) => {
-            return (
-              <Polygon
-                key={index}
-                pathOptions={{
-                  fillColor: "#00388c",
-                  fillOpacity: 0.5,
-                  weight: 2,
-                  opacity: 0.5,
-                  color: "white",
-                }}
-                positions={
-                  district.geometry.type === "MultiPolygon"
-                    ? district.geometry.coordinates.map((polygon: any) =>
-                        polygon.map((ring: any) =>
-                          ring.map((coord: any) => [coord[1], coord[0]])
-                        )
-                      )
-                    : district.geometry.coordinates.map((ring: any) =>
+      {plan ? (
+        plan.features.map((district: any, index: number) => {
+          return (
+            <Polygon
+              key={index}
+              pathOptions={{
+                fillColor: transparent ? "transparent" : "#FFA500",
+                fillOpacity: transparent ? 0.0 : 0.5,
+                weight: 2,
+                opacity: 0.5,
+                color: strokeColor ? strokeColor : "white",
+              }}
+              positions={
+                district.geometry.type === "MultiPolygon"
+                  ? district.geometry.coordinates.map((polygon: any) =>
+                      polygon.map((ring: any) =>
                         ring.map((coord: any) => [coord[1], coord[0]])
                       )
-                }
-              />
-            );
-          })
-        ) : (
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            height="60vh"
-          >
-            <Grid item>
-              <Box>
-                <CircularProgress />
-              </Box>
-            </Grid>
+                    )
+                  : district.geometry.coordinates.map((ring: any) =>
+                      ring.map((coord: any) => [coord[1], coord[0]])
+                    )
+              }
+            />
+          );
+        })
+      ) : (
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          height="60vh"
+        >
+          <Grid item>
+            <Box>
+              <CircularProgress />
+            </Box>
           </Grid>
-        )}
-        <SetMapView />
-      </MapContainer>
+        </Grid>
+      )}
     </>
   );
 };

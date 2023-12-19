@@ -115,7 +115,7 @@ export default function ClusterInfoCard() {
         <Box sx={{ m: 2 }}>
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
-              <Chip color="secondary" label="Caucasian-American" />
+              <Chip color="secondary" label="White American" />
             </Grid>
             <Grid item xs={2.4}>
               <Chip color="secondary" label="African-American" />

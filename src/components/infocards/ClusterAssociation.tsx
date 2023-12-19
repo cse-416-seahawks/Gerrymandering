@@ -16,15 +16,18 @@ import {
 import { ensemble_summary_table } from "../types/TableTypes";
 import { GlobalContext, AvailableStates } from "../../globalContext";
 import { useParams } from "react-router-dom";
+import { fetchAssociationData } from "../apiClient";
+
+interface AssociationData {
+  numDistrictPlans: number;
+  ensemble1: number;
+  ensemble2: number;
+  ensemble3: number;  
+  ensemble4: number;
+  ensemble5: number;
+}
 
 export default function ClusterAssociationInfoCard() {
-  const Data3: ensemble_summary_table[] = [
-    { ensemble: 1, num_clusters: 62, plans_needed: 309 },
-    { ensemble: 2, num_clusters: 28, plans_needed: 425 },
-    { ensemble: 3, num_clusters: 6, plans_needed: 321 },
-    { ensemble: 4, num_clusters: 37, plans_needed: 251 },
-    { ensemble: 5, num_clusters: 39, plans_needed: 268 },
-  ];
 
   const { state, dispatch } = React.useContext(GlobalContext);
   const { stateName } = useParams<{ stateName: AvailableStates }>();
@@ -32,6 +35,24 @@ export default function ClusterAssociationInfoCard() {
   const [curDetails, setDetails] = React.useState(
     state[state.length - 1].districtPlanTypes[currentState]
   );
+  const [ axisLabels, setAxisLabels ] = useState<Array<number>>([]);
+  const [ graphData, setGraphData ] = useState<Array<AssociationData>>([]);
+
+  useEffect(() => {
+    async function getAssociationData() {
+      try {
+        const {distanceMeasure} = state[state.length - 1]
+        const response = await fetchAssociationData(currentState, distanceMeasure);
+        if (response) {
+          setAxisLabels([response.x_axis_label, response.y_axis_label]);
+          setGraphData(response.data);
+        }
+      } catch (error) {
+        throw error;
+      }
+    }
+    getAssociationData();
+  }, [stateName]);
 
 
 
@@ -48,7 +69,6 @@ export default function ClusterAssociationInfoCard() {
       <Box
         sx={{
           display: "flex",
-          marginBottom: "2rem",
           justifyContent: "space-between",
         }}
       >
@@ -61,22 +81,18 @@ export default function ClusterAssociationInfoCard() {
         <Table size="small" sx={{ minWidth: 650 }}>
           <TableHead sx={{ height: "10px", fontSize: "10px" }}>
             <TableRow>
-              <TableCell align="center">Ensemble</TableCell>
-              <TableCell align="center"># of clusters at 500</TableCell>
-              <TableCell align="center">
-                Plans needed to reach max clusters
-              </TableCell>
+              <TableCell align="center">Ensemble Size</TableCell>
+              <TableCell align="center">Number of Clusters</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {Data3.map((row) => (
-              <TableRow key={row.ensemble}>
+            {graphData.map((point, index) => (
+              <TableRow key={index}>
                 <TableCell align="center" component="th" scope="row">
-                  {row.ensemble}
+                  {point.numDistrictPlans}
                 </TableCell>
-                <TableCell align="center">{row.num_clusters}</TableCell>
-                <TableCell align="center">{row.plans_needed}</TableCell>
+                <TableCell align="center">{point.ensemble1}</TableCell>
               </TableRow>
             ))}
           </TableBody>

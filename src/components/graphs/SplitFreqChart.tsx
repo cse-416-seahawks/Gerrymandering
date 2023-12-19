@@ -75,8 +75,8 @@ export default function PartySplitChart({
   };
   return splitData !== null ? (
     <Box display="flex" justifyContent="center">
-      <Typography align="center" variant="h6">
-        Split Frequency  
+      <Typography align="center" fontSize="1rem" variant="h6">
+        Split Frequency (Dem,Rep)
       </Typography>
       
 

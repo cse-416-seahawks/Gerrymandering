@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.*;
 import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
@@ -218,7 +220,8 @@ public class DistrictController {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        Document docFinder = new Document("type", "FeatureCollection").append("features", new Document("$elemMatch", new Document("properties.PLANID", districtPlanId)));
+        Document docFinder = new Document("type", "FeatureCollection").append("features",
+                new Document("$elemMatch", new Document("properties.PLANID", districtPlanId)));
         Document document = stateCollection.find(docFinder).first();
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
@@ -394,16 +397,22 @@ public class DistrictController {
         }
     }
 
-    @GetMapping("/getAssociationData/{state}")
-    public ResponseEntity<String> getAssociationData(@PathVariable final String state) {
+  public ResponseEntity<String> getAssociationData(
+            @PathVariable final String state,
+            @PathVariable final String distance_measure) {
+
+        // Convert %20 back to spaces
+        String sanitizedDistanceMeasure = distance_measure.replace("%20", " ");
+
         MongoCollection<Document> stateCollection = getStateCollection(state);
 
         if (stateCollection == null) {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        Document docFinder = new Document("type", "AssociationData");
+        Document docFinder = new Document("type", "AssociationData").append("distance_measure", sanitizedDistanceMeasure);
         Document document = stateCollection.find(docFinder).first();
+
         if (document == null) {
             return new ResponseEntity<>("Documents not found.", HttpStatus.NOT_FOUND);
         } else {

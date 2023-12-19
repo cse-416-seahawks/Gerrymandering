@@ -19,6 +19,7 @@ import {
 } from "../interfaces/AnalysisInterface";
 import TypicalPlan from "../districts-map/TypicalPlan";
 import SplitFreqChart from "../graphs/SplitFreqChart";
+import { MapContainer, useMap } from "react-leaflet";
 
 interface ClusterDetailProps {
   currentState: AvailableStates;
@@ -29,8 +30,12 @@ export default function ClusterDetail({
   clusterId,
 }: ClusterDetailProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const [currentTab, setCurrentTab] = useState(state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary ? "1" : "2");
-  
+  const [currentTab, setCurrentTab] = useState(
+    state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary
+      ? "1"
+      : "2"
+  );
+
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);
   const [availableDataPoints, setAvailableDataPoints] = useState<
@@ -39,6 +44,8 @@ export default function ClusterDetail({
   const [unavailableDataPoints, setUnavailableDataPoints] = useState<
     Array<DistrictPlanPoints>
   >([]);
+  const { centerCoordinates, zoom } =
+  state[state.length - 1].mapData[currentState];
 
   function handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
     setCurrentTab(String(newValue));
@@ -100,6 +107,14 @@ export default function ClusterDetail({
     });
   }
 
+  const SetMapView = () => {
+    const map = useMap();
+    useEffect(() => {
+      map.setView([centerCoordinates[0], centerCoordinates[1]], zoom);
+    }, [centerCoordinates[0], centerCoordinates[1]]);
+    return null;
+  };
+
   return (
     <>
       <TabContext value={currentTab}>
@@ -146,11 +161,17 @@ export default function ClusterDetail({
           <PartySplitChart districtPlans={tableData} />
         </TabPanel>
         <TabPanel value="4">
-          <TypicalPlan
-            clusterId={clusterId}
-            color={"A9A9A9"}
-            strokeColor={"FFFFFF"}
-          />
+          <MapContainer
+            id="mapid"
+            center={[centerCoordinates[0], centerCoordinates[1]]}
+            zoom={zoom}
+            scrollWheelZoom={false}
+            className="State-map"
+            style={{ width: "100%", height: "70vh" }}
+          >
+            <TypicalPlan clusterId={clusterId} />
+            <SetMapView />
+          </MapContainer>
         </TabPanel>
       </TabContext>
     </>

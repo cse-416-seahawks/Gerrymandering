@@ -34,7 +34,8 @@ export default function ClusterAssociationGraph() {
   useEffect(() => {
     async function getAssociationData() {
       try {
-        const response = await fetchAssociationData(currentState);
+        const {distanceMeasure} = state[state.length - 1]
+        const response = await fetchAssociationData(currentState, distanceMeasure);
         if (response) {
           setAxisLabels([response.x_axis_label, response.y_axis_label]);
           setGraphData(response.data);
@@ -66,7 +67,7 @@ export default function ClusterAssociationGraph() {
               offset={-50}
             />
           </XAxis>
-          <YAxis domain={[0, 80]}>
+          <YAxis domain={[0, 20]}>
             <Label
               style={{
                 textAnchor: "middle",
@@ -85,30 +86,6 @@ export default function ClusterAssociationGraph() {
             dataKey="ensemble1"
             stroke="#8884d8"
             fill="#8884d8"
-          />
-          <Line
-            type="monotone"
-            dataKey="ensemble2"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
-          <Line
-            type="monotone"
-            dataKey="ensemble3"
-            stroke="#BEBD7F"
-            fill="#BEBD7F"
-          />
-          <Line
-            type="monotone"
-            dataKey="ensemble4"
-            stroke="#ba32b5"
-            fill="#ba32b5"
-          />
-          <Line
-            type="monotone"
-            dataKey="ensemble5"
-            stroke="#354D73"
-            fill="#354D73"
           />
         </LineChart>
       </div>

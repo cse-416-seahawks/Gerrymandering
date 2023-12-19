@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { AvailableStates } from "../globalContext";
-import { Feature, FeatureCollection } from "@turf/turf";
+import { Feature, FeatureCollection, distance } from "@turf/turf";
 import { getFromCache, updateCache } from "./cacheUtil";
 
 function isFeatureCollection(data: any): data is FeatureCollection {
@@ -238,8 +238,8 @@ export async function fetchDistanceMeasureData(
   }
 }
 
-export async function fetchAssociationData(state: AvailableStates) {
-  const url = `http://localhost:4000/getAssociationData/${state}`;
+export async function fetchAssociationData(state: AvailableStates, distance_measure : string) {
+  const url = `http://localhost:4000/getAssociationData/${state}/${distance_measure}`;
 
   try {
     return await fetchData(url);

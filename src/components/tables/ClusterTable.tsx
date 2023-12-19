@@ -31,7 +31,10 @@ export default function ClusterTable({
     onClusterSelection(cluster);
   }
 
-  const visibleClusters = clusters.slice(page * clustersPerPage, page * clustersPerPage + clustersPerPage)
+  const visibleClusters = clusters.slice(
+    page * clustersPerPage,
+    page * clustersPerPage + clustersPerPage
+  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -53,7 +56,7 @@ export default function ClusterTable({
                 <TableRow>
                   <TableCell />
                   <TableCell align="center">Number</TableCell>
-                  <TableCell />
+
                   <TableCell align="center">Name</TableCell>
                   <TableCell align="center">District Plans</TableCell>
                   <TableCell align="center">Avg Distance</TableCell>
@@ -63,6 +66,7 @@ export default function ClusterTable({
                   <TableCell align="center">
                     Avg % of Democratic Voters
                   </TableCell>
+                  <TableCell />
                 </TableRow>
               </TableHead>
               <TableBody>

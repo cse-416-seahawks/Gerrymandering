@@ -13,6 +13,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditIcon from "@mui/icons-material/Edit";
 import PolylineIcon from "@mui/icons-material/Polyline";
 import { Button, TextField, Tooltip } from "@mui/material";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
 import {
   AvailableStates,
   GlobalContext,
@@ -51,7 +52,7 @@ export default function ClusterTableRow({
     clusterId: string
   ) {
     if (event.key == "Enter") {
-      const distanceMeasure = state[state.length - 1].distanceMeasure;
+      const { distanceMeasure } = state[state.length - 1];
       const response = await updateClusterName(
         currentState,
         ensembleId,
@@ -93,13 +94,37 @@ export default function ClusterTableRow({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setEditing(false);
-    if (clusterName == "") setName(data.name);
+    if (clusterName == "") {
+      setName(data.name);
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
     // POST endpoint to save to database
   };
+
+  function handleShowTypicalPlan(cluster_id: string): void {
+    console.log("SELECTED TYPICAL PLAN");
+    dispatch({
+      type: GlobalTypes.ShowTypicalPlan,
+      payload: {
+        cluster_id: cluster_id,
+      },
+    });
+  }
+
+  function getStyles(cluster_id : string) {
+    if(state[state.length - 1].typicalPlan === cluster_id){
+      return {
+        fontWeight : "bold",
+        color : "orange"
+      }
+    }
+    else {
+      return {};
+    }
+  }
 
   return (
     <React.Fragment>
@@ -123,6 +148,7 @@ export default function ClusterTableRow({
           <Button
             variant="text"
             size="medium"
+            style={getStyles(data.cluster_id)}
             onClick={() => {
               handleSelectCluster(
                 data.cluster_id,
@@ -134,13 +160,7 @@ export default function ClusterTableRow({
             {data.cluster_number}
           </Button>
         </TableCell>
-        <TableCell>
-          <Tooltip title="Edit cluster name">
-            <IconButton onClick={handleEdit}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
-        </TableCell>
+
         <TableCell align="center">
           {editing ? (
             <form
@@ -158,7 +178,11 @@ export default function ClusterTableRow({
               />
             </form>
           ) : (
-            clusterName
+            <Tooltip title="Double Click to edit">
+              <Typography onDoubleClick={handleEdit} variant="body2">
+                {clusterName}
+              </Typography>
+            </Tooltip>
           )}
         </TableCell>
 
@@ -169,6 +193,13 @@ export default function ClusterTableRow({
         </TableCell>
         <TableCell align="center">
           {(parseFloat(data.avg_dem) * 100).toFixed(2)} %
+        </TableCell>
+        <TableCell>
+          <Tooltip title="View Typical Plan">
+            <IconButton disabled={state[state.length - 1].typicalPlan === data.cluster_id} onClick={() => handleShowTypicalPlan(data.cluster_id)}>
+              <AddLocationIcon />
+            </IconButton>
+          </Tooltip>
         </TableCell>
       </TableRow>
       <TableRow>

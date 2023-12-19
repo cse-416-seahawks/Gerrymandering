@@ -25,17 +25,17 @@ export type ActionMap<M extends { [index: string]: any }> = {
 };
 
 export const colors = [
-  '#FF5733', // Orange
-  '#33FF57', // Green
-  '#5733FF', // Blue
-  '#FF33A6', // Pink
-  '#FFD133', // Yellow
-  '#33A6FF', // Sky Blue
-  '#FF3362', // Red
-  '#A6FF33', // Neon Yellow-Green
-  '#FF33D1', // Purple
-  '#FFA633', // Amber
-  '#33FF99', // Mint Green
+  "#FF5733", // Orange
+  "#33FF57", // Green
+  "#5733FF", // Blue
+  "#FF33A6", // Pink
+  "#FFD133", // Yellow
+  "#33A6FF", // Sky Blue
+  "#FF3362", // Red
+  "#A6FF33", // Neon Yellow-Green
+  "#FF33D1", // Purple
+  "#FFA633", // Amber
+  "#33FF99", // Mint Green
 ];
 
 export interface EnsembleData {
@@ -93,6 +93,7 @@ export enum GlobalTypes {
   SetComparedPlan = "SET_COMPARED_PLAN",
   SetPlotOptions = "SET_PLOT_OPTIONS",
   ResetPage = "RESET_PAGE",
+  ShowTypicalPlan = "SHOW_TYPICAL_PLAN",
 }
 
 export enum DistanceMeasure {
@@ -114,6 +115,7 @@ export type GlobalState = {
   clusterDetails: Array<DistrictPlanData>;
   comparedPlan: DistrictPlanData;
   plotOptions: GraphOptions;
+  typicalPlan: string;
 };
 
 type GlobalStatePayload = {
@@ -161,6 +163,9 @@ type GlobalStatePayload = {
   [GlobalTypes.ResetPage]: {
     clean: boolean;
   };
+  [GlobalTypes.ShowTypicalPlan]: {
+    cluster_id: string;
+  };
 };
 
 export type GlobalStateActions =
@@ -195,6 +200,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.ChangeCard:
@@ -215,6 +221,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.DistanceMeasure:
@@ -235,6 +242,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.SetDistanceMeasuresData:
@@ -255,6 +263,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.SetEnsemble:
@@ -275,6 +284,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.SetCluster:
@@ -295,6 +305,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.AddEnsembleDetail:
@@ -329,6 +340,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.UpdateEnsembleDetail:
@@ -349,6 +361,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.SetClusterDetails:
@@ -369,6 +382,7 @@ const mainReducer = (
             clusterDetails: action.payload.clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.AddDistrictPlan:
@@ -393,6 +407,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.RemoveDistrictPlan:
@@ -417,6 +432,7 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: state[state.length - 1].comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
           },
         ];
       case GlobalTypes.SetComparedPlan:
@@ -437,6 +453,28 @@ const mainReducer = (
             clusterDetails: state[state.length - 1].clusterDetails,
             comparedPlan: action.payload.comparedPlan,
             plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: state[state.length - 1].typicalPlan,
+          },
+        ];
+      case GlobalTypes.ShowTypicalPlan:
+        return [
+          ...state,
+          {
+            mapData: state[state.length - 1].mapData,
+            districtPlanTypes: state[state.length - 1].districtPlanTypes,
+            currentInfoCard: state[state.length - 1].currentInfoCard,
+            distanceMeasure: state[state.length - 1].distanceMeasure,
+            compareDistanceMeasuresData:
+              state[state.length - 1].compareDistanceMeasuresData,
+            ensemble: state[state.length - 1].ensemble,
+            cluster: state[state.length - 1].cluster,
+            clusterPlanIds: state[state.length - 1].clusterPlanIds,
+            districtPlanIds: state[state.length - 1].districtPlanIds,
+            ensembleDetails: state[state.length - 1].ensembleDetails,
+            clusterDetails: state[state.length - 1].clusterDetails,
+            comparedPlan: state[state.length - 1].comparedPlan,
+            plotOptions: state[state.length - 1].plotOptions,
+            typicalPlan: action.payload.cluster_id,
           },
         ];
       case GlobalTypes.ResetPage:
@@ -460,6 +498,7 @@ const mainReducer = (
               population: 5,
               comparison: true,
             },
+            typicalPlan: "",
           },
         ];
       default:
@@ -503,6 +542,7 @@ const intialState: GlobalState[] = [
       population: 5,
       comparison: true,
     },
+    typicalPlan: "",
   },
 ];
 
