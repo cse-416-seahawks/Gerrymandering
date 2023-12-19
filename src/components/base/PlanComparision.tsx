@@ -1,22 +1,25 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AvailableStates, GlobalContext } from "../../globalContext";
+import { AvailableStates, GlobalContext, GlobalTypes, InfoCardType } from "../../globalContext";
 import "../../App.css";
 import StateMap from "../state-map/StateMap";
 import Navbar from "./Navbar";
 import TableData from "./ClusterAnalysis";
 import { fetchMapData } from "../apiClient";
 import CompareMap from "../plan-compare/CompareMap";
+
 import {
   Box,
   Card,
   CardContent,
   Grid,
+  IconButton,
   Slider,
+  Stack,
   Typography,
 } from "@mui/material";
 import EnactedPlanDetails from "../plan-compare/EnactedPlanDetails";
 import PlanSelection from "../plan-compare/PlanSelection";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PlanComparison() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -27,10 +30,13 @@ export default function PlanComparison() {
   const currentState = stateName || AvailableStates.Unselected;
   const currentStateMapData = state[state.length - 1].mapData[currentState];
   const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number);
   };
+
+
 
   return (
     <div className="Home">
@@ -86,6 +92,7 @@ export default function PlanComparison() {
               marginRight : 4
             }}
           >
+            
             <PlanSelection
               districtPlanData={state[state.length - 1].clusterDetails}
             />

@@ -91,7 +91,7 @@ export default function ClusterDetailTable({
         ),
       },
     });
-    navigate(`/plan-comparison/state/${currentState}/district-plan/${planId}`);
+    navigate(`/plan-comparison/state/${currentState}/cluster/${clusterId}/district-plan/${planId}`);
   };
 
   useEffect(() => {

@@ -52,7 +52,7 @@ function App() {
               element={<DistanceMeasures />}
             />
             <Route
-              path="/plan-comparison/state/:stateName/district-plan/:planId"
+              path="/plan-comparison/state/:stateName/cluster/:clusterId/district-plan/:planId"
               element={<PlanComparison />}
             />
           </Routes>

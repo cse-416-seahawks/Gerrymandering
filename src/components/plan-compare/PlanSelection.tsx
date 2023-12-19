@@ -3,6 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import {
   Box,
   Chip,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -16,21 +17,43 @@ import {
   Typography,
 } from "@mui/material";
 import { ensemble_summary_table } from "../types/TableTypes";
-import { GlobalContext, AvailableStates, GlobalTypes } from "../../globalContext";
+import {
+  GlobalContext,
+  AvailableStates,
+  GlobalTypes,
+  InfoCardType,
+} from "../../globalContext";
 import { DistrictPlanData } from "../interfaces/AnalysisInterface";
 import { useNavigate, useParams } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { fetchClusterSplits } from "../apiClient";
 
 interface PlanSelectionProps {
   districtPlanData: Array<DistrictPlanData>;
+}
+
+interface Split {
+  district_plan: string;
+  splits: [number, number];
+}
+
+interface PartySplitData {
+  type: string;
+  clusterId: string;
+  num_districts: number;
+  splits: Split[];
 }
 export default function PlanSelection({
   districtPlanData,
 }: PlanSelectionProps) {
   const { state, dispatch } = React.useContext(GlobalContext);
   const [curDetails, setDetails] = React.useState("");
-  const { stateName } = useParams<{ stateName: AvailableStates }>();
+  const { stateName, clusterId } = useParams<{
+    stateName: AvailableStates;
+    clusterId: string;
+  }>();
   const currentState = stateName || AvailableStates.Unselected;
-
+  const [splitData, setSplitData] = useState<PartySplitData | null>(null);
   useEffect(() => {
     setDetails(state[state.length - 1].districtPlanTypes[currentState]);
   }, [stateName]);
@@ -53,9 +76,9 @@ export default function PlanSelection({
     padding: "10px 20px",
     fontSize: "16px",
     border: "none",
-    color : "white",
+    color: "white",
     borderRadius: "5px",
-    backgroundColor : "#000080",
+    backgroundColor: "#000080",
     cursor: "pointer",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     transition: "background-color 0.3s ease",
@@ -68,14 +91,32 @@ export default function PlanSelection({
     );
   }
 
-  function handleSelectPlan(districtPlan : DistrictPlanData) {
-    dispatch({
-      type : GlobalTypes.SetComparedPlan,
-      payload : {
-        comparedPlan : districtPlan
+  useEffect(() => {
+    const currentState = stateName || AvailableStates.Unselected;
+    const curClusterId = clusterId || "";
+    async function getClusterSplitData() {
+      try {
+        const response = await fetchClusterSplits(currentState, curClusterId);
+        if (response) {
+          setSplitData(response);
+        }
+      } catch (error) {
+        throw error;
       }
-    })
-    navigate(`/plan-comparison/state/${currentState}/district-plan/${districtPlan.district_plan_id}`);
+    }
+    getClusterSplitData();
+  }, []);
+
+  function handleSelectPlan(districtPlan: DistrictPlanData) {
+    dispatch({
+      type: GlobalTypes.SetComparedPlan,
+      payload: {
+        comparedPlan: districtPlan,
+      },
+    });
+    navigate(
+      `/plan-comparison/state/${currentState}/cluster/${clusterId}/district-plan/${districtPlan.district_plan_id}`
+    );
   }
 
   function handleChangePage(
@@ -92,16 +133,51 @@ export default function PlanSelection({
     setPage(0);
   }
 
+  function handleStepChange(newStep: number) {
+    {
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.districtPlans,
+          },
+        },
+        {
+          type: GlobalTypes.ShowTypicalPlan,
+          payload: {
+            cluster_id: "",
+          },
+        },
+      ]);
+    }
+    navigate(0 - (3 - newStep));
+  }
+
+  function BackButton() {
+    return (
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <IconButton
+          aria-label="delete"
+          size="large"
+          onClick={() => handleStepChange(2)}
+        >
+          <ArrowBackIcon fontSize="inherit" />
+        </IconButton>
+      </Stack>
+    );
+  }
+
   return (
     <CardContent>
       <Box
         sx={{
           display: "flex",
-          marginBottom: "2rem",
+          marginBottom: "1rem",
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h6" component="div">
+        <BackButton />
+        <Typography marginTop="0.5rem" variant="h6" component="div">
           Select a District Plan
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
@@ -109,13 +185,14 @@ export default function PlanSelection({
       <TableContainer
         className="plan-table-container"
         component={Paper}
-        sx={{ maxHeight: "72vh", width : "40vw", marginLeft : "2rem" }}
+        sx={{ maxHeight: "75vh", width: "40vw", marginLeft: "2rem" }}
       >
         <Table>
           <TableHead>
             <TableRow>
               <TableCell align="left">District Plan</TableCell>
               <TableCell align="center"># Opportunity Districts</TableCell>
+              <TableCell align="center">Dem/Rep Split</TableCell>
               <TableCell align="center">Avg Republican %</TableCell>
               <TableCell align="center">Avg Democratic %</TableCell>
             </TableRow>
@@ -127,6 +204,7 @@ export default function PlanSelection({
                 row.district_plan_id
                   ? buttonStyleSelected
                   : buttonStyle;
+              const curSplit = splitData?.splits[index];
               return (
                 <TableRow key={row.district_plan}>
                   <TableCell component="th" scope="row">
@@ -135,12 +213,15 @@ export default function PlanSelection({
                         onClick={() => handleSelectPlan(row)}
                         style={style}
                       >
-                        {index + 1}
+                        {(page * rowsPerPage) + (index + 1)}
                       </button>
                     }
                   </TableCell>
                   <TableCell align="center">
                     {row.opportunity_districts}
+                  </TableCell>
+                  <TableCell align="center">
+                    {curSplit ? curSplit?.splits.join(",") : ""}
                   </TableCell>
                   <TableCell align="center">{row.avg_democrat}</TableCell>
                   <TableCell align="center">{row.avg_republican}</TableCell>
