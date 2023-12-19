@@ -100,21 +100,17 @@ export default function Navbar({ aboutPage }: NavbarProps) {
             </>
           )}
           <Box sx={{ flexGrow: 1 }} />{" "}
-          {aboutPage ? (
-            <div></div>
-          ) : (
-            <>
-              <Button
-                onClick={() => {
-                  setHeader("");
-                  navigate("/about");
-                }}
-                color="inherit"
-              >
-                About
-              </Button>
-            </>
-          )}
+          <>
+            <Button
+              onClick={() => {
+                setHeader("");
+                navigate("/about");
+              }}
+              color="inherit"
+            >
+              About
+            </Button>
+          </>
         </Toolbar>
       </AppBar>
     </Box>

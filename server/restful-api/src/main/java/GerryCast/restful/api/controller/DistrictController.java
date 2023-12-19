@@ -397,7 +397,8 @@ public class DistrictController {
         }
     }
 
-  public ResponseEntity<String> getAssociationData(
+    @GetMapping("/getAssociationData/{state}/{distance_measure}")
+    public ResponseEntity<String> getAssociationData(
             @PathVariable final String state,
             @PathVariable final String distance_measure) {
 
@@ -410,7 +411,8 @@ public class DistrictController {
             return new ResponseEntity<>("Input a valid state.", HttpStatus.BAD_REQUEST);
         }
 
-        Document docFinder = new Document("type", "AssociationData").append("distance_measure", sanitizedDistanceMeasure);
+        Document docFinder = new Document("type", "AssociationData").append("distance_measure",
+                sanitizedDistanceMeasure);
         Document document = stateCollection.find(docFinder).first();
 
         if (document == null) {
