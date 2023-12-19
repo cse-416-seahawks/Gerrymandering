@@ -239,9 +239,9 @@ export default function ClusterTableRow({
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left">Avg Caucasian Pop.</TableCell>
-                    <TableCell align="left">Avg Afrian-American Pop.</TableCell>
-                    <TableCell align="left">Avg Asian-American Pop.</TableCell>
+                    <TableCell align="left">Avg White Pop.</TableCell>
+                    <TableCell align="left">Avg Black Pop.</TableCell>
+                    <TableCell align="left">Avg Asian Pop.</TableCell>
                     <TableCell align="left">Avg Hispanic Pop.</TableCell>
                     <TableCell align="left">Other</TableCell>
                   </TableRow>
