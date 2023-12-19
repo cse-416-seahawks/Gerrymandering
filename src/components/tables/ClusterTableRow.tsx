@@ -82,6 +82,12 @@ export default function ClusterTableRow({
           clusterPlanIds: planIds,
         },
       },
+      {
+        type: GlobalTypes.ShowTypicalPlan,
+        payload: {
+          clusterId: "",
+        },
+      },
     ]);
     const currentPathname = window.location.pathname;
     navigate(`${currentPathname}/cluster/${clusterId}`);
@@ -104,24 +110,27 @@ export default function ClusterTableRow({
     // POST endpoint to save to database
   };
 
-  function handleShowTypicalPlan(cluster_id: string): void {
-    console.log("SELECTED TYPICAL PLAN");
+  function handleShowTypicalPlan(
+    cluster_id: string
+  ): void {
     dispatch({
       type: GlobalTypes.ShowTypicalPlan,
       payload: {
         cluster_id: cluster_id,
       },
     });
+
+    const currentPathname = window.location.pathname;
+    navigate(`${currentPathname}/cluster/${cluster_id}`);
   }
 
-  function getStyles(cluster_id : string) {
-    if(state[state.length - 1].typicalPlan === cluster_id){
+  function getStyles(cluster_id: string) {
+    if (state[state.length - 1].typicalPlan === cluster_id) {
       return {
-        fontWeight : "bold",
-        color : "orange"
-      }
-    }
-    else {
+        fontWeight: "bold",
+        color: "orange",
+      };
+    } else {
       return {};
     }
   }
@@ -196,7 +205,10 @@ export default function ClusterTableRow({
         </TableCell>
         <TableCell>
           <Tooltip title="View Typical Plan">
-            <IconButton disabled={state[state.length - 1].typicalPlan === data.cluster_id} onClick={() => handleShowTypicalPlan(data.cluster_id)}>
+            <IconButton
+              
+              onClick={() => handleShowTypicalPlan(data.cluster_id)}
+            >
               <AddLocationIcon />
             </IconButton>
           </Tooltip>

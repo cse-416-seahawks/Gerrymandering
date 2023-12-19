@@ -30,11 +30,21 @@ export default function ClusterDetail({
   clusterId,
 }: ClusterDetailProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const [currentTab, setCurrentTab] = useState(
-    state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary
-      ? "1"
-      : "2"
-  );
+
+
+  const [currentTab, setCurrentTab] = useState(getCurrentTab());
+
+  function getCurrentTab() {
+    if(state[state.length - 1].currentInfoCard === InfoCardType.clusterSummary){
+      return "1"
+    }
+    else if (state[state.length - 1].typicalPlan){
+      return "4"
+    }
+    else{
+      return "2"
+    }
+  }
 
   const [tableData, setTableData] = useState<Array<DistrictPlanData>>([]);
   const [axisLabels, setAxisLabels] = useState<Array<string>>([]);

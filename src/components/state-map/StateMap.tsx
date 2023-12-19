@@ -35,9 +35,6 @@ interface StateMapProps {
 }
 export default function StateMap({ currentState }: StateMapProps) {
   const { state, dispatch } = useContext(GlobalContext);
-  const [typicalPlan, setTypicalPlan] = useState([
-    state[state.length - 1].typicalPlan,
-  ]);
   const [planIds, setPlanIds] = useState<string[]>([]);
   const currentStateMapData = state[state.length - 1].mapData[currentState];
   const [centerCoordinates, setCenterCoordinates] = useState<Array<number>>([]);
@@ -78,15 +75,6 @@ export default function StateMap({ currentState }: StateMapProps) {
     return color;
   }
 
-  useEffect(() => {
-    if (state[state.length - 1].typicalPlan) {
-      const newTypicalPlan = typicalPlan;
-      newTypicalPlan.push(state[state.length - 1].typicalPlan);
-      newTypicalPlan.shift();
-      setTypicalPlan(newTypicalPlan);
-      console.log("Typical Plan Updated:", typicalPlan);
-    }
-  }, [state]);
 
   useEffect(() => {
     setPlanIds(state[state.length - 1].districtPlanIds);
@@ -115,18 +103,8 @@ export default function StateMap({ currentState }: StateMapProps) {
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />{" "}
-            {typicalPlan &&
-              typicalPlan.map((clusterId) => {
-                console.log('rendering plan ', clusterId)
-                return <TypicalPlan
-                  clusterId={clusterId}
-                  strokeColor="#FFA500"
-                  transparent
-                />
-              }
-                
-              )}
+            />
+            
             {planIds.map((planId, index) => {
               return (
                 <DistrictPlan

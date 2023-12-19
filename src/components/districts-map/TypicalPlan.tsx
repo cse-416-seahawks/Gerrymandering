@@ -18,27 +18,24 @@ export default ({ clusterId, strokeColor, transparent }: DistrictPlanProps) => {
   const [plan, setPlan] = useState<DistrictState["data"]>(null);
   const { state, dispatch } = useContext(GlobalContext);
   const { stateName } = useParams<{ stateName: AvailableStates }>();
-
   const currentState = stateName || AvailableStates.Unselected;
 
   useEffect(() => {
-    async function fetchDistrictPlanAsync() {
+    async function fetchTypicalPlanAsync() {
       try {
-        if (clusterId) {
-          console.log('awaiting...')
+        if (clusterId !== "") {
           const result = await fetchTypicalPlan(currentState, clusterId);
-          console.log("typical plan for ", clusterId, " result - ", result);
           if (result) {
             setPlan(result);
           }
         }
       } catch (error) {
-        throw error;
+        console.error("Error fetching typical plan:", error);
       }
     }
-    fetchDistrictPlanAsync();
-  }, []);
 
+    fetchTypicalPlanAsync();
+  }, []);
   return (
     <>
       {plan ? (

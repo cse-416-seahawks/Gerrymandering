@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import {
   AvailableStates,
   GlobalContext,
+  GlobalTypes,
   InfoCardType,
 } from "../../globalContext";
 import EnsemblesList from "../summary/EnsemblesList";
@@ -50,30 +51,52 @@ export default function ClusterAnalysis({
 
   // When the state changes from the menu drop down, stepper should go to 'Select an Ensemble'
 
-  function handleStepChange(
-    newStep: number,
-  ) {
+  function handleStepChange(newStep: number) {
     if (newStep === 0 && step !== 0) {
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.ensembleInfo,
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.ensembleInfo,
+          },
         },
-      });
+        {
+          type: GlobalTypes.ShowTypicalPlan,
+          payload: {
+            cluster_id: "",
+          },
+        },
+      ]);
     } else if (newStep === 1) {
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.ensembleSummary,
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.ensembleSummary,
+          },
         },
-      });
+        {
+          type: GlobalTypes.ShowTypicalPlan,
+          payload: {
+            cluster_id: "",
+          },
+        },
+      ]);
     } else if (newStep === 2) {
-      dispatch({
-        type: "CHANGE_INFO_CARD",
-        payload: {
-          infoCardType: InfoCardType.districtPlans,
+      dispatch([
+        {
+          type: "CHANGE_INFO_CARD",
+          payload: {
+            infoCardType: InfoCardType.districtPlans,
+          },
         },
-      });
+        {
+          type: GlobalTypes.ShowTypicalPlan,
+          payload: {
+            cluster_id: "",
+          },
+        },
+      ]);
     }
     navigate(0 - (step - newStep));
   }
@@ -106,11 +129,7 @@ export default function ClusterAnalysis({
           <IconButton
             aria-label="delete"
             size="large"
-            onClick={() =>
-              handleStepChange(
-                step - 1,
-              )
-            }
+            onClick={() => handleStepChange(step - 1)}
           >
             <ArrowBackIcon fontSize="inherit" />
           </IconButton>
@@ -132,11 +151,7 @@ export default function ClusterAnalysis({
                   <Step key={label} completed={completed[index]}>
                     <StepButton
                       color="inherit"
-                      onClick={() =>
-                        handleStepChange(
-                          index,
-                        )
-                      }
+                      onClick={() => handleStepChange(index)}
                     >
                       {label}
                     </StepButton>
@@ -157,10 +172,7 @@ export default function ClusterAnalysis({
             />
           )}
           {ensembleId && clusterId && (
-            <ClusterDetail
-              currentState={selectedState}
-              clusterId={clusterId}
-            />
+            <ClusterDetail currentState={selectedState} clusterId={clusterId} />
           )}
         </CardContent>
       </Card>
